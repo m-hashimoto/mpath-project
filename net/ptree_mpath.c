@@ -27,12 +27,14 @@ sprint_inet_ntoa(int af, void *sa)
 	//dprint(("-sprint_inet_ntoa: af[%d] sa[%p]\n",af,sa));
 	if(af == AF_INET){
 		char str[INET_ADDRSTRLEN];
-		__rpc_inet_ntop(AF_INET, &((struct sockaddr_in *)(sa))->sin_addr, str, INET_ADDRSTRLEN);
+		struct in_addr addr = ((struct sockaddr_in *)(sa))->sin_addr;
+		__rpc_inet_ntop(AF_INET, &addr, str, INET_ADDRSTRLEN);
 		printf("%s",str);
 	} else if(af == AF_INET6) {
-		char str[INET6_ADDRSTRLEN];
-		__rpc_inet_ntop(AF_INET6, &((struct sockaddr_in6 *)(sa))->sin6_addr, str, INET6_ADDRSTRLEN);
-		printf("%s",str);
+		char str6[INET6_ADDRSTRLEN];
+		struct in6_addr addr6 = ((struct sockaddr_in6 *)(sa))->sin6_addr;
+		__rpc_inet_ntop(AF_INET6, &addr6, str6, INET6_ADDRSTRLEN);
+		printf("%s",str6);
 	}
 }
 
