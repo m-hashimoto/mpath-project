@@ -84,7 +84,10 @@ on1:
 	{
 		//register struct ptree_node *p, *x = top;
 		int *data;
-		data = (int *)malloc(sizeof(int));
+		if (data = (int *)malloc(sizeof(int)) == NULL){
+			dprint(("ptree_insert: Failed to allocate memory\n"));	
+			return 0;
+		}
 		*data = vlen;
 		dprint(("ptree_insert: data = %d\n",*data));
 		cp = v;
