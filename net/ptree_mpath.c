@@ -1009,15 +1009,14 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	t = NULL;
 	//t = ptree_add(rn_zeros,off,data,rnh);
+	t = rnh->rnh_nodes;
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 	dprint(("ptree_inithead: head = %p len = %d flag = %d\n",
 				t,t->keylen,t->rn_flags));
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
 #endif
-	rnh->rnh_nodes = &rnh->top;
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
 	rnh->rnh_matchaddr = ptree_matchaddr;
