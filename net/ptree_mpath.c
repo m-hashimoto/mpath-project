@@ -432,11 +432,12 @@ ptree_satisfies_leaf(trial, leaf, skip)
 	dprint(("-ptree_satisfines_leaf End\n"));
 	return 1;
 }
+#endif
 
 	struct ptree_node *
 ptree_matchaddr(v_arg, head)
 	void *v_arg;
-	struct ptree *head;
+	struct ptree_node_head *head;
 {
 	dprint(("-ptree_matchaddr Start\n"));
 	caddr_t v = v_arg;
@@ -459,12 +460,13 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
+#if 0
 	if (t->rn_mask){
 		vlen = *(u_char *)t->rn_mask;
 		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
-
-	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
+#endif
+	cp += off; cp2 = t->key + off; cplim = v + vlen;
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
 		dprint((" + "));	
@@ -481,6 +483,7 @@ ptree_matchaddr(v_arg, head)
 	debug_node_print(t);
 	return t;
 on1:
+#if 0
 	/*
 	 * Even if we don't match exactly as a host,
 	 * we may match if the leaf we wound up at is
@@ -536,12 +539,12 @@ on1:
 			m = m->rm_mklist;
 			dprint(("-ptree_matchaddr: next rm_mklist = %p\n",m));
 	}
-
+#endif
 miss:
 	dprint(("-ptree_matchaddr End: miss\n"));
 	return 0;
 }
-#endif
+
 
 		struct ptree_node *
 ptree_addroute(v_arg, n_arg, head)
@@ -715,11 +718,11 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		struct ptree_node_head *head;
 {
 		dprint(("-ptree_deladdr Start\n"));
-		register struct ptree_node *t, *p, *x, *tt;
-		struct ptree_mask *m, *saved_m, **mp;
-		struct ptree_node *dupedkey, *saved_tt, *top;
+		register struct ptree_node/* *t, *p,*/ *x, *tt;
+		//struct ptree_mask *m, *saved_m, **mp;
+		struct ptree_node /* *dupedkey, */*saved_tt, *top;
 		caddr_t v, netmask;
-		int b,/* head_off,*/ vlen, mlen;
+		int /*b, head_off,*/ vlen, mlen;
 
 		v = v_arg;
 		netmask = netmask_arg;
@@ -1064,7 +1067,7 @@ ptree_inithead(head, off)
 #endif
 		pnh->pnh_addaddr = ptree_addroute;
 		pnh->pnh_deladdr = ptree_deladdr;
-		pnh->pnh_matchaddr = ptree_search;//ptree_matchaddr;
+		pnh->pnh_matchaddr = ptree_matchaddr;
 		pnh->pnh_lookup = ptree_lookup;
 		pnh->pnh_walktree = ptree_walktree;
 		//rnh->rnh_walktree_from = ptree_walktree_from;

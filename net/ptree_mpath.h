@@ -34,7 +34,7 @@ struct ptree_node_head {
 		struct  ptree_node *(*pnh_delpkt)       /* remove based on packet hdr */
 				(void *v, void *mask, struct ptree_node_head *head);
 		struct  ptree_node *(*pnh_matchaddr)    /* locate based on sockaddr */
-				(void *v, int vlen, struct ptree_node_head *head);
+				(void *v, struct ptree_node_head *head);
 		struct  ptree_node *(*pnh_lookup)       /* locate based on sockaddr */
 				(void *v, void *mask, int keylen, struct ptree_node_head *head);
 		struct  ptree_node *(*pnh_matchpkt)     /* locate based on packet hdr */
@@ -80,7 +80,7 @@ void     ptree_init(void);
 int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
 struct ptree_node
-		*ptree_addroute (void *, void *, struct ptree_node_head *),
+		*ptree_addroute(void *, void *, struct ptree_node_head *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
