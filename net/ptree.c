@@ -16,14 +16,14 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define dprint(x) { if(DEBUG) printf(x); }
+#define dprint(x) { if(DEBUG) printf x; }
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
 	static struct ptree_node *
 ptree_node_create (char *key, int keylen)
 {
-	dprint("ptree_node_create Start\n");
+	dprint(("ptree_node_create Start\n"));
 	struct ptree_node *x;
 	int len;
 
@@ -53,16 +53,16 @@ ptree_node_create (char *key, int keylen)
 	x->mpath_array = 0;
 #endif
 
-	dprint("ptree_node_create End\n");
+	dprint(("ptree_node_create End\n"));
 	return x;
 }
 
 	static void
 ptree_node_delete (struct ptree_node *x)
 {
-	dprint("ptree_node_delete Start\n");
+	dprint(("ptree_node_delete Start\n"));
 	XRTFREE (x);
-	dprint("ptree_node_delete End\n");
+	dprint(("ptree_node_delete End\n"));
 }
 
 /* check_bit() returns the "keylen"-th bit in the key.
@@ -71,14 +71,14 @@ ptree_node_delete (struct ptree_node *x)
 	static int
 check_bit (char *key, int keylen)
 {
-	dprint("check_bit Start\n");
+	dprint(("check_bit Start\n"));
 	int offset;
 	int shift;
 
 	offset = keylen / 8;
 	shift = 7 - keylen % 8;
 
-	dprint("check_bit End\n");
+	dprint(("check_bit End\n"));
 	return (key[offset] >> shift & 1);
 }
 
@@ -87,13 +87,13 @@ check_bit (char *key, int keylen)
 	static int
 ptree_match (char *keyi, char *keyj, int keylen)
 {
-	dprint("ptree_match Start\n");
+	dprint(("ptree_match Start\n"));
 	int bytes;
 	int bits;
 	bytes = (int)keylen / 8;
 	bits = (int)keylen % 8;
 
-	dprint("ptree_match End\n");
+	dprint(("ptree_match End\n"));
 	if (! memcmp (keyi, keyj, bytes) &&
 			! (keyi[bytes] ^ keyj[bytes]) & mask[bits])
 		return 1;
@@ -105,7 +105,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 	struct ptree_node *
 ptree_lookup (void *key, int keylen, struct ptree *t)
 {
-	dprint("ptree_lookup Start\n");
+	dprint(("ptree_lookup Start\n"));
 	struct ptree_node *x;
 
 	x = t->top;
@@ -114,11 +114,11 @@ ptree_lookup (void *key, int keylen, struct ptree *t)
 		x = x->child[check_bit (key, x->keylen)];
 
 	if (x->keylen == keylen){
-		dprint("ptree_match End\n");
+		dprint(("ptree_match End\n"));
 		return x;
 	}
 
-	dprint("ptree_match End\n");
+	dprint(("ptree_match End\n"));
 	return NULL;
 }
 
@@ -128,7 +128,7 @@ ptree_lookup (void *key, int keylen, struct ptree *t)
 	struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
-	dprint("ptree_search Start\n");
+	dprint(("ptree_search Start\n"));
 	struct ptree_node *x, *match;
 
 	match = NULL;
@@ -142,21 +142,21 @@ ptree_search (char *key, int keylen, struct ptree *t)
 	}
 
 	ptree_node_lock (match);
-	dprint("ptree_search End\n");
+	dprint(("ptree_search End\n"));
 	return match;
 }
 
 	static void
 ptree_link (struct ptree_node *v, struct ptree_node *w)
 {
-	dprint("ptree_link Start\n");
+	dprint(("ptree_link Start\n"));
 	/* check the w's key bit just after the v->key (keylen'th bit) */
 	int bit;
 
 	bit = check_bit (w->key, v->keylen);
 	v->child[bit] = w;
 	w->parent = v;
-	dprint("ptree_link End\n");
+	dprint(("ptree_link End\n"));
 }
 
 /* key_common_len() returns the bit length with which the keyi and
@@ -164,7 +164,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
 	static int
 key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
-	dprint("ptree_common_len Start\n");
+	dprint(("ptree_common_len Start\n"));
 	int i;
 	int nmatch = 0;
 	int minkeylen = MIN (keyilen, keyjlen);
@@ -186,7 +186,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 		keylen++;
 		bitmask >>= 1;
 	}
-	dprint("ptree_common_len End\n");
+	dprint(("ptree_common_len End\n"));
 	return keylen;
 }
 
@@ -195,18 +195,18 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 	static struct ptree_node *
 ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
-	dprint("ptree_common Start\n");
+	dprint(("ptree_common Start\n"));
 	int keylen;
 	struct ptree_node *x;
 
 	keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
 	x = ptree_node_create (keyi, keylen);
 	if (! x){
-		dprint("ptree_common End\n");
+		dprint(("ptree_common End\n"));
 		return NULL;
 	}
 
-	dprint("ptree_common End\n");
+	dprint(("ptree_common End\n"));
 	return x;
 }
 
@@ -214,9 +214,9 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 	void
 ptree_node_lock (struct ptree_node *x)
 {
-	dprint("ptree_node_lock Start\n");
+	dprint(("ptree_node_lock Start\n"));
 	x->lock++;
-	dprint("ptree_node_lock End\n");
+	dprint(("ptree_node_lock End\n"));
 }
 
 /* unlocks the node. if the lock(reference) becomes 0,
@@ -224,11 +224,11 @@ ptree_node_lock (struct ptree_node *x)
 	void
 ptree_node_unlock (struct ptree_node *x)
 {
-	dprint("ptree_node_unlock Start\n");
+	dprint(("ptree_node_unlock Start\n"));
 	x->lock--;
 	if (x->lock == 0)
 		ptree_remove (x);
-	dprint("ptree_node_unlock End\n");
+	dprint(("ptree_node_unlock End\n"));
 }
 
 /* locks for the tree holding
@@ -236,7 +236,7 @@ ptree_node_unlock (struct ptree_node *x)
 	static struct ptree_node *
 ptree_get (char *key, int keylen, struct ptree *t)
 {
-	dprint("ptree_get Start\n");
+	dprint(("ptree_get Start\n"));
 	struct ptree_node *x;
 	struct ptree_node *u, *v, *w; /* u->v->w or u->x->{v, w}*/
 
@@ -304,14 +304,14 @@ ptree_get (char *key, int keylen, struct ptree *t)
 	}
 	/* locks for the tree holding */
 	ptree_node_lock (v);
-	dprint("ptree_get End\n");
+	dprint(("ptree_get End\n"));
 	return v;
 }
 
 	struct ptree_node *
 ptree_add (char *key, int keylen, void *data, struct ptree *t)
 {
-	dprint("ptree_add Start\n");
+	dprint(("ptree_add Start\n"));
 	struct ptree_node *x;
 
 	x = ptree_get (key, keylen, t);
@@ -323,14 +323,14 @@ ptree_add (char *key, int keylen, void *data, struct ptree *t)
 	}
 
 	x->data = data;
-	dprint("ptree_add End\n");
+	dprint(("ptree_add End\n"));
 	return x;
 }
 
 	void
 ptree_remove (struct ptree_node *v)
 {
-	dprint("ptree_remove Start\n");
+	dprint(("ptree_remove Start\n"));
 	struct ptree_node *w;
 
 	XRTASSERT (! v->data, ("ptree: attempt to remove a node with data"));
@@ -353,27 +353,27 @@ ptree_remove (struct ptree_node *v)
 	w = (v->child[0] ? v->child[0] : v->child[1]);
 	ptree_link (v->parent, w);
 	ptree_node_delete (v);
-	dprint("ptree_remove End\n");
+	dprint(("ptree_remove End\n"));
 }
 
 	struct ptree_node *
 ptree_head (struct ptree *t)
 {
-	dprint("ptree_head Start\n");
+	dprint(("ptree_head Start\n"));
 	if (! t->top){
-		dprint("ptree_head End\n");
+		dprint(("ptree_head End\n"));
 		return NULL;
 	}
 
 	ptree_node_lock (t->top);
-	dprint("ptree_head End\n");
+	dprint(("ptree_head End\n"));
 	return t->top;
 }
 
 	struct ptree_node *
 ptree_next (struct ptree_node *v)
 {
-	dprint("ptree_next Start\n");
+	dprint(("ptree_next Start\n"));
 	struct ptree_node *t;
 	struct ptree_node *u;
 	struct ptree_node *w;
@@ -384,7 +384,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[0];
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint("ptree_next End\n");
+		dprint(("ptree_next End\n"));
 		return w;
 	}
 
@@ -393,7 +393,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[1];
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint("ptree_next End\n");
+		dprint(("ptree_next End\n"));
 		return w;
 	}
 
@@ -404,7 +404,7 @@ ptree_next (struct ptree_node *v)
 		w = u->child[1];
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint("ptree_next End\n");
+		dprint(("ptree_next End\n"));
 		return w;
 	}
 
@@ -423,43 +423,43 @@ ptree_next (struct ptree_node *v)
 		
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint("ptree_next End\n");
+		dprint(("ptree_next End\n"));
 		return w;
 	}
 
 	/* end of traverse */
 	ptree_node_unlock (v);
-	dprint("ptree_next End\n");
+	dprint(("ptree_next End\n"));
 	return NULL;
 }
 
 	struct ptree *
 ptree_create ()
 {
-	dprint("ptree_create Start\n");
+	dprint(("ptree_create Start\n"));
 	struct ptree *t;
 
 	XRTMALLOC(t, struct ptree *, sizeof (struct ptree));
 	if (! t){
-		dprint("ptree_create End\n");
+		dprint(("ptree_create End\n"));
 		return NULL;
 	}
 
 	t->top = NULL;
-	dprint("ptree_create End\n");
+	dprint(("ptree_create End\n"));
 	return t;
 }
 
 	void
 ptree_delete (struct ptree *t)
 {
-	dprint("ptree_delete Start\n");
+	dprint(("ptree_delete Start\n"));
 	struct ptree_node *x;
 
 	for (x = ptree_head (t); x; x = ptree_next (x))
 		ptree_node_delete (x);
 
 	XRTFREE (t);
-	dprint("ptree_delete End\n");
+	dprint(("ptree_delete End\n"));
 }
 #undef dprint
