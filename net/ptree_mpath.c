@@ -41,9 +41,9 @@ debug_node_print(struct ptree_node *rn)
 		ip = (unsigned char *)rn->rn_mask;
 		printf("mask %d.%d.%d.%d: ",ip[3],ip[2],ip[1],ip[0]);
 	}
-	if( rn->rn_flags ) printf("flag 0x%x\n",rn->rn_flags);
-	if( rn->keylen ) printf("keylen %d ",rn->keylen);
-	if( rn->rn_bit ) printf("rn_bit %d ",rn->rn_bit);
+	printf("flag 0x%x\n",rn->rn_flags);
+	printf("keylen %d ",rn->keylen);
+	printf("rn_bit %d ",rn->rn_bit);
 	if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
 	printf("parent = %p\n",rn->parent);
 	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
