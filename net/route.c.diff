@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-20 03:18:20.000000000 +0900
++++ route.c	2005-01-20 03:31:16.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -30,7 +30,7 @@
  
  /* compare two sockaddr structures */
  #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
-@@ -122,45 +123,51 @@
+@@ -122,45 +123,50 @@
  SYSCTL_INT(_net, OID_AUTO, tunnelfib, CTLFLAG_RD, &tunnel_fib, 0, "");
  #endif
  
@@ -85,7 +85,6 @@
  	rnh += table * (AF_MAX+1) + fam;
  
 +	dprint(("rt_tables_get_rnh_ptr: rnh[fib=%d][fam=%d] = %p\n",table,fam,rnh));
-+	dprint(("rt_tables_get_rnh_ptr: rnh_walktree = %p\n",rnh->rnh_walktree));
 +	dprint(("rt_tables_get_rnh_ptr End\n"));
  	return (rnh);
  }
@@ -98,7 +97,7 @@
  	return (*rt_tables_get_rnh_ptr(table, fam));
  }
  
-@@ -168,38 +175,40 @@
+@@ -168,38 +174,40 @@
   * route initialization must occur before ip6_init2(), which happenas at
   * SI_ORDER_MIDDLE.
   */
@@ -149,7 +148,11 @@
  					/* XXX MRT 
  					 * rtattach will be also called
  					 * from vfs_export.c but the
-@@ -211,46 +220,50 @@
+@@ -208,49 +216,54 @@
+ 					 * which don't need it anyhow)
+ 					 */
+ 					rnh = rt_tables_get_rnh_ptr(table, fam);
++					dprint(("vnet_route_init: rnh[fib=%d][fam=%d] = %p\n",table,fam,rnh));
  					if (rnh == NULL)
  						panic("%s: rnh NULL", __func__);
  					dom->dom_rtattach((void **)rnh,
