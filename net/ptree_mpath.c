@@ -74,6 +74,8 @@ debug_tree_print(struct ptree *rnh)
 		register struct ptree_node *rn, *next;
 		rn = rnh->rnh_treetop;
 		printf("ptree = %p treetop = %p\n",rnh,rn);
+		if(!rn)
+			return (0);
 		for (;;) {
 			debug_node_print(rn);
 			next = ptree_next(rn);
