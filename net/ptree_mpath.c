@@ -33,7 +33,6 @@ debug_node_print(struct ptree_node *pn)
 			
 	printf("node[%p] ",pn);
 	if( pn->key ){
-		//ip = (unsigned char *)rn->rn_key;
 		printf("key[%d.%d.%d.%d.%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[0],
 						(unsigned char)pn->key[1],
@@ -589,6 +588,19 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		tt->data = rt;
 		rt->rt_nodes = tt;
 		dprint(("-ptree_addroute: tt = %p keydup = %d\n",tt,keyduplicated));
+		
+		char *key;
+		key = rt_key(rt);
+		printf("key[%d.%d.%d.%d.%d.%d.%d.%d] ",
+						(unsigned char)key[0],
+						(unsigned char)key[1],
+						(unsigned char)key[2],
+						(unsigned char)key[3],
+						(unsigned char)key[4],
+						(unsigned char)key[5],
+						(unsigned char)key[6],
+						(unsigned char)key[7]);
+
 #if 0 /* multi path */
 		if (keyduplicated) {
 				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
