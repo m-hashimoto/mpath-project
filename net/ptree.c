@@ -94,7 +94,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 	int bits;
 	bytes = (int)keylen / 8;
 	bits = (int)keylen % 8;
-	dprint(("ptree_match: keylen = %dbytes = %d bits = %d\n",keylen,bytes,bits));
+	dprint(("ptree_match: keylen = %d bytes = %d bits = %d\n",keylen,bytes,bits));
 
 	if (! memcmp (keyi, keyj, bytes) &&
 			! (keyi[bytes] ^ keyj[bytes]) & mask[bits]){
