@@ -252,6 +252,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
       /* create branching node */
       x = ptree_common (key, keylen, w->key, w->keylen);
+  	  dprint(("--ptree_get: common x[%p]\n",x));
       if (! x)
         {
           XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
