@@ -16,7 +16,7 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define DEBUG o
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x; else return 0; }
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
