@@ -16,6 +16,8 @@
 #define MAX_MPATH 5
 #endif /* PTREE_MPATH */
 
+typedef int walktree_f_t(struct radix_node *, void *);
+
 struct ptree_node_head {
 		struct ptree *pnh_treetop;
 		int      pnh_addsize;           /* permit, but not require fixed keys */
@@ -40,8 +42,8 @@ struct ptree_node_head {
 		int     (*pnh_walktree)                 /* traverse tree */
 				(struct ptree_node_head *head, walktree_f_t *f, void *w);
 		int     (*pnh_walktree_from)            /* traverse tree below a */
-				(struct ptree_node_head *head, void *a, void *m, walktree_f_t *f,
-				 void *w);
+				(struct ptree_node_head *head, void *a, void *m,
+				 walktree_f_t *f, void *w);
 		void    (*pnh_close)         /* do something when the last ref drops */
 				(struct ptree_node *rn, struct ptree_node_head *head);
 #ifdef _KERNEL
@@ -81,7 +83,7 @@ int debug_tree_print(struct ptree_node_head *pnh);
 
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
-		 ptree_refines(void *, viod *);
+		 ptree_refines(void *, void *);
 struct ptree_node *ptree_addroute (void *, void *, struct ptree_node_head *),
 				  *ptree_deladdr(void *, void *, struct ptree_node_head *),
 				  *ptree_matchaddr(void *, struct ptree_node_head *);
