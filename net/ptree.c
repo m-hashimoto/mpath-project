@@ -56,7 +56,7 @@ ptree_node_create (char *key, int keylen)
   x->data = NULL;
   x->lock = 1;
 
-	dprint(("--ptree_node_create: malloc x[%p - %p] sizeof[%d]\n",x,&x->lock,len));
+	dprint(("--ptree_node_create: malloc x[%p] sizeof[%d]\n",x,len));
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
@@ -100,7 +100,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
   //dprint(("--ptree_match Start\n"));
   bytes = keylen / 8;
   bits = keylen % 8;
-  //dprint(("--ptree_match: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
+  dprint(("--ptree_match: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
   if (! memcmp (keyi, keyj, bytes) &&
       ! ((keyi[bytes] ^ keyj[bytes]) & mask[bits]))
     return 1;
