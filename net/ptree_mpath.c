@@ -140,7 +140,8 @@ static int ptree_satisfies_leaf(char *trial,
 	
 	if(!t){
 		dprint(("-ptree_insert: search(v) = NULL\n"));
-		b = -1 - vlen;
+		//b = -1 - vlen;
+		b = 0;
 		goto on2;
 	}
 	/* Find first bit at which v and t->rn_key differ */ 
