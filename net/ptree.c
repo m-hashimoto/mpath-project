@@ -338,7 +338,7 @@ ptree_get (key, keylen, t, nodes)
 			ptree_link (u, x);
 		else{
 			t->top = x;
-			t->rn_flags = RNF_ACTIVE | RNF_ROOT;
+			x->rn_flags = RNF_ACTIVE | RNF_ROOT;
 		}
 		
 
