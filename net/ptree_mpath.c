@@ -573,18 +573,22 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		tt->rn_bit = x->rn_bit;
 		tt->rn_flags = RNF_ACTIVE;
 	}
+#if 0 /* 10/29 19:32 test */
 	t = saved_tt->rn_parent;
 	if(!t){
 		dprint(("-ptree_addroute: goto on2 if(!tt->parent)\n"));
 		goto on2;
 	}
+#endif
 	dprint(("-ptree_addroute: saved_tt->rn_parent = %p\n",t));
 	if (keyduplicated){
 		dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 		goto on2;
 	}
-	b_leaf = -1 - t->rn_bit;
+	//b_leaf = -1 - t->rn_bit;
+	b_leaf = t->rn_bit;
 	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
+#if 0 /* 10/29 19:32 test */
 	if (t->rn_right == saved_tt)
 		x = t->rn_left;
 	else
@@ -593,7 +597,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		dprint(("-ptree_addroute: goto on2 if(!x)\n"));
 		goto on2;
 	}
-
 	/* Promote general routes from below */
 	if (x->rn_bit < 0) {
 		dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
@@ -612,8 +615,10 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				break;
 		t->rn_mklist = m; *mp = 0;
 	}
+#endif
 on2:
 	/* Add new route to highest possible ancestor's list */
+#if 0 /* 10/29 19:32 test */
 	dprint(("-ptree_addroute: add new route to highest list\n"));
 	if ((netmask == 0) || (b > t->rn_bit )){
 		dprint(("-ptree_addroute End (can't lift at all)\n"));
@@ -628,6 +633,7 @@ on2:
 			break;
 	} while (x != top && b <= t->rn_bit);
 	dprint(("-ptree_addroute: x = %p\n",x));
+#endif
 	/*
 	 * Search through routes associated with node to
 	 * insert new route according to index.

@@ -97,7 +97,6 @@ ptree_match (char *keyi, char *keyj, int keylen)
 	int bits;
 	bytes = (int)keylen / 8;
 	bits = (int)keylen % 8;
-	dprint(("+-ptree_match: keylen = %d bytes = %d bits = %d\n",keylen,bytes,bits));
 
 	if (! memcmp (keyi, keyj, bytes) &&
 		       !((keyi[bytes] ^ keyj[bytes]) & mask[bits]) ){
@@ -355,8 +354,8 @@ ptree_get (char *key, int keylen, struct ptree *t)
 ptree_add (char *key, int keylen, void *data, struct ptree *t)
 {
 	dprint(("+-ptree_add Start\n"));
-	dprint(("+-ptree_add: key = %x:%x:%x:%x keylen = %d ptree = %p\n",
-				key[0],key[1],key[2],key[3],keylen,t));
+	dprint(("+-ptree_add: key = %p keylen = %d ptree = %p\n",
+				key,keylen,t));
 	struct ptree_node *x;
 
 	x = ptree_get (key, keylen, t);
