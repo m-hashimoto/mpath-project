@@ -18,6 +18,7 @@ static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
 
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 #define MKGet(m) {                                              \
@@ -140,7 +141,7 @@ ptree_addmask(n_arg, search, skip)
 		bcopy(netmask + skip, addmask_key + skip, mlen - skip);
 	/*         * Trim trailing zeroes.         */  
 	for (cp = addmask_key + mlen; (cp > addmask_key) && cp[-1] == 0;)
-		cp--;    
+		cp--;
 	mlen = cp - addmask_key; 
 	if (mlen <= skip) {        
 		if (m0 >= last_zeroed)  
@@ -151,7 +152,7 @@ ptree_addmask(n_arg, search, skip)
 	if (m0 < last_zeroed)  
 		bzero(addmask_key + m0, last_zeroed - m0); 
 	*addmask_key = last_zeroed = mlen;
-	x = ptree_search(addmask_key, mlen, mask_rnhead);  
+	x = ptree_search(addmask_key, (int)LEN(netmask), mask_rnhead);
 	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){

@@ -86,7 +86,6 @@ options		PATRICIA
 #options		PTREE_MPATH
 
 # for kernel debug
-options		DEBUG
 options		KDB
 options		DDB
 
