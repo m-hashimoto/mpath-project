@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-21 02:24:17.000000000 +0900
++++ route.c	2005-02-21 03:49:56.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1185,7 +1185,7 @@
  }
  
  /*
-@@ -768,495 +794,538 @@
+@@ -768,495 +794,541 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2061,6 +2061,7 @@
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
 +				debug_tree_print(rnh);	/* after add */
++				dprint(("rtreq_ADD: testprint 1\n"));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2118,6 +2119,7 @@
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
 +				 */
++				dprint(("rtreq_ADD: testprint 2\n"));
 +				if (ifa->ifa_rtrequest){
 +						dprint(("rtreq_ADD: if(ifa_rtrequest)\n"));
 +						ifa->ifa_rtrequest(req, rt, info);
@@ -2126,6 +2128,7 @@
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
++				dprint(("rtreq_ADD: testprint 3\n"));
 +				if (ret_nrt) {
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
@@ -2147,7 +2150,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1336,69 @@
+@@ -1267,71 +1339,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2271,7 +2274,7 @@
  }
  
  /*
-@@ -1339,228 +1406,232 @@
+@@ -1339,228 +1409,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
