@@ -22,21 +22,38 @@
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
+ char *
+sprint_inet_ntoa(int af, void *sa)
+{
+	if(af == AF_INET){
+		char str[INET_ADDRSTRLEN];
+		__rpc_inet_ntop(af, &(struct sockaddr_in *)sa->sin_addr, str, INET_ADDRSTRLEN);
+	} else if(af == AF_INET6) {
+		char str[INET6_ADDRSTRLEN];
+		__rpc_inet_ntop(af, &(struct sockaddr_in6 *)sa->sin6_addr, str, INET6_ADDRSTRLEN);
+	}				
+	return (str);
+}
 
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
+#if 0
 		struct sockaddr_in *sa;
 		struct sockaddr_in6 *sa6;
 		char str[INET_ADDRSTRLEN], str6[INET6_ADDRSTRLEN];
+#endif
+	char *ip;
 	if(offset == 8){ /* IPv6 */
-		sa6 = (struct sockaddr_in6 *)pn->key;
-		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str6, INET6_ADDRSTRLEN);
-		printf("[%p] %s/%3d ",pn,str6,pn->keylen-8*offset);
+//		sa6 = (struct sockaddr_in6 *)pn->key;
+//		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str6, INET6_ADDRSTRLEN);
+		ip = sprint_inet_ntoa(AF_INET6,pn->key);
+		printf("[%p] %s/%3d ",pn,ip,pn->keylen-8*offset);
 	} else { /* IPv4 */
-		sa = (struct sockaddr_in *)pn->key;
-		__rpc_inet_ntop(AF_INET, &sa->sin_addr, str, INET_ADDRSTRLEN);
-		printf("[%p] %s/%3d ",pn,str,pn->keylen-8*offset);
+//		sa = (struct sockaddr_in *)pn->key;
+//		__rpc_inet_ntop(AF_INET, &sa->sin_addr, str, INET_ADDRSTRLEN);
+		ip = sprint_inet_ntoa(AF_INET,pn->key);
+		printf("[%p] %s/%3d ",pn,ip,pn->keylen-8*offset);
 	}
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 	return 0;
