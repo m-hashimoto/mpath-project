@@ -452,7 +452,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		ptree_remove(tt);
 		if (tt == top)
 			head->pnh_top = NULL;
-		dprint(("-ptree_deladdr End: tt = %p &tt = %p\n",saved_tt,&saved_tt));
+		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
 		debug_tree_print(head);
 		return (tt);
 }

@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 10:09:34.000000000 +0900
++++ route.c	2005-02-11 10:45:25.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -370,7 +370,7 @@
  }
  
  /*
-@@ -320,156 +322,165 @@
+@@ -320,156 +322,168 @@
   *
   * The returned route, if any, is locked.
   */
@@ -524,6 +524,7 @@
  rtfree(struct rtentry *rt)
  {
 -	struct radix_node_head *rnh;
++		dprint(("rtfree Start\n"));
 +		struct ptree_node_head *rnh;
 +
 +		KASSERT(rt != NULL,("%s: NULL rt", __func__));
@@ -622,8 +623,8 @@
 +		 * with the route.
 +		 */
 +		if ((rt->rt_flags & RTF_UP) == 0) {
-+				//if (rt->rt_nodes->rn_flags & (RNF_ACTIVE | RNF_ROOT))
-+				panic("rtfree 2");
++				if (rt->rt_nodes->data == NULL)
++					panic("rtfree 2");
 +				/*
 +				 * the rtentry must have been removed from the routing table
 +				 * so it is represented in rttrash.. remove that now.
@@ -653,15 +654,17 @@
 +				 */
 +				RT_LOCK_DESTROY(rt);
 +				uma_zfree(V_rtzone, rt);
++				dprint(("rtfree End\n"));
 +				return;
 +		}
  done:
 -	RT_UNLOCK(rt);
 +		RT_UNLOCK(rt);
++		dprint(("rtfree End\n"));
  }
  
  
-@@ -479,282 +490,283 @@
+@@ -479,282 +493,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1171,7 +1174,7 @@
  }
  
  /*
-@@ -768,495 +780,541 @@
+@@ -768,495 +783,542 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1861,6 +1864,7 @@
 +				 * but it's up to it to free the rtentry as we won't be
 +				 * doing it.
 +				 */
++				dprint(("rtreq_DELETE: rt = %p\n",rt));
 +				if (ret_nrt) {
 +						*ret_nrt = rt;
 +						RT_UNLOCK(rt);
@@ -2135,7 +2139,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1325,70 @@
+@@ -1267,71 +1329,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2260,7 +2264,7 @@
  }
  
  /*
-@@ -1339,228 +1396,232 @@
+@@ -1339,228 +1400,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
