@@ -57,20 +57,20 @@ debug_node_print(struct ptree_node *pn, int offset)
 	
 		printf("%12s ","gateway");
 		if(offset == 8){
-			printf("%13s","+");
 			sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		} else {
-			printf("%13s","+");
 			sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 
 		while(mrt[i]){
 			if(offset == 8){
+				printf("%13s","+");
 				sprint_inet_ntoa(AF_INET6,mrt[i]->rt_gateway);
 				printf(" flags[0x%x]\n",mrt[i]->rt_flags);
 			} else {
+				printf("%13s","+");
 				sprint_inet_ntoa(AF_INET,mrt[i]->rt_gateway);
 				printf(" flags[0x%x]\n",mrt[i]->rt_flags);
 			}
