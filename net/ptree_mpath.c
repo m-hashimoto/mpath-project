@@ -233,9 +233,9 @@ ptree_matchaddr(v_arg, head)
 	unsigned int vlen;
 	
 	vlen = (unsigned int)8*(LEN(v) - head_off - head_zero);
-
-	dprint(("-ptree_matchaddr: v = %p vlen = %d head = %p top = %p\n",
-							v,vlen,head,t));
+	v = v + head_off;
+	dprint(("-ptree_matchaddr: vlen = %d head = %p top = %p\n",
+							vlen,head,t));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
