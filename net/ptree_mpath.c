@@ -31,10 +31,10 @@ debug_node_print(struct ptree_node *pn)
 {
 	//register unsigned char *ip;
 			
-	printf("node = %p ",pn);
+	printf("node[%p] ",pn);
 	if( pn->key ){
 		//ip = (unsigned char *)rn->rn_key;
-		printf("key = %d.%d.%d.%d.%d.%d.%d.%d/%d ",
+		printf("key[%d.%d.%d.%d.%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[0],
 						(unsigned char)pn->key[1],
 						(unsigned char)pn->key[2],
@@ -49,7 +49,7 @@ debug_node_print(struct ptree_node *pn)
 	//	ip = (unsigned char *)rn->rn_mask;
 	//	printf("mask %d.%d.%d.%d: ",ip[0],ip[1],ip[2],ip[3]);
 	//}
-	printf("data = %p ",pn->data);
+	printf("data[%p] ",pn->data);
 	//printf("rn_bit %d ",rn->rn_bit);
 	//if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
 	//printf("parent = %p ",pn->parent);
@@ -715,7 +715,7 @@ on2:
 
 		*mp = ptree_new_mask(tt, *mp);
 #endif
-		dprint(("-ptree_addroute End 3\n"));
+		dprint(("-ptree_addroute End\n"));
 		debug_tree_print(head);
 		return tt;
 }
