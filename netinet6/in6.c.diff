@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-06 10:21:55.000000000 +0900
++++ in6.c	2005-03-06 10:39:09.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -9,79 +9,70 @@
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -697,6 +697,7 @@
- 	 * The destination address for a p2p link must have a family
- 	 * of AF_UNSPEC or AF_INET6.
- 	 */
-+	dprint(("in6_update_ifa: testprint 1\n"));
- 	if ((ifp->if_flags & IFF_POINTOPOINT) != 0 &&
- 	    ifra->ifra_dstaddr.sin6_family != AF_INET6 &&
- 	    ifra->ifra_dstaddr.sin6_family != AF_UNSPEC)
-@@ -705,6 +706,7 @@
- 	 * validate ifra_prefixmask.  don't check sin6_family, netmask
- 	 * does not carry fields other than sin6_len.
- 	 */
-+	dprint(("in6_update_ifa: testprint 2\n"));
- 	if (ifra->ifra_prefixmask.sin6_len > sizeof(struct sockaddr_in6))
- 		return (EINVAL);
- 	/*
-@@ -713,6 +715,7 @@
- 	 * We also require the prefix (when specified) mask is valid, and thus
- 	 * reject a non-consecutive mask.
- 	 */
-+	dprint(("in6_update_ifa: testprint 3\n"));
- 	if (ia == NULL && ifra->ifra_prefixmask.sin6_len == 0)
- 		return (EINVAL);
- 	if (ifra->ifra_prefixmask.sin6_len != 0) {
-@@ -733,6 +736,7 @@
- 	 * and the address is a scoped one, validate/set the scope
- 	 * zone identifier.
- 	 */
-+	dprint(("in6_update_ifa: testprint 4\n"));
- 	dst6 = ifra->ifra_dstaddr;
- 	if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) != 0 &&
- 	    (dst6.sin6_family == AF_INET6)) {
-@@ -758,6 +762,7 @@
- 	 * loopback interface.  If specified, the corresponding prefix length
- 	 * must be 128.
+@@ -996,6 +996,7 @@
+ 		 * actually do not need the routes, since they usually specify
+ 		 * the outgoing interface.
+ 		 */
++		dprint(("in6_update_ifa: testprint 1\n"));
+ 		rt = rtalloc1((struct sockaddr *)&mltaddr, 0, 0UL);
+ 		if (rt) {
+ 			/* XXX: only works in !SCOPEDROUTING case. */
+@@ -1016,6 +1017,7 @@
+ 		} else {
+ 			RTFREE_LOCKED(rt);
+ 		}
++		dprint(("in6_update_ifa: testprint 2\n"));
+ 
+ 		imm = in6_joingroup(ifp, &mltaddr.sin6_addr, &error, 0);
+ 		if (!imm) {
+@@ -1031,6 +1033,7 @@
+ 		/*
+ 		 * join node information group address
+ 		 */
++		dprint(("in6_update_ifa: testprint 3\n"));
+ 		delay = 0;
+ 		if ((flags & IN6_IFAUPDATE_DADDELAY)) {
+ 			/*
+@@ -1060,6 +1063,7 @@
+ 		 * join interface-local all-nodes address.
+ 		 * (ff01::1%ifN, and ff01::%ifN/32)
+ 		 */
++		dprint(("in6_update_ifa: testprint 4\n"));
+ 		mltaddr.sin6_addr = in6addr_nodelocal_allnodes;
+ 		if ((error = in6_setscope(&mltaddr.sin6_addr, ifp, NULL))
+ 		    != 0)
+@@ -1102,6 +1106,7 @@
+ 	 * XXX It may be of use, if we can administratively
+ 	 * disable DAD.
  	 */
 +	dprint(("in6_update_ifa: testprint 5\n"));
- 	if (ifra->ifra_dstaddr.sin6_family == AF_INET6) {
- 		if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) == 0) {
- 			/* XXX: noisy message */
-@@ -772,6 +777,7 @@
- 		}
- 	}
- 	/* lifetime consistency check */
-+	dprint(("in6_update_ifa: testprint 6\n"));
- 	lt = &ifra->ifra_lifetime;
- 	if (lt->ia6t_pltime > lt->ia6t_vltime)
- 		return (EINVAL);
-@@ -792,6 +798,7 @@
- 	 * If this is a new address, allocate a new ifaddr and link it
- 	 * into chains.
- 	 */
-+	dprint(("in6_update_ifa: testprint 7\n"));
- 	if (ia == NULL) {
- 		hostIsNew = 1;
- 		/*
-@@ -835,6 +842,7 @@
- 	}
+ 	if (in6if_do_dad(ifp) && ((ifra->ifra_flags & IN6_IFF_NODAD) == 0) &&
+ 	    (ia->ia6_flags & IN6_IFF_TENTATIVE))
+ 	{
+@@ -1138,6 +1143,7 @@
  
- 	/* update timestamp */
-+	dprint(("in6_update_ifa: testprint 8\n"));
- 	ia->ia6_updatetime = time_second;
+ 	KASSERT(hostIsNew, ("in6_update_ifa: !hostIsNew"));
+ 	ifa_free(&ia->ia_ifa);
++	dprint(("in6_update_ifa End\n"));
+ 	return (error);
  
- 	/* set prefix mask */
-@@ -861,6 +869,7 @@
- 	 * install the new destination.  Note that the interface must be
- 	 * p2p or loopback (see the check above.)
- 	 */
-+	dprint(("in6_update_ifa: testprint 9\n"));
- 	if (dst6.sin6_family == AF_INET6 &&
- 	    !IN6_ARE_ADDR_EQUAL(&dst6.sin6_addr, &ia->ia_dstaddr.sin6_addr)) {
- 		int e;
-@@ -1166,6 +1175,7 @@
+   unlink:
+@@ -1149,12 +1155,14 @@
+ 		in6_unlink_ifa(ia, ifp);
+ 		ifa_free(&ia->ia_ifa);
+ 	}
++	dprint(("in6_update_ifa End case unlink\n"));
+ 	return (error);
+ 
+   cleanup:
+ 	KASSERT(hostIsNew, ("in6_update_ifa: cleanup: !hostIsNew"));
+ 	ifa_free(&ia->ia_ifa);
+ 	in6_purgeaddr(&ia->ia_ifa);
++	dprint(("in6_update_ifa End case cleanup\n"));
+ 	return error;
+ }
+ 
+@@ -1166,6 +1174,7 @@
  	struct in6_multi_mship *imm;
  	struct sockaddr_in6 mltaddr, mltmask;
  	struct rtentry rt0;
@@ -89,7 +80,7 @@
  	struct sockaddr_dl gateway;
  	struct sockaddr_in6 mask, addr;
  	int plen, error;
-@@ -1217,6 +1227,8 @@
+@@ -1217,6 +1226,8 @@
  	gateway.sdl_alen = ifp->if_addrlen;
  	/* */
  	bzero(&rt0, sizeof(rt0));
@@ -98,7 +89,7 @@
  	rt0.rt_gateway = (struct sockaddr *)&gateway;
  	memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  	memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
-@@ -1764,6 +1776,7 @@
+@@ -1764,6 +1775,7 @@
  	if (newhost) {
  		struct llentry *ln;
  		struct rtentry rt;
@@ -106,7 +97,7 @@
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
  
-@@ -1793,6 +1806,8 @@
+@@ -1793,6 +1805,8 @@
  		}
  
  		bzero(&rt, sizeof(rt));
