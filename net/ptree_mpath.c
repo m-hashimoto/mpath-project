@@ -16,7 +16,7 @@
 
 #include <sys/types.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
