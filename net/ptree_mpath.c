@@ -254,7 +254,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
-#ifdef PTREE_MPATH /* multi path */
+#if 0 /* multi path */
 		if (keyduplicated) {
 #if 0
 				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
@@ -291,8 +291,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				}
 
 				tt->key = (caddr_t) v;
-				tt->rn_bit = -1;
-				tt->rn_flags = RNF_ACTIVE;
+				//tt->rn_bit = -1;
+				//tt->rn_flags = RNF_ACTIVE;
 		}
 #endif /* mluti path */
 		return tt;
@@ -555,7 +555,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		int l;
 		l = (int)LEN(rt_key(rt));
 
-		rn = pnh->pnh_lookup(rt_key(rt), l, pnh->pnh_treetop);
+		rn = pnh->rnh_lookup(rt_key(rt), l, pnh->pnh_treetop);
 		if (!rn)
 				return 0;
 
@@ -668,7 +668,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		}
 
 		/* beyond here, we use rn as the master copy */
-		n = ptree_mpath_count(rn);
+		n = ptree_mpath_count(rt0);
 
 		/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 		hash += hashjitter;
@@ -699,7 +699,7 @@ extern int	in_inithead(void **head, int off);
 		int
 ptree4_mpath_inithead(void **head, int off)
 {
-		struct ptree *rnh;
+		struct ptree_node_head *rnh;
 
 		hashjitter = arc4random();
 		if (in_inithead(head, off) == 1) {
@@ -715,7 +715,7 @@ ptree4_mpath_inithead(void **head, int off)
 		int
 ptree6_mpath_inithead(void **head, int off)
 {
-		struct ptree *rnh;
+		struct ptree_node_head *rnh;
 
 		hashjitter = arc4random();
 		if (in6_inithead(head, off) == 1) {
