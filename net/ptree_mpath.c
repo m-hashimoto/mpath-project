@@ -125,13 +125,12 @@ static int ptree_satisfies_leaf(char *trial,
 	register caddr_t cp;
 	int vlen = (int)LEN(v);
 	register int b = vlen;
-	dprint(("-ptree_insert Start Max_keylen = %d\n",max_keylen));
+	dprint(("-ptree_insert Start\n"));
 	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
 	struct ptree_node *top = head->rnh_treetop, *tt;
 	
 	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
-		b = 0;
 		goto on2;
 	}
 	

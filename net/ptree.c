@@ -311,6 +311,7 @@ ptree_get (key, keylen, t, nodes)
 		}
 		else{
 			t->top = v;
+			v->keylen = 0;
 			v->rn_flags = RNF_ACTIVE | RNF_ROOT;
 			dprint(("+-ptree_get: if(!x) t->top = %p\n",v));
 		}
