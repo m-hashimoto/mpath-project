@@ -397,8 +397,8 @@ ptree_matchaddr(v_arg, head)
 		vlen = *(u_char *)t->rn_mask;
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
 	dprint(("ptree_matchaddr: cp = %d:%d:%d:%d\n",cp[0],cp[1],cp[2],cp[3]));
-	//dprint(("ptree_matchaddr: cp2 = %d:%d:%d:%d\n",cp2[0],cp2[1],cp2[2],cp2[3]));
-	//dprint(("ptree_matchaddr: cplim = %d:%d:%d:%d\n",cplim[0],cplim[1],cplim[2],cplim[3]));
+	dprint(("ptree_matchaddr: cp2 = %d:%d:%d:%d\n",cp2[0],cp2[1],cp2[2],cp2[3]));
+	dprint(("ptree_matchaddr: cplim = %d:%d:%d:%d\n",cplim[0],cplim[1],cplim[2],cplim[3]));
 	for (; cp < cplim; cp++, cp2++)
 		if (*cp != *cp2)
 			goto on1;
@@ -415,6 +415,7 @@ ptree_matchaddr(v_arg, head)
 	dprint(("ptree_matchaddr End 1\n"));
 	return t;
 on1:
+	dprint(("ptree_matchaddr: on1\n"));
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
 	for (b = 7; (test >>= 1) > 0;)
 		b--;
@@ -424,6 +425,7 @@ on1:
 	/*
 	 * If there is a host route in a duped-key chain, it will be first.
 	 */
+	dprint(("ptree_matchaddr: on1 test print\n"));
 	if ((saved_t = t)->rn_mask == 0)
 		t = t->rn_dupedkey;
 	for (; t; t = t->rn_dupedkey)
