@@ -31,10 +31,10 @@ debug_node_print(struct ptree_node *pn)
 	printf("node[%p] ",pn);
 	if( pn->key ){
 		printf("key[%d.%d.%d.%d/%d] ",
-						(unsigned char)pn->key[4],
-						(unsigned char)pn->key[5],
-						(unsigned char)pn->key[6],
-						(unsigned char)pn->key[7],
+						(unsigned char)pn->key[0],
+						(unsigned char)pn->key[1],
+						(unsigned char)pn->key[2],
+						(unsigned char)pn->key[3],
 						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);

@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 10:45:25.000000000 +0900
++++ route.c	2005-02-11 23:35:10.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -370,7 +370,7 @@
  }
  
  /*
-@@ -320,156 +322,168 @@
+@@ -320,156 +322,170 @@
   *
   * The returned route, if any, is locked.
   */
@@ -412,8 +412,6 @@
 -	if (needlock)
 -		RADIX_NODE_HEAD_RLOCK(rnh);
 +		dprint(("rtalloc1_fib Start\n"));
-+		dprint(("rtalloc1_fib: dst = %p report = %d ignflags = %d\n",
-+								dst,report,(int)ignflags));
 +		struct ptree_node_head *rnh;
 +		struct rtentry *rt;
 +		struct ptree_node *rn;
@@ -421,6 +419,10 @@
 +		struct rt_addrinfo info;
 +		int err = 0, msgtype = RTM_MISS;
 +		int needlock;
++
++		char *c_dst = (char *)dst;
++		dprint(("rtalloc1_fib: dst[%d.%d.%d.%d]\n",
++								c_dst[4],c_dst[5],c_dst[6],c_dst[7]));
 +
 +		KASSERT((fibnum < rt_numfibs), ("rtalloc1_fib: bad fibnum"));
 +		if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
@@ -664,7 +666,7 @@
  }
  
  
-@@ -479,282 +493,283 @@
+@@ -479,282 +495,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1174,7 +1176,7 @@
  }
  
  /*
-@@ -768,495 +783,542 @@
+@@ -768,495 +785,542 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2139,7 +2141,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1329,70 @@
+@@ -1267,71 +1331,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2264,7 +2266,7 @@
  }
  
  /*
-@@ -1339,228 +1400,232 @@
+@@ -1339,228 +1402,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
