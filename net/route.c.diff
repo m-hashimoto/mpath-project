@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 20:01:12.000000000 +0900
++++ route.c	2005-01-27 20:22:02.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,540 @@
+@@ -768,495 +814,537 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1940,7 +1940,6 @@
 +						rt_maskedcopy(dst, ndst, netmask);
 +				} else
 +						bcopy(dst, ndst, dst->sa_len);
-+				dprint(("rtreq_ADD: masked if needed\n"));
 +			/*
 +			 * We use the ifa reference returned by rt_getifa_fib().
 +			 * This moved from below so that rnh->rnh_addaddr() can
@@ -1949,7 +1948,6 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: set member into the rt(1).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +#ifdef RADIX_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (rn_mpath_capable(rnh) &&
@@ -2034,7 +2032,7 @@
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				dprint(("rtreq_ADD: ndst into the rnh = %p\n",rnh));
-+				dprint(("rtreq_ADD: rt = %p rn = %p rn_keylen = %d rn_flags = 0x%x\n",rt,rn,rn->keylen,rn->rn_flags));
++				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d rn_flags = 0x%x\n",rt,rn,rn->rn_key,rn->keylen,rn->rn_flags));
 +				/* gateway Re-set */
 +				rt->rt_gateway = saved_gateway;
 +				/* rtentry's value re-added */
@@ -2113,7 +2111,6 @@
 +					dprint(("rtreq_ADD: RT_ADDREF > rt->rt_mtx = %p\n",
 +											&(rt)->rt_mtx));
 +				}
-+				dprint(("test3: rt_gateway = %p\n",rt->rt_gateway));
 +				
 +				if( mtx_initialized(&(rt)->rt_mtx) ){
 +					RT_UNLOCK(rt);
@@ -2144,7 +2141,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1358,88 @@
+@@ -1267,71 +1355,88 @@
  #undef ifpaddr
  #undef flags
  
@@ -2232,7 +2229,7 @@
 +				dprint(("rt_setgate: test print 3\n"));
 +				bcopy(dst, new, dlen);
 +				dprint(("rt_setgate: test print 4\n"));
-+				Free(rt_key(rt));	/* free old block, if any */
++				//Free(rt_key(rt));	/* free old block, if any */
 +				dprint(("rt_setgate: test print 5\n"));
 +				rt_key(rt) = (struct sockaddr *)new;
 +				dprint(("rt_setgate: test print 6\n"));
@@ -2287,7 +2284,7 @@
  }
  
  /*
-@@ -1339,228 +1447,235 @@
+@@ -1339,228 +1444,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
