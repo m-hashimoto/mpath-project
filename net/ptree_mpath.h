@@ -8,7 +8,7 @@
 #include <sys/_lock.h>
 #include <sys/_mutex.h>
 #include <sys/_rwlock.h>
-#endif /* KERNEL */
+#endif /* _KERNEL */
 
 #define DEBUG 1
 
@@ -24,7 +24,7 @@ struct ptree_node_head {
 		int      pnh_pktsize;           /* permit, but not require fixed keys */
 #ifdef PTREE_MPATH
 		int		pnh_multipath;
-#endif
+#endif /* PTREE_MPATH */
 		struct  ptree_node *(*pnh_addaddr)
 				(void *v, void *mask, struct ptree_node_head *head);
 		struct  ptree_node *(*pnh_addpkt)       /* add based on packet hdr */
@@ -48,7 +48,7 @@ struct ptree_node_head {
 				(struct ptree_node *rn, struct ptree_node_head *head);
 #ifdef _KERNEL
 		struct rwlock rnh_lock;
-#endif
+#endif /* _KERNEL */
 }
 
 #define pnh_top pnh_treetop->top
@@ -57,7 +57,7 @@ struct ptree_node_head {
 #define R_Malloc(p, t, n) (p = (t) malloc((unsigned int)(n)))
 #define R_Zalloc(p, t, n) (p = (t) calloc(1,(unsigned int)(n)))
 #define Free(p) free((char *)p);
-#else
+#else /* ifdef _KERNEL */
 #define R_Malloc(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT))
 #define R_Zalloc(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT | M_ZERO))
 #define Free(p) free((caddr_t)p, M_RTABLE);
@@ -75,11 +75,6 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_LOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_LOCKED)
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
-
-#ifdef DEBUG
-int debug_node_print(struct ptree_node *pn);
-int debug_tree_print(struct ptree_node_head *pnh);
-#endif
 
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
