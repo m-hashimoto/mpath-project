@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 15:48:45.000000000 +0900
++++ route.c	2005-01-27 15:53:09.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -811,15 +811,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,532 @@
+@@ -768,495 +814,534 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1323,12 +1323,7 @@
 -	 */
 -	if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest) {
 -		struct rt_addrinfo info;
-+		dprint(("rtexpunge Start\n"));
-+		struct ptree_node *rn;
-+		struct ptree *rnh;
-+		struct ifaddr *ifa;
-+		int error = 0;
- 
+-
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_flags = rt->rt_flags;
 -		info.rti_info[RTAX_DST] = rt_key(rt);
@@ -1345,7 +1340,12 @@
 -bad:
 -	return (error);
 -}
--
++		dprint(("rtexpunge Start\n"));
++		struct ptree_node *rn;
++		struct ptree *rnh;
++		struct ifaddr *ifa;
++		int error = 0;
+ 
 -#ifdef RADIX_MPATH
 -static int
 -rn_mpath_update(int req, struct rt_addrinfo *info,
@@ -1799,11 +1799,53 @@
 +					goto bad;
 +					}
 +				}
-+#endif
-+				/*
+ #endif
+-
+-#ifdef FLOWTABLE
+-		rt0 = NULL;
+-		/* XXX
+-		 * "flow-table" only support IPv4 at the moment.
+-		 */
+-#ifdef INET
+-		if (dst->sa_family == AF_INET) {
+-			rn = rnh->rnh_matchaddr(dst, rnh);
+-			if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
+-				struct sockaddr *mask;
+-				u_char *m, *n;
+-				int len;
+-				
+ 				/*
+-				 * compare mask to see if the new route is
+-				 * more specific than the existing one
 +				 * Remove the item from the tree and return it.
 +				 * Complain if it is not there and do no more processing.
-+				 */
+ 				 */
+-				rt0 = RNTORT(rn);
+-				RT_LOCK(rt0);
+-				RT_ADDREF(rt0);
+-				RT_UNLOCK(rt0);
+-				/*
+-				 * A host route is already present, so 
+-				 * leave the flow-table entries as is.
+-				 */
+-				if (rt0->rt_flags & RTF_HOST) {
+-					RTFREE(rt0);
+-					rt0 = NULL;
+-				} else if (!(flags & RTF_HOST) && netmask) {
+-					mask = rt_mask(rt0);
+-					len = mask->sa_len;
+-					m = (u_char *)mask;
+-					n = (u_char *)netmask;
+-					while (len-- > 0) {
+-						if (*n != *m)
+-							break;
+-						n++;
+-						m++;
+-					}
+-					if (len == 0 || (*n < *m)) {
+-						RTFREE(rt0);
+-						rt0 = NULL;
+-					}
 +				rn = rnh->rnh_deladdr(dst, netmask, rnh);
 +				if (rn == NULL)
 +						senderr(ESRCH);
@@ -1918,57 +1960,17 @@
 +						RT_LOCK_DESTROY(rt);
 +						uma_zfree(V_rtzone, rt);
 +						senderr(EEXIST);
-+				}
+ 				}
+-			}
+-		}
  #endif
--
- #ifdef FLOWTABLE
--		rt0 = NULL;
--		/* XXX
--		 * "flow-table" only support IPv4 at the moment.
--		 */
++#ifdef FLOWTABLE
 +				dprint(("rtreq_ADD: ifdef FLOWTABLE Start\n"));
 +				rt0 = NULL;
 +			/* XXX
 +			 * "flow-table" only support IPv4 at the moment.
 +			 */
- #ifdef INET
--		if (dst->sa_family == AF_INET) {
--			rn = rnh->rnh_matchaddr(dst, rnh);
--			if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
--				struct sockaddr *mask;
--				u_char *m, *n;
--				int len;
--				
--				/*
--				 * compare mask to see if the new route is
--				 * more specific than the existing one
--				 */
--				rt0 = RNTORT(rn);
--				RT_LOCK(rt0);
--				RT_ADDREF(rt0);
--				RT_UNLOCK(rt0);
--				/*
--				 * A host route is already present, so 
--				 * leave the flow-table entries as is.
--				 */
--				if (rt0->rt_flags & RTF_HOST) {
--					RTFREE(rt0);
--					rt0 = NULL;
--				} else if (!(flags & RTF_HOST) && netmask) {
--					mask = rt_mask(rt0);
--					len = mask->sa_len;
--					m = (u_char *)mask;
--					n = (u_char *)netmask;
--					while (len-- > 0) {
--						if (*n != *m)
--							break;
--						n++;
--						m++;
--					}
--					if (len == 0 || (*n < *m)) {
--						RTFREE(rt0);
--						rt0 = NULL;
--					}
++#ifdef INET
 +				if (dst->sa_family == AF_INET) {
 +						dprint(("FLOWTABLE: ?AF_INET\n"));
 +						rn = rnh->rnh_matchaddr(dst, rnh);
@@ -2012,12 +2014,10 @@
 +										}
 +								}
 +						}
- 				}
--			}
--		}
- #endif
++				}
  #endif
 -
++#endif
 +				dprint(("rtreq_ADD: ifdef FLOWTABLE End\n"));
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
@@ -2110,6 +2110,7 @@
 +					dprint(("rtreq_ADD: RT_ADDREF > rt->rt_mtx = %p\n",
 +											&(rt)->rt_mtx));
 +				}
++				
 +				error = mtx_initialized(&(rt)->rt_mtx);
 +				if( !error ){
 +					RT_UNLOCK(rt);
@@ -2119,6 +2120,7 @@
 +				else{
 +					dprint(("mtx_lock_init error = %d\n",error));
 +					error = 0; /* Temporary process */
++					RT_LOCK_DESTROY(rt);
 +					senderr(error);
 +				}
 +				break;
@@ -2136,7 +2138,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1350,78 @@
+@@ -1267,71 +1352,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2269,7 +2271,7 @@
  }
  
  /*
-@@ -1339,228 +1429,235 @@
+@@ -1339,228 +1431,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
