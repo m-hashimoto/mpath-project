@@ -39,8 +39,8 @@ sprint_inet_ntoa(int af, void *sa)
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	if(!pn->key){
 		dprint(("-debug_node_print: pn[%p] key[%p] keylen[%d]\n",pn,pn->key,pn->keylen));
+	if(!pn->key){
 		dprint(("-debug_node_print: pn->parent[%p] pn->left[%p] pn->rigth[%p]\n",
 														pn->parent,pn->child[0],pn->child[1]));
 		return 1;
