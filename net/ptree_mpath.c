@@ -51,7 +51,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 #ifdef PTREE_MPATH
 	if(pn->data){
-		int i = 0;
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 	
