@@ -634,13 +634,14 @@ on2:
 		if( netmask == 0 )
 				return tt;
 		b_leaf = tt->rn_bit;
-		dprint(("-ptree_addroute: on2 b_leaf = %d\n",b_leaf));
-		do {
-				dprint(("-ptree_addroute: on2 t = %p\n",t));
-				x = t;
-				t = t->rn_parent;
-				dprint(("-ptree_addroute: on2 x = %p\n",x));
-		} while ( t && b <= t->rn_bit );
+		x = saved_tt;
+		//dprint(("-ptree_addroute: on2 b_leaf = %d\n",b_leaf));
+		//do {
+		//		dprint(("-ptree_addroute: on2 t = %p\n",t));
+		//		x = t;
+		//		t = t->rn_parent;
+		//		dprint(("-ptree_addroute: on2 x = %p\n",x));
+		//} while ( t && b <= t->rn_bit );
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 				dprint(("-ptree_addroute: on2 test 1\n"));
 				if (m->rm_bit < b_leaf)
