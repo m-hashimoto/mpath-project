@@ -279,7 +279,6 @@ ptree_matchaddr(v_arg, head)
 			printf("/%d\n",vlen);
 		}
 #endif
-	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen/8)=[%d]\n",memcmp(cp,cplim,vlen/8)));
 	if ( memcmp(cp,cplim,vlen/8) != 0 )
 		return 0;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
@@ -361,15 +360,6 @@ ptree_deladdr(v_arg, gate_arg, head)
 		//register caddr_t cp, cplim;
 		register char *cp, *cplim;
 		cp = tt->key; cplim = v; len = tt->keylen;
-#if 0
-		if(netmask && (LEN(netmask) > head->pnh_offset)){
-			unsigned char bitmask = 0xff;
-			len = head->pnh_offset;
-			while(netmask[len] == bitmask)
-				len++;
-			len = 8*len;
-		}
-#endif
 #ifdef DEBUG
 		if(head->pnh_offset == 4){
 			printf("-ptree_deladdr: match ");
@@ -381,8 +371,6 @@ ptree_deladdr(v_arg, gate_arg, head)
 			printf("/%d\n",len);
 		}
 #endif
-		dprint(("-ptree_deladdr: memcmp(%p,%p,%d)[%d]\n",
-								cp,v,len/8,memcmp(cp,v,len/8)));
 		if ( memcmp(cp, v, len/8) != 0 ){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
