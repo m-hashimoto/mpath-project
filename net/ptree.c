@@ -294,6 +294,8 @@ ptree_get (key, keylen, t, nodes)
 	{
 		if (x->keylen == keylen){
 			dprint(("+-ptree_get: x->keylen == keylen =%d\n",x->keylen));
+			dprint(( "key_common_len = %d\n",
+					key_common_len(x->key,x->keylen,key,keylen) ));
 			//return x;
 		}
 		u = x;
