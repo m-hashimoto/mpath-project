@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-08 17:49:51.000000000 +0900
++++ route.c	2005-02-08 18:05:06.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,553 @@
+@@ -768,495 +780,554 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2029,10 +2029,8 @@
 -			uma_zfree(V_rtzone, rt);
 +				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",rt,rt->rt_nodes));
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				rt->rt_nodes = rn;
 +				dprint(("rtreq_ADD: rn = %p rt_nodes = %p\n",rn,rt->rt_nodes));
-+				//rt->rt_nodes = rn;
-+				//rt_key(rt) = (struct sockaddr *)new;
-+				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
 +				rt->rt_gateway = saved_gateway;
@@ -2043,7 +2041,7 @@
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
 +#endif
-+				dprint(("rtreq_ADD: set member into the rt.\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD: set member into the rt.\n flags = 0x%x fibnum = %d\n",rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2101,16 +2099,19 @@
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
 +				 */
++				dprint(("rtreq_ADD: test print 1\n"));
 +				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
 +				/*
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
++				dprint(("rtreq_ADD: test print 2\n"));
 +				if (ret_nrt) {
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
 +				}
++				dprint(("rtreq_ADD: test print 3\n"));
 +				
 +				if( mtx_initialized(&(rt)->rt_mtx) ){
 +					RT_UNLOCK(rt);
@@ -2139,7 +2140,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1337,70 @@
+@@ -1267,71 +1338,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2264,7 +2265,7 @@
  }
  
  /*
-@@ -1339,228 +1408,232 @@
+@@ -1339,228 +1409,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
