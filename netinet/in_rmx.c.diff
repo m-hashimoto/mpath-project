@@ -1,5 +1,5 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-26 08:34:42.000000000 +0900
++++ in_rmx.c	2005-02-26 09:15:53.000000000 +0900
 @@ -67,16 +67,19 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -44,7 +44,7 @@
  }
  
  /*
-@@ -115,10 +119,10 @@
+@@ -115,11 +119,16 @@
   * were managing the route, stop doing so and set the expiration timer
   * back off again.
   */
@@ -54,11 +54,18 @@
 +in_matroute(void *v_arg, struct ptree_node_head *head)
  {
 -	struct radix_node *rn = rn_match(v_arg, head);
+-	struct rtentry *rt = (struct rtentry *)rn;
 +	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
- 	struct rtentry *rt = (struct rtentry *)rn;
++	struct rtentry *rt;
++	
++	if (rn)
++		rt = rn->data;
++	else
++		return 0;
  
  	/*XXX locking? */
-@@ -156,7 +160,7 @@
+ 	if (rt && rt->rt_refcnt == 0) {		/* this is first reference */
+@@ -156,7 +165,7 @@
   * timed out.
   */
  static void
@@ -67,7 +74,7 @@
  {
  	struct rtentry *rt = (struct rtentry *)rn;
  
-@@ -184,7 +188,7 @@
+@@ -184,7 +193,7 @@
  }
  
  struct rtqk_arg {
@@ -76,7 +83,7 @@
  	int draining;
  	int killed;
  	int found;
-@@ -198,7 +202,7 @@
+@@ -198,7 +207,7 @@
   * nothing has a timeout longer than the current value of rtq_reallyold.
   */
  static int
@@ -85,7 +92,7 @@
  {
  	struct rtqk_arg *ap = rock;
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -269,7 +273,7 @@
+@@ -269,7 +278,7 @@
  static void
  in_rtqtimo_one(void *rock)
  {
@@ -94,7 +101,7 @@
  	struct rtqk_arg arg;
  	static time_t last_adjusted_timeout = 0;
  
-@@ -315,7 +319,7 @@
+@@ -315,7 +324,7 @@
  in_rtqdrain(void)
  {
  	VNET_ITERATOR_DECL(vnet_iter);
@@ -103,7 +110,7 @@
  	struct rtqk_arg arg;
  	int 	fibnum;
  
-@@ -346,7 +350,7 @@
+@@ -346,7 +355,7 @@
  int
  in_inithead(void **head, int off)
  {
@@ -112,7 +119,7 @@
  
  	/* XXX MRT
  	 * This can be called from vfs_export.c too in which case 'off'
-@@ -356,7 +360,7 @@
+@@ -356,7 +365,7 @@
  	 * on a bad design. After RELENG_7 this should be fixed but that
  	 * will change the ABI, so for now do it this way.
  	 */
@@ -121,7 +128,7 @@
  		return 0;
  
  	if (off == 0)		/* XXX MRT  see above */
-@@ -404,7 +408,7 @@
+@@ -404,7 +413,7 @@
  };
  
  static int
@@ -130,7 +137,7 @@
  {
  	struct in_ifadown_arg *ap = xap;
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -430,7 +434,7 @@
+@@ -430,7 +439,7 @@
  in_ifadown(struct ifaddr *ifa, int delete)
  {
  	struct in_ifadown_arg arg;
@@ -139,7 +146,7 @@
  	int	fibnum;
  
  	if (ifa->ifa_addr->sa_family != AF_INET)
-@@ -501,4 +505,5 @@
+@@ -501,4 +510,5 @@
  int	 in_rtrequest1(int, struct rt_addrinfo *, struct rtentry **, u_int);
  #endif
  
