@@ -14,7 +14,6 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
-#ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
 
@@ -25,7 +24,6 @@
  void
 sprint_inet_ntoa(int af, void *sa)
 {
-	
 	if(af == AF_INET){
 		char str[INET_ADDRSTRLEN];
 		__rpc_inet_ntop(af, &((struct sockaddr_in *)sa)->sin_addr, str, INET_ADDRSTRLEN);
@@ -40,20 +38,11 @@ sprint_inet_ntoa(int af, void *sa)
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-#if 0
-		struct sockaddr_in *sa;
-		struct sockaddr_in6 *sa6;
-		char str[INET_ADDRSTRLEN], str6[INET6_ADDRSTRLEN];
-#endif
 	if(offset == 8){ /* IPv6 */
-//		sa6 = (struct sockaddr_in6 *)pn->key;
-//		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str6, INET6_ADDRSTRLEN);
 		printf("[%p] ",pn);
 		sprint_inet_ntoa(AF_INET6,pn->key);
 		printf("/%3d ",pn->keylen-8*offset);
 	} else { /* IPv4 */
-//		sa = (struct sockaddr_in *)pn->key;
-//		__rpc_inet_ntop(AF_INET, &sa->sin_addr, str, INET_ADDRSTRLEN);
 		printf("[%p] ",pn);
 		sprint_inet_ntoa(AF_INET,pn->key);
 		printf("/%3d ",pn->keylen-8*offset);
@@ -85,7 +74,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 		printf("----------------------------------------------------------\n\n");
 		return (0);
 }
-#endif
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
@@ -107,6 +95,13 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len = 8*LEN(v);
 	
+#ifdef DEBUG
+	if(head->pnh_offset == 8)
+		printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET, v); printf("\n");
+	else
+		printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET6, v); printf("\n");
+#endif
+#if 0
 	dprint(("-ptree_insert Start: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] headoff[%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
@@ -115,7 +110,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(unsigned char)v[8],(unsigned char)v[9],
 							(unsigned char)v[10],(unsigned char)v[11],
 							len,8*head->pnh_offset));
-	
+#endif
 	if(m && (LEN(m) > head->pnh_offset)){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
@@ -123,6 +118,13 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
+#ifdef DEBUG
+		if(head->pnh_offset == 8)
+			printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET, v); printf("\n");
+		else
+			printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET6, v); printf("\n");
+#endif
+#if 0
 		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] headoff[%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
@@ -131,6 +133,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(unsigned char)m[8],(unsigned char)m[9],
 							(unsigned char)m[10],(unsigned char)m[11],
 							len,8*head->pnh_offset));
+#endif
 	}
 	if (!top){
 		dprint(("-ptree_insert: top is NULL\n"));
@@ -139,7 +142,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
 		goto on1;
-	cp = v;// len = t->keylen;
+	cp = v;
 	{
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v;
@@ -153,12 +156,6 @@ on1:
 	{
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
-#if 0
-		if(m && (LEN(m) > head->pnh_offset))
-			tt->mask = m_arg;
-		else
-			tt->mask = NULL;
-#endif
 	}
 	dprint(("-ptree_insert End: insert tt[%p] key[%p] keylen[%d]\n",
 													tt,tt->key,tt->keylen));
@@ -214,6 +211,13 @@ ptree_matchaddr(v_arg, head)
 	int vlen;
 	
 	vlen = (int)8*LEN(v);
+#ifdef DEBUG
+		if(head->pnh_offset == 8)
+			printf("-ptree_matchaddr: addr");sprint_inet_ntoa(AF_INET, v);printf("\n");
+		else
+			printf("-ptree_matchaddr: addr");sprint_inet_ntoa(AF_INET6, v);printf("\n");
+#endif
+#if 0
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
@@ -222,6 +226,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)v[8],(unsigned char)v[9],
 							(unsigned char)v[10],(unsigned char)v[11],
 							vlen-8*head->pnh_offset));
+#endif
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: not match\n"));
@@ -229,6 +234,13 @@ ptree_matchaddr(v_arg, head)
 	}
 
 	cp = t->key; cplim = v; vlen = t->keylen;
+#ifdef DEBUG
+		if(head->pnh_offset == 8)
+			printf("-ptree_insert: save_t");sprint_inet_ntoa(AF_INET, cp);printf("\n");
+		else
+			printf("-ptree_insert: save_t");sprint_inet_ntoa(AF_INET6, cp);printf("\n");
+#endif
+#if 0
 	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)cp[0],(unsigned char)cp[1],
 							(unsigned char)cp[2],(unsigned char)cp[3],
@@ -237,6 +249,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)cp[8],(unsigned char)cp[9],
 							(unsigned char)cp[10],(unsigned char)cp[11],
 							vlen-8*head->pnh_offset));
+#endif
 	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen)=[%d]\n",memcmp(cp,cplim,vlen)));
 	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen/8)=[%d]\n",memcmp(cp,cplim,vlen/8)));
 	if ( !memcmp(cp,cplim,vlen) )

@@ -44,6 +44,7 @@ ptree_node_create (char *key, int keylen)
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+#if 0
   dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							x,(unsigned char)x->key[0],(unsigned char)x->key[1],
 							(unsigned char)x->key[2],(unsigned char)x->key[3],
@@ -52,6 +53,7 @@ ptree_node_create (char *key, int keylen)
 							(unsigned char)x->key[8],(unsigned char)x->key[9],
 							(unsigned char)x->key[10],(unsigned char)x->key[11],
 							x->keylen));
+#endif
   return x;
 }
 
@@ -70,12 +72,12 @@ check_bit (char *key, int keylen)
   int offset;
   int shift;
   dprint(("--check_bit Start\n"));
-  //dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
+  dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
-  //dprint(("--check_bit: key[%d] >> shift[%d] & 1 = %d\n",offset,shift,
-	//					  key[offset]>>shift & 1));
+  dprint(("--check_bit: key[%d] >> shift[%d] & 1 = %d\n",offset,shift,
+						  key[offset]>>shift & 1));
   return (key[offset] >> shift & 1);
 }
 

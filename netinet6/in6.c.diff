@@ -1,15 +1,14 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 12:13:57.000000000 +0900
-@@ -688,7 +688,7 @@
++++ in6.c	2005-03-07 12:25:11.000000000 +0900
+@@ -688,7 +688,6 @@
  	struct rtentry *rt;
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
 -
-+	dprint(("in6_update_ifa Start\n"));
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -896,6 +896,7 @@
+@@ -896,6 +895,7 @@
  	/* reset the interface and routing table appropriately. */
  	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
  		goto unlink;
@@ -17,38 +16,7 @@
  
  	/*
  	 * configure address flags.
-@@ -1138,6 +1139,7 @@
- 
- 	KASSERT(hostIsNew, ("in6_update_ifa: !hostIsNew"));
- 	ifa_free(&ia->ia_ifa);
-+	dprint(("in6_update_ifa End\n"));
- 	return (error);
- 
-   unlink:
-@@ -1149,12 +1151,14 @@
- 		in6_unlink_ifa(ia, ifp);
- 		ifa_free(&ia->ia_ifa);
- 	}
-+	dprint(("in6_update_ifa End case unlink\n"));
- 	return (error);
- 
-   cleanup:
- 	KASSERT(hostIsNew, ("in6_update_ifa: cleanup: !hostIsNew"));
- 	ifa_free(&ia->ia_ifa);
- 	in6_purgeaddr(&ia->ia_ifa);
-+	dprint(("in6_update_ifa End case cleanup\n"));
- 	return error;
- }
- 
-@@ -1698,6 +1702,7 @@
- 	int	error = 0, plen, ifacount = 0;
- 	int	s = splimp();
- 	struct ifaddr *ifa;
-+	dprint(("in6_ifinit Start\n"));
- 
- 	/*
- 	 * Give the interface a chance to initialize
-@@ -1766,6 +1771,7 @@
+@@ -1766,6 +1766,7 @@
  		struct rtentry rt;
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
@@ -56,28 +24,12 @@
  
  		IF_AFDATA_LOCK(ifp);
  		ia->ia_ifa.ifa_rtrequest = NULL;
-@@ -1793,15 +1799,24 @@
+@@ -1793,6 +1794,8 @@
  		}
  
  		bzero(&rt, sizeof(rt));
 +		bzero(&rn, sizeof(rn));
-+		dprint(("in6_ifinit: sizeof(rt)=[%d]\n",sizeof(rt)));
-+		dprint(("in6_ifinit: sizeof(rn)=[%d]\n",sizeof(rn)));
 +		rt.rt_nodes = &rn;
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
-+		printf("in6_ifinit: addr "); sprint_inet_ntoa(AF_INET6,&addr); printf("\n");
-+		printf("in6_ifinit: mask "); sprint_inet_ntoa(AF_INET6,&mask); printf("\n");
- 		rt_mask(&rt) = (struct sockaddr *)&mask;
- 		rt_key(&rt) = (struct sockaddr *)&addr;
-+		dprint(("in6_ifinit: testprint 6\n"));
- 		rt.rt_flags = RTF_UP | RTF_HOST | RTF_STATIC;
-+		dprint(("in6_ifinit: testprint 7\n"));
- 		rt_newaddrmsg(RTM_ADD, &ia->ia_ifa, 0, &rt);
- 	}
- 
-+	dprint(("in6_ifinit End\n"));
- 	return (error);
- }
- 
