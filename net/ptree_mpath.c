@@ -15,7 +15,8 @@
 #include <net/if_var.h>
 
 static char *pn_zeros, *pn_ones;
-static int      max_keylen;
+static int  max_keylen;
+static int	head_off = 4; /* head_off struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
@@ -30,14 +31,14 @@ debug_node_print(struct ptree_node *pn)
 	printf("node[%p] ",pn);
 	if( pn->key ){
 		printf("key[%d.%d.%d.%d.%d.%d.%d.%d/%d] ",
-						(unsigned char)pn->key[0],
-						(unsigned char)pn->key[1],
-						(unsigned char)pn->key[2],
-						(unsigned char)pn->key[3],
 						(unsigned char)pn->key[4],
 						(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],
 						(unsigned char)pn->key[7],
+						(unsigned char)pn->key[8],
+						(unsigned char)pn->key[9],
+						(unsigned char)pn->key[10],
+						(unsigned char)pn->key[12],
 						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
@@ -88,7 +89,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	int *dupentry;
 {
 	dprint(("-ptree_insert Start\n"));
-	caddr_t v = v_arg, m = m_arg;
+	caddr_t v = v_arg + head_off, m = m_arg + head_off;
 	register caddr_t cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
