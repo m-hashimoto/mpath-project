@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 23:35:10.000000000 +0900
++++ route.c	2005-02-12 03:21:20.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -50,7 +50,7 @@
  
  #if 0
  /* default fib for tunnels to use */
-@@ -122,196 +119,201 @@
+@@ -122,196 +119,198 @@
  SYSCTL_INT(_net, OID_AUTO, tunnelfib, CTLFLAG_RD, &tunnel_fib, 0, "");
  #endif
  
@@ -87,8 +87,6 @@
  rt_tables_get_rnh_ptr(int table, int fam)
  {
 -	struct radix_node_head **rnh;
-+		dprint(("rt_tables_get_rnh_ptr Start: table = %d family = %d\n",
-+								table,fam));
 +		struct ptree_node_head **rnh;
  
 -	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.",
@@ -109,7 +107,6 @@
 +		rnh += table * (AF_MAX+1) + fam;
  
 -	return (rnh);
-+		dprint(("rt_tables_get_rnh_ptr End: rnh = %p\n",rnh));
 +		return (rnh);
  }
  
@@ -370,7 +367,7 @@
  }
  
  /*
-@@ -320,156 +322,170 @@
+@@ -320,156 +319,170 @@
   *
   * The returned route, if any, is locked.
   */
@@ -420,7 +417,7 @@
 +		int err = 0, msgtype = RTM_MISS;
 +		int needlock;
 +
-+		char *c_dst = (char *)dst;
++		unsigned char *c_dst = (unsigned char *)dst;
 +		dprint(("rtalloc1_fib: dst[%d.%d.%d.%d]\n",
 +								c_dst[4],c_dst[5],c_dst[6],c_dst[7]));
 +
@@ -666,7 +663,7 @@
  }
  
  
-@@ -479,282 +495,283 @@
+@@ -479,282 +492,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1176,7 +1173,7 @@
  }
  
  /*
-@@ -768,495 +785,542 @@
+@@ -768,495 +782,542 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2141,7 +2138,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1331,70 @@
+@@ -1267,71 +1328,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2266,7 +2263,7 @@
  }
  
  /*
-@@ -1339,228 +1402,232 @@
+@@ -1339,228 +1399,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
