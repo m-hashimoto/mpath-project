@@ -1069,7 +1069,7 @@ ptree_inithead(void **head, int off)
 		}
 		R_Zalloc(pnh, struct ptree_node_head *, sizeof (*pnh));
 		R_Zalloc(top, struct ptree *, sizeof (*top));
-		if ( !pnh || !pnh_top ){
+		if ( !pnh || !top ){
 				dprint(("-ptree_inithead: R_Zalloc fault\n"));
 				return (0);
 		}
