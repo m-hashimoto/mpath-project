@@ -388,10 +388,12 @@ ptree_deladdr(v_arg, gate_arg, head)
 			printf("/%d\n",len);
 		}
 #endif
-		rt = rt_mpath_matchgate(headrt,gate);
-		if( ! rt_mpath_delete(headrt,rt) )
-			return (0);
-		return (tt);
+		if(headrt->mpath_array){
+			rt = rt_mpath_matchgate(headrt,gate);
+			if( ! rt_mpath_delete(headrt,rt) )
+				return (0);
+			return (tt);
+		}
 #endif
 		ptree_remove(tt);
 		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
