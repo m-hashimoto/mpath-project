@@ -631,7 +631,8 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
-		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
+		dprint(("-ptree_addroute: x = %p\n",x));
+		for (mp = &t->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 			dprint(("-ptree_addroute: on2 test 1\n"));
 			if (m->rm_bit < b_leaf)
 				continue;
