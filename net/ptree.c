@@ -409,7 +409,7 @@ ptree_next (struct ptree_node *v)
 		return w;
 	}
 
-	if (v->child[1])
+	if (v->child[1] && (v->child[1]->rn_flags & RNF_ACTIVE))
 	{
 		w = v->child[1];
 		ptree_node_lock (w);
