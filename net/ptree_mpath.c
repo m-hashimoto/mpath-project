@@ -424,14 +424,20 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		if (netmask_arg)
+		if (netmask_arg){
+				dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
 				len = (unsigned int)8*(LEN(netmask) - head_off);
-		else
+		} else{
+				dprint(("LEN(v) = %d\n",LEN(v)));
 				len = (unsigned int)8*(LEN(v) - head_off - head_zero);
+		}
 		v = v + head_off; netmask = netmask + head_off;
 
 		dprint(("-ptree_deladdr: %d.%d.%d.%d.%d.%d.%d.%d/%d treetop[%p]\n",
-								v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],
+								(unsigned char)v[0],(unsigned char)v[1],
+								(unsigned char)v[2],(unsigned char)v[3],
+								(unsigned char)v[4],(unsigned char)v[5],
+								(unsigned char)v[6],(unsigned char)v[7],
 								len,head->pnh_treetop));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
