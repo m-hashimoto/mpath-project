@@ -932,16 +932,21 @@ ptree_walktree(h, f, w)
 			printf("INET ptree\n");
 			register struct ptree *rnh;
 			register struct rtentry *rt;
-			register struct sockaddr_in *rt_gate;;
-			register unsigned char *gate;
+			register struct sockaddr_in *rt_gate, *rn_dst;
+			register struct in_addr gate, dst;
+			register char *ip;
+			
 
 			rnh = rt_tables_get_rnh(0, AF_INET);
 			rn = rnh->rnh_treetop;
 			for (;;) {
 				rt = (struct rtentry *)rn;
 				rt_gate = (struct sockaddr_in *)rt->rt_gateway;
-				gate = (unsigned char *)rt_gate->sin_addr;
-				printf("address: %x.%x.%x.%x\n",*gate,*gate+1,*gate+2,*gate+3);
+				rn_dst = (struct sockaddr_in *)rt_key(rt);
+				gate = rt_gate->sin_addr;
+				dst = rn_dst->sin_addr;
+				ip = (char *)gate;
+				printf("address: %x.%x.%x.%x\n",*ip,*ip+1,*ip+2,*ip+3);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
