@@ -587,7 +587,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				return EEXIST;
 		} while ((rt1++) != NULL);
 
-different:
+//different:
 		dprint(("-rt_mpath_conflict: different\n"));
 		return 0;
 }
