@@ -528,8 +528,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	/*
 	 * Put mask in tree.
 	 */
-	dprint(("ptree_addroute: put netmask = %x:%x:%x:%x\n",
-				*netmask,*netmask+1,*netmask+2,*netmask+3));
+	dprint(("ptree_addroute: put netmask = %s\n",netmask));
 	if (netmask) {
 		dprint(("ptree_addroute: put netmask in %p\n",tt));
 		tt->rn_mask = netmask;
