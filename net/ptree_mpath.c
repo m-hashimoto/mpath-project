@@ -1069,21 +1069,22 @@ ptree_init()
 	int
 ptree_mpath_capable(struct ptree *rnh)
 {
-
 	return rnh->rnh_multipath;
 }
 
 	uint32_t
 ptree_mpath_count(struct ptree_node *rn)
 {
+	dprint(("ptree_mpath_count Start\n"));
+	struct ptree_node *rn1;
 	uint32_t i = 0;
-	struct rtentry *rt;
-	rt = (struct rtentry *)rn;
-	/* count mlist */
-	while (rt != NULL) {
-		if(rt->mlist[i]!=NULL)
-			i += rt->rt_rmx.rmx_weight;
+	rn1 = rn->mpath_array;
+	/* count mpath_array */
+	while (rn1 != NULL) {
+		rn1 = rn->mpath_array++;
+		i++;
 	}
+	dprint(("ptree_mpath_count End: count = %d\n",i));
 	return (i);
 }
 
@@ -1091,36 +1092,38 @@ ptree_mpath_count(struct ptree_node *rn)
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
 	uint32_t	i = 0;
-	struct ptree_node *rn;
-	struct rtentry	*match;
+	struct ptree_node *rn, *match;
 
-	if (!rt->mlist)
+	rn = (struct ptree_node *)rt;
+	if (!rn->mpath_array)
 		return rt;
+	else
+		match = rn->mpath_array;
 
 	if (!gate)
 		return NULL;
 
 	/* beyond here, we use rn as the master copy */
-	rn = (struct ptree_node *)rt;
 	do {
-		match = rt->mlist[i];
+		rt = (struct rtentry *)match;
 		/*
 		 * we are removing an address alias that has 
 		 * the same prefix as another address
 		 * we need to compare the interface address because
 		 * rt_gateway is a special sockadd_dl structure
 		 */
-		if (match->rt_gateway->sa_family == AF_LINK) {
-			if (!memcmp(match->rt_ifa->ifa_addr, gate, gate->sa_len))
+		if (rt->rt_gateway->sa_family == AF_LINK) {
+			if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len))
 				break;
 		} else {
-			if (match->rt_gateway->sa_len == gate->sa_len &&
+			if (rt->rt_gateway->sa_len == gate->sa_len &&
 					!memcmp(match->rt_gateway, gate, gate->sa_len))
 				break;
 		}
-	} while (rt->mlist[i] != NULL);
+		i++;
+	} while ( (match = rn->mpath_array++) != NULL);
 
-	return (struct rtentry *)match;
+	return (struct rtentry *)rn;
 }
 
 /* 
@@ -1132,22 +1135,25 @@ static uint32_t hashjitter;
 	int
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
+	dprint(("rt_mpath_delete Start\n"));
 	uint32_t i = 0, n;
-	struct rtentry *t;
-
+	struct ptree_node *t, *t1;
+	
+	t = (struct ptree_node *)headrt;
 	if (!headrt || !rt)
 		return (0);
 
-	n = ptree_mpath_count((struct ptree_node *)headrt);
-	t = headrt->mlist[i];
-	while (t) {
-		if (t == rt) {
-			t->mlist[i] = t->mlist[n-1];
-			t->mlist[n-1] = NULL;
+	n = ptree_mpath_count(t);
+	t1 = t->mpath_array;
+	while (t1) {
+		if ((struct rtentry *)t == rt) {
+			t->mpath_array[i] = t->mpath_array[n-1];
+			t->mpath_array[n-1] = NULL;
 			return (1);
 		}
-		i++;
+		t1 = t->mpath_array++;
 	}
+	dprint(("rt_mpath_delete End\n"));
 	return (0);
 }
 
@@ -1158,7 +1164,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 		struct sockaddr *netmask)
 {
-	struct ptree_node *rn;
+	struct ptree_node *rn, rn1;
 	struct rtentry *rt1;
 	char *p, *q, *eq;
 	int same, l, skip;
@@ -1228,10 +1234,10 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	}
 
 maskmatched:
-	i = 0;
-	rt1 = rt->mlist[i];
+	rn1 = rn->mpath_array;
 	/* key/mask were the same.  compare gateway for all multipaths */
 	do {
+		rt1 = (struct rtentry *)rn1;
 		if (rt1->rt_gateway->sa_family == AF_LINK) {
 			if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 					bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
@@ -1246,7 +1252,7 @@ maskmatched:
 
 		/* all key/mask/gateway are the same.  conflicting entry. */
 		return EEXIST;
-	} while ((rt1 = rt->mlist[++i]) != NULL);
+	} while ((rn1 = rn->mpath_array++) != NULL);
 
 different:
 	return 0;
