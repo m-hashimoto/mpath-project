@@ -5,14 +5,17 @@ README		:This file.
 install.sh	:Sell(csh/tcsh) script for install.
 uninstall.sh	:Sell script for uninstall(unpacth).
 
-# UPDATA
+# UPDATE
 ...branch ptree
 2010/10/05 ptree routeing table debug start.
 2010/10/11 Add rtentry array.
-debug ...
+debugging...
 
-...new_branch ptree_v2
+...ptree_v2
 2010/10/22 ptree debug restart.
-2010/10/26 rtinit debug completed?
-...new_branch ptree_v2.1
+2010/10/26 rtinit debugged?
+...ptree_v2.1
 2010/10/27 rtalloc debug start.
+2010/10/29 rtalloc and rtrequest debugged?
+...ptree_v2.2
+
