@@ -151,7 +151,7 @@ on1:
 	{
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
-		tt->mask = m;
+		//tt->mask = m;
 	}
 	dprint(("-ptree_insert End: insert tt = %p\n",tt));
 	return (tt);
@@ -224,11 +224,12 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
+#if 0
 	if (t->mask){
 		if ((LEN(t->mask)-head_off) > 0 )
 			vlen = (int)8*LEN(t->mask);
 	} 
-
+#endif
 	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
 	cp = t->key; cplim = v;
 	if ( !memcmp(cp,cplim,vlen) )
