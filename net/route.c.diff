@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-24 11:47:17.000000000 +0900
++++ route.c	2005-02-24 12:01:06.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +790,536 @@
+@@ -768,495 +790,537 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1854,6 +1854,7 @@
 +				RT_LOCK(rt);
 +				RT_ADDREF(rt);
 +				rt->rt_flags &= ~RTF_UP;
++				debug_tree_print(rnh);	/* after del */
 +				/*
 +				 * give the protocol a chance to keep things in sync.
 +				 */
@@ -2051,7 +2052,7 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				debug_tree_print(rnh);	/* befor add */
++				//debug_tree_print(rnh);	/* befor add */
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
@@ -2140,7 +2141,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1330,69 @@
+@@ -1267,71 +1331,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2264,7 +2265,7 @@
  }
  
  /*
-@@ -1339,228 +1400,232 @@
+@@ -1339,228 +1401,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
