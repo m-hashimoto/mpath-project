@@ -194,6 +194,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
+  dprint(("--ptree_node_lock: x[%p] x->lock[%p]\n",x,&x->lock));
   x->lock++;
 }
 
