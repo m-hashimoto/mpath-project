@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-05 01:09:21.000000000 +0900
++++ route.h	2005-02-05 01:31:51.000000000 +0900
 @@ -110,9 +110,11 @@
  extern u_int rt_numfibs;	/* number fo usable routing tables */
  extern u_int tunnel_fib;	/* tunnels use these */
@@ -21,7 +21,7 @@
 -#include <net/radix_mpath.h>
 -#endif
 -#endif
-+#include <net/ptree.h>
++//#include <net/ptree.h>
 +#include <net/ptree_mpath.h>
 +#endif /* RNF_NORMAL */
 +
