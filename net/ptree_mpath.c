@@ -928,17 +928,18 @@ ptree_walktree(h, f, w)
 		/* NOTREACHED */
 #ifdef DEBUG
 		/* INET tree check */
-		printf("INET ptree\n");
-		struct ptree *rnh;
-		struct rtentry *rt;
-		struct sockaddr_in *gateway;
+		{
+			printf("INET ptree\n");
+			register struct ptree *rnh;
+			register struct rtentry *rt;
+			register struct sockaddr_in *gateway;
 
-		rnh = rt_tables_get_rnh(0, INET);
-		rn = rnh->rnh_treetop;
-		for (;;) {
+			rnh = rt_tables_get_rnh(0, INET);
+			rn = rnh->rnh_treetop;
+			for (;;) {
 				rt = (struct rtentry *)rn;
 				gateway = (struct sockaddr_in *)rt->rt_gateway;
-				pritnf("address: %s\n",gateway->sin_addr.s_addr);
+				pritnf("address: %s\n",gateway->sin_addr->s_addr);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
@@ -946,8 +947,8 @@ ptree_walktree(h, f, w)
 						return (0);
 				}
 				rn = next;
+			}
 		}
-
 #endif
 		dprint(("-ptree_walktree End\n"));
 }
