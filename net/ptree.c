@@ -230,7 +230,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
   u = w = NULL;
   x = t->top;
   dprint(("--ptree_get Start\n"));
-  while (x && x->key && x->keylen <= keylen &&
+  while (x && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
     {
   	  dprint(("--ptree_get: x[%p]\n",x));
