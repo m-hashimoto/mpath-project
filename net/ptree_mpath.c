@@ -623,15 +623,15 @@ maskmatched:
 		rt1 = rt0->mpath_array;
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
-				if (rt1->rt_gateway->sa_family == AF_LINK) {
-						if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
-										bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
-												rt1->rt_ifa->ifa_addr->sa_len))
+				if ((*rt1)->rt_gateway->sa_family == AF_LINK) {
+						if ((*rt1)->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
+										bcmp((*rt1)->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
+												(*rt1)->rt_ifa->ifa_addr->sa_len))
 								continue;
 				} else {
-						if (rt1->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
-										bcmp(rt1->rt_gateway, rt->rt_gateway,
-												rt1->rt_gateway->sa_len))
+						if ((*rt1)->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
+										bcmp((*rt1)->rt_gateway, rt->rt_gateway,
+												(*rt1)->rt_gateway->sa_len))
 								continue;
 				}
 
