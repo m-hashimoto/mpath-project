@@ -1,5 +1,5 @@
 --- if.c.orig	2005-02-04 12:42:10.000000000 +0900
-+++ if.c	2005-02-04 13:27:58.000000000 +0900
++++ if.c	2005-02-04 14:02:51.000000000 +0900
 @@ -68,7 +68,8 @@
  #include <net/if_dl.h>
  #include <net/if_types.h>
@@ -28,6 +28,15 @@
  	int i, j;
  	struct domain *dp;
   	struct ifnet *iter;
+@@ -897,7 +898,7 @@
+ 			if (rnh == NULL)
+ 				continue;
+ 			RADIX_NODE_HEAD_LOCK(rnh);
+-			(void) rnh->rnh_walktree(rnh, if_rtdel, ifp);
++			(void) rnh->pnh_walktree(rnh, if_rtdel, ifp);
+ 			RADIX_NODE_HEAD_UNLOCK(rnh);
+ 		}
+ 	}
 @@ -1326,7 +1327,7 @@
   *
   */
