@@ -40,7 +40,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 						(unsigned char)pn->key[14],(unsigned char)pn->key[15],
 						pn->keylen - 8*offset);
 	}
-	printf("data[%p] ",pn->data);
+	printf("data[%p]\n",pn->data);
 #if 0
 	if( pn->data ){
 		struct rtentry *rt = pn->data;
