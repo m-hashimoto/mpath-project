@@ -23,7 +23,6 @@ static struct ptree *mask_rnhead;
 #ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #endif
 
 #define MKGet(m) {                                              \
