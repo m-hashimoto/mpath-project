@@ -934,19 +934,23 @@ ptree_walktree(h, f, w)
 	dprint(("ptree_walktree Start\n"));
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
+	if (!rn){
+		dprint(("ptree_walktree End (treetop = NULL)\n"));
+		return (0);
+	}
 
 	for (;;) {
 		base = rn;
 		next = ptree_next(base);
 		dprint(("ptree_walktree: base %p next %p\n",base,next));
 		if( !next ){
-			dprint(("ptree_walktree End 1\n"));
+			dprint(("ptree_walktree End (next == NULL)\n"));
 			return (0);
 		}
 		rn = next;
 	}
 	/* NOTREACHED */
-	dprint(("ptree_walktree End 2\n"));
+	dprint(("ptree_walktree End\n"));
 }
 
 	int
