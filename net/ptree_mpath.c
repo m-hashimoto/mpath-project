@@ -957,8 +957,7 @@ ptree_inithead(head, off)
 	dprint(("ptree_inithead Start\n"));
 	register struct ptree *rnh;
 	register struct ptree_node *t;
-	int *data = NULL;
-	*data = 1;
+	int *data;
 	
 	if (*head){
 		dprint(("ptree_inithead End 1\n"));
@@ -974,9 +973,10 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	t = ptree_add(rn_zeros,off,data,rnh);
-	t->keylen = (int)LEN(rn_zeros);
-	dprint(("ptree_inithead: head_node_len = %d\n",t->keylen));
+	//t->keylen = (int)LEN(rn_zeros);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
+	dprint(("ptree_inithead: head = %p len = %d flag = %d\n",
+				t,t->keylen,t->rn_flags));
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
 #endif
@@ -987,7 +987,6 @@ ptree_inithead(head, off)
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
-	dprint(("ptree_inithead: rnh->top->rn_falgs = %d\n",rnh->top->rn_flags));
 	dprint(("ptree_inithead End 3\n"));
 	return (1);
 }
