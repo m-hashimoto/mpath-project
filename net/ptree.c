@@ -286,7 +286,7 @@ struct ptree_node *
 ptree_add (char *key, int keylen, void *data, struct ptree *t)
 {
   struct ptree_node *x;
-
+  dprint(("--ptree_add: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
   x = ptree_get (key, keylen, t);
   if (! x)
     {
