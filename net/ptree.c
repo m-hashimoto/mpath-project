@@ -146,7 +146,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
   w->parent = v;
-  //dprint(("--ptree_link: v[%p]->child[%d] = w[%p]\n",v,bit,w));
+  dprint(("--ptree_link: v[%p]->child[%d] = w[%p]\n",v,bit,w));
 }
 
 /* key_common_len() returns the bit length with which the keyi and

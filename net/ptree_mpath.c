@@ -129,8 +129,10 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(unsigned char)m[10],(unsigned char)m[11],
 							len,8*head->pnh_offset));
 	}
-	if (!top)
+	if (!top){
+		dprint(("-ptree_insert: top is NULL\n"));
 		goto on1;
+	}
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
 		goto on1;
