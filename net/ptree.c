@@ -96,8 +96,9 @@ ptree_match (char *keyi, char *keyj, int keylen)
 	bits = (int)keylen % 8;
 	dprint(("  ptree_match: keylen = %d bytes = %d bits = %d\n",keylen,bytes,bits));
 
-	dprint(("  ptree_match: memcmp(keyi,keyj) = %d\n",memcmp(keyi,keyj,bytes)));
-	dprint(("  ptree_match: keyi = %x keyj = %x mask = %x\n",keyi[bytes],keyj[bytes],mask[bits]));
+	dprint(("  ptree_match: !memcmp(keyi,keyj) = %d",!memcmp(keyi,keyj,bytes)));
+	dprint((" keyi = %x keyj = %x mask = %x\n",keyi[bytes],keyj[bytes],mask[bits]));
+	dprint((" !(keyi^keyj) & mask = %d\n",!(keyi[bytes]^keyj[bytes])&mask[bits]));
 	if (! memcmp (keyi, keyj, bytes) &&
 		       (!(keyi[bytes] ^ keyj[bytes]) & mask[bits])){
 		dprint(("  ptree_match End (%d bit match)\n",keylen));
@@ -159,7 +160,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
 		dprint(("  ptree_search: t->top = NULL\n"));
 		return match;
 	}
-	dprint(("  ptree_search: check node keylen flag\n"));
+	dprint(("  ptree_search: check_key keylen flag\n"));
 	dprint(("  	        %x:%x:%x:%x   %d    %d\n",x->key[0],x->key[1],x->key[2],x->key[3],x->keylen,x->rn_flags));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
