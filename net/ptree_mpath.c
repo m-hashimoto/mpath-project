@@ -229,7 +229,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
-							vlen));
+							vlen,head));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));

@@ -302,7 +302,7 @@ ptree_remove (struct ptree_node *v)
   /* if a stub node */
   if (! v->child[0] && ! v->child[1] && v->parent)
     {
-	  if (v->parent->child[0] == v)
+      if (v->parent->child[0] == v)
         v->parent->child[0] = NULL;
       else
         v->parent->child[1] = NULL;
