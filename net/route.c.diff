@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 19:18:51.000000000 +0900
++++ route.c	2005-01-27 19:35:21.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2124,9 +2124,9 @@
 +				}
 +				else{
 +					dprint(("mtx_lock_init error\n"));
-+					RT_LOCK_DESTROY(rt);
++					//RT_LOCK_DESTROY(rt);
 +					dprint(("test4: rt_gateway = %p\n",rt->rt_gateway));
-+					dprint(("mtx_lock destroy\n"));
++					//dprint(("mtx_lock destroy\n"));
 +					RT_LOCK_INIT(rt);
 +					RT_LOCK(rt);
 +					RT_ADDREF(rt);
@@ -2217,7 +2217,7 @@
 +		dprint(("rt_setgate: rt = %p\n",rt));
 +		dprint(("rt_setgate: rt_gateway = %p\n",rt->rt_gateway));
 +		if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
-+				dprint(("rt_setgate: rt_gateway == NULL\n"));
++				dprint(("rt_setgate: if rt_gateway == NULL\n"));
 +				caddr_t new;
 +				
 +				R_Malloc(new, caddr_t, dlen + glen);
