@@ -1,5 +1,5 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-20 22:08:55.000000000 +0900
++++ in_rmx.c	2005-02-20 22:13:57.000000000 +0900
 @@ -70,12 +70,25 @@
  /*
   * Do what we need to do when inserting a route.
@@ -20,7 +20,7 @@
 +	//struct sockaddr_in *sin = (struct sockaddr_in *)rt_key(rt);
 +	struct sockaddr_in *sin = (struct sockaddr_in *)v_arg;
 +	char *c_sin = (char *)sin;
-+	printf("in_addroute: sin[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++	printf("in_addroute: sin[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
 +					(unsigned char)c_sin[0],(unsigned char)c_sin[1],
 +					(unsigned char)c_sin[2],(unsigned char)c_sin[3],
 +					(unsigned char)c_sin[4],(unsigned char)c_sin[5],
