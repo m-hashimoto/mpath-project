@@ -938,7 +938,7 @@ ptree_walktree(h, f, w)
 		for (;;) {
 				rt = (struct rtentry *)rn;
 				gateway = (struct sockaddr_in *)rt->rt_gateway;
-				pritnf("address: %s\n",inet_ntoa(gateway.sin_addr));
+				pritnf("address: %s\n",gateway->sin_addr);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
