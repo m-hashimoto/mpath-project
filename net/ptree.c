@@ -101,6 +101,9 @@ ptree_lookup (char *key, int keylen, struct ptree *t)
   struct ptree_node *x;
 
   x = t->top;
+  if (!x)
+    return NULL;
+  
   while (x && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
     x = x->child[check_bit (key, x->keylen)];
