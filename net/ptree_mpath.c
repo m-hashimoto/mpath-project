@@ -300,9 +300,10 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			rt_array[n] = rt;
 		} else {
 			struct rtentry *rt = (struct rtentry *)rt_node;
+			dprint(("-ptree_addroute: rt[%p]\n",rt));
 			if(rt){
-				rt->mpath_array[0] = NULL; 
 				dprint(("-ptree_addroute: rt->mpath_array=%p\n",rt->mpath_array));
+				rt->mpath_array[0] = NULL; 
 				dprint(("-ptree_addroute: rt->mpath_array[0]=%p\n",rt->mpath_array[0]));
 				dprint(("-ptree_addroute: rt->mpath_array[1]=%p\n",rt->mpath_array[1]));
 			}
