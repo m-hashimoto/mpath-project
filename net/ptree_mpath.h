@@ -25,27 +25,27 @@ struct ptree_node_head {
 #ifdef PTREE_MPATH
 		int		pnh_multipath;
 #endif /* PTREE_MPATH */
-		struct  ptree_node *(*pnh_addaddr)
+		struct  ptree_node *(*rnh_addaddr)
 				(void *v, void *mask, struct ptree_node_head *head);
-		struct  ptree_node *(*pnh_addpkt)       /* add based on packet hdr */
+		struct  ptree_node *(*rnh_addpkt)       /* add based on packet hdr */
 				(void *v, void *mask, struct ptree_node_head *head);
-		struct  ptree_node *(*pnh_deladdr)      /* remove based on sockaddr */
+		struct  ptree_node *(*rnh_deladdr)      /* remove based on sockaddr */
 				(void *v, void *mask, struct ptree_node_head *head);
-		struct  ptree_node *(*pnh_delpkt)       /* remove based on packet hdr */
+		struct  ptree_node *(*rnh_delpkt)       /* remove based on packet hdr */
 				(void *v, void *mask, struct ptree_node_head *head);
-		struct  ptree_node *(*pnh_matchaddr)    /* locate based on sockaddr */
+		struct  ptree_node *(*rnh_matchaddr)    /* locate based on sockaddr */
 				(void *v, struct ptree_node_head *head);
-		struct  ptree_node *(*pnh_lookup)       /* locate based on sockaddr */
+		struct  ptree_node *(*rnh_lookup)       /* locate based on sockaddr */
 				(char *key, int keylen, struct ptree *top);
 				//(void *v, void *mask, int keylen, struct ptree_node_head *head);
-		struct  ptree_node *(*pnh_matchpkt)     /* locate based on packet hdr */
+		struct  ptree_node *(*rnh_matchpkt)     /* locate based on packet hdr */
 				(void *v, struct ptree_node_head *head);
-		int     (*pnh_walktree)                 /* traverse tree */
+		int     (*rnh_walktree)                 /* traverse tree */
 				(struct ptree_node_head *head, walktree_f_t *f, void *w);
-		int     (*pnh_walktree_from)            /* traverse tree below a */
+		int     (*rnh_walktree_from)            /* traverse tree below a */
 				(struct ptree_node_head *head, void *a, void *m,
 				 walktree_f_t *f, void *w);
-		void    (*pnh_close)         /* do something when the last ref drops */
+		void    (*rnh_close)         /* do something when the last ref drops */
 				(struct ptree_node *rn, struct ptree_node_head *head);
 #ifdef _KERNEL
 		struct rwlock rnh_lock;

@@ -1,5 +1,5 @@
 --- rtsock.c.orig	2005-01-19 02:48:34.000000000 +0900
-+++ rtsock.c	2005-02-06 17:21:07.000000000 +0900
++++ rtsock.c	2005-02-06 17:26:04.000000000 +0900
 @@ -105,7 +105,7 @@
  			caddr_t cp, struct walkarg *w);
  static int	rt_xaddrs(caddr_t cp, caddr_t cplim,
@@ -24,7 +24,7 @@
  		RADIX_NODE_HEAD_RLOCK(rnh);
 -		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST],
 -			info.rti_info[RTAX_NETMASK], rnh);
-+		rt = (struct rtentry *) rnh->pnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)info.rti_info[RTAX_NETMASK]->sa_data, rnh->pnh_treetop);
++		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)info.rti_info[RTAX_NETMASK]->sa_data, rnh->pnh_treetop);
  		if (rt == NULL) {	/* XXX looks bogus */
  			RADIX_NODE_HEAD_RUNLOCK(rnh);
  			senderr(ESRCH);
@@ -46,12 +46,3 @@
  	int	i, lim, error = EINVAL;
  	u_char	af;
  	struct	walkarg w;
-@@ -1510,7 +1509,7 @@
- 			rnh = rt_tables_get_rnh(req->td->td_proc->p_fibnum, i);
- 			if (rnh != NULL) {
- 				RADIX_NODE_HEAD_LOCK(rnh); 
--			    	error = rnh->rnh_walktree(rnh,
-+			    	error = rnh->pnh_walktree(rnh,
- 				    sysctl_dumpentry, &w);
- 				RADIX_NODE_HEAD_UNLOCK(rnh);
- 			} else if (af != 0)

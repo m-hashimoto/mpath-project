@@ -1066,11 +1066,11 @@ ptree_inithead(void **head, int off)
 #ifdef PTREE_MPATH
 		pnh->pnh_multipath = 1;
 #endif
-		pnh->pnh_addaddr = ptree_addroute;
-		pnh->pnh_deladdr = ptree_deladdr;
-		pnh->pnh_matchaddr = ptree_matchaddr;
-		pnh->pnh_lookup = ptree_lookup;
-		pnh->pnh_walktree = ptree_walktree;
+		pnh->rnh_addaddr = ptree_addroute;
+		pnh->rnh_deladdr = ptree_deladdr;
+		pnh->rnh_matchaddr = ptree_matchaddr;
+		pnh->rnh_lookup = ptree_lookup;
+		pnh->rnh_walktree = ptree_walktree;
 		//rnh->rnh_walktree_from = ptree_walktree_from;
 		pnh->pnh_top = t;
 		dprint(("-ptree_inithead End (success)\n"));

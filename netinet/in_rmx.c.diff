@@ -1,5 +1,5 @@
---- in_rmx.c.org	2010-09-28 10:19:56.000000000 +0900
-+++ in_rmx.c	2010-09-28 10:47:27.000000000 +0900
+--- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
++++ in_rmx.c	2005-02-06 17:33:11.000000000 +0900
 @@ -70,9 +70,9 @@
  /*
   * Do what we need to do when inserting a route.
@@ -8,7 +8,7 @@
 -in_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
 -    struct radix_node *treenodes)
 +static struct ptree_node *
-+in_addroute(void *v_arg, void *n_arg, struct ptree *head,
++in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 +    struct ptree_node *treenodes)
  {
  	struct rtentry *rt = (struct rtentry *)treenodes;
@@ -18,7 +18,7 @@
  		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
  
 -	return (rn_addroute(v_arg, n_arg, head, treenodes));
-+	return (ptree_addroute(v_arg, n_arg, head, treenodes));
++	return (ptree_addroute(v_arg, n_arg, head));
  }
  
  /*
@@ -29,7 +29,7 @@
 -static struct radix_node *
 -in_matroute(void *v_arg, struct radix_node_head *head)
 +static struct ptree_node *
-+in_matroute(void *v_arg, struct ptree *head)
++in_matroute(void *v_arg, struct ptree_node_head *head)
  {
 -	struct radix_node *rn = rn_match(v_arg, head);
 +	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
@@ -68,7 +68,7 @@
  in_rtqtimo_one(void *rock)
  {
 -	struct radix_node_head *rnh = rock;
-+	struct ptree *rnh = rock;
++	struct ptree_node_head *rnh = rock;
  	struct rtqk_arg arg;
  	static time_t last_adjusted_timeout = 0;
  
@@ -77,7 +77,7 @@
  {
  	VNET_ITERATOR_DECL(vnet_iter);
 -	struct radix_node_head *rnh;
-+	struct ptree *rnh;
++	struct ptree_node_head *rnh;
  	struct rtqk_arg arg;
  	int 	fibnum;
  
@@ -86,7 +86,7 @@
  in_inithead(void **head, int off)
  {
 -	struct radix_node_head *rnh;
-+	struct ptree *rnh;
++	struct ptree_node_head *rnh;
  
  	/* XXX MRT
  	 * This can be called from vfs_export.c too in which case 'off'
@@ -113,7 +113,7 @@
  {
  	struct in_ifadown_arg arg;
 -	struct radix_node_head *rnh;
-+	struct ptree *rnh;
++	struct ptree_node_head *rnh;
  	int	fibnum;
  
  	if (ifa->ifa_addr->sa_family != AF_INET)
