@@ -1078,7 +1078,7 @@ ptree_mpath_count(struct ptree_node *rn)
 	dprint(("ptree_mpath_count Start\n"));
 	struct ptree_node *rn1;
 	uint32_t i = 0;
-	rn1 = &rn->mpath_array;
+	rn1 = rn->mpath_array;
 	/* count mpath_array */
 	while (rn1 != NULL) {
 		rn1++;
@@ -1234,7 +1234,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	}
 
 maskmatched:
-	rn1 = rn->mpath_array[i];
+	rn1 = rn->mpath_array;
 	/* key/mask were the same.  compare gateway for all multipaths */
 	do {
 		rt1 = (struct rtentry *)rn1;
