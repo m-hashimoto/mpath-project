@@ -400,24 +400,31 @@ ptree_next (struct ptree_node *v)
 
 	ptree_node_lock (v);
 	/* if the left child exists, go left */
-	if (v->child[0] && (v->child[0]->rn_flags & RNF_ACTIVE))
+	dprint(("ptree_next: check left node\n"));
+	if (v->child[0])
 	{
 		w = v->child[0];
-		ptree_node_lock (w);
-		ptree_node_unlock (v);
-		dprint(("ptree_next End (down left)\n"));
-		return w;
+		if( w->rn_flags & RNF_ACTIVE ){
+			ptree_node_lock (w);
+			ptree_node_unlock (v);
+			dprint(("ptree_next End (down left)\n"));
+			return w;
+		}
 	}
 
-	if (v->child[1] && (v->child[1]->rn_flags & RNF_ACTIVE))
+	dprint(("ptree_next: check right node\n"));
+	if (v->child[1])
 	{
 		w = v->child[1];
-		ptree_node_lock (w);
-		ptree_node_unlock (v);
-		dprint(("ptree_next End (down right)\n"));
+		if( w->rn_flags & RNF_ACTIVE ){
+			ptree_node_lock (w);
+			ptree_node_unlock (v);
+			dprint(("ptree_next End (down right)\n"));
 		return w;
+		}
 	}
 
+	dprint(("ptree_next: check parent node\n"));
 	if(v->parent)
 		u = v->parent;
 	else{
@@ -426,13 +433,16 @@ ptree_next (struct ptree_node *v)
 	}
 		
 
+	dprint(("ptree_next: if(v->parent->rn_left == v)\n"));
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
-		ptree_node_lock (w);
-		ptree_node_unlock (v);
-		dprint(("ptree_next End (go parent and down right)\n"));
+		if( w->rn_flags & RNF_ACTIVE ){
+			ptree_node_lock (w);
+			ptree_node_unlock (v);
+			dprint(("ptree_next End (go parent and down right)\n"));
 		return w;
+		}
 	}
 
 	t = u->parent;
@@ -446,12 +456,13 @@ ptree_next (struct ptree_node *v)
 	{
 		/* return the not-yet-traversed right-child node */
 		w = t->child[1];
-		XRTASSERT (w, ("xrt: an impossible end of traverse"));
-		
-		ptree_node_lock (w);
-		ptree_node_unlock (v);
-		dprint(("ptree_next End (not-yet-traversed right)\n"));
+		if( w->rn_flags & RNF_ACTIVE ){
+			XRTASSERT (w, ("xrt: an impossible end of traverse"));	
+			ptree_node_lock (w);
+			ptree_node_unlock (v);
+			dprint(("ptree_next End (not-yet-traversed right)\n"));
 		return w;
+		}
 	}
 
 	/* end of traverse */
