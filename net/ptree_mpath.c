@@ -16,7 +16,7 @@
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-static int	head_off = 4;	/* head_off struct sockaddr_in */
+static int	head_off = 4; head_zero = 8; /* head_off struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
@@ -122,6 +122,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
+#if 0
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v + len;
 		
@@ -133,9 +134,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 				goto on1;
 			}
 		}
-		dprint(("key dupentry\n"));
-		*dupentry = 1;  
-		return t;
+#endif
+		register caddr_t cp = t->key;
+		caddr_t cplim = v;
+		if ( !memcmp(cp,cplim,len/8) ){
+			dprint(("key dupentry\n"));
+			*dupentry = 1;  
+			return t;
+		}
 	}
 on1:
 	*dupentry = 0;
@@ -223,7 +229,8 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v;
 	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
-	if ( !memcmp(cp,cplim,vlen) )
+	dprint(("-ptree_matchaddr: vlen/8 = %d\n",vlen/8));
+	if ( !memcmp(cp,cplim,vlen/8) )
 			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
