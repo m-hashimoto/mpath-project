@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 17:03:01.000000000 +0900
++++ route.c	2005-01-27 17:16:16.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,534 @@
+@@ -768,495 +814,540 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2117,8 +2117,17 @@
 +										&(rt)->rt_mtx));
 +				}
 +				else{
-+					dprint(("mtx_lock_init error\n"));
++					dprint(("mtx_lock_init error 1\n"));
 +					RT_LOCK_DESTROY(rt);
++					dprint(("mtx_lock_init error 2\n"));
++					RT_LOCK_INIT(rt);
++					dprint(("mtx_lock_init error 3\n"));
++					RT_LOCK(rt);
++					dprint(("mtx_lock_init error 4\n"));
++					RT_ADDREF(rt);
++					dprint(("mtx_lock_init error 5\n"));
++					RT_UNLOCK(rt);
++					dprint(("mtx_lock_init error 6\n"));
 +				}
 +				break;
 +		default:
@@ -2128,17 +2137,14 @@
 -	if (needlock)
 -		RADIX_NODE_HEAD_UNLOCK(rnh);
 -	return (error);
-+		if (needlock){
-+				dprint(("rtreq: NODE_HEAD_UNLOCK Start\n"));
++		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+				dprint(("rtreq: NODE_HEAD_UNLOCK End\n"));
-+		}
 +		dprint(("rtrequest1_fib End: error = %d\n",error));
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1352,78 @@
+@@ -1267,71 +1358,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2271,7 +2277,7 @@
  }
  
  /*
-@@ -1339,228 +1431,235 @@
+@@ -1339,228 +1437,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
