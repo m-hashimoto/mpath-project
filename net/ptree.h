@@ -152,15 +152,8 @@ struct ptree {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-void     ptree_init(void);
-int      ptree_inithead(void **, int);
-int      ptree_refines(void *, void *);
-struct ptree_node
-	*ptree_addmask(void *, int, int),
-	*ptree_addroute (void *, void *, struct ptree *,	
-			struct ptree_node [2]),
-	*ptree_deladdr(void *, void *, struct ptree *),
-	*ptree_matchaddr(void *, struct ptree *);
+void ptree_node_lock (struct ptree_node *x);
+void ptree_unnode_lock (struct ptree_node *x);
 
 struct ptree_node *ptree_lookup (void *key, void *mask, 
 		int keylen, struct ptree *t);
@@ -174,6 +167,16 @@ struct ptree_node *ptree_next (struct ptree_node *v);
 
 struct ptree *ptree_create (void);
 void ptree_delete (struct ptree *t);
+
+void     ptree_init(void);
+int      ptree_inithead(void **, int);
+int      ptree_refines(void *, void *);
+struct ptree_node
+	*ptree_addmask(void *, int, int),
+	*ptree_addroute (void *, void *, struct ptree *,	
+			struct ptree_node [2]),
+	*ptree_deladdr(void *, void *, struct ptree *),
+	*ptree_matchaddr(void *, struct ptree *);
 
 /*
  * Patricia trie API with multipath support
