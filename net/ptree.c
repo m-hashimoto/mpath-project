@@ -273,14 +273,12 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
       /* if the branching node is not the corresponding node,
          create the corresponding node to add */
-  	  dprint(("--ptree_get: common2 x[%p] x->key[%p]\n",x,x->key));
       if (x->keylen == keylen)
         v = x;
       else
         {
           /* locks the branching node x for the tree holding */
           ptree_node_lock (x);
-  	  		dprint(("--ptree_get: common3 x[%p] x->key[%p]\n",x,x->key));
 
           v = ptree_node_create (key, keylen);
           if (! v)
@@ -292,7 +290,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
           ptree_link (x, v);
         }
-  	  dprint(("--ptree_get: common4 x[%p] x->key[%p]\n",x,x->key));
     }
 
   /* locks for the tree holding */
