@@ -444,7 +444,7 @@ on1:
 			}
 			else {
 					off = min(t->rn_offset, matched_off);
-					print(("-ptree_matchaddr: off = %d\n",off));
+					dprint(("-ptree_matchaddr: off = %d\n",off));
 					x = ptree_search_m(v, t, m->rm_mask);
 					while (x && x->rn_mask != m->rm_mask)
 							x = x->rn_dupedkey;
