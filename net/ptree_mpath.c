@@ -972,8 +972,8 @@ ptree_walktree(h, f, w)
 		return (0);
 	}
 
-	dprint((" ptree_walktree: treetop = %x:%x:%x:%x\n",
-			rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
+	dprint((" ptree_walktree: treetop = %x:%x:%x:%x keylen = %d\n",
+		rn->key[0],rn->key[1],rn->key[2],rn->key[3],rn->keylen));
 	for (;;) {
 		base = rn;
 		next = ptree_next(base);
@@ -982,8 +982,7 @@ ptree_walktree(h, f, w)
 			return (0);
 		}
 		rn = next;
-		dprint((" ptree_walktree: next = %x:%x:%x:%x\n",
-			rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
+		dprint((" ptree_walktree: next = %x:%x:%x:%x keylen = %d\n",rn->key[0],rn->key[1],rn->key[2],rn->key[3],rn->keylen));
 	}
 	/* NOTREACHED */
 	dprint((" ptree_walktree End\n"));
