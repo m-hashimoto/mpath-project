@@ -54,7 +54,7 @@ debug_node_print(struct ptree_node *rn)
 		printf("/*+++++++++++++++++++++++++*/");
 		printf("- mklist = %p\n",rm);
 		printf("- rm_bit %d rm_flags 0x%x\n",rm->rm_bit,rm->rm_flags);
-		printf("- rm_unsed 0x%x\n",rm->rm_unsed);
+		printf("- rm_unused 0x%x\n",rm->rm_unused);
 		if(rm->rm_mask){
 			ip = (unsigned char *)rm->rm_mask;
 			printf("- rm_mask %d.%d.%d.%d\n",*ip,*ip+1,*ip+2,*ip+3);
