@@ -400,7 +400,6 @@ ptree_next (struct ptree_node *v)
 
 	ptree_node_lock (v);
 	/* if the left child exists, go left */
-	dprint(("ptree_next: check left node\n"));
 	if (v->child[0])
 	{
 		w = v->child[0];
@@ -412,7 +411,6 @@ ptree_next (struct ptree_node *v)
 		}
 	}
 
-	dprint(("ptree_next: check right node\n"));
 	if (v->child[1])
 	{
 		w = v->child[1];
@@ -424,7 +422,6 @@ ptree_next (struct ptree_node *v)
 		}
 	}
 
-	dprint(("ptree_next: check parent node\n"));
 	if(v->parent){
 		u = v->parent;
 		dprint(("ptree_next: v->parent = %p\n",u));
@@ -434,7 +431,6 @@ ptree_next (struct ptree_node *v)
 		return NULL;
 	}
 
-	dprint(("ptree_next: check if(v->parent->rn_left == v)\n"));
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
@@ -447,7 +443,8 @@ ptree_next (struct ptree_node *v)
 	}
 
 	t = u->parent;
-	dprint(("ptree_next: u->parent = %p\n",t));
+	dprint(("ptree_next: u = %p u->parent = %p u->parent->rn_right = %p\n",
+				u,t,t->child[1]));
 	while (t && (t->child[1] == u || ! t->child[1]))
 	{
 		u = t;
