@@ -17,15 +17,13 @@ patch -R < if_clone.c.diff
 patch -R < rtsock.c.diff
 patch -R < route.c.diff
 patch -R < route.h.diff
-
-patch -R < ip_output.c.diff
-
 rm ptree.c ptree_mpath.c ptree.h
 rm *.diff
 
 cd /usr/src/sys/netinet
 patch -R < in_rmx.c.diff
 patch -R < ip_fw.h.diff
+patch -R < ip_output.c.diff
 rm *.diff
 cd ipfw
 patch -R < ip_fw2.c.diff

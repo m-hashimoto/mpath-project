@@ -41,11 +41,11 @@ patch -N < rtsock.c.diff
 patch -N < route.c.diff
 patch -N < route.h.diff
 
-patch -N < ip_output.c.diff
 
 cd /usr/src/sys/netinet
 patch -N < in_rmx.c.diff
 patch -N < ip_fw.h.diff
+patch -N < ip_output.c.diff
 cd ipfw
 patch -N < ip_fw2.c.diff
 
