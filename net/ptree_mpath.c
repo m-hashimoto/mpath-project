@@ -99,6 +99,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
+		dprint(("ptree_insert: mlen[%d]\n",len));
 	}
 	if (!top)
 		goto on1;
