@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 13:46:42.000000000 +0900
++++ route.c	2005-01-26 14:16:25.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1658,7 +1658,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1032,292 @@
+@@ -1074,189 +1032,295 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -1839,12 +1839,13 @@
 +					(gateway->sa_family != AF_UNSPEC) && 
 +					(gateway->sa_family != AF_LINK) )
 +						senderr(EINVAL);
-+					if (info->rti_ifa == NULL) {
-+						error = rt_getifa_fib(info, fibnum);
-+						if (error)
-+								senderr(error);
++				if (info->rti_ifa == NULL) {
++					error = rt_getifa_fib(info, fibnum);
++					if (error)
++							senderr(error);
 +				} else
-+						ifa_ref(info->rti_ifa);
++					ifa_ref(info->rti_ifa);
++					
 +				ifa = info->rti_ifa;
 +				rt = uma_zalloc(V_rtzone, M_NOWAIT | M_ZERO);
 +				if (rt == NULL) {
@@ -1855,6 +1856,7 @@
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
++				dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -2087,6 +2089,7 @@
 +				 * give the caller a single reference.
 +				 */
 +				if (ret_nrt) {
++						dprint(("rtreq_ADD: RT_ADDREF\n"));
 +						*ret_nrt = rt;
 +						RT_ADDREF(rt);
 +				}
@@ -2109,7 +2112,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1328,77 @@
+@@ -1267,71 +1331,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2241,7 +2244,7 @@
  }
  
  /*
-@@ -1339,228 +1406,235 @@
+@@ -1339,228 +1409,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
