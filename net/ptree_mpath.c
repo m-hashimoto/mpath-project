@@ -296,7 +296,9 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			n = ptree_mpath_count(rt0);
 			rt_array = rt0->mpath_array;
 			rt_array[n] = rt;
-		} else {
+		}
+#if 0
+	 	else {
 			struct rtentry *rt = tt->data;
 			struct rtentry **rt_array = &rt->mpath_array;
 			dprint(("-ptree_addroute: rt=%p\n",rt));
@@ -306,6 +308,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			dprint(("-ptree_addroute: rt_array+1=%p\n",rt_array+1));
 			rt_array = NULL;
 		}
+#endif
 #endif /* mluti path */
 		return tt;
 }
