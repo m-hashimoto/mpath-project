@@ -6,6 +6,7 @@
 #include <sys/systm.h>
 #include <sys/malloc.h>
 #include <sys/syslog.h>
+#include <sys/types.h>
 #include <net/ptree.h>
 #else /*_KERNEL*/
 #include <stdio.h>
