@@ -160,8 +160,8 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
   /* check the w's key bit just after the v->key (keylen'th bit) */
   int bit;
   dprint(("--ptree_link Start: v[%p] w[%p]\n",v,w));
-  dprint(("--ptree_link : v->key[%p] v->keylen[%]\n",v->key,v->keylen));
-  dprint(("--ptree_link : w->key[%p] w->keylen[%]\n",w->key,w->keylen));
+  dprint(("--ptree_link : v->key[%p] v->keylen[%d]\n",v->key,v->keylen));
+  dprint(("--ptree_link : w->key[%p] w->keylen[%d]\n",w->key,w->keylen));
 
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
