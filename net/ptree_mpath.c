@@ -33,7 +33,7 @@ debug_node_print(struct ptree_node *pn, int off)
 		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-						pn->keylen-off);
+						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
 	if( pn->data ){
