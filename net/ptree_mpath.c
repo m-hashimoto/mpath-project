@@ -612,7 +612,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 		b_leaf = -1 - t->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-		if(t->tn_bit < 0){
+		if(t->rn_bit < 0){
 			for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
 			if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
 				*mp = m = ptree_new_mask(t,0);
@@ -638,7 +638,7 @@ on2:
 				x = t;
 				t = t->rn_parent;
 		} while (b <= t->rn_bit );
-		for (mp = &t->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
+		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 			dprint(("-ptree_addroute: on2 test 1\n"));
 			if (m->rm_bit < b_leaf)
 				continue;
