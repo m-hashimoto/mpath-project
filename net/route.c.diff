@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-19 11:29:57.000000000 +0900
++++ route.c	2005-01-19 11:37:39.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -136,7 +136,7 @@
  	V_rtzone = uma_zcreate("rtentry", sizeof(struct rtentry), NULL, NULL,
 -	    NULL, NULL, UMA_ALIGN_PTR, 0);
 +			NULL, NULL, UMA_ALIGN_PTR, 0);
-+	dprintf(("vnet_route_init: for-loop Start rt_numfibs = %d\n",rt_numfibs));
++	dprint(("vnet_route_init: for-loop Start rt_numfibs = %d\n",rt_numfibs));
  	for (dom = domains; dom; dom = dom->dom_next) {
 +		dprint(("vnet_route_init: for-loop domain = %p\n",dom));
  		if (dom->dom_rtattach)  {
