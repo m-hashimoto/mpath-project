@@ -1,5 +1,5 @@
 --- nd6_rtr.c.orig	2005-01-26 12:24:20.000000000 +0900
-+++ nd6_rtr.c	2005-01-26 12:36:17.000000000 +0900
++++ nd6_rtr.c	2005-01-26 13:23:45.000000000 +0900
 @@ -53,7 +53,7 @@
  #include <net/if_types.h>
  #include <net/if_dl.h>
@@ -66,7 +66,17 @@
  
  	/*
  	 * in6_ifinit() sets nd6_rtrequest to ifa_rtrequest for all ifaddrs.
-@@ -1661,6 +1669,7 @@
+@@ -1636,6 +1644,9 @@
+ 	    ifa->ifa_addr, (struct sockaddr *)&mask6, rtflags, &rt);
+ 	if (error == 0) {
+ 		if (rt != NULL) /* this should be non NULL, though */ {
++			dprint(("nd6_prefix_onlink: rt = %p\n",rt));
++			dprint(("nd6_prefix_onlink: call rnh [table:%d][fim:%d]\n",
++									rt->rt_fibnum,AF_INET6));
+ 			rnh = rt_tables_get_rnh(rt->rt_fibnum, AF_INET6);
+ 			/* XXX what if rhn == NULL? */
+ 			RADIX_NODE_HEAD_LOCK(rnh);
+@@ -1661,6 +1672,7 @@
  		    ip6_sprintf(ip6bufg, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr),
  		    ip6_sprintf(ip6bufm, &mask6.sin6_addr), rtflags, error));
  	}
@@ -74,7 +84,7 @@
  
  	if (rt != NULL) {
  		RT_LOCK(rt);
-@@ -1670,6 +1679,7 @@
+@@ -1670,6 +1682,7 @@
  	if (ifa != NULL)
  		ifa_free(ifa);
  
@@ -82,7 +92,7 @@
  	return (error);
  }
  
-@@ -2076,7 +2086,7 @@
+@@ -2076,7 +2089,7 @@
  void
  rt6_flush(struct in6_addr *gateway, struct ifnet *ifp)
  {
@@ -91,7 +101,7 @@
  	int s = splnet();
  
  	/* We'll care only link-local addresses */
-@@ -2096,7 +2106,7 @@
+@@ -2096,7 +2109,7 @@
  }
  
  static int
@@ -100,7 +110,7 @@
  {
  #define SIN6(s)	((struct sockaddr_in6 *)s)
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -2156,3 +2166,6 @@
+@@ -2156,3 +2169,6 @@
  
  	return (error);
  }
