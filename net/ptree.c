@@ -243,7 +243,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
       x = x->child[check_bit (key, x->keylen)];
     }
 
-  if (! x)
+  if (! x || ! x->key)
     {
       v = ptree_node_create (key, keylen);
       if (u)
