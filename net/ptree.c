@@ -294,8 +294,6 @@ ptree_get (key, keylen, t, nodes)
 	{
 		if (x->keylen == keylen){
 			dprint(("+-ptree_get: x->keylen == keylen =%d\n",x->keylen));
-			dprint(( "key_common_len = %d\n",
-					key_common_len(x->key,x->keylen,key,keylen) ));
 			//return x;
 		}
 		u = x;
@@ -307,6 +305,8 @@ ptree_get (key, keylen, t, nodes)
 	{
 		v = ptree_node_create (key, keylen, nodes);
 		if (u){
+			dprint(("+-ptree_get: u->keylen = %d v->keylen = %d\n",
+									u->keylen,v->keylen));
 			ptree_link (u, v);
 			dprint(("+-ptree_get: if(!x) new_node = %p\n",v));
 		}
