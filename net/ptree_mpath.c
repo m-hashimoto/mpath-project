@@ -59,8 +59,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int vlen = (int)LEN(v);
 	register int b = vlen;
 	dprint(("-ptree_insert Start\n"));
-	dprint(("-ptree_insert: v = %x:%x:%x:%x vlen = %d head = %p\n",
-				v[0],v[1],v[2],v[3],vlen,head));
+	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
 	struct ptree_node *top = head->rnh_treetop;
 	
 	if (!top){

@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-25 03:37:53.000000000 +0900
++++ route.c	2005-01-25 04:10:42.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -766,7 +766,7 @@
  
  	KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
  	if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
-@@ -1029,233 +1070,248 @@
+@@ -1029,233 +1070,249 @@
  		netmask = NULL;
  
  	switch (req) {
@@ -913,7 +913,7 @@
 +			}
 +			RT_LOCK_INIT(rt);
 +			rt->rt_flags = RTF_UP | flags;
-+			dprint(("rtreq_ADD: rt->rt_flags = %d\n",rt->rt_flags));
++			dprint(("rtreq_ADD: rt->rt_flags = 0x%x\n",rt->rt_flags));
 +			rt->rt_fibnum = fibnum;
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
@@ -1084,6 +1084,7 @@
 +					 * A host route is already present, so 
 +					 * leave the flow-table entries as is.
 +					 */
++					dprint(("rtreq_ADD: flags & RTF_HOST = %d\n",rt0->rt_flags & RTF_HOST ));
 +					if (rt0->rt_flags & RTF_HOST) {
 +						dprint(("rtreq_ADD: flags = RTF_HOST\n"));
  						RTFREE(rt0);
@@ -1208,7 +1209,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1267,20 +1323,21 @@
+@@ -1267,20 +1324,21 @@
  #undef ifpaddr
  #undef flags
  
@@ -1233,7 +1234,7 @@
  	/*
  	 * Prepare to store the gateway in rt->rt_gateway.
  	 * Both dst and gateway are stored one after the other in the same
-@@ -1292,8 +1349,10 @@
+@@ -1292,8 +1350,10 @@
  		caddr_t new;
  
  		R_Malloc(new, caddr_t, dlen + glen);
@@ -1245,7 +1246,7 @@
  		/*
  		 * XXX note, we copy from *dst and not *rt_key(rt) because
  		 * rt_setgate() can be called to initialize a newly
-@@ -1312,12 +1371,14 @@
+@@ -1312,12 +1372,14 @@
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
  
@@ -1261,7 +1262,7 @@
  	register u_char *cp1 = (u_char *)src;
  	register u_char *cp2 = (u_char *)dst;
  	register u_char *cp3 = (u_char *)netmask;
-@@ -1332,6 +1393,7 @@
+@@ -1332,6 +1394,7 @@
  		*cp2++ = *cp1++ & *cp3++;
  	if (cp2 < cplim2)
  		bzero((caddr_t)cp2, (unsigned)(cplim2 - cp2));
@@ -1269,7 +1270,7 @@
  }
  
  /*
-@@ -1339,9 +1401,10 @@
+@@ -1339,9 +1402,10 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -1281,7 +1282,7 @@
  	struct sockaddr *dst;
  	struct sockaddr *netmask;
  	struct rtentry *rt = NULL;
-@@ -1374,8 +1437,10 @@
+@@ -1374,8 +1438,10 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -1293,7 +1294,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1470,8 @@
+@@ -1405,8 +1471,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -1304,7 +1305,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1432,18 +1497,18 @@
+@@ -1432,18 +1498,18 @@
  					 * interface address
  					 */
  					rt = rt_mpath_matchgate(rt,
@@ -1328,7 +1329,7 @@
  			RADIX_NODE_HEAD_UNLOCK(rnh);
  			if (error) {
  				/* this is only an error if bad on ALL tables */
-@@ -1462,7 +1527,7 @@
+@@ -1462,7 +1528,7 @@
  		 */
  		if (cmd == RTM_ADD)
  			info.rti_info[RTAX_GATEWAY] =
@@ -1337,7 +1338,7 @@
  		else
  			info.rti_info[RTAX_GATEWAY] = ifa->ifa_addr;
  		info.rti_info[RTAX_NETMASK] = netmask;
-@@ -1481,7 +1546,7 @@
+@@ -1481,7 +1547,7 @@
  			 * so we need to replace it with 192.103.54.247
  			 */
  			if (memcmp(rt->rt_ifa->ifa_addr,
@@ -1346,7 +1347,7 @@
  				ifa_free(rt->rt_ifa);
  				ifa_ref(ifa);
  				rt->rt_ifp = ifa->ifa_ifp;
-@@ -1492,10 +1557,10 @@
+@@ -1492,10 +1558,10 @@
  			 * doing this for compatibility reasons
  			 */
  			if (cmd == RTM_ADD) {
@@ -1361,7 +1362,7 @@
  			}
  			rt_newaddrmsg(cmd, ifa, error, rt);
  			if (cmd == RTM_DELETE) {
-@@ -1526,7 +1591,7 @@
+@@ -1526,7 +1592,7 @@
  		} else {
  			/* we only give an error if it wasn't in any table */
  			error = ((flags & RTF_HOST) ?
@@ -1370,7 +1371,7 @@
  		}
  	} else {
  		if (a_failure) {
-@@ -1534,11 +1599,12 @@
+@@ -1534,11 +1600,12 @@
  			error = a_failure;
  		}
  	}
@@ -1384,7 +1385,7 @@
  rtinit_fib(struct ifaddr *ifa, int cmd, int flags)
  {
  	return (rtinit1(ifa, cmd, flags, -1));
-@@ -1548,7 +1614,7 @@
+@@ -1548,7 +1615,7 @@
   * Set up a routing table entry, normally
   * for an interface.
   */
@@ -1393,7 +1394,7 @@
  rtinit(struct ifaddr *ifa, int cmd, int flags)
  {
  	struct sockaddr *dst;
-@@ -1564,3 +1630,6 @@
+@@ -1564,3 +1631,6 @@
  		fib = -1;
  	return (rtinit1(ifa, cmd, flags, fib));
  }
