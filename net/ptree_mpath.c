@@ -82,7 +82,7 @@ on1:
 	}
 	{
 		register struct ptree_node *p, *x = top;
-		register void *data;
+		register int *data;
 		*data = 1;
 		cp = v;
 		do {
