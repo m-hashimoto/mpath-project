@@ -2,11 +2,11 @@
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
-//#if 0
+#ifdef _KERNEL
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);
 #endif
-//#endif /*0*/
+#endif /*0*/
 
 struct ptree_node {
   char *key;

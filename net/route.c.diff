@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-04 13:16:47.000000000 +0900
++++ route.c	2005-02-06 16:48:14.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -459,7 +459,7 @@
 -		 * If required, report the failure to the supervising
 -		 * Authorities.
 -		 * For a delete, this is not an error. (report == 0)
-+		rn = rnh->rnh_matchaddr(dst, rnh);
++		rn = rnh->pnh_matchaddr(dst, rnh);
 +		dprint(("rtalloc1_fib: rn = %p\n",rn));
 +		if (rn/* && ((rn->rn_flags & RNF_ROOT) == 0)*/) {
 +				newrt = rt = RNTORT(rn);
@@ -604,8 +604,8 @@
 +		 * typically calls rtexpunge which clears the RTF_UP flag
 +		 * on the entry so that the code below reclaims the storage.
 +		 */
-+		if (rt->rt_refcnt == 0 && rnh->rnh_close)
-+				rnh->rnh_close((struct ptree_node *)rt, rnh);
++		if (rt->rt_refcnt == 0 && rnh->pnh_close)
++				rnh->pnh_close((struct ptree_node *)rt, rnh);
 +
 +		/*
 +		 * If we are no longer "up" (and ref == 0)
@@ -613,8 +613,8 @@
 +		 * with the route.
 +		 */
 +		if ((rt->rt_flags & RTF_UP) == 0) {
-+				if (rt->rt_nodes->rn_flags & (RNF_ACTIVE | RNF_ROOT))
-+						panic("rtfree 2");
++				//if (rt->rt_nodes->rn_flags & (RNF_ACTIVE | RNF_ROOT))
++				panic("rtfree 2");
 +				/*
 +				 * the rtentry must have been removed from the routing table
 +				 * so it is represented in rttrash.. remove that now.
@@ -1508,7 +1508,7 @@
 -		rt = RNTORT(rn);
 -		RT_LOCK(rt);
 -		RT_ADDREF(rt);
-+		rn = rnh->rnh_deladdr(rt_key(rt), rt_mask(rt), rnh);
++		rn = rnh->pnh_deladdr(rt_key(rt), rt_mask(rt), rnh);
 +		if (rn == NULL) {
 +				error = ESRCH;
 +				goto bad;
@@ -1824,11 +1824,11 @@
 -						RTFREE(rt0);
 -						rt0 = NULL;
 -					}
-+				rn = rnh->rnh_deladdr(dst, netmask, rnh);
++				rn = rnh->pnh_deladdr(dst, netmask, rnh);
 +				if (rn == NULL)
 +						senderr(ESRCH);
-+				if (rn->rn_flags & (RNF_ACTIVE | RNF_ROOT))
-+						panic ("rtrequest delete");
++				//if (rn->rn_flags & (RNF_ACTIVE | RNF_ROOT))
++				//		panic ("rtrequest delete");
 +				rt = RNTORT(rn);
 +				RT_LOCK(rt);
 +				RT_ADDREF(rt);
@@ -2003,8 +2003,8 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d rn_flags = 0x%x\n",rt,rn,rn->rn_key,rn->keylen,rn->rn_flags));
++				rn = rnh->pnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +				/* gateway Re-set */
 +				rt->rt_gateway = saved_gateway;
 +				/* rtentry's value re-added */
@@ -2492,11 +2492,11 @@
 -				 * If we are deleting, and we found an entry,
 -				 * then it's been removed from the tree..
 -				 * now throw it away.
-+								rn = rnh->rnh_lookup(dst, netmask, (int)*dst->sa_data, rnh);
++								rn = rnh->pnh_lookup(dst, netmask, (int)*dst->sa_data, rnh);
 +						error = (rn == NULL ||
-+										(rn->rn_flags & RNF_ROOT) ||
++										//(rn->rn_flags & RNF_ROOT) ||
 +										RNTORT(rn)->rt_ifa != ifa ||
-+										!sa_equal((struct sockaddr *)rn->rn_key, dst));
++										!sa_equal((struct sockaddr *)rn->key, dst));
 +						RADIX_NODE_HEAD_UNLOCK(rnh);
 +						if (error) {
 +								/* this is only an error if bad on ALL tables */
