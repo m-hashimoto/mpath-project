@@ -582,7 +582,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
-		rt_nodes = tt;
+		rt_node = tt;
 		dprint(("-ptree_addroute: tt = %p keydup = %d\n",tt,keyduplicated));
 #if 0 /* multi path */
 		if (keyduplicated) {
