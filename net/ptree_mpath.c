@@ -744,9 +744,10 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		dprint(("-ptree_deladdr: len = %d\n",len));
 		tt = ptree_search(v, len, head->pnh_treetop);
 		dprint(("-ptree_deladdr: testprint tt = %p tt->key = %p\n",tt,tt->key));
+		dprint(("memcmp = %d\n",memcmp(v, tt->key, len) ));
 		//head_off = x->rn_offset;
 		saved_tt = tt;
-		if (tt == 0 || bcmp(v, tt->key, len)){
+		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
 				dprint(("-ptree_deladdr: not match\n"));
 				return (0);
 		}
