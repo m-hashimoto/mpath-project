@@ -139,18 +139,18 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node_head *head;   
 	int *dupentry;
 {
+	dprint(("-ptree_insert Start\n"));
 	caddr_t v = v_arg, m = m_arg;
 	register caddr_t cp;
 	int mlen = (int)LEN(m);
 	//register int b;
-	dprint(("-ptree_insert Start\n"));
-	struct ptree_node *top = head->pnh_top, *tt;
+	struct ptree_node *top, *tt;
 	
-	if (!top){
+	if (!head->treetop){
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	
+	top = head->pnh_top;
 	//int head_off = top->rn_offset;
 	register struct ptree_node *t = ptree_search(v, mlen, head->pnh_treetop);
 	cp = v;// + head_off;
