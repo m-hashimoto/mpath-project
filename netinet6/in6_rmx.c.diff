@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-02-08 19:39:51.000000000 +0900
++++ in6_rmx.c	2005-02-08 20:08:10.000000000 +0900
 @@ -113,21 +113,25 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -15,18 +15,19 @@
 -    struct radix_node *treenodes)
 +static struct ptree_node *
 +in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
-+				struct ptree_node *rt_node, struct rtentry *rt)
++				struct ptree_node *rt_node)
  {
 -	struct rtentry *rt = (struct rtentry *)treenodes;
 -	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)rt_key(rt);
 -	struct radix_node *ret;
+-
 +	dprint(("in6_addroute Start\n"));
 +	//struct rtentry *rt = (struct rtentry *)(&rt_node);
 +	//struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)rt_key(rt);
 +	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
 +	struct ptree_node *ret;
- 
  	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
++#if 0
  	if (IN6_IS_ADDR_MULTICAST(&sin6->sin6_addr))
  		rt->rt_flags |= RTF_MULTICAST;
 -
@@ -41,13 +42,21 @@
  
  	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
  		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
- 
+-
 -	ret = rn_addroute(v_arg, n_arg, head, treenodes);
++#endif
 +	ret = ptree_addroute(v_arg, n_arg, head, rt_node);
  	if (ret == NULL) {
  		struct rtentry *rt2;
  		/*
-@@ -179,6 +184,7 @@
+@@ -173,12 +178,13 @@
+ 			if (((rt2->rt_flags & (RTF_HOST|RTF_GATEWAY)) == 0)
+ 			 && rt2->rt_gateway
+ 			 && rt2->rt_gateway->sa_family == AF_LINK
+-			 && rt2->rt_ifp == rt->rt_ifp) {
++			 /*&& rt2->rt_ifp == rt->rt_ifp*/) {
+ 				ret = rt2->rt_nodes;
+ 			}
  			RTFREE_LOCKED(rt2);
  		}
  	}
