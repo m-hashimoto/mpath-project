@@ -130,7 +130,7 @@ on2:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
-	dprint(("-ptree_insert End\n"));
+	dprint(("-ptree_insert End: insert node = %p\n",nodes));
 	return (nodes);
 }
 
