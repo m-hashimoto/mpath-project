@@ -103,10 +103,18 @@ ptree_match (char *keyi, char *keyj, int keylen)
 /* ptree_lookup() returns the node with the key if any.
    returned node may be a branching node (that doesn't have data). */
 	struct ptree_node *
-ptree_lookup (void *key, int keylen, struct ptree *t)
+ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 {
 	dprint(("ptree_lookup Start\n"));
 	struct ptree_node *x;
+	caddr_t netmask = 0;
+
+	if (mask) {
+		x = ptree_addmask(mask, 1, t->top->rn_offset);
+		if (x == 0)
+			return (0);
+		netmask = x->rn_key;
+	}
 
 	x = t->top;
 	while (x && x->keylen <= keylen &&
@@ -114,6 +122,10 @@ ptree_lookup (void *key, int keylen, struct ptree *t)
 		x = x->child[check_bit (key, x->keylen)];
 
 	if (x->keylen == keylen){
+		if (netmask) {
+			while (x && x->rn_mask != netmask)
+				x = x->rn_dupedkey;
+		}
 		dprint(("ptree_match End\n"));
 		return x;
 	}

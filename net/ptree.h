@@ -95,7 +95,7 @@ struct ptree {
  	struct  ptree_node *(*rnh_matchaddr) 	/* locate based on sockaddr */
 		(void *v, struct ptree *head);
 	struct  ptree_node *(*rnh_lookup) 	/* locate based on sockaddr */  
-  		(void *v, int keylen, struct ptree *head);
+  		(void *v, void *mask, int keylen, struct ptree *head);
 	struct  ptree_node *(*rnh_matchpkt)	/* locate based on packet hdr */
 		(void *v, struct ptree *head);
 	int     (*rnh_walktree)                 /* traverse tree */
@@ -155,7 +155,8 @@ struct ptree {
 void ptree_node_lock (struct ptree_node *x);
 void ptree_node_unlock (struct ptree_node *x);
 
-struct ptree_node *ptree_lookup (void *key, int keylen, struct ptree *t);
+struct ptree_node
+	*ptree_lookup (void *key, void *mask, int keylen, struct ptree *t);
 struct ptree_node *ptree_search (char *key, int keylen, struct ptree *t);
 struct ptree_node 
  	*ptree_add (char *key, int keylen, void *data, struct ptree *t);
