@@ -60,16 +60,18 @@ struct ptree_node_head {
 #define R_Zalloc(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT | M_ZERO))
 #define Free(p) free((caddr_t)p, M_RTABLE);
 
-#define RADIX_NODE_HEAD_LOCK_INIT(rnh)  \
-		rw_init_flags(&(rnh)->rnh_lock, "radix node head", 0)
-#define RADIX_NODE_HEAD_LOCK(rnh)       rw_wlock(&(rnh)->rnh_lock)
-#define RADIX_NODE_HEAD_UNLOCK(rnh)     rw_wunlock(&(rnh)->rnh_lock)
-#define RADIX_NODE_HEAD_RLOCK(rnh)      rw_rlock(&(rnh)->rnh_lock)
-#define RADIX_NODE_HEAD_RUNLOCK(rnh)    rw_runlock(&(rnh)->rnh_lock)
-#define RADIX_NODE_HEAD_LOCK_TRY_UPGRADE(rnh)   rw_try_upgrade(&(rnh)->rnh_lock)
-#define RADIX_NODE_HEAD_DESTROY(rnh)    rw_destroy(&(rnh)->rnh_lock)
-#define RADIX_NODE_HEAD_LOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_LOCKED)
-#define RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
+#define	RADIX_NODE_HEAD_LOCK_INIT(rnh)	\
+    rw_init_flags(&(rnh)->rnh_lock, "radix node head", 0)
+#define	RADIX_NODE_HEAD_LOCK(rnh)	rw_wlock(&(rnh)->rnh_lock)
+#define	RADIX_NODE_HEAD_UNLOCK(rnh)	rw_wunlock(&(rnh)->rnh_lock)
+#define	RADIX_NODE_HEAD_RLOCK(rnh)	rw_rlock(&(rnh)->rnh_lock)
+#define	RADIX_NODE_HEAD_RUNLOCK(rnh)	rw_runlock(&(rnh)->rnh_lock)
+#define	RADIX_NODE_HEAD_LOCK_TRY_UPGRADE(rnh)	rw_try_upgrade(&(rnh)->rnh_lock)
+
+
+#define	RADIX_NODE_HEAD_DESTROY(rnh)	rw_destroy(&(rnh)->rnh_lock)
+#define	RADIX_NODE_HEAD_LOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_LOCKED)
+#define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
 #ifdef DEBUG
