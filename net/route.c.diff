@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-25 04:16:03.000000000 +0900
++++ route.c	2005-02-25 05:36:58.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1159,7 +1159,7 @@
  }
  
  /*
-@@ -768,495 +771,516 @@
+@@ -768,495 +771,510 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1889,12 +1889,6 @@
 +				RT_LOCK_ASSERT(rt);
 +				int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
 +				caddr_t new;
-+//#ifdef INVARIANTS
-+//				struct ptree_node_head *rnh;
-+//	
-+//				rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
-+//#endif
-+//				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
 +				R_Malloc(new, caddr_t, dlen + glen);
 +				if (new == NULL){
 +					RT_LOCK_DESTROY(rt);
@@ -2099,7 +2093,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1291,69 @@
+@@ -1267,71 +1285,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2223,7 +2217,7 @@
  }
  
  /*
-@@ -1339,228 +1361,232 @@
+@@ -1339,228 +1355,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
