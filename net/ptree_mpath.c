@@ -1100,7 +1100,7 @@ ptree_init()
 				panic("ptree_init");
 		bzero(pn_zeros, 3 * max_keylen);
 		pn_ones = cp = pn_zeros + max_keylen;
-		//addmask_key = cplim = pn_ones + max_keylen;
+		cplim = pn_ones + max_keylen;
 		while (cp < cplim)
 				*cp++ = -1;
 		//if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
