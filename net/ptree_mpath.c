@@ -26,26 +26,41 @@ debug_node_print(struct ptree_node *pn, int offset)
 	struct rtentry *rt = pn->data;
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 
-	if(pn->key){
-	printf("[%3d.%3d.%3d.%3d/%3d] ",
-					//(unsigned char)pn->key[0],(unsigned char)pn->key[1],
-					//(unsigned char)pn->key[2],(unsigned char)pn->key[3],
+	if(offset = 8){
+		if(pn->key){
+			printf("[%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d/%3d]\n",
+					(unsigned char)pn->key[8],(unsigned char)pn->key[9],
+					(unsigned char)pn->key[10],(unsigned char)pn->key[11],
+					(unsigned char)pn->key[12],(unsigned char)pn->key[13],
+					(unsigned char)pn->key[14],(unsigned char)pn->key[15],
+					(unsigned char)pn->key[16],(unsigned char)pn->key[17],
+					(unsigned char)pn->key[18],(unsigned char)pn->key[19],
+					pn->keylen - 8*offset);
+		}
+		if(gateway){
+			printf(" - [%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d] ",
+					(unsigned char)gateway[8],(unsigned char)gateway[9],
+					(unsigned char)gateway[10],(unsigned char)gateway[11],
+					(unsigned char)gateway[12],(unsigned char)gateway[13],
+					(unsigned char)gateway[14],(unsigned char)gateway[15],
+					(unsigned char)gateway[16],(unsigned char)gateway[17],
+					(unsigned char)gateway[18],(unsigned char)gateway[19]);
+		}
+		printf("[0x%x]\n",rt->rt_flags);
+	} else {
+		if(pn->key){
+			printf("[%3d.%3d.%3d.%3d/%3d] ",
 					(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 					(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-					//(unsigned char)pn->key[8],(unsigned char)pn->key[9],
-					//(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 					pn->keylen - 8*offset);
-	}
-	if(gateway){
-	printf("[%3d.%3d.%3d.%3d] ",
-					//(unsigned char)gateway[0],(unsigned char)gateway[1],
-					//(unsigned char)gateway[2],(unsigned char)gateway[3],
+		}
+		if(gateway){
+			printf("[%3d.%3d.%3d.%3d] ",
 					(unsigned char)gateway[4],(unsigned char)gateway[5],
 					(unsigned char)gateway[6],(unsigned char)gateway[7]);
-					//(unsigned char)gateway[8],(unsigned char)gateway[9],
-					//(unsigned char)gateway[10],(unsigned char)gateway[11]);
+		}
+		printf("[0x%x]\n",rt->rt_flags);
 	}
-	printf("[0x%x]\n",rt->rt_flags);
 	//printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
 }
