@@ -421,8 +421,8 @@ ptree_next (struct ptree_node *v)
 	{
 		w = v->child[0];
 		if( w->rn_flags & RNF_ACTIVE ){
-			ptree_node_lock (w);
-			ptree_node_unlock (v);
+			//ptree_node_lock (w);
+			//ptree_node_unlock (v);
 			dprint(("ptree_next End (down left)\n"));
 			return w;
 		}
@@ -432,8 +432,8 @@ ptree_next (struct ptree_node *v)
 	{
 		w = v->child[1];
 		if( w->rn_flags & RNF_ACTIVE ){
-			ptree_node_lock (w);
-			ptree_node_unlock (v);
+			//ptree_node_lock (w);
+			//ptree_node_unlock (v);
 			dprint(("ptree_next End (down right)\n"));
 		return w;
 		}
@@ -455,8 +455,8 @@ ptree_next (struct ptree_node *v)
 	{
 		w = u->child[1];
 		if( w->rn_flags & RNF_ACTIVE ){
-			ptree_node_lock (w);
-			ptree_node_unlock (v);
+			//ptree_node_lock (w);
+			//ptree_node_unlock (v);
 			dprint(("ptree_next End (go parent and down right)\n"));
 		return w;
 		}
@@ -480,15 +480,15 @@ ptree_next (struct ptree_node *v)
 		dprint(("ptree_next: t->rn_right = %p\n",w));
 		if( w->rn_flags & RNF_ACTIVE ){
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));	
-			ptree_node_lock (w);
-			ptree_node_unlock (v);
+			//ptree_node_lock (w);
+			//ptree_node_unlock (v);
 			dprint(("ptree_next End (not-yet-traversed right)\n"));
 		return w;
 		}
 	}
 
 	/* end of traverse */
-	ptree_node_unlock (v);
+	//ptree_node_unlock (v);
 	dprint(("ptree_next End\n"));
 	return NULL;
 }

@@ -406,7 +406,6 @@ ptree_matchaddr(v_arg, head)
 	 * Never return the root node itself, it seems to cause a
 	 * lot of confusion.
 	 */
-	dprint(("ptree_matchaddr: test\n"));
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
 	dprint(("ptree_matchaddr End 1\n"));
@@ -422,7 +421,6 @@ on1:
 	/*
 	 * If there is a host route in a duped-key chain, it will be first.
 	 */
-	dprint(("ptree_matchaddr: on1 test print\n"));
 	if ((saved_t = t)->rn_mask == 0)
 		t = t->rn_dupedkey;
 	for (; t; t = t->rn_dupedkey)
@@ -976,7 +974,8 @@ ptree_walktree(h, f, w)
 	for (;;) {
 		base = rn;
 		next = ptree_next(base);
-		dprint(("ptree_walktree: base %p next %p\n",base,next));
+		dprint(("ptree_walktree: base = %d:%d:%d:%d\n",
+					rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
 		if( !next ){
 			dprint(("ptree_walktree End (next == NULL)\n"));
 			return (0);
