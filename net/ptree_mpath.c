@@ -938,7 +938,8 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	t = ptree_add(rn_zeros,off,head);
+	rnh = ptree_create();
+	t = ptree_add(rn_zeros,off,rnh);
 	t->rn_bmask = 0;
 	t->rn_mask = NULL;
 	t->rn_dupedkey = NULL;
@@ -953,7 +954,7 @@ ptree_inithead(head, off)
 	rnh->rnh_lookup = ptree_lookup;
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
-	rnh->top = t
+	rnh->top = t;
 	dprint(("ptree_inithead End\n"));
 	return (1);
 }
