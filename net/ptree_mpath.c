@@ -391,9 +391,6 @@ ptree_inithead(void **head, int off)
 #endif
 		*head = pnh;
 		top->top = t = NULL;
-#ifdef PTREE_MPATH
-		pnh->pnh_multipath = 1;
-#endif
 		pnh->pnh_offset = off / 8;
 		pnh->rnh_addaddr = ptree_addroute;
 		pnh->rnh_deladdr = ptree_deladdr;
@@ -429,8 +426,8 @@ ptree_init()
 		cplim = pn_ones + max_keylen;
 		while (cp < cplim)
 				*cp++ = -1;
-	if (ptree_inithead((void **)(void *)&pnhead, 0) == 0)
-		panic("ptree_init 2");
+	//if (ptree_inithead((void **)(void *)&rn_maskhead, 0) == 0)
+	//	panic("ptree_init 2");
 
 }
 
