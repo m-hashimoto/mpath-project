@@ -98,7 +98,8 @@ debug_tree_print(struct ptree *rnh)
 	R_Malloc(m, struct ptree_mask *, sizeof (struct ptree_mask)); }
 
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
-#define LEN(x) (*(const u_char *)(x))
+//#define LEN(x) (*(const u_char *)(x))
+#define LEN(x) ( 8*sizeof(x) )
 #define rn_masktop (mask_rnhead->rnh_treetop)
 
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
@@ -144,14 +145,14 @@ static int ptree_satisfies_leaf(char *trial,
 		goto on2;
 	}
 	/* Find first bit at which v and t->rn_key differ */ 
-	{         
+	{
 		register caddr_t cp2 = t->rn_key + head_off;  
 		register int cmp_res;
 		caddr_t cplim = v + vlen;
 		
 		dprint(("-ptree_insert: "));
 		while (cp < cplim){
-			dprint((" +"));
+			dprint((" + "));
 			if (*cp2++ != *cp++){
 				dprint(("goto on1\n"));
 				goto on1;

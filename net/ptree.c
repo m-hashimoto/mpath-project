@@ -92,6 +92,7 @@ check_bit (char *key, int keylen)
 	offset = keylen / 8;
 	shift = 7 - keylen % 8;
 
+	dprint(("+-check_bit offset %d shift %d\n",offset,shift));
 	dprint(("+-check_bit return %d\n",key[offset]>>shift & 1 ));
 	return (key[offset] >> shift & 1);
 }
