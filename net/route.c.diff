@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-22 12:47:34.000000000 +0900
++++ route.c	2005-02-22 13:18:37.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1185,7 +1185,7 @@
  }
  
  /*
-@@ -768,495 +794,543 @@
+@@ -768,495 +794,549 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1952,6 +1952,12 @@
 +								g[4],g[5],g[6],g[7],
 +								g[8],g[9],g[10],g[11],
 +								g[12],g[13],g[14],g[15]));
++				g = (unsigned char *)dst;
++				dprint(("rtreq_ADD: dst[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++								g[0],g[1],g[2],g[3],
++								g[4],g[5],g[6],g[7],
++								g[8],g[9],g[10],g[11],
++								g[12],g[13],g[14],g[15]));
 +#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
@@ -2152,7 +2158,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1341,69 @@
+@@ -1267,71 +1347,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2276,7 +2282,7 @@
  }
  
  /*
-@@ -1339,228 +1411,232 @@
+@@ -1339,228 +1417,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
