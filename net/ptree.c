@@ -152,7 +152,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
 
 	match = x = t->top;
 	dprint(("ptree_search: t->top = %p\n",x));
-	if(!x->key){
+	if(!x){
 		dprint(("ptree_search: t->top = NULL\n"));
 		return match;
 	}

@@ -483,6 +483,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	int keyduplicated;
 	caddr_t mmask;
 	struct ptree_mask *m, **mp;
+	dprint(("ptree_addroute: key = %x:%x:%x:%x\n",v[0],v[1],v[2],v[3]));
 
 	/*
 	 * In dealing with non-contiguous masks, there may be
@@ -974,7 +975,7 @@ ptree_walktree(h, f, w)
 	for (;;) {
 		base = rn;
 		next = ptree_next(base);
-		dprint(("ptree_walktree: base = %d:%d:%d:%d\n",
+		dprint(("ptree_walktree: base = %x:%x:%x:%x\n",
 					rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
 		if( !next ){
 			dprint(("ptree_walktree End (next == NULL)\n"));
@@ -1010,8 +1011,8 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	//t = ptree_add(rn_zeros,off,data,rnh);
-	t = rnh->rnh_nodes;
-	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
+	//t->rn_flags = RNF_ROOT | RNF_ACTIVE;
+	t = NULL;
 	dprint(("ptree_inithead: head = %p len = %d flag = %d\n",
 				t,t->keylen,t->rn_flags));
 #ifdef PTREE_MPATH
