@@ -591,6 +591,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		goto on2;
 	}
 #endif
+	t = saved_tt;
 	if (keyduplicated){
 		dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 		goto on2;
@@ -598,45 +599,45 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	//b_leaf = -1 - t->rn_bit;
 	b_leaf = tt->rn_bit;
 	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-	mp = &saved_tt->rn_mklist;
-	if(tt->rn_mask && tt->rn_mklist == 0){
-			*mp = m = ptree_new_mask(tt,0);
-			if (m)
-					mp = &m->rm_mklist;
-	}
-	else if(tt->rn_mklist){
-			for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
-					if(m->rm_bit >= b_leaf)
-							break;
-			t->rn_mklist = m;
-			*mp = 0;
-	}
+	for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
+			if(tt->rn_mask && tt->rn_mklist == 0){
+					*mp = m = ptree_new_mask(tt,0);
+					if (m)
+							mp = &m->rm_mklist;
+			}
+			else if(tt->rn_mklist){
+					for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
+							if(m->rm_bit >= b_leaf)
+									break;
+					t->rn_mklist = m;
+					*mp = 0;
+			}
 #if 0 /* 10/29 19:32 test */
 	if (t->rn_right == saved_tt)
-		x = t->rn_left;
+			x = t->rn_left;
 	else
-		x = t->rn_right;
+			x = t->rn_right;
 	if(!x){
-		dprint(("-ptree_addroute: goto on2 if(!x)\n"));
-		goto on2;
+			dprint(("-ptree_addroute: goto on2 if(!x)\n"));
+			goto on2;
 	}
 	/* Promote general routes from below */
 	if (x->rn_bit < 0) {
-		dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
-		for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
-			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
-				*mp = m = ptree_new_mask(x, 0);
-				if (m)
-					mp = &m->rm_mklist;
-			}
+			dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
+			for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
+					if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
+							*mp = m = ptree_new_mask(x, 0);
+							if (m)
+									mp = &m->rm_mklist;
+					}
 	} else if (x->rn_mklist) {
-		/*
-		 * Skip over masks whose index is > that of new node
-		 */
-		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
-			if (m->rm_bit >= b_leaf)
-				break;
-		t->rn_mklist = m; *mp = 0;
+			/*
+			 * Skip over masks whose index is > that of new node
+			 */
+			for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
+					if (m->rm_bit >= b_leaf)
+							break;
+			t->rn_mklist = m; *mp = 0;
 	}
 #endif
 on2:
@@ -644,16 +645,16 @@ on2:
 #if 0 /* 10/29 19:32 test */
 	dprint(("-ptree_addroute: add new route to highest list\n"));
 	if ((netmask == 0) || (b > t->rn_bit )){
-		dprint(("-ptree_addroute End (can't lift at all)\n"));
-		return tt; /* can't lift at all */
+			dprint(("-ptree_addroute End (can't lift at all)\n"));
+			return tt; /* can't lift at all */
 	}
 	b_leaf = tt->rn_bit;
 	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 	do {
-		x = t;
-		t = t->rn_parent;
-		if(!t)
-			break;
+			x = t;
+			t = t->rn_parent;
+			if(!t)
+					break;
 	} while (x != top && b <= t->rn_bit);
 	dprint(("-ptree_addroute: x = %p\n",x));
 #endif
@@ -666,29 +667,29 @@ on2:
 #if 0 /* 10/29 22:00 */
 	x = saved_tt;
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
-		if (m->rm_bit < b_leaf)
-			continue;
-		if (m->rm_bit > b_leaf)
-			break;
-		if (m->rm_flags & RNF_NORMAL) {
-			mmask = m->rm_leaf->rn_mask;
-			if (tt->rn_flags & RNF_NORMAL) {
-				log(LOG_ERR, 
-						"Non-unique normal route, mask not entered\n");
-				dprint(("-ptree_addroute: rn_flags = RNF_NORMAL\n"));
-				return tt;
+			if (m->rm_bit < b_leaf)
+					continue;
+			if (m->rm_bit > b_leaf)
+					break;
+			if (m->rm_flags & RNF_NORMAL) {
+					mmask = m->rm_leaf->rn_mask;
+					if (tt->rn_flags & RNF_NORMAL) {
+							log(LOG_ERR, 
+											"Non-unique normal route, mask not entered\n");
+							dprint(("-ptree_addroute: rn_flags = RNF_NORMAL\n"));
+							return tt;
+					}
+			} else
+					mmask = m->rm_mask;
+			if (mmask == netmask) {
+					m->rm_refs++;
+					tt->rn_mklist = m;
+					dprint(("-ptree_addroute: if(mmask == netmask)\n"));
+					return tt;
 			}
-		} else
-			mmask = m->rm_mask;
-		if (mmask == netmask) {
-			m->rm_refs++;
-			tt->rn_mklist = m;
-			dprint(("-ptree_addroute: if(mmask == netmask)\n"));
-			return tt;
-		}
-		if (ptree_refines(netmask, mmask)
-				|| ptree_lexobetter(netmask, mmask))
-			break;
+			if (ptree_refines(netmask, mmask)
+							|| ptree_lexobetter(netmask, mmask))
+					break;
 	}
 #endif
 	*mp = ptree_new_mask(tt, *mp);
@@ -697,465 +698,465 @@ on2:
 }
 
 
-	struct ptree_node *
+		struct ptree_node *
 ptree_deladdr(v_arg, netmask_arg, head)
-	void *v_arg, *netmask_arg;
-	struct ptree *head;
+		void *v_arg, *netmask_arg;
+		struct ptree *head;
 {
-	dprint(("-ptree_deladdr Start\n"));
-	register struct ptree_node *t, *p, *x, *tt;
-	struct ptree_mask *m, *saved_m, **mp;
-	struct ptree_node *dupedkey, *saved_tt, *top;
-	caddr_t v, netmask;
-	int b, head_off, vlen;
+		dprint(("-ptree_deladdr Start\n"));
+		register struct ptree_node *t, *p, *x, *tt;
+		struct ptree_mask *m, *saved_m, **mp;
+		struct ptree_node *dupedkey, *saved_tt, *top;
+		caddr_t v, netmask;
+		int b, head_off, vlen;
 
-	v = v_arg;
-	netmask = netmask_arg;
-	x = head->top;
-	vlen =  LEN(v);
-	tt = ptree_search(v, vlen, head);
-	head_off = x->rn_offset;
-	saved_tt = tt;
-	top = x;
-	if (tt == 0 || bcmp(v + head_off, tt->rn_key + head_off, vlen - head_off)){
-		dprint(("-ptree_deladdr End1: return 0\n"));
-		return (0);
-	}
-	/*
-	 * Delete our route from mask lists.
-	 */
-	if (netmask) {
-		if ((x = ptree_addmask(netmask, 1, head_off)) == 0){
-			dprint(("-ptree_deladdr End2: return 0\n"));
-			return (0);
-		}
-		netmask = x->rn_key;
-		while (tt->rn_mask != netmask)
-			if ((tt = tt->rn_dupedkey) == 0){
-		dprint(("-ptree_deladdr End3: return 0\n"));
+		v = v_arg;
+		netmask = netmask_arg;
+		x = head->top;
+		vlen =  LEN(v);
+		tt = ptree_search(v, vlen, head);
+		head_off = x->rn_offset;
+		saved_tt = tt;
+		top = x;
+		if (tt == 0 || bcmp(v + head_off, tt->rn_key + head_off, vlen - head_off)){
+				dprint(("-ptree_deladdr End1: return 0\n"));
 				return (0);
-			}
-	}
-	if (tt->rn_mask == 0 || (saved_m = m = tt->rn_mklist) == 0)
-		goto on1;
-	if (tt->rn_flags & RNF_NORMAL) {
-		if (m->rm_leaf != tt || m->rm_refs > 0) {
-			log(LOG_ERR, "rn_delete: inconsistent annotation\n");
-		dprint(("-ptree_deladdr End4: return 0\n"));
-			return 0;  /* dangling ref could cause disaster */
 		}
-	} else {
-		if (m->rm_mask != tt->rn_mask) {
-			log(LOG_ERR, "rn_delete: inconsistent annotation\n");
-			goto on1;
-		}
-		if (--m->rm_refs >= 0)
-			goto on1;
-	}
-	b = -1 - tt->rn_bit;
-	t = saved_tt->rn_parent;
-	if (b > t->rn_bit)
-		goto on1; /* Wasn't lifted at all */
-	do {
-		x = t;
-		t = t->rn_parent;
-	} while (b <= t->rn_bit && x != top);
-	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
-		if (m == saved_m) {
-			*mp = m->rm_mklist;
-			MKFree(m);
-			break;
-		}
-	if (m == 0) {
-		log(LOG_ERR, "rn_delete: couldn't find our annotation\n");
-		if (tt->rn_flags & RNF_NORMAL){
-		dprint(("-ptree_deladdr End5: return 0\n"));
-			return (0); /* Dangling ref to us */
-		}
-	}
-on1:
-	/*
-	 * Eliminate us from tree
-	 */
-	if (tt->rn_flags & RNF_ROOT){
-		dprint(("-ptree_deladdr End6: return 0\n"));
-		return (0);
-	}
-#ifdef RN_DEBUG
-	/* Get us out of the creation list */
-	for (t = rn_clist; t && t->rn_ybro != tt; t = t->rn_ybro) {}
-	if (t) t->rn_ybro = tt->rn_ybro;
-#endif
-	t = tt->rn_parent;
-	dupedkey = saved_tt->rn_dupedkey;
-	if (dupedkey) {
 		/*
-		 * Here, tt is the deletion target and
-		 * saved_tt is the head of the dupekey chain.
+		 * Delete our route from mask lists.
 		 */
-		if (tt == saved_tt) {
-			/* remove from head of chain */
-			x = dupedkey; x->rn_parent = t;
-			if (t->rn_left == tt)
-				t->rn_left = x;
-			else
-				t->rn_right = x;
-		} else {
-			/* find node in front of tt on the chain */
-			for (x = p = saved_tt; p && p->rn_dupedkey != tt;)
-				p = p->rn_dupedkey;
-			if (p) {
-				p->rn_dupedkey = tt->rn_dupedkey;
-				if (tt->rn_dupedkey)		/* parent */
-					tt->rn_dupedkey->rn_parent = p;
-				/* parent */
-			} else log(LOG_ERR, "rn_delete: couldn't find us\n");
-		}
-		t = tt + 1;
-		if  (t->rn_flags & RNF_ACTIVE) {
-#ifndef RN_DEBUG
-			*++x = *t;
-			p = t->rn_parent;
-#else
-			b = t->rn_info;
-			*++x = *t;
-			t->rn_info = b;
-			p = t->rn_parent;
-#endif
-			if (p->rn_left == t)
-				p->rn_left = x;
-			else
-				p->rn_right = x;
-			x->rn_left->rn_parent = x;
-			x->rn_right->rn_parent = x;
-		}
-		goto out;
-	}
-	if (t->rn_left == tt)
-		x = t->rn_right;
-	else
-		x = t->rn_left;
-	p = t->rn_parent;
-	if (p->rn_right == t)
-		p->rn_right = x;
-	else
-		p->rn_left = x;
-	x->rn_parent = p;
-	/*
-	 * Demote routes attached to us.
-	 */
-	if (t->rn_mklist) {
-		if (x->rn_bit >= 0) {
-			for (mp = &x->rn_mklist; (m = *mp);)
-				mp = &m->rm_mklist;
-			*mp = t->rn_mklist;
-		} else {
-			/* If there are any key,mask pairs in a sibling
-			   duped-key chain, some subset will appear sorted
-			   in the same order attached to our mklist */
-			for (m = t->rn_mklist; m && x; x = x->rn_dupedkey)
-				if (m == x->rn_mklist) {
-					struct ptree_mask *mm = m->rm_mklist;
-					x->rn_mklist = 0;
-					if (--(m->rm_refs) < 0)
-						MKFree(m);
-					m = mm;
+		if (netmask) {
+				if ((x = ptree_addmask(netmask, 1, head_off)) == 0){
+						dprint(("-ptree_deladdr End2: return 0\n"));
+						return (0);
 				}
-			if (m)
-				log(LOG_ERR,
-						"rn_delete: Orphaned Mask %p at %p\n",
-						(void *)m, (void *)x);
+				netmask = x->rn_key;
+				while (tt->rn_mask != netmask)
+						if ((tt = tt->rn_dupedkey) == 0){
+								dprint(("-ptree_deladdr End3: return 0\n"));
+								return (0);
+						}
 		}
-	}
-	/*
-	 * We may be holding an active internal node in the tree.
-	 */
-	x = tt + 1;
-	if (t != x) {
-#ifndef RN_DEBUG
-		*t = *x;
-#else
-		b = t->rn_info;
-		*t = *x;
-		t->rn_info = b;
+		if (tt->rn_mask == 0 || (saved_m = m = tt->rn_mklist) == 0)
+				goto on1;
+		if (tt->rn_flags & RNF_NORMAL) {
+				if (m->rm_leaf != tt || m->rm_refs > 0) {
+						log(LOG_ERR, "rn_delete: inconsistent annotation\n");
+						dprint(("-ptree_deladdr End4: return 0\n"));
+						return 0;  /* dangling ref could cause disaster */
+				}
+		} else {
+				if (m->rm_mask != tt->rn_mask) {
+						log(LOG_ERR, "rn_delete: inconsistent annotation\n");
+						goto on1;
+				}
+				if (--m->rm_refs >= 0)
+						goto on1;
+		}
+		b = -1 - tt->rn_bit;
+		t = saved_tt->rn_parent;
+		if (b > t->rn_bit)
+				goto on1; /* Wasn't lifted at all */
+		do {
+				x = t;
+				t = t->rn_parent;
+		} while (b <= t->rn_bit && x != top);
+		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
+				if (m == saved_m) {
+						*mp = m->rm_mklist;
+						MKFree(m);
+						break;
+				}
+		if (m == 0) {
+				log(LOG_ERR, "rn_delete: couldn't find our annotation\n");
+				if (tt->rn_flags & RNF_NORMAL){
+						dprint(("-ptree_deladdr End5: return 0\n"));
+						return (0); /* Dangling ref to us */
+				}
+		}
+on1:
+		/*
+		 * Eliminate us from tree
+		 */
+		if (tt->rn_flags & RNF_ROOT){
+				dprint(("-ptree_deladdr End6: return 0\n"));
+				return (0);
+		}
+#ifdef RN_DEBUG
+		/* Get us out of the creation list */
+		for (t = rn_clist; t && t->rn_ybro != tt; t = t->rn_ybro) {}
+		if (t) t->rn_ybro = tt->rn_ybro;
 #endif
-		t->rn_left->rn_parent = t;
-		t->rn_right->rn_parent = t;
-		p = x->rn_parent;
-		if (p->rn_left == x)
-			p->rn_left = t;
+		t = tt->rn_parent;
+		dupedkey = saved_tt->rn_dupedkey;
+		if (dupedkey) {
+				/*
+				 * Here, tt is the deletion target and
+				 * saved_tt is the head of the dupekey chain.
+				 */
+				if (tt == saved_tt) {
+						/* remove from head of chain */
+						x = dupedkey; x->rn_parent = t;
+						if (t->rn_left == tt)
+								t->rn_left = x;
+						else
+								t->rn_right = x;
+				} else {
+						/* find node in front of tt on the chain */
+						for (x = p = saved_tt; p && p->rn_dupedkey != tt;)
+								p = p->rn_dupedkey;
+						if (p) {
+								p->rn_dupedkey = tt->rn_dupedkey;
+								if (tt->rn_dupedkey)		/* parent */
+										tt->rn_dupedkey->rn_parent = p;
+								/* parent */
+						} else log(LOG_ERR, "rn_delete: couldn't find us\n");
+				}
+				t = tt + 1;
+				if  (t->rn_flags & RNF_ACTIVE) {
+#ifndef RN_DEBUG
+						*++x = *t;
+						p = t->rn_parent;
+#else
+						b = t->rn_info;
+						*++x = *t;
+						t->rn_info = b;
+						p = t->rn_parent;
+#endif
+						if (p->rn_left == t)
+								p->rn_left = x;
+						else
+								p->rn_right = x;
+						x->rn_left->rn_parent = x;
+						x->rn_right->rn_parent = x;
+				}
+				goto out;
+		}
+		if (t->rn_left == tt)
+				x = t->rn_right;
 		else
-			p->rn_right = t;
-	}
+				x = t->rn_left;
+		p = t->rn_parent;
+		if (p->rn_right == t)
+				p->rn_right = x;
+		else
+				p->rn_left = x;
+		x->rn_parent = p;
+		/*
+		 * Demote routes attached to us.
+		 */
+		if (t->rn_mklist) {
+				if (x->rn_bit >= 0) {
+						for (mp = &x->rn_mklist; (m = *mp);)
+								mp = &m->rm_mklist;
+						*mp = t->rn_mklist;
+				} else {
+						/* If there are any key,mask pairs in a sibling
+						   duped-key chain, some subset will appear sorted
+						   in the same order attached to our mklist */
+						for (m = t->rn_mklist; m && x; x = x->rn_dupedkey)
+								if (m == x->rn_mklist) {
+										struct ptree_mask *mm = m->rm_mklist;
+										x->rn_mklist = 0;
+										if (--(m->rm_refs) < 0)
+												MKFree(m);
+										m = mm;
+								}
+						if (m)
+								log(LOG_ERR,
+												"rn_delete: Orphaned Mask %p at %p\n",
+												(void *)m, (void *)x);
+				}
+		}
+		/*
+		 * We may be holding an active internal node in the tree.
+		 */
+		x = tt + 1;
+		if (t != x) {
+#ifndef RN_DEBUG
+				*t = *x;
+#else
+				b = t->rn_info;
+				*t = *x;
+				t->rn_info = b;
+#endif
+				t->rn_left->rn_parent = t;
+				t->rn_right->rn_parent = t;
+				p = x->rn_parent;
+				if (p->rn_left == x)
+						p->rn_left = t;
+				else
+						p->rn_right = t;
+		}
 out:
-	tt->rn_flags &= ~RNF_ACTIVE;
-	tt[1].rn_flags &= ~RNF_ACTIVE;
-	dprint(("-ptree_deladdr End\n"));
-	return (tt);
+		tt->rn_flags &= ~RNF_ACTIVE;
+		tt[1].rn_flags &= ~RNF_ACTIVE;
+		dprint(("-ptree_deladdr End\n"));
+		return (tt);
 }
 
 /*
  * This is the same as rn_walktree() except for the parameters and the
  * exit.
  */
-	static int
+		static int
 ptree_walktree_from(h, a, m, f, w)
-	struct ptree *h;
-	void *a, *m;
-	walktree_f_t *f;
-	void *w;
+		struct ptree *h;
+		void *a, *m;
+		walktree_f_t *f;
+		void *w;
 {
-	dprint(("-ptree_walktree_from Start\n"));
-	int error;
-	struct ptree_node *base, *next;
-	u_char *xa = (u_char *)a;
-	u_char *xm = (u_char *)m;
-	register struct ptree_node *rn, *last = 0 /* shut up gcc */;
-	int stopping = 0;
-	int lastb;
+		dprint(("-ptree_walktree_from Start\n"));
+		int error;
+		struct ptree_node *base, *next;
+		u_char *xa = (u_char *)a;
+		u_char *xm = (u_char *)m;
+		register struct ptree_node *rn, *last = 0 /* shut up gcc */;
+		int stopping = 0;
+		int lastb;
 
-	/*
-	 * rn_search_m is sort-of-open-coded here. We cannot use the
-	 * function because we need to keep track of the last node seen.
-	 */
-	for (rn = h->rnh_treetop; rn->rn_bit >= 0; ) {
-		last = rn;
-		if (!(rn->rn_bmask & xm[rn->rn_offset])) {
-			break;
-		}
-		if (rn->rn_bmask & xa[rn->rn_offset]) {
-			rn = rn->rn_right;
-		} else {
-			rn = rn->rn_left;
-		}
-	}
-
-	/*
-	 * Two cases: either we stepped off the end of our mask,
-	 * in which case last == rn, or we reached a leaf, in which
-	 * case we want to start from the last node we looked at.
-	 * Either way, last is the node we want to start from.
-	 */
-	rn = last;
-	lastb = rn->rn_bit;
-	/*
-	 * This gets complicated because we may delete the node
-	 * while applying the function f to it, so we need to calculate
-	 * the successor node in advance.
-	 */
-	while (rn->rn_bit >= 0)
-		rn = rn->rn_left;
-
-	while (!stopping) {
-		printf("node %p (%d)\n", rn, rn->rn_bit);
-		base = rn;
-		/* If at right child go back up, otherwise, go right */
-		while (rn->rn_parent->rn_right == rn
-				&& !(rn->rn_flags & RNF_ROOT)) {
-			rn = rn->rn_parent;
-
-			/* if went up beyond last, stop */
-			if (rn->rn_bit < lastb) {
-				stopping = 1;
-				printf("up too far\n");
-				/*
-				 * XXX we should jump to the 'Process leaves'
-				 * part, because the values of 'rn' and 'next'
-				 * we compute will not be used. Not a big deal
-				 * because this loop will terminate, but it is
-				 * inefficient and hard to understand!
-				 */
-			}
+		/*
+		 * rn_search_m is sort-of-open-coded here. We cannot use the
+		 * function because we need to keep track of the last node seen.
+		 */
+		for (rn = h->rnh_treetop; rn->rn_bit >= 0; ) {
+				last = rn;
+				if (!(rn->rn_bmask & xm[rn->rn_offset])) {
+						break;
+				}
+				if (rn->rn_bmask & xa[rn->rn_offset]) {
+						rn = rn->rn_right;
+				} else {
+						rn = rn->rn_left;
+				}
 		}
 
-		/* Find the next *leaf* since next node might vanish, too */
-		for (rn = rn->rn_parent->rn_right; rn->rn_bit >= 0;)
-			rn = rn->rn_left;
-		next = rn;
-		/* Process leaves */
-		while ((rn = base) != 0) {
-			base = rn->rn_dupedkey;
-			printf("leaf %p\n", rn);
-			if (!(rn->rn_flags & RNF_ROOT)
-					&& (error = (*f)(rn, w)))
-				return (error);
-		}
-		rn = next;
+		/*
+		 * Two cases: either we stepped off the end of our mask,
+		 * in which case last == rn, or we reached a leaf, in which
+		 * case we want to start from the last node we looked at.
+		 * Either way, last is the node we want to start from.
+		 */
+		rn = last;
+		lastb = rn->rn_bit;
+		/*
+		 * This gets complicated because we may delete the node
+		 * while applying the function f to it, so we need to calculate
+		 * the successor node in advance.
+		 */
+		while (rn->rn_bit >= 0)
+				rn = rn->rn_left;
 
-		if (rn->rn_flags & RNF_ROOT) {
-			printf("root, stopping");
-			stopping = 1;
-		}
+		while (!stopping) {
+				printf("node %p (%d)\n", rn, rn->rn_bit);
+				base = rn;
+				/* If at right child go back up, otherwise, go right */
+				while (rn->rn_parent->rn_right == rn
+								&& !(rn->rn_flags & RNF_ROOT)) {
+						rn = rn->rn_parent;
 
-	}
-	dprint(("-ptree_walktree_from End\n"));
-	return 0;
+						/* if went up beyond last, stop */
+						if (rn->rn_bit < lastb) {
+								stopping = 1;
+								printf("up too far\n");
+								/*
+								 * XXX we should jump to the 'Process leaves'
+								 * part, because the values of 'rn' and 'next'
+								 * we compute will not be used. Not a big deal
+								 * because this loop will terminate, but it is
+								 * inefficient and hard to understand!
+								 */
+						}
+				}
+
+				/* Find the next *leaf* since next node might vanish, too */
+				for (rn = rn->rn_parent->rn_right; rn->rn_bit >= 0;)
+						rn = rn->rn_left;
+				next = rn;
+				/* Process leaves */
+				while ((rn = base) != 0) {
+						base = rn->rn_dupedkey;
+						printf("leaf %p\n", rn);
+						if (!(rn->rn_flags & RNF_ROOT)
+										&& (error = (*f)(rn, w)))
+								return (error);
+				}
+				rn = next;
+
+				if (rn->rn_flags & RNF_ROOT) {
+						printf("root, stopping");
+						stopping = 1;
+				}
+
+		}
+		dprint(("-ptree_walktree_from End\n"));
+		return 0;
 }
 
 
-	static int
+		static int
 ptree_walktree(h, f, w)
-	struct ptree *h;
-	walktree_f_t *f;
-	void *w;
+		struct ptree *h;
+		walktree_f_t *f;
+		void *w;
 {
-	dprint(("-ptree_walktree Start\n"));
-	struct ptree_node *base, *next;
-	register struct ptree_node *rn = h->rnh_treetop;
-	if (!rn){
-		dprint(("-ptree_walktree End (treetop = NULL)\n"));
-		return (0);
-	}
-
-	dprint(("-ptree_walktree: treetop = %p keylen = %d\n",rn->key,rn->keylen));
-	for (;;) {
-		base = rn;
-		next = ptree_next(base);
-		if( !next ){
-			dprint(("-ptree_walktree End (next == NULL)\n"));
-			return (0);
+		dprint(("-ptree_walktree Start\n"));
+		struct ptree_node *base, *next;
+		register struct ptree_node *rn = h->rnh_treetop;
+		if (!rn){
+				dprint(("-ptree_walktree End (treetop = NULL)\n"));
+				return (0);
 		}
-		rn = next;
-		dprint(("-ptree_walktree: next = %p keylen = %d\n",rn->key,rn->keylen));
-	}
-	/* NOTREACHED */
-	dprint(("-ptree_walktree End\n"));
+
+		dprint(("-ptree_walktree: treetop = %p keylen = %d\n",rn->key,rn->keylen));
+		for (;;) {
+				base = rn;
+				next = ptree_next(base);
+				if( !next ){
+						dprint(("-ptree_walktree End (next == NULL)\n"));
+						return (0);
+				}
+				rn = next;
+				dprint(("-ptree_walktree: next = %p keylen = %d\n",rn->key,rn->keylen));
+		}
+		/* NOTREACHED */
+		dprint(("-ptree_walktree End\n"));
 }
 
-	int
+		int
 ptree_inithead(head, off)
-	void **head;
-	int off;
+		void **head;
+		int off;
 {
-	dprint(("-ptree_inithead Start\n"));
-	register struct ptree *rnh;
-	register struct ptree_node *t;
-	//int *data = NULL;
-	
-	if (*head){
-		dprint(("-ptree_inithead End1\n"));
-		return (1);
-	}
-	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
-	if (rnh == 0){
-		dprint(("-ptree_inithead End2\n"));
-		return (0);
-	}
+		dprint(("-ptree_inithead Start\n"));
+		register struct ptree *rnh;
+		register struct ptree_node *t;
+		//int *data = NULL;
+
+		if (*head){
+				dprint(("-ptree_inithead End1\n"));
+				return (1);
+		}
+		R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
+		if (rnh == 0){
+				dprint(("-ptree_inithead End2\n"));
+				return (0);
+		}
 #ifdef _KERNEL
-	RADIX_NODE_HEAD_LOCK_INIT(rnh);
+		RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
-	*head = rnh;
-	//t = ptree_add(rn_zeros,off,data,rnh);
-	//t->rn_flags = RNF_ROOT | RNF_ACTIVE;
-	t = NULL;
+		*head = rnh;
+		//t = ptree_add(rn_zeros,off,data,rnh);
+		//t->rn_flags = RNF_ROOT | RNF_ACTIVE;
+		t = NULL;
 #ifdef PTREE_MPATH
-	rnh->rnh_multipath = 1;
+		rnh->rnh_multipath = 1;
 #endif
-	rnh->rnh_addaddr = ptree_addroute;
-	rnh->rnh_deladdr = ptree_deladdr;
-	rnh->rnh_matchaddr = ptree_matchaddr;
-	rnh->rnh_lookup = ptree_lookup;
-	rnh->rnh_walktree = ptree_walktree;
-	rnh->rnh_walktree_from = ptree_walktree_from;
-	rnh->top = t;
-	dprint(("-ptree_inithead End (success)\n"));
-	return (1);
+		rnh->rnh_addaddr = ptree_addroute;
+		rnh->rnh_deladdr = ptree_deladdr;
+		rnh->rnh_matchaddr = ptree_matchaddr;
+		rnh->rnh_lookup = ptree_lookup;
+		rnh->rnh_walktree = ptree_walktree;
+		rnh->rnh_walktree_from = ptree_walktree_from;
+		rnh->top = t;
+		dprint(("-ptree_inithead End (success)\n"));
+		return (1);
 }
 
-	void
+		void
 ptree_init()
 {
-	dprint(("-ptree_init Start\n"));
-	char *cp, *cplim;
+		dprint(("-ptree_init Start\n"));
+		char *cp, *cplim;
 #ifdef _KERNEL
-	struct domain *dom;
+		struct domain *dom;
 
-	for (dom = domains; dom; dom = dom->dom_next) 
-		if (dom->dom_maxrtkey > max_keylen)
-			max_keylen = dom->dom_maxrtkey;
+		for (dom = domains; dom; dom = dom->dom_next) 
+				if (dom->dom_maxrtkey > max_keylen)
+						max_keylen = dom->dom_maxrtkey;
 #endif
-	if (max_keylen == 0) {
-		log(LOG_ERR,
-			"rn_init: ptree functions require max_keylen be set\n");
-		dprint(("-ptree_init End1\n"));
-		return;
-	}
-	R_Malloc(rn_zeros, char *, 3 * max_keylen);
-	if (rn_zeros == NULL) 
-		panic("ptree_init");
-	bzero(rn_zeros, 3 * max_keylen);
-	rn_ones = cp = rn_zeros + max_keylen;
-	addmask_key = cplim = rn_ones + max_keylen;
-	while (cp < cplim)
-		*cp++ = -1;
-	if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
-		panic("ptree_init 2");
+		if (max_keylen == 0) {
+				log(LOG_ERR,
+								"rn_init: ptree functions require max_keylen be set\n");
+				dprint(("-ptree_init End1\n"));
+				return;
+		}
+		R_Malloc(rn_zeros, char *, 3 * max_keylen);
+		if (rn_zeros == NULL) 
+				panic("ptree_init");
+		bzero(rn_zeros, 3 * max_keylen);
+		rn_ones = cp = rn_zeros + max_keylen;
+		addmask_key = cplim = rn_ones + max_keylen;
+		while (cp < cplim)
+				*cp++ = -1;
+		if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
+				panic("ptree_init 2");
 
-	dprint(("-ptree_init End2\n"));
+		dprint(("-ptree_init End2\n"));
 }
 
 /*
  *  functions for multi path routing.
  */
 #ifdef PTREE_MPATH
-	int
+		int
 ptree_mpath_capable(struct ptree *rnh)
 {
-	return rnh->rnh_multipath;
+		return rnh->rnh_multipath;
 }
 
-	uint32_t
+		uint32_t
 ptree_mpath_count(struct ptree_node *rn)
 {
-	dprint(("ptree_mpath_count Start\n"));
-	struct ptree_node **rn1;
-	uint32_t i = 0;
-	rn1 = rn->mpath_array;
-	/* count mpath_array */
-	while (rn1 != NULL) {
-		rn1++;
-		i++;
-	}
-	dprint(("ptree_mpath_count End: count = %d\n",i));
-	return (i);
+		dprint(("ptree_mpath_count Start\n"));
+		struct ptree_node **rn1;
+		uint32_t i = 0;
+		rn1 = rn->mpath_array;
+		/* count mpath_array */
+		while (rn1 != NULL) {
+				rn1++;
+				i++;
+		}
+		dprint(("ptree_mpath_count End: count = %d\n",i));
+		return (i);
 }
 
-	struct rtentry *
+		struct rtentry *
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
-	uint32_t	i = 0;
-	struct ptree_node *rn, **match;
+		uint32_t	i = 0;
+		struct ptree_node *rn, **match;
 
-	rn = (struct ptree_node *)rt;
-	if (!rn->mpath_array)
-		return rt;
-	else
-		match = rn->mpath_array;
+		rn = (struct ptree_node *)rt;
+		if (!rn->mpath_array)
+				return rt;
+		else
+				match = rn->mpath_array;
 
-	if (!gate)
-		return NULL;
+		if (!gate)
+				return NULL;
 
-	/* beyond here, we use rn as the master copy */
-	do {
-		rt = (struct rtentry *)match;
-		/*
-		 * we are removing an address alias that has 
-		 * the same prefix as another address
-		 * we need to compare the interface address because
-		 * rt_gateway is a special sockadd_dl structure
-		 */
-		if (rt->rt_gateway->sa_family == AF_LINK) {
-			if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len))
-				break;
-		} else {
-			if (rt->rt_gateway->sa_len == gate->sa_len &&
-					!memcmp(rt->rt_gateway, gate, gate->sa_len))
-				break;
-		}
-		i++;
-	} while ( (match++) != NULL);
+		/* beyond here, we use rn as the master copy */
+		do {
+				rt = (struct rtentry *)match;
+				/*
+				 * we are removing an address alias that has 
+				 * the same prefix as another address
+				 * we need to compare the interface address because
+				 * rt_gateway is a special sockadd_dl structure
+				 */
+				if (rt->rt_gateway->sa_family == AF_LINK) {
+						if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len))
+								break;
+				} else {
+						if (rt->rt_gateway->sa_len == gate->sa_len &&
+										!memcmp(rt->rt_gateway, gate, gate->sa_len))
+								break;
+				}
+				i++;
+		} while ( (match++) != NULL);
 
-	return (struct rtentry *)rn;
+		return (struct rtentry *)rn;
 }
 
 /* 
@@ -1164,213 +1165,213 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
  */
 static uint32_t hashjitter;
 
-	int
+		int
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
-	dprint(("rt_mpath_delete Start\n"));
-	uint32_t i = 0, n;
-	struct ptree_node *t, **t1;
-	
-	t = (struct ptree_node *)headrt;
-	if (!headrt || !rt)
-		return (0);
+		dprint(("rt_mpath_delete Start\n"));
+		uint32_t i = 0, n;
+		struct ptree_node *t, **t1;
 
-	n = ptree_mpath_count(t);
-	t1 = t->mpath_array;
-	while (t1) {
-		if ((struct rtentry *)t1 == rt) {
-			t->mpath_array[i] = t->mpath_array[n-1];
-			t->mpath_array[n-1] = NULL;
-			return (1);
+		t = (struct ptree_node *)headrt;
+		if (!headrt || !rt)
+				return (0);
+
+		n = ptree_mpath_count(t);
+		t1 = t->mpath_array;
+		while (t1) {
+				if ((struct rtentry *)t1 == rt) {
+						t->mpath_array[i] = t->mpath_array[n-1];
+						t->mpath_array[n-1] = NULL;
+						return (1);
+				}
+				t1++;
 		}
-		t1++;
-	}
-	dprint(("rt_mpath_delete End\n"));
-	return (0);
+		dprint(("rt_mpath_delete End\n"));
+		return (0);
 }
 
 /*
  * check if we have the same key/mask/gateway on the table already.
  */
-	int
+		int
 rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
-		struct sockaddr *netmask)
+				struct sockaddr *netmask)
 {
-	struct ptree_node *rn, **rn1;
-	struct rtentry *rt1;
-	char *p, *q, *eq;
-	int same, l, skip;
+		struct ptree_node *rn, **rn1;
+		struct rtentry *rt1;
+		char *p, *q, *eq;
+		int same, l, skip;
 
-	rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
-	if (!rn)
-		return 0;
+		rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
+		if (!rn)
+				return 0;
 
-	/*
-	 * unlike other functions we have in this file, we have to check
-	 * all key/mask/gateway as rnh_lookup can match less specific entry.
-	 */
-	rt1 = (struct rtentry *)rn;
-
-	/* compare key. */
-	if (rt_key(rt1)->sa_len != rt_key(rt)->sa_len ||
-			bcmp(rt_key(rt1), rt_key(rt), rt_key(rt1)->sa_len))
-		goto different;
-
-	/* key was the same.  compare netmask.  hairy... */
-	if (rt_mask(rt1) && netmask) {
-		skip = rnh->rnh_treetop->rn_offset;
-		if (rt_mask(rt1)->sa_len > netmask->sa_len) {
-			/*
-			 * as rt_mask(rt1) is made optimal by radix.c,
-			 * there must be some 1-bits on rt_mask(rt1)
-			 * after netmask->sa_len.  therefore, in
-			 * this case, the entries are different.
-			 */
-			if (rt_mask(rt1)->sa_len > skip)
-				goto different;
-			else {
-				/* no bits to compare, i.e. same*/
-				goto maskmatched;
-			}
-		}
-
-		l = rt_mask(rt1)->sa_len;
-		if (skip > l) {
-			/* no bits to compare, i.e. same */
-			goto maskmatched;
-		}
-		p = (char *)rt_mask(rt1);
-		q = (char *)netmask;
-		if (bcmp(p + skip, q + skip, l - skip))
-			goto different;
 		/*
-		 * need to go through all the bit, as netmask is not
-		 * optimal and can contain trailing 0s
+		 * unlike other functions we have in this file, we have to check
+		 * all key/mask/gateway as rnh_lookup can match less specific entry.
 		 */
-		eq = (char *)netmask + netmask->sa_len;
-		q += l;
-		same = 1;
-		while (eq > q)
-			if (*q++) {
-				same = 0;
-				break;
-			}
-		if (!same)
-			goto different;
-	} else if (!rt_mask(rt1) && !netmask)
-		; /* no mask to compare, i.e. same */
-	else {
-		/* one has mask and the other does not, different */
-		goto different;
-	}
+		rt1 = (struct rtentry *)rn;
+
+		/* compare key. */
+		if (rt_key(rt1)->sa_len != rt_key(rt)->sa_len ||
+						bcmp(rt_key(rt1), rt_key(rt), rt_key(rt1)->sa_len))
+				goto different;
+
+		/* key was the same.  compare netmask.  hairy... */
+		if (rt_mask(rt1) && netmask) {
+				skip = rnh->rnh_treetop->rn_offset;
+				if (rt_mask(rt1)->sa_len > netmask->sa_len) {
+						/*
+						 * as rt_mask(rt1) is made optimal by radix.c,
+						 * there must be some 1-bits on rt_mask(rt1)
+						 * after netmask->sa_len.  therefore, in
+						 * this case, the entries are different.
+						 */
+						if (rt_mask(rt1)->sa_len > skip)
+								goto different;
+						else {
+								/* no bits to compare, i.e. same*/
+								goto maskmatched;
+						}
+				}
+
+				l = rt_mask(rt1)->sa_len;
+				if (skip > l) {
+						/* no bits to compare, i.e. same */
+						goto maskmatched;
+				}
+				p = (char *)rt_mask(rt1);
+				q = (char *)netmask;
+				if (bcmp(p + skip, q + skip, l - skip))
+						goto different;
+				/*
+				 * need to go through all the bit, as netmask is not
+				 * optimal and can contain trailing 0s
+				 */
+				eq = (char *)netmask + netmask->sa_len;
+				q += l;
+				same = 1;
+				while (eq > q)
+						if (*q++) {
+								same = 0;
+								break;
+						}
+				if (!same)
+						goto different;
+		} else if (!rt_mask(rt1) && !netmask)
+				; /* no mask to compare, i.e. same */
+		else {
+				/* one has mask and the other does not, different */
+				goto different;
+		}
 
 maskmatched:
-	rn1 = rn->mpath_array;
-	/* key/mask were the same.  compare gateway for all multipaths */
-	do {
-		rt1 = (struct rtentry *)rn1;
-		if (rt1->rt_gateway->sa_family == AF_LINK) {
-			if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
-					bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
-						rt1->rt_ifa->ifa_addr->sa_len))
-				continue;
-		} else {
-			if (rt1->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
-					bcmp(rt1->rt_gateway, rt->rt_gateway,
-						rt1->rt_gateway->sa_len))
-				continue;
-		}
+		rn1 = rn->mpath_array;
+		/* key/mask were the same.  compare gateway for all multipaths */
+		do {
+				rt1 = (struct rtentry *)rn1;
+				if (rt1->rt_gateway->sa_family == AF_LINK) {
+						if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
+										bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
+												rt1->rt_ifa->ifa_addr->sa_len))
+								continue;
+				} else {
+						if (rt1->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
+										bcmp(rt1->rt_gateway, rt->rt_gateway,
+												rt1->rt_gateway->sa_len))
+								continue;
+				}
 
-		/* all key/mask/gateway are the same.  conflicting entry. */
-		return EEXIST;
-	} while ((rn1++) != NULL);
+				/* all key/mask/gateway are the same.  conflicting entry. */
+				return EEXIST;
+		} while ((rn1++) != NULL);
 
 different:
-	return 0;
+		return 0;
 }
 
-	void
+		void
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
-	u_int32_t n;
-	struct rtentry *rt, *rt0;
-	struct ptree_node *rn;
+		u_int32_t n;
+		struct rtentry *rt, *rt0;
+		struct ptree_node *rn;
 
-	/*
-	 * XXX we don't attempt to lookup cached route again; what should
-	 * be done for sendto(3) case?
-	 */
-	if (ro->ro_rt && ro->ro_rt->rt_ifp && (ro->ro_rt->rt_flags & RTF_UP))
-		return;				 
-	ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, 0, fibnum);
-	rn = (struct ptree_node *)ro->ro_rt;
-	/* if the route does not exist or it is not multipath, don't care */
-	if (ro->ro_rt == NULL)
-		return;
-	if (rn->mpath_array == NULL) {
+		/*
+		 * XXX we don't attempt to lookup cached route again; what should
+		 * be done for sendto(3) case?
+		 */
+		if (ro->ro_rt && ro->ro_rt->rt_ifp && (ro->ro_rt->rt_flags & RTF_UP))
+				return;				 
+		ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, 0, fibnum);
+		rn = (struct ptree_node *)ro->ro_rt;
+		/* if the route does not exist or it is not multipath, don't care */
+		if (ro->ro_rt == NULL)
+				return;
+		if (rn->mpath_array == NULL) {
+				RT_UNLOCK(ro->ro_rt);
+				return;
+		}
+
+		/* beyond here, we use rn as the master copy */
+		rt0 = ro->ro_rt;
+		n = ptree_mpath_count(rn);
+
+		/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
+		hash += hashjitter;
+		hash %= n;
+		rn = rn->mpath_array[n];
+		rt = (struct rtentry *)rn;
+		/* XXX try filling rt_gwroute and avoid unreachable gw  */
+
+		/* gw selection has failed - there must be only zero weight routes */
+		if (!rt) {
+				RT_UNLOCK(ro->ro_rt);
+				ro->ro_rt = NULL;
+				return;
+		}
+		if (ro->ro_rt != rt) {
+				RTFREE_LOCKED(ro->ro_rt);
+				ro->ro_rt = rt;
+				RT_LOCK(ro->ro_rt);
+				RT_ADDREF(ro->ro_rt);
+
+		} 
 		RT_UNLOCK(ro->ro_rt);
-		return;
-	}
-
-	/* beyond here, we use rn as the master copy */
-	rt0 = ro->ro_rt;
-	n = ptree_mpath_count(rn);
-
-	/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
-	hash += hashjitter;
-	hash %= n;
-	rn = rn->mpath_array[n];
-	rt = (struct rtentry *)rn;
-	/* XXX try filling rt_gwroute and avoid unreachable gw  */
-
-	/* gw selection has failed - there must be only zero weight routes */
-	if (!rt) {
-		RT_UNLOCK(ro->ro_rt);
-		ro->ro_rt = NULL;
-		return;
-	}
-	if (ro->ro_rt != rt) {
-		RTFREE_LOCKED(ro->ro_rt);
-		ro->ro_rt = rt;
-		RT_LOCK(ro->ro_rt);
-		RT_ADDREF(ro->ro_rt);
-
-	} 
-	RT_UNLOCK(ro->ro_rt);
 }
 
 extern int	in6_inithead(void **head, int off);
 extern int	in_inithead(void **head, int off);
 
 #ifdef INET
-	int
+		int
 ptree4_mpath_inithead(void **head, int off)
 {
-	struct ptree *rnh;
+		struct ptree *rnh;
 
-	hashjitter = arc4random();
-	if (in_inithead(head, off) == 1) {
-		rnh = (struct ptree *)*head;
-		rnh->rnh_multipath = 1;
-		return 1;
-	} else
-		return 0;
+		hashjitter = arc4random();
+		if (in_inithead(head, off) == 1) {
+				rnh = (struct ptree *)*head;
+				rnh->rnh_multipath = 1;
+				return 1;
+		} else
+				return 0;
 }
 #endif
 
 #ifdef INET6
-	int
+		int
 ptree6_mpath_inithead(void **head, int off)
 {
-	struct ptree *rnh;
+		struct ptree *rnh;
 
-	hashjitter = arc4random();
-	if (in6_inithead(head, off) == 1) {
-		rnh = (struct ptree *)*head;
-		rnh->rnh_multipath = 1;
-		return 1;
-	} else
-		return 0;
+		hashjitter = arc4random();
+		if (in6_inithead(head, off) == 1) {
+				rnh = (struct ptree *)*head;
+				rnh->rnh_multipath = 1;
+				return 1;
+		} else
+				return 0;
 }
 #endif
 #endif /* PTREE_MPATH */
