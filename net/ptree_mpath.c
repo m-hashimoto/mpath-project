@@ -352,6 +352,10 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								len,head->pnh_treetop));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 
+		if (!tt){
+				dprint(("-ptree_deladdr End: ptree_node nothing\n"));
+				return (0);
+		}
 		register caddr_t cp, cplim;
 		cp = tt->key; cplim = v;
 		unsigned char *d = (unsigned char *)cp;
@@ -360,7 +364,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								(unsigned char)d[2],(unsigned char)d[3],
 								(unsigned char)d[4],(unsigned char)d[5],
 								(unsigned char)d[6],(unsigned char)d[7]));
-		if ((tt == 0) || (memcmp(cp, cplim, len) != 0)){
+		if ( memcmp(cp, cplim, len) != 0 ){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
