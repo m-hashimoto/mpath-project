@@ -1076,7 +1076,7 @@ ptree_mpath_capable(struct ptree *rnh)
 ptree_mpath_count(struct ptree_node *rn)
 {
 	dprint(("ptree_mpath_count Start\n"));
-	struct ptree_node *rn1;
+	struct ptree_node **rn1;
 	uint32_t i = 0;
 	rn1 = rn->mpath_array;
 	/* count mpath_array */
