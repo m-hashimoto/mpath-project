@@ -270,7 +270,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node *rt_node;
 {
 		register struct ptree_node *tt;
-		register struct rtentry *rt = (struct rtentry *)&rt_node;
+		//register struct rtentry *rt = (struct rtentry *)&rt_node;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
 		/*
