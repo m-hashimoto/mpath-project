@@ -174,13 +174,13 @@ ptree_addmask(n_arg, search, skip)
 	if (x || search){
 		dprint(("ptree_addmask End if(x||search)\n"));
 		return (x);
-	}	
+	}
+on1:
 	R_Zalloc(x, struct ptree_node *, max_keylen + 2 * sizeof (*x));
 	if ((saved_x = x) == 0){
 		dprint(("ptree_addmask End if(saved_x==0)\n"));
 		return (0);
 	}
-on1:
 	netmask = cp = (caddr_t)(x + 2);
 	bcopy(addmask_key, cp, mlen);
 	x = ptree_insert(cp, mask_rnhead, &maskduplicated, x);
