@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 09:33:29.000000000 +0900
++++ route.c	2005-01-26 09:59:05.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1657,7 +1657,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1031,301 @@
+@@ -1074,189 +1031,299 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -1846,7 +1846,6 @@
 +				} else
 +						ifa_ref(info->rti_ifa);
 +				ifa = info->rti_ifa;
-+				dprint(("rtreq_ADD: ifa = %p\n",ifa));
 +				rt = uma_zalloc(V_rtzone, M_NOWAIT | M_ZERO);
 +				if (rt == NULL) {
 +						if (ifa != NULL)
@@ -1856,8 +1855,7 @@
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
-+				dprint(("rtreq_ADD: rt_flags = 0x%x rt_fibnum = %d\n",
-+										rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -1891,8 +1889,8 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: ifa = %p ifp = %p\n",
-+										rt->rt_ifa,rt->rt_ifp));
++				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n",
++										rt,rt->rt_ifa,rt->rt_ifp));
  
  #ifdef RADIX_MPATH
 -		/* do not permit exactly the same dst/mask/gw pair */
@@ -2028,8 +2026,8 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				dprint(("rtreq_ADD: rn = %p rt_nodes = %p\n",
-+										rn,rt->rt_nodes));
++				dprint(("rtreq_ADD: rn = %p rt = %p rt_nodes = %p\n",
++										rn,rt,rt->rt_nodes));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2117,7 +2115,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1336,77 @@
+@@ -1267,71 +1334,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2207,7 +2205,7 @@
 +		 * Copy the new gateway value into the memory chunk.
 +		 */
 +		bcopy(gate, rt->rt_gateway, glen);
-+		dprint(("rt_setgate: gateway = %p\n",rt->rt_gateway));
++		dprint(("rt_setgate: rt = %p gateway = %p\n",rt,rt->rt_gateway));
 +		dprint(("rt_setgate End (new gateway value into the memory)\n"));
 +		return (0);
  }
@@ -2249,7 +2247,7 @@
  }
  
  /*
-@@ -1339,228 +1414,235 @@
+@@ -1339,228 +1412,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
