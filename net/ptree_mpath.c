@@ -547,7 +547,7 @@ miss:
 
 
 		struct ptree_node *
-ptree_addroute(v_arg, n_arg, head,rt)
+ptree_addroute(v_arg, n_arg, head, rt)
 		void *v_arg, *n_arg;
 		struct ptree_node_head *head;
 		struct rtentry *rt;
@@ -557,6 +557,7 @@ ptree_addroute(v_arg, n_arg, head,rt)
 		//caddr_t netmask = (caddr_t)n_arg;
 
 		register struct ptree_node *tt;
+		//register struct rtentry *rt = (struct rtentry *)rt_node;
 		struct ptree_node *saved_tt;
 		//, *top = head->pnh_top;
 		//short b = 0, b_leaf = 0;

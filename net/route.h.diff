@@ -1,6 +1,6 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-05 04:29:23.000000000 +0900
-@@ -124,20 +124,22 @@
++++ route.h	2005-02-07 03:40:27.000000000 +0900
+@@ -124,13 +124,15 @@
   * gateway rather than the ultimate destination.
   */
  #ifndef RNF_NORMAL
@@ -18,16 +18,18 @@
  	/*
  	 * XXX struct rtentry must begin with a struct radix_node (or two!)
  	 * because the code does some casts of a 'struct radix_node *'
- 	 * to a 'struct rtentry *'
- 	 */
--#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
--#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
-+#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->key)))
-+#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->mask)))
- 	struct	sockaddr *rt_gateway;	/* value */
- 	int	rt_flags;		/* up/down?, host/net */
- 	int	rt_refcnt;		/* # held references */
-@@ -373,7 +375,7 @@
+@@ -151,6 +153,10 @@
+ #endif
+ };
+ 
++struct rtentry_array {
++		struct rtentry **multi_entry;
++};
++
+ /*
+  * Following structure necessary for 4.3 compatibility;
+  * We should eventually move it to a compat file.
+@@ -373,7 +379,7 @@
  	}							\
  } while (0)
  

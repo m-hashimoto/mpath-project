@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-07 03:27:19.000000000 +0900
++++ route.c	2005-02-07 03:43:55.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2028,7 +2028,7 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt);
-+				//rat_key(rt) = (struct sockaddr *)new;
++				//rt_key(rt) = (struct sockaddr *)new;
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
