@@ -117,7 +117,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		do {
 			len++;
 			printf("m[%d] = %d\n",len,(unsigned char)m[len]);
-		} while(m[len]&bitmask)
+		} while(m[len]&bitmask);
 		len = 8*len;
 	}
 
