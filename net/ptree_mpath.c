@@ -408,7 +408,7 @@ ptree_matchaddr(v_arg, head)
 	 */
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
-	dprint((" ptree_matchaddr End 1\n"));
+	dprint((" ptree_matchaddr End: return saved_t\n"));
 	return t;
 on1:
 	dprint((" ptree_matchaddr: on1\n"));

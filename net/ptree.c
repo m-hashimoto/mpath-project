@@ -16,7 +16,7 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x;}
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
@@ -446,7 +446,7 @@ ptree_next (struct ptree_node *v)
 		}
 	}
 
-	dprint(("  ptree_next: this node is lesf\n"));
+	//dprint(("  ptree_next: this node is lesf\n"));
 	if(v->parent){
 		dprint(("  ptree_next: back to parent node\n"));
 		u = v->parent;
@@ -475,13 +475,12 @@ ptree_next (struct ptree_node *v)
 		dprint(("  ptree_next: u->parent = %p\n",t));
 	}
 
-	dprint(("  ptree_next: check if( t )\n"));
+	//dprint(("  ptree_next: check if( t )\n"));
 	if (t)
 	{
 		/* return the not-yet-traversed right-child node */
-		w = t->child[1];
-		dprint(("  ptree_next: t->rn_right = %p\n",w));
-		if( w->rn_flags & RNF_ACTIVE ){
+		if( t->child[1] ){
+			w = t->child[1];
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));	
 			//ptree_node_lock (w);
 			//ptree_node_unlock (v);
