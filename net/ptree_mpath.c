@@ -496,16 +496,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	short b = 0, b_leaf = 0;
 	int keyduplicated;
 	//caddr_t mmask;
-	struct ptree_mask *m, **mp;
+	struct ptree_mask *m, **mp = 0;
 	dprint(("-ptree_addroute: key = %p\n",v));
 
-	/*
-	 * In dealing with non-contiguous masks, there may be
-	 * many different routes which have the same mask.
-	 * We will find it useful to have a unique pointer to
-	 * the mask to speed avoiding duplicate references at
-	 * nodes and possibly save time in calculating indices.
-	 */
 	if (netmask)  {
 		if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
 			dprint(("-ptree_addroute End 1\n"));
@@ -533,19 +526,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 					  || ptree_lexobetter(netmask, tt->rn_mask))))
 			break;
 		}
-		/*
-		 * If the mask is not duplicated, we wouldn't
-		 * find it among possible duplicate key entries
-		 * anyway, so the above test doesn't hurt.
-		 *
-		 * We sort the masks for a duplicated key the same way as
-		 * in a masklist -- most specific to least specific.
-		 * This may require the unfortunate nuisance of relocating
-		 * the head of the list.
-		 *
-		 * We also reverse, or doubly link the list through the
-		 * parent pointer.
-		 */
 #if 0 /* 10/29 22:00 */
 		if (tt == saved_tt) {
 			struct	ptree_node *xx = x;
@@ -657,14 +637,7 @@ on2:
 					break;
 	} while (x != top && b <= t->rn_bit);
 	dprint(("-ptree_addroute: x = %p\n",x));
-#endif
-	/*
-	 * Search through routes associated with node to
-	 * insert new route according to index.
-	 * Need same criteria as when sorting dupedkeys to avoid
-	 * double loop on deletion.
-	 */
-#if 0 /* 10/29 22:00 */
+	
 	x = saved_tt;
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 			if (m->rm_bit < b_leaf)
