@@ -432,6 +432,10 @@ ptree_walktree(h, f, w)
 			pn = pn->parent;
 		/* Find the next *leaf* since next node might vanish, too */
 		dprint(("pn[%p] ",pn));
+		if(!pn->parent){
+			dprint(("-ptree_walktree: pn == pnh_top\n"));
+			return (0);
+		}
 		for (pn = pn->parent->child[1]; !pn->child[0];)
 			pn = pn->child[0];
 		next = pn;
