@@ -539,15 +539,15 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
  * check if we have the same key/mask/gateway on the table already.
  */
 		int
-rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
+rt_mpath_conflict(struct ptree *pnh, struct rtentry *rt,
 				struct sockaddr *netmask)
 {
-		struct ptree_node *rn, **rn1;
-		struct rtentry *rt1;
+		struct ptree_node *rn;
+		struct rtentry *rt0, **rt1;
 		char *p, *q, *eq;
 		int same, l, skip;
 
-		rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
+		rn = rnh->rnh_lookup(rt_key(rt), l, pnh);
 		if (!rn)
 				return 0;
 
@@ -555,13 +555,14 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 		 * unlike other functions we have in this file, we have to check
 		 * all key/mask/gateway as rnh_lookup can match less specific entry.
 		 */
-		rt1 = (struct rtentry *)rn;
+		rt0 = rn->data;
 
 		/* compare key. */
-		if (rt_key(rt1)->sa_len != rt_key(rt)->sa_len ||
-						bcmp(rt_key(rt1), rt_key(rt), rt_key(rt1)->sa_len))
+		if (rt_key(rt0)->sa_len != rt_key(rt)->sa_len ||
+						bcmp(rt_key(rt0), rt_key(rt), rt_key(rt0)->sa_len))
 				goto different;
 
+#if 0
 		/* key was the same.  compare netmask.  hairy... */
 		if (rt_mask(rt1) && netmask) {
 				skip = rnh->rnh_treetop->rn_offset;
@@ -609,12 +610,11 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 				/* one has mask and the other does not, different */
 				goto different;
 		}
-
 maskmatched:
-		rn1 = rn->mpath_array;
+#endif
+		rt1 = rt0->mpath_array;
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
-				rt1 = (struct rtentry *)rn1;
 				if (rt1->rt_gateway->sa_family == AF_LINK) {
 						if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 										bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
@@ -629,7 +629,7 @@ maskmatched:
 
 				/* all key/mask/gateway are the same.  conflicting entry. */
 				return EEXIST;
-		} while ((rn1++) != NULL);
+		} while ((rt1++) != NULL);
 
 different:
 		return 0;
