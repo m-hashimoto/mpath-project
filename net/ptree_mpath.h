@@ -77,7 +77,8 @@ int debug_tree_print(struct ptree_node_head *pnh);
 #endif
 
 void     ptree_init(void);
-int      ptree_inithead(void **, int);
+int      ptree_inithead(void **, int),
+		 ptree_refines(void *, viod *);
 struct ptree_node
 	  *ptree_addroute (void *, void *, struct ptree_node_head *),
 	  *ptree_deladdr(void *, void *, struct ptree_node_head *),
