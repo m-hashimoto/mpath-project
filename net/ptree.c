@@ -412,12 +412,13 @@ ptree_head (struct ptree *t)
 	struct ptree_node *
 ptree_next (struct ptree_node *v)
 {
-	dprint(("ptree_next Start v = %p\n",v));
+	dprint(("ptree_next Start\n"));
 	struct ptree_node *t;
 	struct ptree_node *u;
 	struct ptree_node *w;
 
 	/* if the left child exists, go left */
+	dprint(("ptree_next: check_node = %p left = %p right = %p parent = %p\n",v,v->rn_left,v->rn_right,v->rn_parent));
 	if (v->child[0])
 	{
 		w = v->child[0];
