@@ -959,6 +959,7 @@ ptree_inithead(head, off)
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
 #endif
+	rnh->rnh_nodes = t;
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
 	rnh->rnh_matchaddr = ptree_matchaddr;
