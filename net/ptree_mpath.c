@@ -930,13 +930,14 @@ ptree_walktree(h, f, w)
 		/* INET tree check */
 		printf("INET ptree\n");
 		struct ptree *rnh;
-		struct in_addr in;
+		struct rtentry *rt;
 
 		rnh = rt_tables_get_rnh(0, INET);
 		rn = rnh->rnh_treetop;
 		for (;;) {
-				in = (in_addr)rn->rn_key;
-				pritnf("address: %s\n",inet_ntoa(in));
+				rt = RNTORT(rn);
+				pritnf("address: %s\n",
+								inet_ntoa(rt->rt_gateway->sin_addr));
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
