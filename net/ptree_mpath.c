@@ -89,10 +89,13 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	register caddr_t cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	unsigned int len;
-	if (m_arg)
+	if (m_arg){
+			dprint(("LEN(m) = %d\n",(int)LEN(m)));
 			len = (unsigned int)8*(LEN(m) - head_off);
-	else
+	} else{
+			dprint(("LEN(v) = %d\n",(int)LEN(v)));
 			len = (unsigned int)8*(LEN(v) - head_off - head_zero);
+	}
 	v = v + head_off; m = m + head_off;
 	dprint(("-ptree_insert: len = %d\n",len));
 	
