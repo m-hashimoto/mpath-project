@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 19:35:21.000000000 +0900
++++ route.c	2005-01-27 19:48:33.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,544 @@
+@@ -768,495 +814,540 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2020,7 +2020,6 @@
 -
 +#endif
 +				dprint(("rtreq_ADD: ifdef FLOWTABLE End\n"));
-+				dprint(("test1: rt_gateway = %p\n",rt->rt_gateway));
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2049,7 +2048,6 @@
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
 +				 */
-+				dprint(("test2: rt_gateway = %p\n",rt->rt_gateway));
 +				if (rn == NULL) {
 +						if (rt->rt_ifa)
 +								ifa_free(rt->rt_ifa);
@@ -2124,9 +2122,7 @@
 +				}
 +				else{
 +					dprint(("mtx_lock_init error\n"));
-+					//RT_LOCK_DESTROY(rt);
-+					dprint(("test4: rt_gateway = %p\n",rt->rt_gateway));
-+					//dprint(("mtx_lock destroy\n"));
++					RT_LOCK_DESTROY(rt);
 +					RT_LOCK_INIT(rt);
 +					RT_LOCK(rt);
 +					RT_ADDREF(rt);
@@ -2148,7 +2144,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1362,84 @@
+@@ -1267,71 +1358,87 @@
  #undef ifpaddr
  #undef flags
  
@@ -2234,10 +2230,13 @@
 +				 */
 +				dprint(("rt_setgate: test print 3\n"));
 +				bcopy(dst, new, dlen);
++				dprint(("rt_setgate: test print 5\n"));
 +				Free(rt_key(rt));	/* free old block, if any */
++				dprint(("rt_setgate: test print 6\n"));
 +				rt_key(rt) = (struct sockaddr *)new;
++				dprint(("rt_setgate: test print 7\n"));
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
-+				dprint(("rt_setgate: test print 4\n"));
++				dprint(("rt_setgate: test print 8\n"));
 +		}
  
 -	return (0);
@@ -2287,7 +2286,7 @@
  }
  
  /*
-@@ -1339,228 +1447,235 @@
+@@ -1339,228 +1446,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
