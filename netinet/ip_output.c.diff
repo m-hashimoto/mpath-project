@@ -1,10 +1,10 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2005-02-26 04:38:04.000000000 +0900
++++ ip_output.c	2005-02-26 04:46:20.000000000 +0900
 @@ -306,12 +306,14 @@
  		 * them, there is no way for one to update all its
  		 * routes when the MTU is changed.
  		 */
-+		printf("ip_output: rt_rmx.rmx_mtu[%d] ifp->if_mtu[%d]\n",
++		printf("ip_output: rt_rmx.rmx_mtu[%lu] ifp->if_mtu[%lu]\n",
 +						ro->ro_rt->rt_rmx.rmx_mtu,ifp->if_mtu);
  		if (ro->ro_rt->rt_rmx.rmx_mtu > ifp->if_mtu)
  			ro->ro_rt->rt_rmx.rmx_mtu = ifp->if_mtu;
