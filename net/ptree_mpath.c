@@ -553,18 +553,19 @@ ptree_addroute(v_arg, n_arg, head)
 {
 		dprint(("-ptree_addroute Start\n"));
 		debug_tree_print(head);
-		caddr_t /*v = (caddr_t)v_arg,*/ netmask = (caddr_t)n_arg;
-		
-		register struct ptree_node /* *t, *x = 0, */*tt;
-		struct ptree_node *saved_tt;//, *top = head->pnh_top;
+		caddr_t netmask = (caddr_t)n_arg;
+
+		register struct ptree_node *tt;
+		struct ptree_node *saved_tt;
+		//, *top = head->pnh_top;
 		//short b = 0, b_leaf = 0;
 		int keyduplicated;
 		//caddr_t mmask;
 		//struct ptree_mask *m, **mp = 0;
 		dprint(("-ptree_addroute: key = %p netmask = %p\n",v_arg,n_arg));
 
-		if (netmask)  {
 #if 0
+		if (netmask)  {
 				if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
 						dprint(("-ptree_addroute End 1(retrun 0)\n"));
 						return (0);
@@ -572,7 +573,7 @@ ptree_addroute(v_arg, n_arg, head)
 				b_leaf = x->rn_bit;
 				b = -1 - x->rn_bit;
 				netmask = x->rn_key;
-			dprint(("-ptree_addroute: set netmask\n"));
+				dprint(("-ptree_addroute: set netmask\n"));
 		}
 #endif
 		/*
@@ -624,6 +625,7 @@ ptree_addroute(v_arg, n_arg, head)
 				tt->rn_flags = RNF_ACTIVE;
 		}
 #endif /* mluti path */
+
 #if 0
 		/*
 		 * Put mask in tree.
@@ -646,12 +648,12 @@ ptree_addroute(v_arg, n_arg, head)
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 		if(t->rn_bit < 0){
 				for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
-					if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
-							*mp = m = ptree_new_mask(t,0);
-							dprint(("-ptree_addroute: m = %p\n",m));
-							if (m)
-									mp = &m->rm_mklist;
-				}
+						if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
+								*mp = m = ptree_new_mask(t,0);
+								dprint(("-ptree_addroute: m = %p\n",m));
+								if (m)
+										mp = &m->rm_mklist;
+						}
 		} else if(t->rn_mklist){
 				dprint(("-ptree_addroute: t->rn_mklist = %p\n",t->rn_mklist));
 				/*
@@ -665,9 +667,9 @@ ptree_addroute(v_arg, n_arg, head)
 on2:
 		dprint(("-ptree_addroute: on2\n"));
 		if( netmask == 0 ){
-			dprint(("-ptree_addroute End 1\n"));	
-			debug_tree_print(head);
-			return tt;
+				dprint(("-ptree_addroute End 1\n"));	
+				debug_tree_print(head);
+				return tt;
 		}
 		b_leaf = tt->rn_bit;
 		x = saved_tt;
@@ -687,7 +689,7 @@ on2:
 						mmask = m->rm_leaf->rn_mask;
 						if (tt->rn_flags & RNF_NORMAL) {
 								log(LOG_ERR,
-								"Non-unique normal route, mask not entered\n");
+												"Non-unique normal route, mask not entered\n");
 								return tt;
 						}
 				} else
@@ -718,11 +720,11 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		struct ptree_node_head *head;
 {
 		dprint(("-ptree_deladdr Start\n"));
-		register struct ptree_node/* *t, *p,*/ *x, *tt;
+		register struct ptree_node *x, *tt;
 		//struct ptree_mask *m, *saved_m, **mp;
-		struct ptree_node /* *dupedkey, */*saved_tt, *top;
+		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
-		int /*b, head_off,*/ vlen, mlen;
+		int vlen, mlen;
 
 		v = v_arg;
 		netmask = netmask_arg;
