@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 09:35:48.000000000 +0900
++++ route.c	2005-01-27 09:46:14.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1739,7 +1739,7 @@
 +#ifdef FLOWTABLE
 +		register struct rtentry *rt0;
 +#endif
-+		register struct ptree_node *rn = 0;
++		register struct ptree_node *rn;
 +		register struct ptree *rnh;
 +		struct ifaddr *ifa;
 +		struct sockaddr *ndst;
