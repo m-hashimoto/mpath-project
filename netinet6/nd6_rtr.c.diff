@@ -1,5 +1,5 @@
 --- nd6_rtr.c.orig	2005-01-26 12:24:20.000000000 +0900
-+++ nd6_rtr.c	2005-01-27 07:27:06.000000000 +0900
++++ nd6_rtr.c	2005-01-27 17:31:01.000000000 +0900
 @@ -53,7 +53,7 @@
  #include <net/if_types.h>
  #include <net/if_dl.h>
@@ -23,7 +23,7 @@
  #define RTPREF_INVALID	(-3)	/* internal */
  
 +/* debug print */
-+#define DEBUG 0
++#define DEBUG 1
 +#define dprint(x) { if(DEBUG) printf x; }
 +
  /*
