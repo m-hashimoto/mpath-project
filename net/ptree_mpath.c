@@ -82,8 +82,8 @@ on1:
 	}
 	{
 		register struct ptree_node *p, *x = top;
-		register int *data;
-		*data = 1;
+		register int data;
+		data = 1;
 		cp = v;
 		do {
 			p = x;
@@ -98,7 +98,7 @@ on1:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		t = ptree_add(v, b, data, head);
+		t = ptree_add(v, b, &data, head);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
