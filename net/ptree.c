@@ -67,6 +67,7 @@ check_bit (char *key, int keylen)
 {
   int offset;
   int shift;
+  dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
@@ -206,7 +207,11 @@ ptree_node_lock (struct ptree_node *x)
 void
 ptree_node_unlock (struct ptree_node *x)
 {
-  x->lock--;
+  if(!x->lock)
+    XRTLOG (LOG_ERR, "ptree_node_unlock(%p): "
+                  "ptree_node_unlock() failed.\n", x);
+  else
+    x->lock--;
   if (x->lock == 0)
     ptree_remove (x);
 }
