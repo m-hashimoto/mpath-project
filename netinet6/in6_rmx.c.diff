@@ -1,6 +1,6 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-02-07 03:24:22.000000000 +0900
-@@ -113,16 +113,20 @@
++++ in6_rmx.c	2005-02-07 13:22:58.000000000 +0900
+@@ -113,21 +113,28 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
  
@@ -15,36 +15,54 @@
 -    struct radix_node *treenodes)
 +static struct ptree_node *
 +in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
-+				struct rtentry *rt)
++				struct ptree_node *rt_node)
  {
 -	struct rtentry *rt = (struct rtentry *)treenodes;
--	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)rt_key(rt);
--	struct radix_node *ret;
 +	dprint(("in6_addroute Start\n"));
-+	//struct rtentry *rt = (struct rtentry *)head->pnh_top; /* ? */
-+	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
++#if 0
++	struct rtentry *rt = (struct rtentry *)rt_nodes;
+ 	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)rt_key(rt);
+-	struct radix_node *ret;
++#endif
 +	struct ptree_node *ret;
  
  	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
++#if 0
  	if (IN6_IS_ADDR_MULTICAST(&sin6->sin6_addr))
-@@ -153,7 +157,7 @@
+ 		rt->rt_flags |= RTF_MULTICAST;
+-
++#endif
+ 	/*
+ 	 * A little bit of help for both IPv6 output and input:
+ 	 *   For local addresses, we make sure that RTF_LOCAL is set,
+@@ -142,6 +149,7 @@
+ 	 * XXX
+ 	 * should elaborate the code.
+ 	 */
++#if 0
+ 	if (rt->rt_flags & RTF_HOST) {
+ 		if (IN6_ARE_ADDR_EQUAL(&satosin6(rt->rt_ifa->ifa_addr)
+ 					->sin6_addr,
+@@ -152,8 +160,8 @@
+ 
  	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
  		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
- 
+-
 -	ret = rn_addroute(v_arg, n_arg, head, treenodes);
-+	ret = ptree_addroute(v_arg, n_arg, head, rt);
++#endif
++	ret = ptree_addroute(v_arg, n_arg, head, rt_node);
  	if (ret == NULL) {
  		struct rtentry *rt2;
  		/*
-@@ -179,6 +183,7 @@
+@@ -179,6 +187,7 @@
  			RTFREE_LOCKED(rt2);
  		}
  	}
-+	dprint(("in6_addropute End\n"));
++	dprint(("in6_addroute End\n"));
  	return (ret);
  }
  
-@@ -187,10 +192,11 @@
+@@ -187,10 +196,11 @@
   * were managing the route, stop doing so and set the expiration timer
   * back off again.
   */
@@ -59,7 +77,7 @@
  	struct rtentry *rt = (struct rtentry *)rn;
  
  	if (rt && rt->rt_refcnt == 0) { /* this is first reference */
-@@ -199,6 +205,7 @@
+@@ -199,6 +209,7 @@
  			rt->rt_rmx.rmx_expire = 0;
  		}
  	}
@@ -67,7 +85,7 @@
  	return rn;
  }
  
-@@ -222,7 +229,7 @@
+@@ -222,7 +233,7 @@
      &VNET_NAME(rtq_toomany6) , 0, "");
  
  struct rtqk_arg {
@@ -76,7 +94,7 @@
  	int mode;
  	int updating;
  	int draining;
-@@ -237,8 +244,9 @@
+@@ -237,8 +248,9 @@
   * nothing has a timeout longer than the current value of rtq_reallyold6.
   */
  static int
@@ -87,7 +105,7 @@
  	struct rtqk_arg *ap = rock;
  	struct rtentry *rt = (struct rtentry *)rn;
  	int err;
-@@ -273,6 +281,7 @@
+@@ -273,6 +285,7 @@
  		}
  	}
  
@@ -95,7 +113,7 @@
  	return 0;
  }
  
-@@ -286,8 +295,9 @@
+@@ -286,8 +299,9 @@
  static void
  in6_rtqtimo(void *rock)
  {
@@ -106,7 +124,7 @@
  	struct rtqk_arg arg;
  	struct timeval atv;
  	static time_t last_adjusted_timeout = 0;
-@@ -295,6 +305,7 @@
+@@ -295,6 +309,7 @@
  	rnh = rt_tables_get_rnh(0, AF_INET6);
  	if (rnh == NULL) {
  		CURVNET_RESTORE();
@@ -114,7 +132,7 @@
  		return;
  	}
  	arg.found = arg.killed = 0;
-@@ -337,13 +348,14 @@
+@@ -337,13 +352,14 @@
  	atv.tv_sec = arg.nextstop - time_uptime;
  	callout_reset(&V_rtq_timer6, tvtohz(&atv), in6_rtqtimo, rock);
  	CURVNET_RESTORE();
@@ -130,7 +148,7 @@
  	time_t nextstop;
  };
  
-@@ -351,8 +363,9 @@
+@@ -351,8 +367,9 @@
  #define	V_rtq_mtutimer			VNET(rtq_mtutimer)
  
  static int
@@ -141,7 +159,7 @@
  	struct rtentry *rt = (struct rtentry *)rn;
  	struct mtuex_arg *ap = rock;
  
-@@ -369,6 +382,7 @@
+@@ -369,6 +386,7 @@
  		}
  	}
  
@@ -149,7 +167,7 @@
  	return 0;
  }
  
-@@ -377,8 +391,9 @@
+@@ -377,8 +395,9 @@
  static void
  in6_mtutimo(void *rock)
  {
@@ -160,7 +178,7 @@
  	struct mtuex_arg arg;
  	struct timeval atv;
  
-@@ -402,6 +417,7 @@
+@@ -402,6 +421,7 @@
  	}
  	callout_reset(&V_rtq_mtutimer, tvtohz(&atv), in6_mtutimo, rock);
  	CURVNET_RESTORE();
@@ -168,7 +186,7 @@
  }
  
  /*
-@@ -414,9 +430,10 @@
+@@ -414,9 +434,10 @@
  int
  in6_inithead(void **head, int off)
  {
@@ -181,7 +199,7 @@
  		return 0;		/* See above */
  
  	if (off == 0)		/* See above */
-@@ -435,6 +452,7 @@
+@@ -435,6 +456,7 @@
  	callout_init(&V_rtq_mtutimer, CALLOUT_MPSAFE);
  	in6_rtqtimo(curvnet);	/* kick off timeout first time */
  	in6_mtutimo(curvnet);	/* kick off timeout first time */
@@ -189,7 +207,7 @@
  	return 1;
  }
  
-@@ -448,3 +466,5 @@
+@@ -448,3 +470,5 @@
  	return (1);
  }
  #endif
