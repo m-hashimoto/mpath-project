@@ -1,5 +1,5 @@
 --- if.c.orig	2005-02-04 12:42:10.000000000 +0900
-+++ if.c	2005-02-10 20:06:16.000000000 +0900
++++ if.c	2005-02-10 21:39:53.000000000 +0900
 @@ -34,6 +34,7 @@
  #include "opt_inet6.h"
  #include "opt_inet.h"
@@ -2641,7 +2641,7 @@
  }
  
  #include <net/if_llatbl.h>
-@@ -1773,26 +1775,32 @@
+@@ -1773,26 +1775,26 @@
   * Lookup an appropriate real ifa to point to.
   * This should be moved to /sys/net/link.c eventually.
   */
@@ -2671,12 +2671,6 @@
 +		struct ifnet *ifp;
 +
 +		RT_LOCK_ASSERT(rt);
-+		printf("link_rtrequest: test print\n");
-+		printf("link_rtrequest: rt = %p\n",rt);
-+		printf("link_rtrequest: ifa = %p\n",rt->rt_ifa);
-+		printf("link_rtrequest: ifp = %p\n",rt->rt_ifa->ifa_ifp);
-+		printf("link_rtrequest: rt_nodes = %p\n",rt->rt_nodes);
-+		printf("link_rtrequest: dst = %p\n",rt_key(rt));
 +
 +		if (cmd != RTM_ADD || ((ifa = rt->rt_ifa) == 0) ||
 +						((ifp = ifa->ifa_ifp) == 0) || ((dst = rt_key(rt)) == 0))
@@ -2692,7 +2686,7 @@
  }
  
  /*
-@@ -1800,27 +1808,27 @@
+@@ -1800,27 +1802,27 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2732,7 +2726,7 @@
  }
  
  /*
-@@ -1828,27 +1836,27 @@
+@@ -1828,27 +1830,27 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2772,7 +2766,7 @@
  #endif
  }
  
-@@ -1861,65 +1869,65 @@
+@@ -1861,65 +1863,65 @@
   * recursions, we post event to taskqueue, and all job
   * is done in static do_link_state_change().
   */
@@ -2885,7 +2879,7 @@
  }
  
  /*
-@@ -1927,11 +1935,11 @@
+@@ -1927,11 +1929,11 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2899,7 +2893,7 @@
  }
  
  /*
-@@ -1939,37 +1947,37 @@
+@@ -1939,37 +1941,37 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2956,7 +2950,7 @@
  }
  
  /*
-@@ -1980,531 +1988,531 @@
+@@ -1980,531 +1982,531 @@
   * XXXRW: Note that because timeouts run with Giant, if_watchdog() is called
   * holding Giant.
   */
@@ -3953,7 +3947,7 @@
  }
  
  /*
-@@ -2515,69 +2523,69 @@
+@@ -2515,69 +2517,69 @@
   *
   * Only to be used on stack-owned flags, not driver-owned flags.
   */
@@ -4080,7 +4074,7 @@
  }
  
  /*
-@@ -2586,20 +2594,20 @@
+@@ -2586,20 +2588,20 @@
   * "on" request actually has an effect, as does the final "off" request.
   * Results are undefined if the "off" and "on" requests are not matched.
   */
@@ -4112,7 +4106,7 @@
  }
  
  /*
-@@ -2609,154 +2617,154 @@
+@@ -2609,154 +2611,154 @@
   * other information.
   */
  /*ARGSUSED*/
@@ -4381,7 +4375,7 @@
  }
  
  /*
-@@ -2766,45 +2774,45 @@
+@@ -2766,45 +2768,45 @@
   * other setup work (such as notifying the device driver).  The reference
   * count is initialized to 1.
   */
@@ -4459,7 +4453,7 @@
  }
  
  /*
-@@ -2813,19 +2821,19 @@
+@@ -2813,19 +2815,19 @@
   * counting, notifying the driver, handling routing messages, and releasing
   * any dependent link layer state.
   */
@@ -4489,7 +4483,7 @@
  }
  
  /*
-@@ -2846,112 +2854,112 @@
+@@ -2846,112 +2848,112 @@
   * 'retifma' will be used to return a pointer to the resulting multicast
   * address reference, if desired.
   */
@@ -4696,7 +4690,7 @@
  }
  
  /*
-@@ -2963,42 +2971,42 @@
+@@ -2963,42 +2965,42 @@
   * duration of the call.
   * Network-layer protocol domains must use if_delmulti_ifma().
   */
@@ -4768,7 +4762,7 @@
  }
  
  /*
-@@ -3007,49 +3015,49 @@
+@@ -3007,49 +3009,49 @@
   *
   * It is safe to call this routine if the ifp disappeared.
   */
@@ -4851,7 +4845,7 @@
  }
  
  /*
-@@ -3059,72 +3067,72 @@
+@@ -3059,72 +3061,72 @@
   * Return 1 if the final reference was released, indicating that the
   * hardware hash filter should be reprogrammed.
   */
@@ -4978,7 +4972,7 @@
  }
  
  /*
-@@ -3133,76 +3141,76 @@
+@@ -3133,76 +3135,76 @@
   * At this time we only support certain types of interfaces,
   * and we don't allow the length of the address to change.
   */
@@ -5118,7 +5112,7 @@
  }
  
  /*
-@@ -3211,97 +3219,97 @@
+@@ -3211,97 +3213,97 @@
   * device_get_name(dev) is a good choice and for pseudo-devices a
   * static string works well.
   */
