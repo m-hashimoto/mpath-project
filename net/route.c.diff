@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 18:06:22.000000000 +0900
++++ route.c	2005-01-27 18:19:58.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,537 @@
+@@ -768,495 +814,541 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2019,6 +2019,7 @@
 -
 +#endif
 +				dprint(("rtreq_ADD: ifdef FLOWTABLE End\n"));
++				dprint(("test1: rt_gateway = %p\n",rt->rt_gateway));
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2045,6 +2046,7 @@
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
 +				 */
++				dprint(("test2: rt_gateway = %p\n",rt->rt_gateway));
 +				if (rn == NULL) {
 +						if (rt->rt_ifa)
 +								ifa_free(rt->rt_ifa);
@@ -2118,7 +2120,9 @@
 +				}
 +				else{
 +					dprint(("mtx_lock_init error\n"));
++					dprint(("test3: rt_gateway = %p\n",rt->rt_gateway));
 +					RT_LOCK_DESTROY(rt);
++					dprint(("test4: rt_gateway = %p\n",rt->rt_gateway));
 +					dprint(("mtx_lock destroy\n"));
 +					RT_LOCK_INIT(rt);
 +					RT_LOCK(rt);
@@ -2141,7 +2145,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1355,84 @@
+@@ -1267,71 +1359,84 @@
  #undef ifpaddr
  #undef flags
  
@@ -2280,7 +2284,7 @@
  }
  
  /*
-@@ -1339,228 +1440,235 @@
+@@ -1339,228 +1444,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
