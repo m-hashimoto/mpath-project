@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 07:35:19.000000000 +0900
++++ route.c	2005-01-27 07:53:36.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,509 @@
+@@ -768,495 +814,513 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1866,9 +1866,9 @@
 +						senderr(ENOBUFS);
 +				}
 +				RT_LOCK_INIT(rt);
-+				rt->rt_flags = RTF_UP | flags;
-+				rt->rt_fibnum = fibnum;
-+				dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
++				//rt->rt_flags = RTF_UP | flags;
++				//rt->rt_fibnum = fibnum;
++				//dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -1892,11 +1892,15 @@
 +						rt_maskedcopy(dst, ndst, netmask);
 +				} else
 +						bcopy(dst, ndst, dst->sa_len);
++				/* ? */
++				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +			/*
 +			 * We use the ifa reference returned by rt_getifa_fib().
 +			 * This moved from below so that rnh->rnh_addaddr() can
 +			 * examine the ifa and  ifa->ifa_ifp if it so desires.
 +			 */
++				rt->rt_flags = RTF_UP | flags; /* ? */
++				rt->rt_fibnum = fibnum; /* ? */
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
@@ -2022,7 +2026,7 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				//rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				dprint(("rtreq_ADD: rn = %p rt = %p rt_nodes = %p\n",
 +										rn,rt,rt->rt_nodes));
 +				dprint((" rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
@@ -2112,7 +2116,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1327,77 @@
+@@ -1267,71 +1331,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2244,7 +2248,7 @@
  }
  
  /*
-@@ -1339,228 +1405,235 @@
+@@ -1339,228 +1409,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
