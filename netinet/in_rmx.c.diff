@@ -1,5 +1,5 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-25 22:51:50.000000000 +0900
++++ in_rmx.c	2005-02-25 23:14:15.000000000 +0900
 @@ -67,16 +67,18 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -32,7 +32,7 @@
  		rt->rt_flags |= RTF_MULTICAST;
 -
 -	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
-+	dprint(("in_addroute: rmx_mtu[%d] rt_ifp[%p]\n",
++	dprint(("in_addroute: rmx_mtu[%u] rt_ifp[%p]\n",
 +							(unsigned int)rt->rt_rmx.rmx_mtu,rt->rt_ifp));
 +	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp){
 +		dprint(("in_addroute: if_mtu[%d]\n",(int)rt->rt_ifp->if_mtu));
