@@ -23,7 +23,7 @@ static int      max_keylen;
 #ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
-
+		
 	int
 debug_node_print(struct ptree_node *pn)
 {
