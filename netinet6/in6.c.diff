@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 03:56:23.000000000 +0900
++++ in6.c	2005-03-07 04:07:51.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -125,7 +125,7 @@
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
 -		rt_mask(&rt) = (struct sockaddr *)&mask;
-+		dprint(("in6_ifinit: rt[%p] rt->rt_nodes[%p]\n",&rt,&rt.rt_nodes));
++		dprint(("in6_ifinit: rt[%p] rt->rt_nodes[%p]\n",&rt,&(rt)->rt_nodes));
 +		dprint(("in6_ifinit: rt->rt_nodes->mask[%p]\n",&(&rt)->rt_nodes->mask));
 +		dprint(("in6_ifinit: rt->rt_nodes->key[%p]\n",&(&rt)->rt_nodes->key));
 +		//rt_mask(&rt) = (struct sockaddr *)&mask;
