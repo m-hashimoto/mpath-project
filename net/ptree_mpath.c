@@ -147,7 +147,9 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
+	
 	dprint(("-ptree_addmask: search = %d, skip = %d, netmask = %p\n",search,skip,netmask));
+	
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
 	if (skip == 0)  
@@ -158,9 +160,11 @@ ptree_addmask(n_arg, search, skip)
 		bcopy(rn_ones + 1, addmask_key + 1, skip - 1); 
 	if ((m0 = mlen) > skip) 
 		bcopy(netmask + skip, addmask_key + skip, mlen - skip);
+	
 	/*         * Trim trailing zeroes.         */  
 	for (cp = addmask_key + mlen; (cp > addmask_key) && cp[-1] == 0;)
 		cp--;
+	
 	mlen = cp - addmask_key; 
 	if (mlen <= skip) {        
 		if (m0 >= last_zeroed)  
@@ -168,17 +172,21 @@ ptree_addmask(n_arg, search, skip)
 		dprint(("-ptree_addmask End if(mlen<=skip)\n"));
 		return (mask_rnhead->rnh_nodes); 
 	}     
+	
 	if (m0 < last_zeroed)  
 		bzero(addmask_key + m0, last_zeroed - m0); 
+	
 	*addmask_key = last_zeroed = mlen;
-	x = ptree_search(addmask_key, mlen, mask_rnhead);
 	dprint(("-ptree_addmask: mask_rnhead = %p\n",mask_rnhead));
-	dprint(("-ptree_addmask: x->rn_key = %p\n",x->key));
+	x = ptree_search(addmask_key, mlen, mask_rnhead);
+	if(x) dprint(("-ptree_addmask: x->rn_key = %p\n",x->key));
+	
 	if(!x){
 		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
 	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = %d\n",addmask_key,x,mlen));
+	
 	if (memcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
