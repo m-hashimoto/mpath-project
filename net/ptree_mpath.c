@@ -28,28 +28,29 @@ static struct ptree *mask_rnhead;
 static int
 debug_node_print(struct ptree_node *rn)
 {
-	register struct rtentry *rt;
-	register struct sockaddr_in *rt_gate, *rn_dst, *rn_mask;
-	register struct in_addr *gate, *dst, *mask;
+	//register struct rtentry *rt;
+	//register struct sockaddr_in *rn_dst, *rn_mask;
+	//register struct in_addr *dst, *mask;
 	register unsigned char *ip;
 			
-	rt = (struct rtentry *)rn;
-	rn_dst = (struct sockaddr_in *)rt_key(rt);
-	rn_mask = (struct sockaddr_in *)rt_mask(rt);
-	//rt_gate = (struct sockaddr_in *)rt->rt_gateway;
+	//rt = (struct rtentry *)rn;
+	//rn_dst = (struct sockaddr_in *)rt_key(rt);
+	//rn_mask = (struct sockaddr_in *)rt_mask(rt);
 	
 	printf("node = %p\n",rn);
 	printf("parent = %p\n",rn->parent);
 	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
 	printf("mklist = %p\n",rn->rn_mklist);
-	if( rn_dst && &rn_dst->sin_addr ){
-		dst = &rn_dst->sin_addr;
-		ip = (unsigned char *)dst;
+	//if( rn_dst && &rn_dst->sin_addr ){
+		//dst = &rn_dst->sin_addr;
+	if( rn->rn_key ){
+		ip = (unsigned char *)rn->rn_key;
 		printf("host %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rn_mask && &rn_mask->sin_addr ){
-		mask = &rn_mask->sin_addr;
-		ip = (unsigned char *)mask;
+	//if( rn_mask && &rn_mask->sin_addr ){
+		//mask = &rn_mask->sin_addr;
+	if( rn->rn_mask ){
+		ip = (unsigned char *)rn->rn_mask;
 		printf("mask %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
 	if( rn->keylen ) printf("keylen %d ",rn->keylen);
