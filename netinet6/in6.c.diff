@@ -1,204 +1,27 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-11 02:55:15.000000000 +0900
-@@ -688,7 +688,7 @@
++++ in6.c	2005-02-11 03:18:30.000000000 +0900
+@@ -688,7 +688,6 @@
  	struct rtentry *rt;
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
 -
-+	printf("in6_update_ifa: testprint 1\n");
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -697,6 +697,7 @@
- 	 * The destination address for a p2p link must have a family
- 	 * of AF_UNSPEC or AF_INET6.
- 	 */
-+	printf("in6_update_ifa: testprint 2\n");
- 	if ((ifp->if_flags & IFF_POINTOPOINT) != 0 &&
- 	    ifra->ifra_dstaddr.sin6_family != AF_INET6 &&
- 	    ifra->ifra_dstaddr.sin6_family != AF_UNSPEC)
-@@ -705,6 +706,7 @@
- 	 * validate ifra_prefixmask.  don't check sin6_family, netmask
- 	 * does not carry fields other than sin6_len.
- 	 */
-+	printf("in6_update_ifa: testprint 3\n");
- 	if (ifra->ifra_prefixmask.sin6_len > sizeof(struct sockaddr_in6))
- 		return (EINVAL);
- 	/*
-@@ -713,6 +715,7 @@
- 	 * We also require the prefix (when specified) mask is valid, and thus
- 	 * reject a non-consecutive mask.
- 	 */
-+	printf("in6_update_ifa: testprint 4\n");
- 	if (ia == NULL && ifra->ifra_prefixmask.sin6_len == 0)
- 		return (EINVAL);
- 	if (ifra->ifra_prefixmask.sin6_len != 0) {
-@@ -733,6 +736,7 @@
- 	 * and the address is a scoped one, validate/set the scope
- 	 * zone identifier.
- 	 */
-+	printf("in6_update_ifa: testprint 5\n");
- 	dst6 = ifra->ifra_dstaddr;
- 	if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) != 0 &&
- 	    (dst6.sin6_family == AF_INET6)) {
-@@ -758,6 +762,7 @@
- 	 * loopback interface.  If specified, the corresponding prefix length
- 	 * must be 128.
- 	 */
-+	printf("in6_update_ifa: testprint 6\n");
- 	if (ifra->ifra_dstaddr.sin6_family == AF_INET6) {
- 		if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) == 0) {
- 			/* XXX: noisy message */
-@@ -772,6 +777,7 @@
- 		}
- 	}
- 	/* lifetime consistency check */
-+	printf("in6_update_ifa: testprint 7\n");
- 	lt = &ifra->ifra_lifetime;
- 	if (lt->ia6t_pltime > lt->ia6t_vltime)
- 		return (EINVAL);
-@@ -792,6 +798,7 @@
- 	 * If this is a new address, allocate a new ifaddr and link it
- 	 * into chains.
- 	 */
-+	printf("in6_update_ifa: testprint 8\n");
- 	if (ia == NULL) {
- 		hostIsNew = 1;
- 		/*
-@@ -838,6 +845,7 @@
- 	ia->ia6_updatetime = time_second;
- 
- 	/* set prefix mask */
-+	printf("in6_update_ifa: testprint 9\n");
- 	if (ifra->ifra_prefixmask.sin6_len) {
- 		/*
- 		 * We prohibit changing the prefix length of an existing
-@@ -861,6 +869,7 @@
- 	 * install the new destination.  Note that the interface must be
- 	 * p2p or loopback (see the check above.)
- 	 */
-+	printf("in6_update_ifa: testprint 10\n");
- 	if (dst6.sin6_family == AF_INET6 &&
- 	    !IN6_ARE_ADDR_EQUAL(&dst6.sin6_addr, &ia->ia_dstaddr.sin6_addr)) {
- 		int e;
-@@ -881,6 +890,7 @@
- 	 * to see if the address is deprecated or invalidated, but initialize
- 	 * these members for applications.
- 	 */
-+	printf("in6_update_ifa: testprint 11\n");
- 	ia->ia6_lifetime = ifra->ifra_lifetime;
- 	if (ia->ia6_lifetime.ia6t_vltime != ND6_INFINITE_LIFETIME) {
- 		ia->ia6_lifetime.ia6t_expire =
-@@ -894,17 +904,20 @@
- 		ia->ia6_lifetime.ia6t_preferred = 0;
- 
- 	/* reset the interface and routing table appropriately. */
-+	printf("in6_update_ifa: testprint 12\n");
- 	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
- 		goto unlink;
- 
- 	/*
- 	 * configure address flags.
- 	 */
-+	printf("in6_update_ifa: testprint 13\n");
- 	ia->ia6_flags = ifra->ifra_flags;
- 	/*
- 	 * backward compatibility - if IN6_IFF_DEPRECATED is set from the
- 	 * userland, make it deprecated.
- 	 */
-+	printf("in6_update_ifa: testprint 14\n");
- 	if ((ifra->ifra_flags & IN6_IFF_DEPRECATED) != 0) {
- 		ia->ia6_lifetime.ia6t_pltime = 0;
- 		ia->ia6_lifetime.ia6t_preferred = time_second;
-@@ -914,6 +927,7 @@
- 	 * so that corresponding MLD responses would not have a tentative
- 	 * source address.
- 	 */
-+	printf("in6_update_ifa: testprint 15\n");
- 	ia->ia6_flags &= ~IN6_IFF_DUPLICATED;	/* safety */
- 	if (hostIsNew && in6if_do_dad(ifp))
- 		ia->ia6_flags |= IN6_IFF_TENTATIVE;
-@@ -1102,6 +1116,7 @@
- 	 * XXX It may be of use, if we can administratively
- 	 * disable DAD.
- 	 */
-+	printf("in6_update_ifa: testprint 13\n");
- 	if (in6if_do_dad(ifp) && ((ifra->ifra_flags & IN6_IFF_NODAD) == 0) &&
- 	    (ia->ia6_flags & IN6_IFF_TENTATIVE))
- 	{
-@@ -1141,6 +1156,7 @@
- 	return (error);
- 
-   unlink:
-+	printf("in6_update_ifa: unlink\n");
- 	/*
- 	 * XXX: if a change of an existing address failed, keep the entry
- 	 * anyway.
-@@ -1152,6 +1168,7 @@
- 	return (error);
- 
-   cleanup:
-+	printf("in6_update_ifa: cleanup\n");
- 	KASSERT(hostIsNew, ("in6_update_ifa: cleanup: !hostIsNew"));
- 	ifa_free(&ia->ia_ifa);
- 	in6_purgeaddr(&ia->ia_ifa);
-@@ -1704,6 +1721,7 @@
- 	 * if this is its first address,
- 	 * and to validate the address if necessary.
- 	 */
-+	printf("in6_ifinit Start\n");
- 	IF_ADDR_LOCK(ifp);
- 	TAILQ_FOREACH(ifa, &ifp->if_addrhead, ifa_link) {
- 		if (ifa->ifa_addr->sa_family != AF_INET6)
-@@ -1735,6 +1753,7 @@
- 	 * XXX: the logic below rejects assigning multiple addresses on a p2p
- 	 * interface that share the same destination.
- 	 */
-+	printf("in6_ifinit: testprint 1\n");
- 	plen = in6_mask2len(&ia->ia_prefixmask.sin6_addr, NULL); /* XXX */
- 	if (!(ia->ia_flags & IFA_ROUTE) && plen == 128 &&
- 	    ia->ia_dstaddr.sin6_family == AF_INET6) {
-@@ -1749,6 +1768,7 @@
- 			return (error);
- 		ia->ia_flags |= IFA_ROUTE;
- 	}
-+	printf("in6_ifinit: testprint 2\n");
- 
- 	/*
- 	 * add a loopback route to self
-@@ -1759,6 +1779,7 @@
- 		error = ifa_add_loopback_route((struct ifaddr *)ia,
- 				       (struct sockaddr *)&ia->ia_addr);
- 	}
-+	printf("in6_ifinit: testprint 3\n");
- 
- 	/* Add ownaddr as loopback rtentry, if necessary (ex. on p2p link). */
+@@ -1764,6 +1763,7 @@
  	if (newhost) {
-@@ -1791,16 +1812,25 @@
- 			/* */
- 			LLE_WUNLOCK(ln);
+ 		struct llentry *ln;
+ 		struct rtentry rt;
++		struct ptree_node *rn;
+ 		struct sockaddr_dl gateway;
+ 		struct sockaddr_in6 mask, addr;
+ 
+@@ -1793,6 +1793,8 @@
  		}
-+		printf("in6_ifinit: testprint 4\n");
  
  		bzero(&rt, sizeof(rt));
-+		printf("in6_ifinit: testprint 5\n");
++		bzero(rn, sizeof(rn));
++		rt.rt_nodes = rn;
  		rt.rt_gateway = (struct sockaddr *)&gateway;
-+		printf("in6_ifinit: testprint 6\n");
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
-+		printf("in6_ifinit: testprint 7\n");
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
--		rt_mask(&rt) = (struct sockaddr *)&mask;
--		rt_key(&rt) = (struct sockaddr *)&addr;
-+		printf("in6_ifinit: testprint 8\n");
-+		//rt_mask(&rt) = (struct sockaddr *)&mask;
-+		printf("in6_ifinit: testprint 9\n");
-+		//rt_key(&rt) = (struct sockaddr *)&addr;
-+		printf("in6_ifinit: testprint 10\n");
- 		rt.rt_flags = RTF_UP | RTF_HOST | RTF_STATIC;
-+		printf("in6_ifinit: testprint 11\n");
- 		rt_newaddrmsg(RTM_ADD, &ia->ia_ifa, 0, &rt);
- 	}
-+	printf("in6_ifinit End: error = %d\n",error);
- 
- 	return (error);
- }
