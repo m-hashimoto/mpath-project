@@ -268,14 +268,19 @@ ptree_get (char *key, int keylen, struct ptree *t)
 	if (! x)
 	{
 		v = ptree_node_create (key, keylen);
-		if (u)
+		if (u){
 			ptree_link (u, v);
-		else
+			dprint(("ptree_get: if(!x) new_node = %p\n",v));
+		}
+		else{
 			t->top = v;
+			dprint(("ptree_get: if(!x) t->top = %p\n",v));
+		}
 	}
 	else
 	{
 		/* we're going to insert between u and w (previously x) */
+		dprint(("ptree_get: insert between u and w\n"));
 		w = x;
 
 		/* create branching node */

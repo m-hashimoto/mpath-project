@@ -1,16 +1,17 @@
-#
-# mpath project 2010
-#
-0. File
-README					:This file.
-install.sh				:Sell(csh/tcsh) script for install.
-uninstall.sh			:Sell script for uninstall(unpacth).
+/*
+ * mpath project 2010
+ */
 
-UPDATA
+# File
+README		:This file.
+install.sh	:Sell(csh/tcsh) script for install.
+uninstall.sh	:Sell script for uninstall(unpacth).
+
+# UPDATA
 ...branch ptree
 2010/10/05 ptree routeing table debug start.
 2010/10/11 Add rtentry array.
+debug ...
 
 ...new_branch ptree_v2
 2010/10/22 ptree debug start.
-
