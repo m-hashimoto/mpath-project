@@ -291,6 +291,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node *saved_tt;
 		int keyduplicated;
 		dprint(("-ptree_addroute Start\n"));
+		debug_tree_print(head);
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
