@@ -24,9 +24,12 @@ static int  max_keylen;
 debug_node_print(struct ptree_node *pn, int offset)
 {
 	if(offset == 8){ /* IPv6 */
-		struct sockaddr_in6 *key6;
-		key6 = (struct sockaddr_in6 *)pn->key;
-		pritnf("[%p] %s ",pn,inet6_ntoa(key6->sin6_addr));
+		struct sockaddr_in6 sa6;
+		char str[INET6_ADDRSTRLEN];
+		
+		sa6 = (struct sockaddr_in6)pn->key;
+		inet_ntop(AF_INET6, &(sa6.sin6_addr), str, INET6_ADDRSTRLEN);
+		pritnf("[%p] %s ",pn,str);
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
@@ -43,9 +46,12 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x]\n",rt->rt_flags);
 #endif	
 	} else { /* IPv4 */
-		struct sockaddr_in *key4;
-		key4 = (struct sockaddr_in *)pn->key;
-		pritnf("[%p] %s ",pn,inet_ntoa(key4->sin_addr));
+		struct sockaddr_in sa;
+		char str[INET_ADDRSTRLEN];
+		
+		sa = (struct sockaddr_in)pn->key;
+		inet_ntop(AF_INET, &(sa.sin_addr), str, INET_ADDRSTRLEN);
+		pritnf("[%p] %s ",pn,str);
 #if 0
 		if(pn->mask){
 			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
