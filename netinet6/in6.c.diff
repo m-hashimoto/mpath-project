@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 11:40:15.000000000 +0900
++++ in6.c	2005-03-07 11:48:55.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -48,7 +48,7 @@
  
  	/*
  	 * Give the interface a chance to initialize
-@@ -1793,15 +1798,30 @@
+@@ -1793,15 +1798,29 @@
  		}
  
  		bzero(&rt, sizeof(rt));
@@ -65,7 +65,6 @@
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",&(&rt)->rt_nodes->key));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",(struct sockaddr **)(&(&rt)->rt_nodes->key) ));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",(struct sockaddr *)(&(&rt)->rt_nodes->key) ));
-+		dprint(("in6_ifinit: *rt_key[%p]\n",*rt_key(&rt)));
 +		dprint(("in6_ifinit: &rt_key[%p]\n",&rt_key(&rt)));
 +		dprint(("in6_ifinit: rt_key[%p]\n",rt_key(&rt)));
  		rt_key(&rt) = (struct sockaddr *)&addr;
