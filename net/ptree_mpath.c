@@ -31,11 +31,10 @@ debug_node_print(struct ptree_node *pn)
 {
 	//register unsigned char *ip;
 			
-	printf("/*-------------------------*/\n");
-	printf("node = %p\n",pn);
+	printf("node = %p ",pn);
 	if( pn->key ){
 		//ip = (unsigned char *)rn->rn_key;
-		printf("key %d.%d.%d.%d.%d.%d.%d.%d: ",
+		printf("key = %d.%d.%d.%d.%d.%d.%d.%d/%d ",
 						(unsigned char)pn->key[0],
 						(unsigned char)pn->key[1],
 						(unsigned char)pn->key[2],
@@ -43,18 +42,18 @@ debug_node_print(struct ptree_node *pn)
 						(unsigned char)pn->key[4],
 						(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],
-						(unsigned char)pn->key[7]);
+						(unsigned char)pn->key[7],
+						pn->keylen);
 	}
 	//if( rn->rn_mask ){
 	//	ip = (unsigned char *)rn->rn_mask;
 	//	printf("mask %d.%d.%d.%d: ",ip[0],ip[1],ip[2],ip[3]);
 	//}
-	printf("data %p\n",pn->data);
-	printf("keylen %d ",pn->keylen);
+	printf("data = %p ",pn->data);
 	//printf("rn_bit %d ",rn->rn_bit);
 	//if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
-	printf("parent = %p\n",pn->parent);
-	printf("left = %p, right = %p\n",PTREE_LEFT(pn),PTREE_RIGHT(pn));
+	//printf("parent = %p ",pn->parent);
+	printf("[%p, %p]\n",PTREE_LEFT(pn),PTREE_RIGHT(pn));
 	//printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
 	//printf("rn_offset %d\n",rn->rn_Off);
 #if 0
@@ -74,7 +73,6 @@ debug_node_print(struct ptree_node *pn)
 		rm = rm->rm_mklist;
 	}
 #endif
-	printf("/*-------------------------*/\n");
 	return 0;
 }
 
@@ -83,7 +81,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 {
 		printf("======= Debug tree print Start =======\n");
 		register struct ptree_node *pn, *next;
-		printf("ptree = %p\n",pnh);
 		if ( !pnh || !pnh->pnh_treetop )
 			    goto done;
 		pn = pnh->pnh_top;
@@ -142,23 +139,20 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	dprint(("-ptree_insert Start\n"));
 	caddr_t v = v_arg, m = m_arg;
 	register caddr_t cp;
-	dprint(("-ptree_insert: test print 1\n"));
+	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	if (m)
 			len = (int)LEN(m);
 	else
 			len = (int)LEN(v);
-	dprint(("-ptree_insert: test print 2 len = %d\n",len));
-	//register int b;
-	struct ptree_node *top, *tt;
+	dprint(("-ptree_insert: len = %d\n",len));
 	
-	if (!head->pnh_treetop){
+	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	top = head->pnh_top;
 	//int head_off = top->rn_offset;
-	register struct ptree_node *t = ptree_search(v, len, head->pnh_treetop);
+	t = ptree_search(v, len, head->pnh_treetop);
 	cp = v;// + head_off;
 	dprint(("-ptree_insert: t = %p mask_len = %d\n",t,len));
 	
