@@ -54,7 +54,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[%3d.%3d.%3d.%3d] ",
 				gateway[4],gateway[5],gateway[6],gateway[7]);
 #endif
-		printf("[0x%x] ",rt->rt_flags);
+		printf("[0x%x]\n",rt->rt_flags);
 	}
 	//printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	return 0;
