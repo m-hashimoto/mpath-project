@@ -27,13 +27,15 @@ debug_node_print(struct ptree_node *pn, int offset)
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 	
 	if(offset == 8){ /* IPv6 */
-		printf("[%d.%d.%d.%d.%d.%d.%d.%d/%d] ",
+		printf("[%X.%X.%X.%X.%X.%X.%X.%X.%X.%X.%X.%X/%d] ",
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 				(unsigned char)pn->key[12],(unsigned char)pn->key[13],
 				(unsigned char)pn->key[14],(unsigned char)pn->key[15],
+				(unsigned char)pn->key[16],(unsigned char)pn->key[17],
+				(unsigned char)pn->key[18],(unsigned char)pn->key[19],
 				pn->keylen - 8*offset);
-		printf("[%d.%d.%d.%d.%d.%d.%d.%d] ",
+		printf("[%X.%X.%X.%X.%X.%X.%X.%X] ",
 				gateway[8],gateway[9],gateway[10],gateway[11],
 				gateway[12],gateway[13],gateway[14],gateway[15]);
 		
