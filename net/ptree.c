@@ -16,7 +16,7 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x;}
 
 static struct ptree_node 
