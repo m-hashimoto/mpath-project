@@ -44,11 +44,11 @@ ptree_node_create (char *key, int keylen)
   len = sizeof (struct ptree_node) + keylen / 8 + 1;
 
   XRTMALLOC(x, struct ptree_node *, len);
-	memset(x,0,sizeof(x));
   if (! x)
     return NULL;
 
-  x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
+  //x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
+  x->key = (char *)((char *)x + sizeof (struct ptree_node));
   x->keylen = keylen;
   x->parent = NULL;
   x->child[0] = NULL;
