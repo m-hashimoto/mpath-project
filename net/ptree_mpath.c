@@ -17,7 +17,6 @@
 #ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
-//const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
@@ -34,45 +33,12 @@ debug_node_print(struct ptree_node *pn, int offset)
 		sa6 = (struct sockaddr_in6 *)pn->key;
 		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str6, INET6_ADDRSTRLEN);
 		printf("[%p] %s/%3d ",pn,str6,pn->keylen-8*offset);
-#if 0
-			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
-				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
-				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
-				(unsigned char)pn->key[12],(unsigned char)pn->key[13],
-				(unsigned char)pn->key[14],(unsigned char)pn->key[15],
-				pn->keylen - 8*offset);
-		}
-		struct rtentry *rt = pn->data;
-		unsigned char *gateway = (unsigned char *)rt->rt_gateway;
-		printf("[%X.%X.%X.%X.%X.%X.%X.%X] ",
-				gateway[8],gateway[9],gateway[10],gateway[11],
-				gateway[12],gateway[13],gateway[14],gateway[15]);
-		printf("[0x%x]\n",rt->rt_flags);
-#endif	
 	} else { /* IPv4 */
 		sa = (struct sockaddr_in *)pn->key;
 		__rpc_inet_ntop(AF_INET, &sa->sin_addr, str, INET_ADDRSTRLEN);
 		printf("[%p] %s/%3d ",pn,str,pn->keylen-8*offset);
-#if 0
-		if(pn->mask){
-			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
-				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
-				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-				pn->keylen - 8*offset);
-		} else {
-			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
-				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
-				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-				pn->keylen - 8*(offset + 8) );
-		}
-		printf("[%3d.%3d.%3d.%3d] ",
-				gateway[4],gateway[5],gateway[6],gateway[7]);
-#endif
 	}
-	printf("data(%p) <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
-#ifdef PTREE_MPATH
-  
-#endif
+	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 	return 0;
 }
 
@@ -85,7 +51,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 		pn = pnh->pnh_top;
 		printf("\n pnh[%p] phn_top[%p] offset[%d]\n",pnh,pn,pnh->pnh_offset);
 		printf("----------------------------------------------------------\n");
-		//printf("%21s %17s %7s\n","dst","gateway","flags");
 		if(!pn)
 			return (0);
 		for (;;) {
