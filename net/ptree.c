@@ -251,9 +251,9 @@ ptree_get (char *key, int keylen, struct ptree *t)
 		struct sockaddr *sa = (struct sockaddr *)key;
 		struct ptree_node_head *pnh;
 		if (sa->sa_family == AF_INET) /* AF_INET */
-			pnh = rt_tables_get_rnh(0,2);
+			pnh = rt_tables_get_rnh(0,AF_INET);
 		else /* AF_INET6 */
-			pnh = rt_tables_get_rnh(0,28);
+			pnh = rt_tables_get_rnh(0,AF_INET6);
 		debug_tree_print(pnh);
 	
   while (x && x->key && x->keylen <= keylen &&
@@ -280,7 +280,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
       /* we're going to insert between u and w (previously x) */
       w = x;
   	  dprint(("--ptree_get: w[%p]\n",w));
-			debug_tree_print(pnh);
       /* create branching node */
       x = ptree_common (key, keylen, w->key, w->keylen);
       if (! x)
