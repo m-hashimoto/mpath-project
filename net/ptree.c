@@ -248,6 +248,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
   x = t->top;
   dprint(("--ptree_get Start\n"));
 
+	/* debug print */
 		struct sockaddr *sa = (struct sockaddr *)key;
 		struct ptree_node_head *pnh;
 		if (sa->sa_family == AF_INET) /* AF_INET */
@@ -298,10 +299,12 @@ ptree_get (char *key, int keylen, struct ptree *t)
       else
         t->top = x;
 
-      /* if the branching node is not the corresponding node,
-         create the corresponding node to add */
+			/* debug print */
 			dprint(("--ptree_get: add branching node[%p] key[%p]\n",x,x->key));
 			debug_tree_print(pnh);
+			
+      /* if the branching node is not the corresponding node,
+         create the corresponding node to add */
       if (x->keylen == keylen)
         v = x;
       else
