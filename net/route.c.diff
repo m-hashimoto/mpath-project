@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-08 18:05:06.000000000 +0900
++++ route.c	2005-02-08 18:32:24.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,554 @@
+@@ -768,495 +780,555 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1890,7 +1890,8 @@
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
-+				dprint(("case rtreq_ADD: test print1\n"));
++				dprint(("case rtreq_ADD: rt_flags = 0x%x fibnum = %d\n",
++										rt->rt_flags,rt->rt_fibnum));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -2140,7 +2141,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1338,70 @@
+@@ -1267,71 +1339,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2265,7 +2266,7 @@
  }
  
  /*
-@@ -1339,228 +1409,232 @@
+@@ -1339,228 +1410,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
