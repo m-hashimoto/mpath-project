@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 12:56:25.000000000 +0900
++++ route.c	2005-01-26 13:01:01.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2115,7 +2115,7 @@
 +		dprint(("rtrequest1_fib: needlock = %d\n",needlock));
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+		dprint(("rtrequest1_fib End: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt_fibnum));
++		dprint(("rtrequest1_fib End: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
 +		return (error);
  #undef senderr
  }
