@@ -728,7 +728,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		struct ptree_node_head *head;
 {
 		dprint(("-ptree_deladdr Start\n"));
-		register struct ptree_node *x, *tt;
+		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
 		int len;
