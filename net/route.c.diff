@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 13:01:01.000000000 +0900
++++ route.c	2005-01-26 13:09:45.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1658,7 +1658,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1032,303 @@
+@@ -1074,189 +1032,288 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -1743,7 +1743,6 @@
 +				return (EAFNOSUPPORT);
 +		needlock = ((flags & RTF_RNH_LOCKED) == 0);
 +		flags &= ~RTF_RNH_LOCKED;
-+		dprint(("rtrequest1_fib: flags = 0x%x\n",flags));
 +		if (needlock)
 +				RADIX_NODE_HEAD_LOCK(rnh);
 +		else
@@ -1832,7 +1831,7 @@
 +				 */
 +				break;
 +		case RTM_ADD:
-+				dprint(("rtreq_ADD:\n"));
++				dprint(("case rtreq_ADD:\n"));
 +				if ((flags & RTF_GATEWAY) && !gateway)
 +						senderr(EINVAL);
 +				if (dst && gateway && 
@@ -1856,7 +1855,6 @@
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
-+				dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -1869,12 +1867,10 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(error);
 +				}
-+				dprint(("rtreq_ADD: Add the gateway\n"));
 +			/*
 +			 * point to the (possibly newly malloc'd) dest address.
 +			 */
 +				ndst = (struct sockaddr *)rt_key(rt);
-+				dprint(("rtreq_ADD: point to the dst_addr = %p\n",ndst));
 +			/*
 +			 * make sure it contains the value we want (masked if needed).
 +			 */
@@ -1890,8 +1886,7 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n",
-+										rt,rt->rt_ifa,rt->rt_ifp));
++				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
  
  #ifdef RADIX_MPATH
 -		/* do not permit exactly the same dst/mask/gw pair */
@@ -1966,7 +1961,6 @@
 -						rt0 = NULL;
 -					}
 +				if (dst->sa_family == AF_INET) {
-+						dprint(("rtreq_ADD: dst->sa_family = AF_INET\n"));
 +						rn = rnh->rnh_matchaddr(dst, rnh);
 +						if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
 +								struct sockaddr *mask;
@@ -1985,13 +1979,10 @@
 +								 * A host route is already present, so 
 +								 * leave the flow-table entries as is.
 +								 */
-+								dprint(("rtreq_ADD: flags & RTF_HOST = %d\n",rt0->rt_flags & RTF_HOST ));
 +								if (rt0->rt_flags & RTF_HOST) {
-+										dprint(("rtreq_ADD: flags = RTF_HOST\n"));
 +										RTFREE(rt0);
 +										rt0 = NULL;
 +								} else if (!(flags & RTF_HOST) && netmask) {
-+										dprint(("rtreq_ADD: flags is not RTF_HOST\n"));
 +										mask = rt_mask(rt0);
 +										len = mask->sa_len;
 +										m = (u_char *)mask;
@@ -2086,26 +2077,20 @@
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
 +				 */
-+				if (ifa->ifa_rtrequest){
-+						dprint(("rtreq_ADD: if(ifa_rtrequest)\n"));
++				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
-+				}
 +				/*
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
 +				if (ret_nrt) {
-+						dprint(("rtreq_ADD: if(ret_nrt) 1\n"));
 +						*ret_nrt = rt;
-+						dprint(("rtreq_ADD: if(ret_nrt) 2\n"));
 +						RT_ADDREF(rt);
-+						dprint(("rtreq_ADD: if(ret_nrt) 3\n"));
 +				}
 +				RT_UNLOCK(rt);
-+				dprint(("rtreq_ADD: RT_UNLOCK\n"));
 +				break;
 +		default:
-+				dprint(("rtreq_default\n"));
++				dprint(("case rtreq_default\n"));
 +				error = EOPNOTSUPP;
 +}
  bad:
@@ -2115,12 +2100,12 @@
 +		dprint(("rtrequest1_fib: needlock = %d\n",needlock));
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+		dprint(("rtrequest1_fib End: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
++		dprint(("rtrequest1_fib End\n"));
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1339,77 @@
+@@ -1267,71 +1324,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2176,8 +2161,7 @@
 -	bcopy(gate, rt->rt_gateway, glen);
 +		RT_LOCK_ASSERT(rt);
 +		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
- 
--	return (0);
++
 +		/*
 +		 * Prepare to store the gateway in rt->rt_gateway.
 +		 * Both dst and gateway are stored one after the other in the same
@@ -2205,7 +2189,8 @@
 +				rt_key(rt) = (struct sockaddr *)new;
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +		}
-+
+ 
+-	return (0);
 +		/*
 +		 * Copy the new gateway value into the memory chunk.
 +		 */
@@ -2252,7 +2237,7 @@
  }
  
  /*
-@@ -1339,228 +1417,235 @@
+@@ -1339,228 +1402,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2396,11 +2381,11 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
-+		}
+ 		}
 +		if (dst->sa_len == 0){
 +				dprint(("rtinit1 End 1\n"));
 +				return(EINVAL);
- 		}
++		}
 +
  		/*
 -		 * Do the actual request
