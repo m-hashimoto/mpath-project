@@ -172,12 +172,13 @@ ptree_addmask(n_arg, search, skip)
 		bzero(addmask_key + m0, last_zeroed - m0); 
 	*addmask_key = last_zeroed = mlen;
 	x = ptree_search(addmask_key, mlen, mask_rnhead);
+	dprint(("ptree_addmask: mask_rnhead = %p\n",mask_rnhead));
 	if(!x){
 		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
 	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = %d\n",addmask_key,x,mlen));
-	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
+	if (memcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
 		dprint(("-ptree_addmask End if(x||search)\n"));
