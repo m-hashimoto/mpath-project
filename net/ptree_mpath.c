@@ -137,7 +137,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 #endif
 		register caddr_t cp = t->key;
 		caddr_t cplim = v;
-		if ( !memcmp(cp,cplim,len/8) ){
+		if ( !memcmp(cp,cplim,len) ){
 			dprint(("key dupentry\n"));
 			*dupentry = 1;  
 			return t;
@@ -229,8 +229,7 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v;
 	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
-	dprint(("-ptree_matchaddr: vlen/8 = %d\n",vlen/8));
-	if ( !memcmp(cp,cplim,vlen/8) )
+	if ( !memcmp(cp,cplim,vlen) )
 			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
