@@ -105,7 +105,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(signed char)v[2],(signed char)v[3],
 							len,head->pnh_treetop));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_insert: m[%d.%d.%d.%d/%d]\n",
 							(signed char)m[0],(signed char)m[1],
 							(signed char)m[2],(signed char)m[3],
 							len));
