@@ -38,7 +38,7 @@ debug_node_print(struct ptree_node *pn)
 	printf("data[%p] ",pn->data);
 	if( pn->data ){
 		struct rtentry *rt = pn->data;
-		unsigned char *gate = rt->rt_gateway;
+		unsigned char *gate = (unsigned char *)rt->rt_gateway;
 		printf("gateway[%d.%d.%d.%d|%d.%d.%d.%d]\n",
 						(unsigned char)gate[0],(unsigned char)gate[1],
 						(unsigned char)gate[2],(unsigned char)gate[3],
