@@ -408,7 +408,6 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		struct ptree_node_head *head;
 {
 		dprint(("-ptree_deladdr Start\n"));
-		debug_tree_print(head);
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
@@ -434,7 +433,6 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		if (tt == top)
 			head->pnh_top = NULL;
 		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
-		debug_tree_print(head);
 		return (tt);
 }
 
