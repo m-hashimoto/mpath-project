@@ -56,6 +56,7 @@ static int ptree_satisfies_leaf(char *trial,
 	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
 	dprint(("v = %x:%x:%x:%x head = %p\n",*v,*v+1,*v+2,*v+3,head));
+	dprint(("v = %s head = %p\n",*v,head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
 	register struct ptree_node *t = ptree_search(v, vlen, head);
@@ -536,6 +537,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		tt->rn_flags = RNF_ACTIVE;
 	}
 	t = saved_tt->rn_parent;
+	dprint(("ptree_addroute: saved_tt->rn_parent = %p\n",t));
 	if (keyduplicated){
 		dprint(("ptree_addroute: goto on2 if(keyduplicated)\n"));
 		goto on2;
