@@ -83,7 +83,7 @@ on1:
 	}
 	{
 		//register struct ptree_node *p, *x = top;
-		int *data = NULL;
+		int *data;
 		*data = vlen;
 		dprint(("ptree_insert: data = %d\n",*data));
 		cp = v;
