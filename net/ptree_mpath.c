@@ -38,17 +38,17 @@ debug_node_print(struct ptree_node *rn)
 	rn_mask = (struct sockaddr_in *)rt_mask(rt);
 	rt_gate = (struct sockaddr_in *)rt->rt_gateway;
 	
-	if( rn_dst && rn_dst->sin_addr ){
+	if( (rn_dst != 0) && (rn_dst->sin_addr != 0) ){
 		dst = &rn_dst->sin_addr;
 		ip = (unsigned char *)dst;
 		printf("host %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rn_mask && rn_mask->sin_addr ){
+	if( (rn_mask != 0) && (rn_mask->sin_addr != 0) ){
 		mask = &rn_mask->sin_addr;
 		ip = (unsigned char *)mask;
 		printf("mask %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rt_gate && rt_gate->sin_addr ){
+	if( (rt_gate != 0) && (rt_gate->sin_addr != 0) ){
 		gate = &rt_gate->sin_addr;
 		ip = (unsigned char *)gate;
 		printf("gateway %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
