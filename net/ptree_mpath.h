@@ -1,8 +1,8 @@
 /*
  * ptree-mpath header
  */
-#ifndef _PTREE_H_
-#define _PTREE_H_
+#ifndef _PTREE_MPATH_H_
+#define _PTREE_MPATH_H_
 
 #ifdef _KERNEL
 #include <sys/_lock.h>
@@ -17,35 +17,35 @@
 #endif /* PTREE_MPATH */
 
 struct ptree_node_head {
-	struct ptree *pnh_treetop;
-	int      pnh_addsize;           /* permit, but not require fixed keys */
-	int      pnh_pktsize;           /* permit, but not require fixed keys */
+		struct ptree *pnh_treetop;
+		int      pnh_addsize;           /* permit, but not require fixed keys */
+		int      pnh_pktsize;           /* permit, but not require fixed keys */
 #ifdef PTREE_MPATH
-	int		pnh_multipath;
+		int		pnh_multipath;
 #endif
-	struct  ptree_node *(*pnh_addaddr)
-		(void *v, void *mask, struct ptree_node_head *head);
-	struct  ptree_node *(*pnh_addpkt)       /* add based on packet hdr */
-		(void *v, void *mask, struct ptree_node_head *head);
-	struct  ptree_node *(*pnh_deladdr)      /* remove based on sockaddr */
-		(void *v, void *mask, struct ptree_node_head *head);
-	struct  ptree_node *(*pnh_delpkt)       /* remove based on packet hdr */
-		(void *v, void *mask, struct ptree_node_head *head);
-	struct  ptree_node *(*pnh_matchaddr)    /* locate based on sockaddr */
-		(void *v, int vlen, struct ptree_node_head *head);
-	struct  ptree_node *(*pnh_lookup)       /* locate based on sockaddr */
-		(void *v, void *mask, int keylen, struct ptree_node_head *head);
-	struct  ptree_node *(*pnh_matchpkt)     /* locate based on packet hdr */
-		(void *v, struct ptree_node_head *head);
-	int     (*pnh_walktree)                 /* traverse tree */
-		(struct ptree_node_head *head, walktree_f_t *f, void *w);
-	int     (*pnh_walktree_from)            /* traverse tree below a */
-		(struct ptree_node_head *head, void *a, void *m, walktree_f_t *f,
-		 void *w);
-	void    (*pnh_close)         /* do something when the last ref drops */
-		(struct ptree_node *rn, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_addaddr)
+				(void *v, void *mask, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_addpkt)       /* add based on packet hdr */
+				(void *v, void *mask, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_deladdr)      /* remove based on sockaddr */
+				(void *v, void *mask, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_delpkt)       /* remove based on packet hdr */
+				(void *v, void *mask, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_matchaddr)    /* locate based on sockaddr */
+				(void *v, int vlen, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_lookup)       /* locate based on sockaddr */
+				(void *v, void *mask, int keylen, struct ptree_node_head *head);
+		struct  ptree_node *(*pnh_matchpkt)     /* locate based on packet hdr */
+				(void *v, struct ptree_node_head *head);
+		int     (*pnh_walktree)                 /* traverse tree */
+				(struct ptree_node_head *head, walktree_f_t *f, void *w);
+		int     (*pnh_walktree_from)            /* traverse tree below a */
+				(struct ptree_node_head *head, void *a, void *m, walktree_f_t *f,
+				 void *w);
+		void    (*pnh_close)         /* do something when the last ref drops */
+				(struct ptree_node *rn, struct ptree_node_head *head);
 #ifdef _KERNEL
-	struct rwlock rnh_lock;
+		struct rwlock rnh_lock;
 #endif
 }
 
@@ -61,7 +61,7 @@ struct ptree_node_head {
 #define Free(p) free((caddr_t)p, M_RTABLE);
 
 #define	RADIX_NODE_HEAD_LOCK_INIT(rnh)	\
-    rw_init_flags(&(rnh)->rnh_lock, "radix node head", 0)
+		rw_init_flags(&(rnh)->rnh_lock, "radix node head", 0)
 #define	RADIX_NODE_HEAD_LOCK(rnh)	rw_wlock(&(rnh)->rnh_lock)
 #define	RADIX_NODE_HEAD_UNLOCK(rnh)	rw_wunlock(&(rnh)->rnh_lock)
 #define	RADIX_NODE_HEAD_RLOCK(rnh)	rw_rlock(&(rnh)->rnh_lock)
@@ -82,10 +82,9 @@ int debug_tree_print(struct ptree_node_head *pnh);
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
 		 ptree_refines(void *, viod *);
-struct ptree_node
-	  *ptree_addroute (void *, void *, struct ptree_node_head *),
-	  *ptree_deladdr(void *, void *, struct ptree_node_head *),
-	  *ptree_matchaddr(void *, struct ptree_node_head *);
+struct ptree_node *ptree_addroute (void *, void *, struct ptree_node_head *),
+				  *ptree_deladdr(void *, void *, struct ptree_node_head *),
+				  *ptree_matchaddr(void *, struct ptree_node_head *);
 
 /*
  * Patricia trie API with multipath support
@@ -108,5 +107,5 @@ int     ptree4_mpath_inithead(void **, int);
 int     ptree6_mpath_inithead(void **, int);
 #endif /* PTREE_MPATH */
 
-#endif /*_PTREE_H_*/
+#endif /*_PTREE_MPATH_H_*/
 #undef DEBUG

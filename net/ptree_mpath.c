@@ -139,7 +139,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int mlen = (int)LEN(m);
 	//register int b;
 	dprint(("-ptree_insert Start\n"));
-	struct ptree_node *top = head->rnh_top, *tt;
+	struct ptree_node *top = head->pnh_top, *tt;
 	
 	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
@@ -552,7 +552,7 @@ ptree_addroute(v_arg, n_arg, head)
 		caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
 		
 		register struct ptree_node /* *t, *x = 0, */*tt;
-		struct ptree_node *saved_tt, *top = head->rnh_top;
+		struct ptree_node *saved_tt, *top = head->pnh_top;
 		//short b = 0, b_leaf = 0;
 		int keyduplicated;
 		//caddr_t mmask;
