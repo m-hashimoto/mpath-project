@@ -48,6 +48,8 @@ debug_node_print(struct ptree_node *rn)
 		ip = (unsigned char *)mask;
 		printf("mask %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
+	printf("rt_gate = %p\n",rt_gate);
+	printf("rt_gate->sin_addr = %p\n",rt_gate->sin_addr);
 	if( rt_gate && &rt_gate->sin_addr ){
 		gate = &rt_gate->sin_addr;
 		ip = (unsigned char *)gate;
