@@ -83,7 +83,7 @@ on1:
 	{
 		register struct ptree_node *p, *x = top;
 		register void *data;
-		data = 1;
+		*data = 1;
 		cp = v;
 		do {
 			p = x;
@@ -578,8 +578,8 @@ on2:
 		if (m->rm_flags & RNF_NORMAL) {
 			mmask = m->rm_leaf->rn_mask;
 			if (tt->rn_flags & RNF_NORMAL) {
-				log(LOG_ERR, "Non-unique normal route,
-					       	mask not entered\n");
+				log(LOG_ERR, 
+						"Non-unique normal route, mask not entered\n");
 				dprint(("ptree_addroute End 3\n"));
 				return tt;
 			}
@@ -927,7 +927,7 @@ ptree_inithead(head, off)
 {
 	dprint(("ptree_inithead Start\n"));
 	register struct ptree *rnh;
-	register struct ptree_node *t/*, *tt, *ttt*/;
+	/*register struct ptree_node *t, *tt, *ttt;*/
 	if (*head)
 		return (1);
 	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
@@ -937,7 +937,7 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	rnh = ptree_create(void);
+	rnh = ptree_create();
 #if 0
 	t = ptree_add(rn_zeros,off,head);
 	t->rn_bmask = 0;
