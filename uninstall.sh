@@ -17,7 +17,8 @@ patch -R < if_clone.c.diff
 patch -R < rtsock.c.diff
 patch -R < route.c.diff
 patch -R < route.h.diff
-patch -R < flowtable.c.diff
+# Patch for debug
+#patch -R < flowtable.c.diff
 rm ptree.c ptree_mpath.c ptree.h
 rm *.diff
 

@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 09:59:05.000000000 +0900
++++ route.c	2005-01-26 11:34:52.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1657,7 +1657,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1031,299 @@
+@@ -1074,189 +1031,300 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -2094,8 +2094,9 @@
 +				 * give the caller a single reference.
 +				 */
 +				if (ret_nrt) {
-+						dprint(("rtreq_ADD: if(ret_nrt)\n"));
++						dprint(("rtreq_ADD: if(ret_nrt) 1\n"));
 +						*ret_nrt = rt;
++						dprint(("rtreq_ADD: if(ret_nrt) 2\n"));
 +						RT_ADDREF(rt);
 +				}
 +				RT_UNLOCK(rt);
@@ -2115,7 +2116,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1334,77 @@
+@@ -1267,71 +1335,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2247,7 +2248,7 @@
  }
  
  /*
-@@ -1339,228 +1412,235 @@
+@@ -1339,228 +1413,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
