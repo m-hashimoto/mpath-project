@@ -89,7 +89,7 @@ int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
 struct ptree_node
 		*ptree_addroute(void *, void *, struct ptree_node_head *,
-					   	struct ptree_node),
+					   	struct ptree_node *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
