@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 16:48:54.000000000 +0900
++++ route.c	2005-01-27 17:03:01.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,532 @@
+@@ -768,495 +814,534 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2118,8 +2118,7 @@
 +				}
 +				else{
 +					dprint(("mtx_lock_init error\n"));
-+					RT_TRYLOCK(rt);
-+					RT_UNLOCK(rt);
++					RT_LOCK_DESTROY(rt);
 +				}
 +				break;
 +		default:
@@ -2129,14 +2128,17 @@
 -	if (needlock)
 -		RADIX_NODE_HEAD_UNLOCK(rnh);
 -	return (error);
-+		if (needlock)
++		if (needlock){
++				dprint(("rtreq: NODE_HEAD_UNLOCK Start\n"));
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
++				dprint(("rtreq: NODE_HEAD_UNLOCK End\n"));
++		}
 +		dprint(("rtrequest1_fib End: error = %d\n",error));
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1350,78 @@
+@@ -1267,71 +1352,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2269,7 +2271,7 @@
  }
  
  /*
-@@ -1339,228 +1429,235 @@
+@@ -1339,228 +1431,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
