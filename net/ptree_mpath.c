@@ -582,6 +582,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 #endif
 		t = saved_tt;
+		dprint(("-ptree_addroute: saved_tt = %p\n",saved_tt));
 		if (keyduplicated){
 				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 				goto on2;
