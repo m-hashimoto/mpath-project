@@ -575,65 +575,28 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				tt->rn_bit = x->rn_bit;
 				tt->rn_flags = RNF_ACTIVE;
 		}
-#if 0 /* 10/29 19:32 test */
-		t = saved_tt->rn_parent;
-		if(!t){
-				dprint(("-ptree_addroute: goto on2 if(!tt->parent)\n"));
-				goto on2;
-		}
-#endif
+
 		t = saved_tt;
 		if (keyduplicated){
 				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 				goto on2;
 		}
 		b_leaf = -1 - t->rn_bit;
-		//b_leaf = tt->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-		for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
+		for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
 		if(t->rn_mask && t->rn_mklist == 0){
 			*mp = m = ptree_new_mask(t,0);
 			dprint(("-ptree_addroute: m = %p \n",m));
-				if (m){
-					dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
-					mp = &m->rm_mklist;
-				}
-		}
-		if(t->rn_mklist){
+			if (m){
+				dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
+				mp = &m->rm_mklist;
+			}
+		} else if(t->rn_mklist){
 			for(mp = &t->rn_mklist;(m = *mp);mp = &m->rm_mklist)
 				if(m->rm_bit >= b_leaf)
 					break;
-				t->rn_mklist = m;
-				*mp = 0;
+			t->rn_mklist = m; *mp = 0;
 		}
-#if 0 /* 10/29 19:32 test */
-		if (t->rn_right == saved_tt)
-				x = t->rn_left;
-		else
-				x = t->rn_right;
-		if(!x){
-				dprint(("-ptree_addroute: goto on2 if(!x)\n"));
-				goto on2;
-		}
-		/* Promote general routes from below */
-		if (x->rn_bit < 0) {
-				dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
-				for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
-						if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
-								*mp = m = ptree_new_mask(x, 0);
-								if (m)
-										mp = &m->rm_mklist;
-						}
-		} else if (x->rn_mklist) {
-				/*
-				 * Skip over masks whose index is > that of new node
-				 */
-				for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
-						if (m->rm_bit >= b_leaf)
-								break;
-				t->rn_mklist = m; *mp = 0;
-		}
-#endif
 on2:
 		dprint(("-ptree_addroute: on2\n"));
 		/* Add new route to highest possible ancestor's list */
