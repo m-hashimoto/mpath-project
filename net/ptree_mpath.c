@@ -225,6 +225,7 @@ on1:
  * Same as above, but with an additional mask.
  * XXX note this function is used only once.
  */
+#if 0
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
@@ -232,7 +233,6 @@ ptree_search_m(v_arg, head, m_arg)
 {
 	dprint(("-ptree_seach_m Start\n"));
 	dprint(("-ptree_search_m: v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg));
-
 	register struct ptree_node *x, *y;
 	register caddr_t v = v_arg, m = m_arg;
 
@@ -249,7 +249,7 @@ ptree_search_m(v_arg, head, m_arg)
 	dprint(("-ptree_seach_m End\n"));
 	return x;
 }
-
+#endif
 
 	int
 ptree_refines(m_arg, n_arg)
@@ -397,8 +397,10 @@ ptree_matchaddr(v_arg, head)
 	 * with a long one.  This wins big for class B&C netmasks which
 	 * are probably the most common case...
 	 */
-	if (t->rn_mask)
+	if (t->rn_mask){
 		vlen = *(u_char *)t->rn_mask;
+		dprint(("ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
+	}
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
@@ -466,7 +468,9 @@ on1:
 		if (m->rm_flags & RNF_NORMAL) {
 			if (rn_bit <= m->rm_bit)
 				return (m->rm_leaf);
-		} else {
+		}
+#if 0	
+		else {
 			off = min(t->rn_offset, matched_off);
 			x = ptree_search_m(v, t, m->rm_mask);
 			while (x && x->rn_mask != m->rm_mask)
@@ -476,6 +480,7 @@ on1:
 				return x;
 			}
 		}
+#endif
 		m = m->rm_mklist;
 	}
 miss:
