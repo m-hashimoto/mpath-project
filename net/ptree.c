@@ -165,7 +165,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
   w->parent = v;
-  dprint(("--ptree_link: v[%p]->child[%d] = w[%p]\n",v,bit,w));
+  dprint(("--ptree_link End: v[%p]->child[%d] = w[%p]\n",v,bit,w));
 }
 
 /* key_common_len() returns the bit length with which the keyi and
@@ -211,7 +211,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
   x = ptree_node_create (keyi, keylen);
-  dprint(("--key_common: x[%p] x->key[%p]\n",x,x->key));
+  dprint(("--key_common: x[%p] x->key[%p] x->keylen[%d]\n",x,x->key,x->keylen));
   if (! x)
     return NULL;
 
@@ -299,7 +299,8 @@ ptree_get (char *key, int keylen, struct ptree *t)
         t->top = x;
 
 			/* debug print */
-			dprint(("--ptree_get: add branching node[%p] key[%p]\n",x,x->key));
+			dprint(("--ptree_get: add branching node[%p] key[%p] keylen[%d]\n",
+															x,x->key,x->keylen));
 			//debug_tree_print(pnh);
 			
       /* if the branching node is not the corresponding node,
@@ -321,7 +322,8 @@ ptree_get (char *key, int keylen, struct ptree *t)
             }
 
           ptree_link (x, v);
-					dprint(("--ptree_get: add new node[%p] key[%p]\n",v,v->key));
+					dprint(("--ptree_get: add new node[%p] key[%p] keylen[%d]\n",
+																	v,v->key,v->keylen));
 				//	debug_tree_print(pnh);
         }
     }
