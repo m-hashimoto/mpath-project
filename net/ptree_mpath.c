@@ -23,7 +23,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	
 	if(offset == 8){ /* IPv6 */
 		if(pn->key){
-			printf("%p [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
+			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 				(unsigned char)pn->key[12],(unsigned char)pn->key[13],
@@ -40,12 +40,12 @@ debug_node_print(struct ptree_node *pn, int offset)
 #endif	
 	} else { /* IPv4 */
 		if(pn->mask){
-			printf("%p [%3d.%3d.%3d.%3d/%3d] ",pn,
+			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*offset);
 		} else {
-			printf("%p [%3d.%3d.%3d.%3d/%3d] ",pn,
+			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*(offset + 8) );
@@ -230,7 +230,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)cp[8],(unsigned char)cp[9],
 							(unsigned char)cp[10],(unsigned char)cp[11],
 							vlen-8*head->pnh_offset));
-	if ( memcmp(cp,cplim,vlen) != 0 )
+	if ( !memcmp(cp,cplim,vlen) )
 		return 0;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
@@ -329,6 +329,11 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
+#ifdef PTREE_MPATH
+		struct rtentry *headrt, *rt;
+		headrt = 		
+
+#endif
 		ptree_remove(tt);
 		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
 		return (tt);
