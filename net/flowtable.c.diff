@@ -1,5 +1,5 @@
 --- flowtable.c.org	2005-01-24 17:59:50.000000000 +0900
-+++ flowtable.c	2005-01-25 03:34:24.000000000 +0900
++++ flowtable.c	2005-01-26 05:05:24.000000000 +0900
 @@ -131,6 +131,8 @@
  #define	FIN_WAIT_IDLE		600
  #define	TCP_IDLE		SECS_PER_DAY
@@ -17,15 +17,7 @@
  	uint32_t key[9], hash;
  	struct flentry *fle;
  	uint16_t flags;
-@@ -640,6 +643,7 @@
- 	if (hash == 0 || (key[0] == 0 && (ft->ft_flags & FL_HASH_PORTS)))
- 		return (ENOENT);
- 
-+	dprint(("flowtable_lookup test print 1\n"));
- 	V_flowtable_lookups++;
- 	FL_ENTRY_LOCK(ft, hash);
- 	if ((fle = FL_ENTRY(ft, hash)) == NULL) {
-@@ -647,6 +651,7 @@
+@@ -647,6 +650,7 @@
  		goto uncached;
  	}
  keycheck:	
@@ -33,7 +25,7 @@
  	rt = __DEVOLATILE(struct rtentry *, fle->f_rt);
  	lle = __DEVOLATILE(struct llentry *, fle->f_lle);
  	if ((rt != NULL)
-@@ -662,6 +667,7 @@
+@@ -662,6 +666,7 @@
  		ro->ro_rt = rt;
  		ro->ro_lle = lle;
  		FL_ENTRY_UNLOCK(ft, hash);
@@ -41,7 +33,7 @@
  		return (0);
  	} else if (fle->f_next != NULL) {
  		fle = fle->f_next;
-@@ -670,6 +676,7 @@
+@@ -670,6 +675,7 @@
  	FL_ENTRY_UNLOCK(ft, hash);
  
  uncached:
@@ -49,23 +41,51 @@
  	V_flowtable_misses++;
  	/*
  	 * This bit of code ends up locking the
-@@ -695,6 +702,7 @@
+@@ -684,6 +690,7 @@
+ 	 */
+ 
+ 	ft->ft_rtalloc(ro, hash, fibnum);
++	dprint(("flowtable_lookup: test print 1\n"));
+ 	if (ro->ro_rt == NULL) 
+ 		error = ENETUNREACH;
+ 	else {
+@@ -691,28 +698,35 @@
+ 		struct sockaddr *l3addr;
+ 		struct rtentry *rt = ro->ro_rt;
+ 		struct ifnet *ifp = rt->rt_ifp;
++		dprint(("flowtable_lookup: test print 2\n"));
+ 
  		if (ifp->if_flags & (IFF_POINTOPOINT | IFF_LOOPBACK)) {
  			RTFREE(rt);
  			ro->ro_rt = NULL;
 +			dprint(("flowtable_lookup End: flags error\n"));
  			return (ENOENT);
  		}
++		dprint(("flowtable_lookup: test print 3\n"));
  
-@@ -708,6 +716,7 @@
+ 		if (rt->rt_flags & RTF_GATEWAY)
+ 			l3addr = rt->rt_gateway;
+ 		else
+ 			l3addr = &ro->ro_dst;
+ 		llentry_update(&lle, LLTABLE(ifp), l3addr, ifp);
++		dprint(("flowtable_lookup: test print 4\n"));
+ 		ro->ro_lle = lle;
+ 
  		if (lle == NULL) {
  			RTFREE(rt);
  			ro->ro_rt = NULL;
 +			dprint(("flowtable_lookup End: lle == NULL\n"));
  			return (ENOENT);
  		}
++		dprint(("flowtable_lookup: test print 5\n"));
  		error = flowtable_insert(ft, hash, key, proto, fibnum,
-@@ -721,6 +730,7 @@
+ 		    ro, flags);
+ 				
++		dprint(("flowtable_lookup: test print 6\n"));
+ 		if (error) {
+ 			RTFREE(rt);
+ 			LLE_FREE(lle);
+@@ -721,6 +735,7 @@
  		}
  	} 
  
@@ -73,7 +93,7 @@
  	return (error);
  }
  
-@@ -1190,3 +1200,6 @@
+@@ -1190,3 +1205,6 @@
  	}
  }
  #endif

@@ -523,7 +523,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 										  || ptree_lexobetter(netmask, tt->rn_mask))))
 								break;
 				}
-#if 0 /* 10/29 22:00 */
+
 				if (tt == saved_tt) {
 						struct	ptree_node *xx = x;
 						/* link in at head of list */
@@ -543,7 +543,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 						if (tt->rn_dupedkey)			/* parent */
 								tt->rn_dupedkey->rn_parent = tt; /* parent */
 				}
-#endif
+
 #ifdef RN_DEBUG
 				t=tt+1; tt->rn_info = rn_nodenum++; t->rn_info = rn_nodenum++;
 				tt->rn_twin = t; tt->rn_ybro = rn_clist; rn_clist = tt;
