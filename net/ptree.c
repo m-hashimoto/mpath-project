@@ -144,15 +144,16 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 ptree_search (char *key, int keylen, struct ptree *t)
 {
 	dprint(("ptree_search Start\n"));
+	dprint(("ptree_search: search_key = %s len = %d\n",key,keylen));
 	struct ptree_node *x, *match;
 
 	x = match = t->top;
 	dprint(("ptree_search: check node keylen flag\n"));
-	dprint(("ptree_search: %p   %d    %d\n",x,x->keylen,x->rn_flags));
+	dprint(("	       %p   %d    %d\n",x,x->keylen,x->rn_flags));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
-		dprint(("ptree_search: %p   %d    %d\n",x,x->keylen,x->rn_flags));
+		dprint(("	       %p   %d    %d\n",x,x->keylen,x->rn_flags));
 		/* if(x->data) */
 		if (x->rn_flags & RNF_ACTIVE)
 			match = x;
@@ -510,3 +511,4 @@ ptree_delete (struct ptree *t)
 	dprint(("ptree_delete End\n"));
 }
 #undef dprint
+#undef DEBUG
