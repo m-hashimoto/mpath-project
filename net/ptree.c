@@ -159,6 +159,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
   int keylen = 0;
   unsigned char bitmask;
   unsigned char diff;
+  dprint(("--key_common_len: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   nmatch = 0;
   while (nmatch < minkeylen / 8 && keyi[nmatch] == keyj[nmatch])
