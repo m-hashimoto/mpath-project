@@ -248,7 +248,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
   x = t->top;
   dprint(("--ptree_get Start\n"));
 
-		struct sockaddr *sa = key;
+		struct sockaddr *sa = (struct sockaddr *)key;
 		struct ptree_node_head *pnh;
 		if (sa->sa_family = 2) /* AF_INET */
 			pnh = rt_tables_get_rnh(0,2);
