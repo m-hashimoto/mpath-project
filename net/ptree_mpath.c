@@ -944,7 +944,6 @@ ptree_inithead(head, off)
 	t->rn_dupedkey = NULL;
 	t->rn_parent = t;
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
-#endif
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
 #endif
