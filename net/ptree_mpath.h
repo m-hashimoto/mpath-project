@@ -3,7 +3,7 @@
  */
 
 #ifndef _NET_PTREE_MPATH_H_
-#define _NET_PTREE_MPATH_H_
+#define _NET_PTREE_MPATH_H_ 1
 
 #ifdef _KERNEL
 #include <sys/_lock.h>
