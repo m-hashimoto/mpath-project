@@ -26,14 +26,14 @@ static int  max_keylen;
 #include <netinet/in.h>
 		
 	int
-debug_node_print(struct ptree_node *pn, int off)
+debug_node_print(struct ptree_node *pn)
 {
-	printf("node[%p] offset[%d]",pn,off);
+	printf("node[%p] ",pn);
 	if( pn->key ){
 		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-						pn->keylen - off);
+						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
 	if( pn->data ){
@@ -45,7 +45,7 @@ debug_node_print(struct ptree_node *pn, int off)
 						(unsigned char)gate[4],(unsigned char)gate[5],
 						(unsigned char)gate[6],(unsigned char)gate[7]);
 	}
-	printf("			p[%p] l[%p] r[%p]\n",pn->parent,pn->child[0],pn->child[1]);
+	printf("p[%p] l[%p] r[%p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
 }
 
@@ -57,11 +57,11 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if ( !pnh || !pnh->pnh_treetop )
 			    goto done;
 		pn = pnh->pnh_top;
-		printf("pnh = %p phn_top = %p\n",pnh,pn);
+		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
 		if(!pn)
 			goto done;
 		for (;;) {
-			debug_node_print(pn,pnh->pnh_offset);
+			debug_node_print(pn);
 			next = ptree_next(pn);
 			if( !next )
 				break;
@@ -94,7 +94,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
-	len = (int)8*(LEN(v)/* - head_zero*/);
+	len = (int)8*(LEN(v) - head_zero);
 	if (m){ /* ?? */
 		dprint(("LEN(m) = %d\n",(int)LEN(m)));
 		if ((LEN(m) - head->pnh_offset) > 0)
@@ -224,7 +224,7 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int vlen;
 	
-	vlen = (int)8*(LEN(v)/* - head_zero*/);
+	vlen = (int)8*(LEN(v) - head_zero);
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
@@ -337,7 +337,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		len = (int)8*(LEN(v)/* - head_zero*/);
+		len = (int)8*(LEN(v) - head_zero);
 		if (netmask){
 			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
 			if ((LEN(netmask) - head->pnh_offset) > 0)
