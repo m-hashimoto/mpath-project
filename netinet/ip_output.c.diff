@@ -1,17 +1,32 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2005-02-25 02:53:59.000000000 +0900
-@@ -425,6 +425,10 @@
++++ ip_output.c	2005-02-25 08:46:54.000000000 +0900
+@@ -306,12 +306,15 @@
+ 		 * them, there is no way for one to update all its
+ 		 * routes when the MTU is changed.
+ 		 */
++		printf("ip_output: mtu calculate (case 1)\n");
+ 		if (ro->ro_rt->rt_rmx.rmx_mtu > ifp->if_mtu)
+ 			ro->ro_rt->rt_rmx.rmx_mtu = ifp->if_mtu;
+ 		mtu = ro->ro_rt->rt_rmx.rmx_mtu;
+ 	} else {
++		printf("ip_output: mtu calculate (case 2)\n");
+ 		mtu = ifp->if_mtu;
+ 	}
++	printf("ip_output: Calculated MTU[%d]\n",mtu);
+ 	if (IN_MULTICAST(ntohl(ip->ip_dst.s_addr))) {
+ 		m->m_flags |= M_MCAST;
+ 		/*
+@@ -425,6 +428,9 @@
  	 * packet or packet fragments, unless ALTQ is enabled on the given
  	 * interface in which case packetdrop should be done by queueing.
  	 */
 +	printf("ip_output: ifp[%p] ip[%p]\n",ifp,ip);
-+	printf("ip_output: mtu[%d]\n",mtu);
 +	printf("ip_output: ifq_len[%d]\n",(int)ifp->if_snd.ifq_len);
 +	printf("ip_output: ip_len[%d]\n",(int)ip->ip_len);
  #ifdef ALTQ
  	if ((!ALTQ_IS_ENABLED(&ifp->if_snd)) &&
  	    ((ifp->if_snd.ifq_len + ip->ip_len / mtu + 1) >=
-@@ -434,6 +438,7 @@
+@@ -434,6 +440,7 @@
  	    ifp->if_snd.ifq_maxlen)
  #endif /* ALTQ */
  	{
@@ -19,7 +34,7 @@
  		error = ENOBUFS;
  		IPSTAT_INC(ips_odropped);
  		ifp->if_snd.ifq_drops += (ip->ip_len / ifp->if_mtu + 1);
-@@ -445,6 +450,7 @@
+@@ -445,6 +452,7 @@
  	 * verify user is allowed to send
  	 * such a packet.
  	 */
@@ -27,7 +42,7 @@
  	if (isbroadcast) {
  		if ((ifp->if_flags & IFF_BROADCAST) == 0) {
  			error = EADDRNOTAVAIL;
-@@ -465,6 +471,7 @@
+@@ -465,6 +473,7 @@
  	}
  
  sendit:
@@ -35,7 +50,7 @@
  #ifdef IPSEC
  	switch(ip_ipsec_output(&m, inp, &flags, &error, &ifp)) {
  	case 1:
-@@ -557,6 +564,7 @@
+@@ -557,6 +566,7 @@
  #endif /* IPFIREWALL_FORWARD */
  
  passout:
@@ -43,7 +58,7 @@
  	/* 127/8 must not appear on wire - RFC1122. */
  	if ((ntohl(ip->ip_dst.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET ||
  	    (ntohl(ip->ip_src.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET) {
-@@ -661,6 +669,7 @@
+@@ -661,6 +671,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -51,7 +66,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +677,7 @@
+@@ -668,6 +679,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:

@@ -17,7 +17,7 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x; }
 
 	int
@@ -27,7 +27,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 
 	if(pn->key){
-	printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] ",
+	printf("[%3d.%3d.%3d.%3d|%3d.%3d.%3d.%3d|%3d.%3d.%3d.%3d/%d] ",
 					(unsigned char)pn->key[0],(unsigned char)pn->key[1],
 					(unsigned char)pn->key[2],(unsigned char)pn->key[3],
 					(unsigned char)pn->key[4],(unsigned char)pn->key[5],
@@ -37,7 +37,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 					pn->keylen - 8*offset);
 	}
 	if(gateway){
-	printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d] ",
+	printf("[%3d.%3d.%3d.%3d|%3d.%3d.%3d.%3d|%3d.%3d.%3d.%3d] ",
 					(unsigned char)gateway[0],(unsigned char)gateway[1],
 					(unsigned char)gateway[2],(unsigned char)gateway[3],
 					(unsigned char)gateway[4],(unsigned char)gateway[5],
