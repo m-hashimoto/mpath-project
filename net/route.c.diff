@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-27 03:22:27.000000000 +0900
++++ route.c	2005-02-27 03:44:17.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -359,7 +359,7 @@
  }
  
  /*
-@@ -320,156 +314,163 @@
+@@ -320,156 +314,152 @@
   *
   * The returned route, if any, is locked.
   */
@@ -487,19 +487,8 @@
 -	if (newrt)
 -		RT_LOCK_ASSERT(newrt);
 -	return (newrt);
-+		if (newrt){
-+				//unsigned char *g = (unsigned char *)newrt->rt_gateway;
-+				//unsigned char *ifa = (unsigned char *)newrt->rt_ifa->ifa_addr;
-+				///dprint(("rtalloc1_fib: gate[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]",
-+				//				g[0],g[1],g[2],g[3],
-+				//				g[4],g[5],g[6],g[7],
-+				//				g[8],g[9],g[10],g[11]));
-+				//dprint((" ifa[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
-+				//				ifa[0],ifa[1],ifa[2],ifa[3],
-+				//				ifa[4],ifa[5],ifa[6],ifa[7],
-+				//				ifa[8],ifa[9],ifa[10],ifa[11]));
++		if (newrt)
 +				RT_LOCK_ASSERT(newrt);
-+		}
 +		return (newrt);
  }
  
@@ -645,7 +634,7 @@
  }
  
  
-@@ -479,282 +480,281 @@
+@@ -479,282 +469,281 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1153,7 +1142,7 @@
  }
  
  /*
-@@ -768,495 +768,510 @@
+@@ -768,495 +757,510 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2081,13 +2070,13 @@
 -	return (error);
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+		if (DEBUG && !error)
-+			debug_tree_print(rnh);
++		//if (DEBUG && !error)
++		debug_tree_print(rnh);
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1282,69 @@
+@@ -1267,71 +1271,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2211,7 +2200,7 @@
  }
  
  /*
-@@ -1339,228 +1352,229 @@
+@@ -1339,228 +1341,229 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2354,25 +2343,25 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
- 		}
++		}
 +		if (dst->sa_len == 0){
 +				return(EINVAL);
-+		}
+ 		}
 +
  		/*
 -		 * Do the actual request
--		 */
++		 * If it's a delete, check that if it exists,
++		 * it's on the correct interface or we might scrub
++		 * a route to another ifa which would
++		 * be confusing at best and possibly worse.
+ 		 */
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_ifa = ifa;
 -		info.rti_flags = flags | ifa->ifa_flags;
 -		info.rti_info[RTAX_DST] = dst;
 -		/* 
 -		 * doing this for compatibility reasons
-+		 * If it's a delete, check that if it exists,
-+		 * it's on the correct interface or we might scrub
-+		 * a route to another ifa which would
-+		 * be confusing at best and possibly worse.
- 		 */
+-		 */
 -		if (cmd == RTM_ADD)
 -			info.rti_info[RTAX_GATEWAY] =
 -			    (struct sockaddr *)&null_sdl;
