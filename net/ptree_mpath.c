@@ -41,19 +41,19 @@ debug_node_print(struct ptree_node *rn)
 	if( rn_dst && &rn_dst->sin_addr ){
 		dst = &rn_dst->sin_addr;
 		ip = (unsigned char *)dst;
-		printf("host %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("host %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
 	if( rn_mask && &rn_mask->sin_addr ){
 		mask = &rn_mask->sin_addr;
 		ip = (unsigned char *)mask;
-		printf("mask %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("mask %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
 	if( rt_gate && &rt_gate->sin_addr ){
 		gate = &rt_gate->sin_addr;
 		ip = (unsigned char *)gate;
-		printf("gateway %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("gate %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	printf("pn_flags 0x%x\n",rn->rn_flags);
+	printf("flag 0x%x\n",rn->rn_flags);
 	return 0;
 }
 #endif /* DEBUG */
@@ -305,7 +305,6 @@ ptree_search_m(v_arg, head, m_arg)
 	return x;
 }
 #endif
-
 	int
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
