@@ -458,7 +458,7 @@ ptree_create ()
 		return NULL;
 	}
 	x = ptree_node_create(0,0);
-	x->flags = RNF_ROOT;
+	x->rn_flags = RNF_ROOT;
 
 	t->top = x;
 	dprint(("ptree_create End\n"));
