@@ -607,12 +607,13 @@ on2:
 		return tt; /* can't lift at all */
 	}
 	b_leaf = tt->rn_bit;
-	dprint(("ptree_addroute: put netmask = %s\n",netmask));
+	dprint(("ptree_addroute: put netmask = %x:%x:%x:%x\n",netmask[0],netmask[1],netmask[2],netmask[3]));
 	dprint(("ptree_addroute: b_leaf = %d\n",b_leaf));
 	do {
 		x = t;
 		t = t->rn_parent;
 	} while (b <= t->rn_bit && x != top);
+	dprint(("ptree_addroute: x = %p\n",x));
 	/*
 	 * Search through routes associated with node to
 	 * insert new route according to index.
