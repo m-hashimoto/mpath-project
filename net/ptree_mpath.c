@@ -230,6 +230,8 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)cp[8],(unsigned char)cp[9],
 							(unsigned char)cp[10],(unsigned char)cp[11],
 							vlen-8*head->pnh_offset));
+	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen)=[%d]\n",memcmp(cp,cplim,vlen)));
+	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen/8)=[%d]\n",memcmp(cp,cplim,vlen/8)));
 	if ( !memcmp(cp,cplim,vlen) )
 		return 0;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
