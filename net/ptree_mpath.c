@@ -377,6 +377,7 @@ ptree_matchaddr(v_arg, head)
 		dprint(("ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
+	dprint(("t->rn_key = %p\n",t->rn_key));
 	/*
 	 * See if we match exactly as a host destination
 	 * or at least learn how many bits match, for normal mask finesse.
@@ -393,7 +394,9 @@ ptree_matchaddr(v_arg, head)
 		vlen = *(u_char *)t->rn_mask;
 	dprint(("ptree_matchaddr: test 2\n"));
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
-	dprint(("ptree_matchaddr: test 3\n"));
+	dprint(("ptree_matchaddr: cp = %d:%d:%d:%d\n",cp[0],cp[1],cp[2],cp[3]));
+	dprint(("ptree_matchaddr: cp2 = %d:%d:%d:%d\n",cp2[0],cp2[1],cp2[2],cp2[3]));
+	dprint(("ptree_matchaddr: cplim = %d:%d:%d:%d\n",cplim[0],cplim[1],cplim[2],cplim[3]));
 	for (; cp < cplim; cp++, cp2++)
 		if (*cp != *cp2)
 			goto on1;
