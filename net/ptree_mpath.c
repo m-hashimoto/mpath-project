@@ -96,7 +96,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	int len = 8*LEN(v);
 	
 #ifdef DEBUG
-	if(head->pnh_offset == 8){
+	if(head->pnh_offset == 4){
 		printf("-ptree_insert: addr");
 		sprint_inet_ntoa(AF_INET, v);
 		printf("/%d\n",len);
@@ -124,7 +124,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			len++;
 		len = 8*len;
 #ifdef DEBUG
-		if(head->pnh_offset == 8){
+		if(head->pnh_offset == 4){
 			printf("-ptree_insert: addr");
 			sprint_inet_ntoa(AF_INET, v);
 			printf("/%d\n",len);
@@ -222,7 +222,7 @@ ptree_matchaddr(v_arg, head)
 	
 	vlen = (int)8*LEN(v);
 #ifdef DEBUG
-		if(head->pnh_offset == 8){
+		if(head->pnh_offset == 4){
 			printf("-ptree_matchaddr: addr");
 			sprint_inet_ntoa(AF_INET, v);
 			printf("/%d\n",vlen);
@@ -250,7 +250,7 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 #ifdef DEBUG
-		if(head->pnh_offset == 8){
+		if(head->pnh_offset == 4){
 			printf("-ptree_insert: save_t");
 			sprint_inet_ntoa(AF_INET, cp);
 			printf("/%d\n",vlen);
