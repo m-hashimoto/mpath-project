@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-24 15:04:00.000000000 +0900
++++ route.c	2005-02-24 15:33:23.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1159,7 +1159,7 @@
  }
  
  /*
-@@ -768,495 +771,517 @@
+@@ -768,495 +771,516 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1886,6 +1886,7 @@
 +			 * 
 +			 */
 +				RT_LOCK(rt);
++				RT_LOCK_ASSERT(rt);
 +				int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
 +				caddr_t new;
 +//#ifdef INVARIANTS
@@ -1893,15 +1894,14 @@
 +//	
 +//				rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
 +//#endif
-+				RT_LOCK_ASSERT(rt);
 +//				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
 +				R_Malloc(new, caddr_t, dlen + glen);
 +				if (new == NULL){
 +					RT_LOCK_DESTROY(rt);
 +					if (ifa != NULL)
 +						ifa_free(ifa);
-+						uma_zfree(V_rtzone, rt);
-+						senderr(ENOBUFS);
++					uma_zfree(V_rtzone, rt);
++					senderr(ENOBUFS);
 +				}
 +				bcopy(dst, new, dlen);
 +				if(rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway))
@@ -2013,7 +2013,6 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				dprint(("rt[%p] rn->data[%p]\n",rt,rn->data));
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
 +				/*
@@ -2100,7 +2099,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1292,69 @@
+@@ -1267,71 +1291,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2224,7 +2223,7 @@
  }
  
  /*
-@@ -1339,228 +1362,232 @@
+@@ -1339,228 +1361,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
