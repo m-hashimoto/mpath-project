@@ -105,10 +105,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	if(m && (LEN(m) > head->pnh_offset)){
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
-		while(m[len] & bitmask){
+		while(m[len] & bitmask)
 			len++;
-			dprint(("m[%d] = %d ",len,(unsigned char)m[len]));
-		}
 		len = 8*len;
 	}
 

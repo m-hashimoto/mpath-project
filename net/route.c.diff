@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-21 03:49:56.000000000 +0900
++++ route.c	2005-02-22 12:47:34.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1185,7 +1185,7 @@
  }
  
  /*
-@@ -768,495 +794,541 @@
+@@ -768,495 +794,543 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1981,6 +1981,8 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
++				dprint(("rtreq_ADD: rt_ifa[%p] ifa_ifp[%p]\n",
++										rt->rt_ifa,rt->rt_ifp));
 +#ifdef RADIX_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (rn_mpath_capable(rnh) &&
@@ -2150,7 +2152,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1339,69 @@
+@@ -1267,71 +1341,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2274,7 +2276,7 @@
  }
  
  /*
-@@ -1339,228 +1409,232 @@
+@@ -1339,228 +1411,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
