@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 06:13:46.000000000 +0900
++++ route.c	2005-02-11 06:28:44.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1841,7 +1841,7 @@
 +#endif
 +				rt = RNTORT(rn);
 +				dprint(("case RTM_DELETE: rt = %p rn = %p\n",rt,rn));
-+				RT_LOCK(rt);
++				//RT_LOCK(rt);
 +				RT_ADDREF(rt);
 +				rt->rt_flags &= ~RTF_UP;
 +				/*
