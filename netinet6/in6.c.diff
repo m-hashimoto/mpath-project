@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 11:48:55.000000000 +0900
++++ in6.c	2005-03-07 11:57:39.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -48,7 +48,7 @@
  
  	/*
  	 * Give the interface a chance to initialize
-@@ -1793,15 +1798,29 @@
+@@ -1793,15 +1798,28 @@
  		}
  
  		bzero(&rt, sizeof(rt));
@@ -60,14 +60,14 @@
 +		printf("mask "); sprint_inet_ntoa(AF_INET6,&mask); printf("\n");
 +		dprint(("in6_ifinit: rt_mask[%p]\n",rt_mask(&rt)));
  		rt_mask(&rt) = (struct sockaddr *)&mask;
+-		rt_key(&rt) = (struct sockaddr *)&addr;
 +		dprint(("in6_ifinit: rt_mask[%p]\n",rt_mask(&rt)));
 +		dprint(("in6_ifinit: rt_nodes[%p]\n",&(&rt)->rt_nodes));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",&(&rt)->rt_nodes->key));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",(struct sockaddr **)(&(&rt)->rt_nodes->key) ));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",(struct sockaddr *)(&(&rt)->rt_nodes->key) ));
 +		dprint(("in6_ifinit: &rt_key[%p]\n",&rt_key(&rt)));
-+		dprint(("in6_ifinit: rt_key[%p]\n",rt_key(&rt)));
- 		rt_key(&rt) = (struct sockaddr *)&addr;
++		&rt_key(&rt) = (struct sockaddr *)&addr;
 +		dprint(("in6_ifinit: testprint 6\n"));
  		rt.rt_flags = RTF_UP | RTF_HOST | RTF_STATIC;
 +		dprint(("in6_ifinit: testprint 7\n"));
