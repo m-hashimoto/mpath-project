@@ -237,11 +237,15 @@ ptree_matchaddr(v_arg, head)
 	int vlen;
 	
 	vlen = (int)8*(LEN(v)/* - head_zero*/);
-	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
+							(unsigned char)v[8],(unsigned char)v[9],
+							(unsigned char)v[10],(unsigned char)v[11],
+							(unsigned char)v[12],(unsigned char)v[13],
+							(unsigned char)v[14],(unsigned char)v[15],
 							vlen));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
@@ -340,7 +344,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		void *v_arg, *netmask_arg;
 		struct ptree_node_head *head;
 {
-		dprint(("-ptree_deladdr Start\n"));
+		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
@@ -356,12 +360,16 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				len = (int)8*LEN(netmask);
 		}
 
-		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
+		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 								(unsigned char)v[0],(unsigned char)v[1],
 								(unsigned char)v[2],(unsigned char)v[3],
 								(unsigned char)v[4],(unsigned char)v[5],
 								(unsigned char)v[6],(unsigned char)v[7],
-								len,head->pnh_treetop));
+								(unsigned char)v[8],(unsigned char)v[9],
+								(unsigned char)v[10],(unsigned char)v[11],
+								(unsigned char)v[12],(unsigned char)v[13],
+								(unsigned char)v[14],(unsigned char)v[15],
+								len));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 
 		if (!tt){
@@ -371,11 +379,15 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		register caddr_t cp, cplim;
 		cp = tt->key; cplim = v;
 		unsigned char *d = (unsigned char *)cp;
-		dprint(("-ptree_deladdr: cp[%d.%d.%d.%d|%d.%d.%d.%d]\n",
+		dprint(("-ptree_deladdr: searched-key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
 								(unsigned char)d[0],(unsigned char)d[1],
 								(unsigned char)d[2],(unsigned char)d[3],
 								(unsigned char)d[4],(unsigned char)d[5],
-								(unsigned char)d[6],(unsigned char)d[7]));
+								(unsigned char)d[6],(unsigned char)d[7],
+								(unsigned char)d[8],(unsigned char)d[9],
+								(unsigned char)d[10],(unsigned char)d[11],
+								(unsigned char)d[12],(unsigned char)d[13],
+								(unsigned char)d[14],(unsigned char)d[15]));
 		if ( memcmp(cp, cplim, len) != 0 ){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
