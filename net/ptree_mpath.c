@@ -40,46 +40,23 @@ debug_node_print(struct ptree_node *pn)
 						(unsigned char)pn->key[7],
 						pn->keylen);
 	}
-	//if( rn->rn_mask ){
-	//	ip = (unsigned char *)rn->rn_mask;
-	//	printf("mask %d.%d.%d.%d: ",ip[0],ip[1],ip[2],ip[3]);
-	//}
-	//printf("rn_bit %d ",rn->rn_bit);
-	//if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
 	printf("data[%p] ",pn->data);
 	printf("parent[%p] ",pn->parent);
 	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	//printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
 	//printf("rn_offset %d\n",rn->rn_Off);
-#if 0
-	rm = rn->rn_mklist;
-	while(rm){
-		printf("/*+++++++++++++++++++++++++*/\n");
-		printf("- mklist = %p\n",rm);
-		printf("- rm_bit %d rm_flags 0x%x\n",rm->rm_bit,rm->rm_flags);
-		printf("- rm_unused 0x%x\n",rm->rm_unused);
-		if(rm->rm_mask){
-			ip = (unsigned char *)rm->rm_mask;
-			printf("- rm_mask %d.%d.%d.%d\n",ip[3],ip[2],ip[1],ip[0]);
-		}
-		printf("- rm_leaf = %p\n",rm->rm_leaf);
-		printf("- rm_refs = %d\n",rm->rm_refs);
-		printf("/*+++++++++++++++++++++++++*/\n");
-		rm = rm->rm_mklist;
-	}
-#endif
 	return 0;
 }
 
 	int
 debug_tree_print(struct ptree_node_head *pnh)
 {
-		printf("		Debug tree print Start\n");
+		printf("		DEBUG_TREE_PRINT_START\n");
 		register struct ptree_node *pn, *next;
 		if ( !pnh || !pnh->pnh_treetop )
 			    goto done;
 		pn = pnh->pnh_top;
-		printf("ptree = %p treetop = %p\n",pnh,pn);
+		printf("pnh = %p phn_top = %p\n",pnh,pn);
 		if(!pn)
 			goto done;
 		for (;;) {
@@ -91,7 +68,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		}
 		/* NOTREACHED */
 done:
-		printf("		Debug tree print End\n");
+		printf("		DEBUG_TREE_PRINT_END\n");
 		return (0);
 }
 #endif /* DEBUG */

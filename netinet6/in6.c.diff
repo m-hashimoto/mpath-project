@@ -1,27 +1,12 @@
---- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-11 03:23:26.000000000 +0900
-@@ -688,7 +688,6 @@
- 	struct rtentry *rt;
- 	int delay;
- 	char ip6buf[INET6_ADDRSTRLEN];
--
- 	/* Validate parameters */
- 	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
- 		return (EINVAL);
-@@ -1764,6 +1763,7 @@
- 	if (newhost) {
- 		struct llentry *ln;
- 		struct rtentry rt;
-+		struct ptree_node rn;
- 		struct sockaddr_dl gateway;
- 		struct sockaddr_in6 mask, addr;
- 
-@@ -1793,6 +1793,8 @@
- 		}
- 
- 		bzero(&rt, sizeof(rt));
-+		bzero(&rn, sizeof(rn));
-+		rt.rt_nodes = &rn;
- 		rt.rt_gateway = (struct sockaddr *)&gateway;
- 		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
- 		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
+691d690
+< 
+1168a1168
+> 	struct ptree_node rn0;
+1219a1220,1221
+> 	bzero(&rn0, sizeof(rn0));
+> 	rt0.rt_nodes = &rn0;
+1766a1769
+> 		struct ptree_node rn;
+1795a1799,1800
+> 		bzero(&rn, sizeof(rn));
+> 		rt.rt_nodes = &rn;
