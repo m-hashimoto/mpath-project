@@ -222,6 +222,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 	struct ptree_node *x;
 
 	keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
+	dprint(("ptree_common: keylen = %d\n",keylen));
 	x = ptree_node_create (keyi, keylen);
 	if (! x){
 		dprint(("ptree_common End\n"));
