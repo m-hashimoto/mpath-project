@@ -41,10 +41,17 @@ debug_node_print(struct ptree_node *pn, int offset)
 		
 		printf("[0x%x]\n",rt->rt_flags);
 	} else { /* IPv4 */
-		printf("[%3d.%3d.%3d.%3d/%3d] ",
+		if(pn->mask){
+			printf("[%3d.%3d.%3d.%3d/%3d] ",
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*offset);
+		} else {
+			printf("[%3d.%3d.%3d.%3d/%3d] ",
+				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
+				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
+				pn->keylen - 8*(offset + 8) );
+		}
 		printf("[%3d.%3d.%3d.%3d] ",
 				gateway[4],gateway[5],gateway[6],gateway[7]);
 		
