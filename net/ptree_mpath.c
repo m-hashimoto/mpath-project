@@ -611,7 +611,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				goto on2;
 		}
 		b_leaf = -1 - t->rn_bit;
-		dprint(("-ptree_addroute: b_leaf = 0x%x\n",b_leaf));
+		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 		for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
 		if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
 			*mp = m = ptree_new_mask(t,0);
@@ -630,6 +630,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 			t->rn_mklist = m; *mp = 0;
 		}
 on2:
+		dprint(("-ptree_addroute: on2\n"));
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 			if (m->rm_bit < b_leaf)
 				continue;
@@ -653,7 +654,6 @@ on2:
 			    || ptree_lexobetter(netmask, mmask))
 				break;
 		}
-		dprint(("-ptree_addroute: on2\n"));
 		*mp = ptree_new_mask(tt, *mp);
 		debug_node_print(tt);
 		dprint(("-ptree_addroute End\n"));
