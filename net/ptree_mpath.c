@@ -33,19 +33,8 @@ debug_node_print(struct ptree_node *pn)
 		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-						pn->keylen-8*(head_off+head_zero));
+						pn->keylen-8*head_off);
 	}
-#if 0
-	if( pn->mask ){
-		printf("key[%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d]\n",
-						(unsigned char)pn->mask[4],(unsigned char)pn->mask[5],
-						(unsigned char)pn->mask[6],(unsigned char)pn->mask[7],
-						(unsigned char)pn->mask[8],(unsigned char)pn->mask[9],
-						(unsigned char)pn->mask[10],(unsigned char)pn->mask[11],
-						(unsigned char)pn->mask[12],(unsigned char)pn->mask[13],
-						(unsigned char)pn->mask[14],(unsigned char)pn->mask[15]);
-	}
-#endif
 	printf("data[%p] ",pn->data);
 	printf("p[%p] l[%p] r[%p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
@@ -54,7 +43,7 @@ debug_node_print(struct ptree_node *pn)
 	int
 debug_tree_print(struct ptree_node_head *pnh)
 {
-		printf("	DEBUG_TREE_PRINT_START\n");
+		printf("\n	DEBUG_TREE_PRINT_START\n");
 		register struct ptree_node *pn, *next;
 		if ( !pnh || !pnh->pnh_treetop )
 			    goto done;
@@ -71,7 +60,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		}
 		/* NOTREACHED */
 done:
-		printf("	DEBUG_TREE_PRINT_END\n");
+		printf("	DEBUG_TREE_PRINT_END\n\n");
 		return (0);
 }
 #endif /* DEBUG */
@@ -96,8 +85,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
-	len = (int)8*LEN(v);
-	if (m){
+	len = (int)8*(LEN(v) - head_zero);
+	if (m){ /* ?? */
 		dprint(("LEN(m) = %d\n",(int)LEN(m)));
 		if ((LEN(m) - head_off) > 0)
 			len = (int)8*LEN(m);
@@ -223,7 +212,7 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int vlen;
 	
-	vlen = (int)8*LEN(v);
+	vlen = (int)8*(LEN(v) - head_zero);
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
@@ -263,7 +252,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node *rt_node;
 {
 		dprint(("-ptree_addroute Start head = %p\n",head));
-		debug_tree_print(head);
 
 		register struct ptree_node *tt;
 		register struct rtentry *rt = (struct rtentry *)&rt_node;
@@ -318,7 +306,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		}
 #endif /* mluti path */
 		dprint(("-ptree_addroute End\n"));
-		debug_tree_print(head);
 		return tt;
 }
 
@@ -337,7 +324,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		len = (int)8*LEN(v);
+		len = (int)8*(LEN(v) - head_zero);
 		if (netmask){
 			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
 			if ((LEN(netmask) - head_off) > 0)
@@ -358,7 +345,6 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
-		debug_node_print(tt);
 		if (tt == top)
 			head->pnh_top = NULL;
 		ptree_remove(tt);
