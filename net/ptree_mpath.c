@@ -589,8 +589,9 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		rt->rt_nodes = tt;
 		dprint(("-ptree_addroute: tt = %p keydup = %d\n",tt,keyduplicated));
 		
-		struct sockaddr *key;
-		key = rt_key(rt);
+		//struct sockaddr *key;
+		char *key;
+		key = (char *)rt_key(rt);
 		printf("key[%d.%d.%d.%d.%d.%d.%d.%d] ",
 						(unsigned char)key[0],
 						(unsigned char)key[1],
