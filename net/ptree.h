@@ -3,7 +3,7 @@
 #define _PTREE_H_
 
 /* debug print */
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x; }
 
 #ifdef _KERNEL
