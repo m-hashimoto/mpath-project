@@ -83,7 +83,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 
 /* ptree_lookup() returns the node with the key if any.
    returned node may be a branching node (that doesn't have data). */
-static struct ptree_node *
+/*static*/ struct ptree_node *
 ptree_lookup (char *key, int keylen, struct ptree *t)
 {
   struct ptree_node *x;

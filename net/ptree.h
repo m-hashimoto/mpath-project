@@ -2,11 +2,11 @@
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
-#ifdef _KERNEL
-#include <sys/_lock.h>
-#include <sys/_mutex.h>
-#include <sys/_rwlock.h>
-#endif
+//#ifdef _KERNEL
+//#include <sys/_lock.h>
+//#include <sys/_mutex.h>
+//#include <sys/_rwlock.h>
+//#endif
 
 //#if 0
 #ifdef MALLOC_DECLARE
@@ -61,5 +61,6 @@ struct ptree_node *ptree_next (struct ptree_node *v);
 struct ptree *ptree_create (void);
 void ptree_delete (struct ptree *t);
 
+struct ptree_node *ptree_lookup (char *key, int keylen, struct ptree *t);
 
 #endif /*_PTREE_H_*/
