@@ -328,9 +328,10 @@ ptree_new_mask(tt, next)
 	bzero(m, sizeof *m);
 	m->rm_bit = tt->rn_bit;
 	m->rm_flags = tt->rn_flags;
-	if (tt->rn_flags & RNF_NORMAL)
+	dprint(("-ptree_new_mask: m->rm_bit = %d m->rm_flags = 0x%x\n",m->rm_bit,m->rm_flags));
+	//if (tt->rn_flags & RNF_NORMAL)
 		m->rm_leaf = tt;
-	else
+	//else
 		m->rm_mask = tt->rn_mask;
 	m->rm_mklist = next;
 	tt->rn_mklist = m;
