@@ -568,6 +568,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		/*
 		 * Put mask in tree.
 		 */
+		dprint(("-ptree_addroute: netmask = %p\n",netmask));
 		if (netmask) {
 				dprint(("-ptree_addroute: put netmask in %p\n",tt));
 				tt->rn_mask = netmask;
@@ -581,8 +582,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				goto on2;
 		}
 #endif
-		t = saved_tt;
-		dprint(("-ptree_addroute: saved_tt = %p\n",saved_tt));
+		t = tt;
 		if (keyduplicated){
 				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 				goto on2;
@@ -590,18 +590,18 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		b_leaf = -1 - t->rn_bit;
 		//b_leaf = tt->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-		if(x->rn_bit < 0) {
+		if(t->rn_bit < 0) {
 			for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
-			if(tt->rn_mask && tt->rn_mklist == 0){
-				*mp = m = ptree_new_mask(tt,0);
+			if(t->rn_mask && t->rn_mklist == 0){
+				*mp = m = ptree_new_mask(t,0);
 				dprint(("-ptree_addroute: m = %p \n",m));
 					if (m){
 						dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
 						mp = &m->rm_mklist;
 					}
 			}
-		} else if(tt->rn_mklist){
-				for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
+		} else if(t->rn_mklist){
+				for(mp = &t->rn_mklist;(m = *mp);mp = &m->rm_mklist)
 					if(m->rm_bit >= b_leaf)
 						break;
 					t->rn_mklist = m;
@@ -681,9 +681,9 @@ on2:
 						break;
 		}
 #endif
-		*mp = ptree_new_mask(tt, *mp);
+		*mp = ptree_new_mask(t, *mp);
 		dprint(("-ptree_addroute End\n"));
-		return tt;
+		return t;
 }
 
 
