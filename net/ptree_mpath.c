@@ -328,11 +328,14 @@ ptree_new_mask(tt, next)
 	bzero(m, sizeof *m);
 	m->rm_bit = tt->rn_bit;
 	m->rm_flags = tt->rn_flags;
-	dprint(("-ptree_new_mask: m->rm_bit = %d m->rm_flags = 0x%x\n",m->rm_bit,m->rm_flags));
+	dprint(("-ptree_new_mask: m->rm_bit = %d m->rm_flags = 0x%x\n",
+							m->rm_bit,m->rm_flags));
 	//if (tt->rn_flags & RNF_NORMAL)
 		m->rm_leaf = tt;
 	//else
 		m->rm_mask = tt->rn_mask;
+	dprint(("-ptree_new_mask: m->rm_leaf = %p m->rm_mask = %p\n",
+							m->rm_leaf,m->rm_mask));
 	m->rm_mklist = next;
 	tt->rn_mklist = m;
 	dprint(("-ptree_new_mask End\n"));
@@ -496,6 +499,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				b_leaf = x->rn_bit;
 				b = -1 - x->rn_bit;
 				netmask = x->rn_key;
+				dprint(("-ptree_addroute: set netmask\n"));
 		}
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
@@ -613,6 +617,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 #endif
 on2:
+		dprint(("-ptree_addroute: on2\n"));
 		/* Add new route to highest possible ancestor's list */
 #if 0 /* 10/29 19:32 test */
 		dprint(("-ptree_addroute: add new route to highest list\n"));
