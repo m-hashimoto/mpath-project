@@ -1,8 +1,8 @@
 /*
  * ptree-mpath header
  */
-#ifndef _PTREE_MPATH_H_
-#define _PTREE_MPATH_H_
+#ifndef _NET_PTREE_MPATH_H_
+#define _NET_PTREE_MPATH_H_
 
 #ifdef _KERNEL
 #include <sys/_lock.h>
@@ -85,10 +85,11 @@ struct ptree_node
 				*ptree_deladdr(void *, void *, struct ptree_node_head *),
 				*ptree_matchaddr(void *, struct ptree_node_head *);
 
+#ifdef PTREE_MPATH
+#ifdef _KERNEL
 /*
  * Patricia trie API with multipath support
  */
-#ifdef PTREE_MPATH
 struct route;
 struct rtentry;
 struct sockaddr;
@@ -103,7 +104,8 @@ struct ptree_node *ptree_mpath_lookup(void *, void *, struct ptree *);
 int rt_mpath_delete(struct rtentry *, struct rtentry *);
 int     ptree4_mpath_inithead(void **, int);
 int     ptree6_mpath_inithead(void **, int);
+#endif /* _KERNEL */
 #endif /* PTREE_MPATH */
 #undef DEBUG
 
-#endif /*_PTREE_MPATH_H_*/
+#endif /*_NET_PTREE_MPATH_H_*/
