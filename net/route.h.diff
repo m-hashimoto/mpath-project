@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-05 03:41:52.000000000 +0900
++++ route.h	2005-02-05 03:46:01.000000000 +0900
 @@ -124,20 +124,22 @@
   * gateway rather than the ultimate destination.
   */
@@ -27,13 +27,3 @@
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
-@@ -145,6 +147,9 @@
- 	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
- 	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
- 	u_int	rt_fibnum;		/* which FIB */
-+#ifdef PTREE_MPATH
-+	int *mpath_array;
-+#endif
- #ifdef _KERNEL
- 	/* XXX ugly, user apps use this definition but don't have a mtx def */
- 	struct	mtx rt_mtx;		/* mutex for routing entry */
