@@ -211,7 +211,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 {
   struct ptree_node *x;
   struct ptree_node *u, *v, *w; /* u->v->w or u->x->{v, w}*/
-
+	dprint(("--ptree_get Start\n"));
   u = w = NULL;
   x = t->top;
   while (x && x->keylen <= keylen &&
@@ -222,9 +222,11 @@ ptree_get (char *key, int keylen, struct ptree *t)
       u = x;
       x = x->child[check_bit (key, x->keylen)];
     }
+	dprint(("--ptree_get: 1\n"));
 
   if (! x)
     {
+	dprint(("--ptree_get: if(!x)\n"));
       v = ptree_node_create (key, keylen);
       if (u)
         ptree_link (u, v);
@@ -260,6 +262,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
         v = x;
       else
         {
+	dprint(("--ptree_get: 2\n"));
           /* locks the branching node x for the tree holding */
           ptree_node_lock (x);
 

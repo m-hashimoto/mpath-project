@@ -28,7 +28,7 @@ static int  max_keylen;
 	int
 debug_node_print(struct ptree_node *pn, int off)
 {
-	printf("node[%p] ",pn);
+	printf("node[%p] offset[%d]",pn,off);
 	if( pn->key ){
 		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
