@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-03-05 00:37:10.000000000 +0900
++++ route.c	2005-03-05 08:42:20.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -359,7 +359,7 @@
  }
  
  /*
-@@ -320,156 +314,152 @@
+@@ -320,156 +314,153 @@
   *
   * The returned route, if any, is locked.
   */
@@ -407,6 +407,7 @@
 +		struct rt_addrinfo info;
 +		int err = 0, msgtype = RTM_MISS;
 +		int needlock;
++		dprint(("rtalloc1_fib Start\n"));
 +
 +		KASSERT((fibnum < rt_numfibs), ("rtalloc1_fib: bad fibnum"));
 +		if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
@@ -634,7 +635,7 @@
  }
  
  
-@@ -479,282 +469,281 @@
+@@ -479,282 +470,281 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -776,15 +777,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1142,7 +1143,7 @@
  }
  
  /*
-@@ -768,495 +757,522 @@
+@@ -768,495 +758,525 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1283,7 +1284,11 @@
 -	 */
 -	if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest) {
 -		struct rt_addrinfo info;
--
++		struct ptree_node *rn;
++		struct ptree_node_head *rnh;
++		struct ifaddr *ifa;
++		int error = 0;
+ 
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_flags = rt->rt_flags;
 -		info.rti_info[RTAX_DST] = rt_key(rt);
@@ -1300,11 +1305,7 @@
 -bad:
 -	return (error);
 -}
-+		struct ptree_node *rn;
-+		struct ptree_node_head *rnh;
-+		struct ifaddr *ifa;
-+		int error = 0;
- 
+-
 -#ifdef RADIX_MPATH
 -static int
 -rn_mpath_update(int req, struct rt_addrinfo *info,
@@ -1702,6 +1703,7 @@
 +		struct sockaddr *ndst;
 +#define senderr(x) { error = x ; dprint(("goto bad %d\n",x)); goto bad; }
 +
++		dprint(("rtrequest1_fib Start\n"));
 +		KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
 +		if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
 +				fibnum = 0;
@@ -1732,6 +1734,7 @@
  
 +		switch (req) {
 +			case RTM_DELETE:
++				dprint(("rtrequest1_fib case RTM_DELETE\n"));
  #ifdef RADIX_MPATH
 -		/* do not permit exactly the same dst/mask/gw pair */
 -		if (rn_mpath_capable(rnh) &&
@@ -1840,6 +1843,7 @@
 +				 */
 +				break;
 +		case RTM_ADD:
++				dprint(("rtrequest1_fib case RTM_ADD\n"));
 +				if ((flags & RTF_GATEWAY) && !gateway)
 +						senderr(EINVAL);
 +				if (dst && gateway && 
@@ -1931,7 +1935,7 @@
 +#ifdef PTREE_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (ptree_mpath_capable(rnh) &&
-+					rt_mpath_conflict(rnh, rt, ndst/*netmask*/)) {
++					rt_mpath_conflict(rnh, rt, ndst)) {
 +						if (rt->rt_ifa) {
 +								ifa_free(rt->rt_ifa);
 +						}
@@ -2088,7 +2092,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1283,69 @@
+@@ -1267,71 +1287,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2212,7 +2216,7 @@
  }
  
  /*
-@@ -1339,228 +1353,229 @@
+@@ -1339,228 +1357,230 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2253,6 +2257,7 @@
 +		int didwork = 0;
 +		int a_failure = 0;
 +		static struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
++		dprint(("rtinit1 Start\n"));
 +
 +		if (flags & RTF_HOST) {
 +				dst = ifa->ifa_dstaddr;
@@ -2355,25 +2360,25 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
- 		}
++		}
 +		if (dst->sa_len == 0){
 +				return(EINVAL);
-+		}
+ 		}
 +
  		/*
 -		 * Do the actual request
--		 */
++		 * If it's a delete, check that if it exists,
++		 * it's on the correct interface or we might scrub
++		 * a route to another ifa which would
++		 * be confusing at best and possibly worse.
+ 		 */
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_ifa = ifa;
 -		info.rti_flags = flags | ifa->ifa_flags;
 -		info.rti_info[RTAX_DST] = dst;
 -		/* 
 -		 * doing this for compatibility reasons
-+		 * If it's a delete, check that if it exists,
-+		 * it's on the correct interface or we might scrub
-+		 * a route to another ifa which would
-+		 * be confusing at best and possibly worse.
- 		 */
+-		 */
 -		if (cmd == RTM_ADD)
 -			info.rti_info[RTAX_GATEWAY] =
 -			    (struct sockaddr *)&null_sdl;

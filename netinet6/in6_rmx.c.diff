@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-02-27 03:25:16.000000000 +0900
++++ in6_rmx.c	2005-03-05 08:52:02.000000000 +0900
 @@ -113,21 +113,24 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -22,7 +22,7 @@
 -	struct radix_node *ret;
 -
 +	struct rtentry *rt = (struct rtentry *)(rt_node);
-+	dprint(("in6_addroute: rt[%p]\n",rt));
++	dprint(("in6_addroute Start: rt[%p]\n",rt));
 +	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
 +	struct ptree_node *ret;
  	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
@@ -38,7 +38,7 @@
  		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
  
 -	ret = rn_addroute(v_arg, n_arg, head, treenodes);
-+	dprint(("in6_addroute: mtu[%lu]\n",rt->rt_rmx.rmx_mtu));
++	//dprint(("in6_addroute: mtu[%lu]\n",rt->rt_rmx.rmx_mtu));
 +	ret = ptree_addroute(v_arg, n_arg, head, rt_node);
  	if (ret == NULL) {
  		struct rtentry *rt2;

@@ -168,6 +168,7 @@ ptree_refines(m_arg, n_arg)
 	register caddr_t lim, lim2 = lim = n + LEN(n);
 	int longer = LEN(n++) - (int)LEN(m++);
 	int masks_are_equal = 1;
+	dprint(("-ptree_refines Start\n"));
 
 	if (longer > 0)
 		lim -= longer;
@@ -252,6 +253,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
+		dprint(("-ptree_addroute Start\n"));
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
@@ -284,13 +286,13 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
 		unsigned int len;
+		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
-		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 								(unsigned char)v[0],(unsigned char)v[1],
 								(unsigned char)v[2],(unsigned char)v[3],
@@ -372,6 +374,7 @@ ptree_inithead(void **head, int off)
 		register struct ptree_node_head *pnh;
 		register struct ptree *top;
 		register struct ptree_node *t;
+		dprint(("-ptree_inithead Start: pnh[%p]\n",head));
 
 		if (*head)
 				return (1);
@@ -403,6 +406,7 @@ ptree_inithead(void **head, int off)
 ptree_init()
 {
 		char *cp, *cplim;
+		dprint(("-ptree_init Start\n"));
 #ifdef _KERNEL
 		struct domain *dom;
 
@@ -439,7 +443,7 @@ ptree_mpath_capable(struct ptree_node_head *pnh)
 		uint32_t
 ptree_mpath_count(struct rtentry *rt)
 {
-		dprint(("ptree_mpath_count Start\n"));
+		dprint(("-ptree_mpath_count Start\n"));
 		struct rtentry **rt1;
 		uint32_t i = 0;
 
@@ -449,7 +453,7 @@ ptree_mpath_count(struct rtentry *rt)
 				rt1++;
 				i++;
 		}
-		dprint(("ptree_mpath_count End: count = %d\n",i));
+		dprint(("-ptree_mpath_count End: count = %d\n",i));
 		return (i);
 }
 
@@ -459,6 +463,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 		uint32_t	i = 0;
 		//struct ptree_node *rn, **match;
 		struct rtentry **match;
+		dprint(("-rt_mpath_matchgate Start\n"));
 
 		//rn = (struct ptree_node *)rt;
 		if (!rt->mpath_array){
