@@ -52,8 +52,9 @@ ptree_node_create (key, keylen, nodes)
 	x->lock = 0;
 
 	/* fill in the key */
-	memcpy (x->key, key, keylen);
-	x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+	x->key = key;
+	//memcpy (x->key, key, keylen);
+	//x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
 
 	x->rn_bit = keylen;
 	x->rn_bmask = 0x80 >> (keylen & 7);

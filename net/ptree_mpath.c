@@ -36,10 +36,8 @@ debug_node_print(struct ptree_node *rn)
 	//rt = (struct rtentry *)rn;
 	//rn_dst = (struct sockaddr_in *)rt_key(rt);
 	//rn_mask = (struct sockaddr_in *)rt_mask(rt);
-	
+	printf("/*-------------------------*/");
 	printf("node = %p\n",rn);
-	printf("parent = %p\n",rn->parent);
-	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
 	printf("mklist = %p\n",rn->rn_mklist);
 	//if( rn_dst && &rn_dst->sin_addr ){
 		//dst = &rn_dst->sin_addr;
@@ -53,10 +51,13 @@ debug_node_print(struct ptree_node *rn)
 		ip = (unsigned char *)rn->rn_mask;
 		printf("mask %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rn->keylen ) printf("keylen %d ",rn->keylen);
+	if( rn->keylen ) printf("keylen %d\n",rn->keylen);
 	if( rn->rn_bit ) printf("rn_bit %d ",rn->rn_bit);
 	if( rn->rn_bmask ) printf("rn_bmask 0x%x ",rn->rn_bmask);
 	if( rn->rn_flags ) printf("flag 0x%x\n",rn->rn_flags);
+	printf("parent = %p\n",rn->parent);
+	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
+	printf("/*-------------------------*/");
 	return 0;
 }
 #endif /* DEBUG */
