@@ -612,14 +612,14 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 		b_leaf = -1 - t->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-		for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
-		if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
-			*mp = m = ptree_new_mask(t,0);
-			dprint(("-ptree_addroute: m = %p\n",m));
-			if (m){
-				dprint(("-ptree_addroute: m->rm_mklist = %p\n",m->rm_mklist));
-				mp = &m->rm_mklist;
-			}
+		if(t->tn_bit < 0){
+			for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
+			if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
+				*mp = m = ptree_new_mask(t,0);
+				dprint(("-ptree_addroute: m = %p\n",m));
+				if (m)
+					mp = &m->rm_mklist;
+			
 		} else if(t->rn_mklist){
 				/*
 				 * Skip over masks whos index is > that of new node
@@ -631,7 +631,13 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
-		dprint(("-ptree_addroute: x = %p\n",x));
+		if((netmask == 0) || (b > t->rn_bit) )
+				return tt;
+		b_leaf = tt->rn_bit;
+		do {
+				x = t;
+				t = t->rn_parent;
+		} while (b <= t->rn_bit );
 		for (mp = &t->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 			dprint(("-ptree_addroute: on2 test 1\n"));
 			if (m->rm_bit < b_leaf)
@@ -658,6 +664,7 @@ on2:
 			    || ptree_lexobetter(netmask, mmask))
 				break;
 		}
+		
 		*mp = ptree_new_mask(tt, *mp);
 		debug_node_print(tt);
 		dprint(("-ptree_addroute End\n"));
