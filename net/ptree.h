@@ -10,6 +10,7 @@ MALLOC_DECLARE(M_RTABLE);
 
 struct ptree_node {
   char *key;
+  char *mask;
   int   keylen;
   struct ptree_node *parent;
   struct ptree_node *child[2];
