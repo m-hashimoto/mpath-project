@@ -57,13 +57,13 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
-	int head_off = top->rn_offset, vlen = (int)LEN(v);
-	register struct ptree_node *t = ptree_search(v_arg, LEN(v_arg), head);
+	int head_off = top->rn_offset, vlen = LEN(v);
+	register struct ptree_node *t = ptree_search(v_arg, (int)LEN(v_arg), head);
 	register caddr_t cp = v + head_off; 
 	register int b; 
 	struct ptree_node *tt;  
 #ifdef DEBUG
-printf("ptree_insert: t(ptree_search)=%s\n",t.rn_key);
+printf("ptree_insert: t(ptree_search)=%s\n",t->rn_key);
 #endif	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
@@ -76,7 +76,7 @@ printf("ptree_insert: t(ptree_search)=%s\n",t.rn_key);
 				goto on1;   
 		*dupentry = 1;  
 #ifdef DEBUG
-printf("ptree_insert: t(ptree_search)=%s\n",t.rn_key);
+printf("ptree_insert: t(ptree_search)=%s\n",t->rn_key);
 #endif	
 		return t;
 on1:       
@@ -123,7 +123,7 @@ on1:
 #endif
 	}
 #ifdef DEBUG
-printf("ptree_insert: tt=%s\n",tt.rn_key);
+printf("ptree_insert: tt=%s\n",tt->rn_key);
 #endif	
 	return (tt);
 }
@@ -460,7 +460,7 @@ printf("ptree_addroute\n");
 	 */
 	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
 #ifdef DEBUG
-printf("ptree_addroute: tt(ptree_insert)=%s\n",tt.rn_key);
+printf("ptree_addroute: tt(ptree_insert)=%s\n",tt->rn_key);
 #endif
 	if (keyduplicated) {
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {

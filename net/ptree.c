@@ -71,10 +71,16 @@ check_bit (char *key, int keylen)
 static int
 ptree_match (char *keyi, char *keyj, int keylen)
 {
+#ifdef DEBUG
+printf("ptree_match\n");
+#endif
   int bytes;
   int bits;
   bytes = keylen / 8;
   bits = keylen % 8;
+  #ifdef DEBUG
+  printf("keylen: %d, bytes: %d, bits %d\n",keylen,bytes,bits);
+  #endif
   if (! memcmp (keyi, keyj, bytes) &&
       ! (keyi[bytes] ^ keyj[bytes]) & mask[bits])
     return 1;
@@ -112,6 +118,9 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 	struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
+#ifdef DEBUG
+printf("ptree_search\n");
+#endif
 	struct ptree_node *x, *match;
 
 	match = NULL;
