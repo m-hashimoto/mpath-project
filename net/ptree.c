@@ -248,7 +248,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
   x = t->top;
   dprint(("--ptree_get Start\n"));
 
-	if(DEBUG){
 		struct sockaddr *sa = key;
 		struct ptree_node_head *pnh;
 		if (sa->sa_family = 2) /* AF_INET */
@@ -256,7 +255,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 		else /* AF_INET6 */
 			pnh = rt_tables_get_rnh(0,28);
 		debug_tree_print(pnh);
-	}
 	
   while (x && x->key && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
