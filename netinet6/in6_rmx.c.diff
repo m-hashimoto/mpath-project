@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-01-19 14:29:26.000000000 +0900
++++ in6_rmx.c	2005-01-19 14:49:10.000000000 +0900
 @@ -112,17 +112,18 @@
  #endif
  
@@ -113,7 +113,19 @@
  		return 0;		/* See above */
  
  	if (off == 0)		/* See above */
-@@ -435,6 +437,7 @@
+@@ -426,15 +428,19 @@
+ 	V_rtq_minreallyold6 = 10; /* never automatically crank down to less */
+ 	V_rtq_toomany6 = 128;	  /* 128 cached routes is ``too many'' */
+ 	V_rtq_timeout6 = RTQ_TIMEOUT;
++	
++	dprint(("in6_inithead: add header for INET6\n"));
+ 
+ 	rnh = *head;
+ 	KASSERT(rnh == rt_tables_get_rnh(0, AF_INET6), ("rnh?"));
+ 	rnh->rnh_addaddr = in6_addroute;
+ 	rnh->rnh_matchaddr = in6_matroute;
++	dprint(("in6_inithead: add rnh_addaddr & rnh_matchaddr\n"));
+ 	callout_init(&V_rtq_timer6, CALLOUT_MPSAFE);
  	callout_init(&V_rtq_mtutimer, CALLOUT_MPSAFE);
  	in6_rtqtimo(curvnet);	/* kick off timeout first time */
  	in6_mtutimo(curvnet);	/* kick off timeout first time */
@@ -121,7 +133,7 @@
  	return 1;
  }
  
-@@ -448,3 +451,4 @@
+@@ -448,3 +454,4 @@
  	return (1);
  }
  #endif
