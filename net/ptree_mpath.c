@@ -528,25 +528,33 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	/*
 	 * Put mask in tree.
 	 */
-	dprint(("ptree_addroute: put mask in treee\n"));
+	dprint(("ptree_addroute: put netmask = %x:%x:%x:%x\n",
+				*netmask,*netmask+1,*netmask+2,*netmask+3));
 	if (netmask) {
+		dprint(("ptree_addroute: put netmask in %p\n",tt));
 		tt->rn_mask = netmask;
 		tt->rn_bit = x->rn_bit;
 		tt->rn_flags = RNF_ACTIVE;
 	}
 	t = saved_tt->rn_parent;
-	if (keyduplicated)
+	if (keyduplicated){
+		dprint(("ptree_addroute: goto on2 if(keyduplicated)\n"));
 		goto on2;
+	}
 	b_leaf = -1 - t->rn_bit;
+	dprint(("ptree_addroute: b_leaf = %d\n",b_leaf));
 	if (t->rn_right == saved_tt)
 		x = t->rn_left;
 	else
 		x = t->rn_right;
-	if(!x)
+	if(!x){
+		dprint(("ptree_addroute: goto on2 if(!x)\n"));
 		goto on2;
+	}
 
 	/* Promote general routes from below */
 	if (x->rn_bit < 0) {
+		dprint(("ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
 		for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
 			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
 				*mp = m = ptree_new_mask(x, 0);

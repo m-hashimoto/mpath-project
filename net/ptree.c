@@ -107,6 +107,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 {
 	dprint(("ptree_lookup Start\n"));
+	dprint(("ptree_lookup: key = %p mask = %p keylen = %d head = %p\n",key,mask,keylen,t->top));
 	struct ptree_node *x;
 	caddr_t netmask = 0;
 
