@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 14:36:27.000000000 +0900
++++ route.c	2005-01-26 15:07:38.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1658,7 +1658,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1032,293 @@
+@@ -1074,189 +1032,294 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -1710,6 +1710,11 @@
 -			uma_zfree(V_rtzone, rt);
 -			senderr(error);
 -		}
+-
+-		/*
+-		 * point to the (possibly newly malloc'd) dest address.
+-		 */
+-		ndst = (struct sockaddr *)rt_key(rt);
 +				RTFREE_LOCKED(rt);
 +done:
 +		return (error);
@@ -1748,21 +1753,25 @@
 +		else
 +				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  		/*
--		 * point to the (possibly newly malloc'd) dest address.
+-		 * make sure it contains the value we want (masked if needed).
 +		 * If we are adding a host route then we don't want to put
 +		 * a netmask in the tree, nor do we want to clone it.
  		 */
--		ndst = (struct sockaddr *)rt_key(rt);
-+		if (flags & RTF_HOST)
-+				netmask = NULL;
- 
--		/*
--		 * make sure it contains the value we want (masked if needed).
--		 */
 -		if (netmask) {
 -			rt_maskedcopy(dst, ndst, netmask);
 -		} else
 -			bcopy(dst, ndst, dst->sa_len);
++		if (flags & RTF_HOST)
++				netmask = NULL;
+ 
+-		/*
+-		 * We use the ifa reference returned by rt_getifa_fib().
+-		 * This moved from below so that rnh->rnh_addaddr() can
+-		 * examine the ifa and  ifa->ifa_ifp if it so desires.
+-		 */
+-		rt->rt_ifa = ifa;
+-		rt->rt_ifp = ifa->ifa_ifp;
+-		rt->rt_rmx.rmx_weight = 1;
 +		switch (req) {
 +			case RTM_DELETE:
 +				dprint(("case RTM_DELETE:\n"));
@@ -1804,14 +1813,6 @@
 +				 */
 +				V_rttrash++;
  
--		/*
--		 * We use the ifa reference returned by rt_getifa_fib().
--		 * This moved from below so that rnh->rnh_addaddr() can
--		 * examine the ifa and  ifa->ifa_ifp if it so desires.
--		 */
--		rt->rt_ifa = ifa;
--		rt->rt_ifp = ifa->ifa_ifp;
--		rt->rt_rmx.rmx_weight = 1;
 +				/*
 +				 * If the caller wants it, then it can have it,
 +				 * but it's up to it to free the rtentry as we won't be
@@ -1888,8 +1889,8 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD1: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
- 
++				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n",
++										rt,rt->rt_ifa,rt->rt_ifp));
  #ifdef RADIX_MPATH
 -		/* do not permit exactly the same dst/mask/gw pair */
 -		if (rn_mpath_capable(rnh) &&
@@ -2007,7 +2008,6 @@
  #endif
  #endif
  
-+				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2086,13 +2086,15 @@
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
++				dprint(("rtreq_ADD1: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				if (ret_nrt) {
 +						dprint(("rtreq_ADD: RT_ADDREF\n"));
 +						*ret_nrt = rt;
 +						RT_ADDREF(rt);
 +				}
++				dprint(("rtreq_ADD: RT_UNLOCK\n"));
 +				RT_UNLOCK(rt);
-+				dprint(("rtreq_ADD5: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				break;
 +		default:
 +				dprint(("case rtreq_default\n"));
@@ -2110,7 +2112,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1329,77 @@
+@@ -1267,71 +1330,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2166,7 +2168,8 @@
 -	bcopy(gate, rt->rt_gateway, glen);
 +		RT_LOCK_ASSERT(rt);
 +		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
-+
+ 
+-	return (0);
 +		/*
 +		 * Prepare to store the gateway in rt->rt_gateway.
 +		 * Both dst and gateway are stored one after the other in the same
@@ -2194,8 +2197,7 @@
 +				rt_key(rt) = (struct sockaddr *)new;
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +		}
- 
--	return (0);
++
 +		/*
 +		 * Copy the new gateway value into the memory chunk.
 +		 */
@@ -2242,7 +2244,7 @@
  }
  
  /*
-@@ -1339,228 +1407,235 @@
+@@ -1339,228 +1408,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2386,11 +2388,11 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
- 		}
++		}
 +		if (dst->sa_len == 0){
 +				dprint(("rtinit1 End 1\n"));
 +				return(EINVAL);
-+		}
+ 		}
 +
  		/*
 -		 * Do the actual request
