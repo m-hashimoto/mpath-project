@@ -199,10 +199,10 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
-  if(!x->lock)
-    XRTLOG (LOG_ERR, "ptree_node_lock(%p): "
-                  "ptree_node_lock() failed.\n", x);
-  else
+  if(x->lock)
+  //  XRTLOG (LOG_ERR, "ptree_node_lock(%p): "
+  //               "ptree_node_lock() failed.\n", x);
+  //else
     x->lock++;
 }
 
@@ -211,10 +211,10 @@ ptree_node_lock (struct ptree_node *x)
 void
 ptree_node_unlock (struct ptree_node *x)
 {
-  if(!x->lock)
-    XRTLOG (LOG_ERR, "ptree_node_unlock(%p): "
-                  "ptree_node_unlock() failed.\n", x);
-  else
+  if(x->lock)
+  //  XRTLOG (LOG_ERR, "ptree_node_unlock(%p): "
+  //                "ptree_node_unlock() failed.\n", x);
+  //else
     x->lock--;
   if (x->lock == 0)
     ptree_remove (x);
