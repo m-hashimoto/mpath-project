@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-19 13:18:56.000000000 +0900
++++ route.c	2005-01-19 13:36:41.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -97,7 +97,7 @@
  	return (*rt_tables_get_rnh_ptr(table, fam));
  }
  
-@@ -168,38 +174,45 @@
+@@ -168,38 +174,44 @@
   * route initialization must occur before ip6_init2(), which happenas at
   * SI_ORDER_MIDDLE.
   */
@@ -145,15 +145,14 @@
 -				if ( (fam = dom->dom_family) == AF_INET ||
 -				    table == 0) {
 - 			        	/* for now only AF_INET has > 1 table */
-+				dprint(("vnet_route_init: table loop count = %d\n",
-+							table));
++				dprint(("vnet_route_init: table loop %d Start\n",table));
 +				if ( (fam = dom->dom_family) == AF_INET || 
 +						table == 0) {
 +					/* for now only AF_INET has > 1 table */
  					/* XXX MRT 
  					 * rtattach will be also called
  					 * from vfs_export.c but the
-@@ -211,46 +224,50 @@
+@@ -211,46 +223,51 @@
  					if (rnh == NULL)
  						panic("%s: rnh NULL", __func__);
  					dom->dom_rtattach((void **)rnh,
@@ -162,6 +161,7 @@
  				} else {
  					break;
  				}
++				dprint(("vnet_route_init: table loop %d End\n",table));
  			}
 +			dprint(("vnet_route_init: table loop End\n"));
  		}
