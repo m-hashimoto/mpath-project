@@ -24,7 +24,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	
 	if(offset == 8){ /* IPv6 */
 		if(pn->key){
-			printf("[%X.%X.%X.%X.%X.%X.%X.%X/%d] ",
+			printf("%p [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 				(unsigned char)pn->key[12],(unsigned char)pn->key[13],
@@ -42,12 +42,12 @@ debug_node_print(struct ptree_node *pn, int offset)
 #endif	
 	} else { /* IPv4 */
 		if(pn->mask){
-			printf("[%3d.%3d.%3d.%3d/%3d] ",
+			printf("%p [%3d.%3d.%3d.%3d/%3d] ",pn,
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*offset);
 		} else {
-			printf("[%3d.%3d.%3d.%3d/%3d] ",
+			printf("%p [%3d.%3d.%3d.%3d/%3d] ",pn,
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*(offset + 8) );
@@ -55,10 +55,10 @@ debug_node_print(struct ptree_node *pn, int offset)
 #if 0
 		printf("[%3d.%3d.%3d.%3d] ",
 				gateway[4],gateway[5],gateway[6],gateway[7]);
-#endif
 		printf("[0x%x] ",rt->rt_flags);
+#endif
 	}
-	printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
+	printf("[%p][%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
 }
 
