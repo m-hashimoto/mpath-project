@@ -938,7 +938,7 @@ ptree_walktree(h, f, w)
 			printf("INET ptree\n");
 			register struct ptree *rnh;
 			register struct rtentry *rt;
-			register struct in_addr *gateway;
+			register struct sockaddr_in *gateway;
 
 			rnh = rt_tables_get_rnh(0, AF_INET);
 			rn = rnh->rnh_treetop;
