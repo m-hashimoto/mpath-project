@@ -1078,10 +1078,10 @@ ptree_mpath_count(struct ptree_node *rn)
 	dprint(("ptree_mpath_count Start\n"));
 	struct ptree_node *rn1;
 	uint32_t i = 0;
-	rn1 = rn->mpath_array;
+	rn1 = rn->mpath_array[i];
 	/* count mpath_array */
 	while (rn1 != NULL) {
-		rn1 = rn->mpath_array++;
+		rn1++;
 		i++;
 	}
 	dprint(("ptree_mpath_count End: count = %d\n",i));
@@ -1098,7 +1098,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 	if (!rn->mpath_array)
 		return rt;
 	else
-		match = rn->mpath_array;
+		match = rn->mpath_array[i];
 
 	if (!gate)
 		return NULL;
@@ -1117,11 +1117,11 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				break;
 		} else {
 			if (rt->rt_gateway->sa_len == gate->sa_len &&
-					!memcmp(match->rt_gateway, gate, gate->sa_len))
+					!memcmp(rt->rt_gateway, gate, gate->sa_len))
 				break;
 		}
 		i++;
-	} while ( (match = rn->mpath_array++) != NULL);
+	} while ( (match++) != NULL);
 
 	return (struct rtentry *)rn;
 }
@@ -1144,14 +1144,14 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		return (0);
 
 	n = ptree_mpath_count(t);
-	t1 = t->mpath_array;
+	t1 = t->mpath_array[i];
 	while (t1) {
-		if ((struct rtentry *)t == rt) {
+		if ((struct rtentry *)t1 == rt) {
 			t->mpath_array[i] = t->mpath_array[n-1];
 			t->mpath_array[n-1] = NULL;
 			return (1);
 		}
-		t1 = t->mpath_array++;
+		t1++;
 	}
 	dprint(("rt_mpath_delete End\n"));
 	return (0);
@@ -1168,7 +1168,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	struct rtentry *rt1;
 	char *p, *q, *eq;
 	int same, l, skip;
-	uint32_t i;
+	uint32_t i = 0;
 
 	rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
 	if (!rn)
@@ -1234,7 +1234,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	}
 
 maskmatched:
-	rn1 = rn->mpath_array;
+	rn1 = rn->mpath_array[i];
 	/* key/mask were the same.  compare gateway for all multipaths */
 	do {
 		rt1 = (struct rtentry *)rn1;
@@ -1252,7 +1252,7 @@ maskmatched:
 
 		/* all key/mask/gateway are the same.  conflicting entry. */
 		return EEXIST;
-	} while ((rn1 = rn->mpath_array++) != NULL);
+	} while (rn1++ != NULL);
 
 different:
 	return 0;
