@@ -649,24 +649,23 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		if (ro->ro_rt && ro->ro_rt->rt_ifp && (ro->ro_rt->rt_flags & RTF_UP))
 				return;				 
 		ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, 0, fibnum);
-		rn = (struct ptree_node *)ro->ro_rt;
+		//rn = (struct ptree_node *)ro->ro_rt;
 		/* if the route does not exist or it is not multipath, don't care */
 		if (ro->ro_rt == NULL)
 				return;
-		if (rn->mpath_array == NULL) {
+		rt0 = ro->ro_rt;
+		if (rt0->mpath_array == NULL) {
 				RT_UNLOCK(ro->ro_rt);
 				return;
 		}
 
 		/* beyond here, we use rn as the master copy */
-		rt0 = ro->ro_rt;
 		n = ptree_mpath_count(rn);
 
 		/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 		hash += hashjitter;
 		hash %= n;
-		rn = rn->mpath_array[n];
-		rt = (struct rtentry *)rn;
+		rt = rt0->mpath_array[n];
 		/* XXX try filling rt_gwroute and avoid unreachable gw  */
 
 		/* gw selection has failed - there must be only zero weight routes */
