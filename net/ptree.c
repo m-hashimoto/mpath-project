@@ -203,7 +203,6 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
 	dprint(("+-ptree_common_len Start\n"));
 	dprint(("+-ptree_common_len keyi = %p keyj = %p\n",keyi,keyj));
-	int i;
 	int nmatch = 0;
 	int minkeylen = MIN (keyilen, keyjlen);
 	int keylen = 0;
@@ -455,7 +454,6 @@ ptree_next (struct ptree_node *v)
 		ptree_node_unlock (v);
 		dprint(("+-ptree_next: down left\n"));
 		return w;
-		}
 	}
 
 	if (v->child[1])
@@ -465,18 +463,9 @@ ptree_next (struct ptree_node *v)
 		ptree_node_unlock (v);
 		dprint(("+-ptree_next: down right\n"));
 		return w;
-		}
 	}
 
-	//dprint(("  ptree_next: this node is lesf\n"));
-	if(v->parent){
-		dprint(("+-ptree_next: back to parent node\n"));
-		u = v->parent;
-	}
-	else{
-		dprint(("+-ptree_next End: this node is top\n"));
-		return NULL;
-	}
+	u = v->parent;
 
 	if (u->child[0] == v)
 	{
@@ -505,7 +494,7 @@ ptree_next (struct ptree_node *v)
 			ptree_node_lock (w);
 			ptree_node_unlock (v);
 			dprint(("+-ptree_next End (not-yet-traversed right)\n"));
-		return w;
+			return w;
 		}
 	}
 
