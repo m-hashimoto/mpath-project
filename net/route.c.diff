@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 19:02:52.000000000 +0900
++++ route.c	2005-01-27 19:18:51.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,550 @@
+@@ -768,495 +814,544 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1742,7 +1742,7 @@
 +		register struct ptree_node *rn;
 +		register struct ptree *rnh;
 +		struct ifaddr *ifa;
-+		struct sockaddr *ndst;
++		struct sockaddr *ndst, *saved_gateway;
 +#define senderr(x) { error = x ; dprint(("goto bad %d\n",x)); goto bad; }
 +
 +		KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
@@ -1927,6 +1927,7 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(error);
 +				}
++				saved_gateway = rt->rt_gateway;
 +			/*
 +			 * point to the (possibly newly malloc'd) dest address.
 +			 */
@@ -2041,6 +2042,8 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
++				/* gateway Re-set */
++				rt->rt_gateway = saved_gateway;
 +				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
@@ -2102,15 +2105,6 @@
 +				 */
 +				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
-+				/* gateway Re-set */
-+				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
-+						dprint(("rtreq_ADD: setgate error = %d\n",error));
-+						RT_LOCK_DESTROY(rt);
-+						if (ifa != NULL)
-+								ifa_free(ifa);
-+						uma_zfree(V_rtzone, rt);
-+						senderr(error);
-+				}
 +				/*
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
@@ -2154,7 +2148,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1368,84 @@
+@@ -1267,71 +1362,84 @@
  #undef ifpaddr
  #undef flags
  
@@ -2293,7 +2287,7 @@
  }
  
  /*
-@@ -1339,228 +1453,235 @@
+@@ -1339,228 +1447,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
