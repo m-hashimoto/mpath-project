@@ -941,7 +941,6 @@ ptree_walktree(h, f, w)
 				rt = (struct rtentry *)rn;
 				rt_gate = (struct sockaddr_in *)rt->rt_gateway;
 				gate = (char *)rt_gate->sin_addr->s_addr;
-				printf("address: %s.%s.%s.%s\n",*gate,*gate+1,*gate+2,*gate+3);
 				printf("address: %x.%x.%x.%x\n",*gate,*gate+1,*gate+2,*gate+3);
 				base = rn;
 				next = ptree_next(base);
