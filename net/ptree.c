@@ -46,16 +46,6 @@ ptree_node_create (char *key, int keylen)
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
 	dprint(("--ptree_node_create: x[%p] x->key[%p] x->keylen[%d]\n",
 													x,x->key,x->keylen));
-#if 0
-  dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-							x,(unsigned char)x->key[0],(unsigned char)x->key[1],
-							(unsigned char)x->key[2],(unsigned char)x->key[3],
-							(unsigned char)x->key[4],(unsigned char)x->key[5],
-							(unsigned char)x->key[6],(unsigned char)x->key[7],
-							(unsigned char)x->key[8],(unsigned char)x->key[9],
-							(unsigned char)x->key[10],(unsigned char)x->key[11],
-							x->keylen));
-#endif
   return x;
 }
 
