@@ -554,8 +554,10 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		//int same, l, skip;
 		int l;
 		l = (int)LEN(rt_key(rt));
+		dprint(("-rt_mpath_conflict: len[%d]\n",l));
 
 		rn = pnh->rnh_lookup((char *)rt_key(rt), l, pnh->pnh_treetop);
+		dprint(("-rt_mpath_conflict: lookup[%p]\n",rn));
 		if (!rn)
 				return 0;
 
@@ -640,6 +642,7 @@ maskmatched:
 		} while ((rt1++) != NULL);
 
 different:
+		dprint(("-rt_mpath_conflict: different\n"));
 		return 0;
 }
 
