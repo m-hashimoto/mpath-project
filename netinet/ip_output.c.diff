@@ -1,5 +1,5 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2005-02-25 23:36:15.000000000 +0900
++++ ip_output.c	2005-02-25 23:40:00.000000000 +0900
 @@ -306,12 +306,17 @@
  		 * them, there is no way for one to update all its
  		 * routes when the MTU is changed.
@@ -26,8 +26,8 @@
 +	printf("ip_output: ifq_maxlen[%d]\n",(int)ifp->if_snd.ifq_maxlen);
 +	printf("ip_output: if_snd.ifq_len[%d] ip_len[%d]\n",
 +					(int)ifp->if_snd.ifq_len,(int)ip->ip_len);
-+	print(("ip_output: if(%d >= %d)\n",ifp->if_snd.ifq_len + ip->ip_len / mtu + 1,
-+							          ifp->if_snd.ifq_maxlen));
++	print("ip_output: if(%d >= %d)\n",ifp->if_snd.ifq_len + ip->ip_len / mtu + 1,
++							          ifp->if_snd.ifq_maxlen);
  #ifdef ALTQ
  	if ((!ALTQ_IS_ENABLED(&ifp->if_snd)) &&
  	    ((ifp->if_snd.ifq_len + ip->ip_len / mtu + 1) >=
