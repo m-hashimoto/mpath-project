@@ -915,7 +915,8 @@ ptree_walktree_from(h, a, m, f, w)
 		printf("node %p (%d)\n", rn, rn->rn_bit);
 		base = rn;
 		/* If at right child go back up, otherwise, go right */
-		while (rn->rn_parent->rn_right == rn) {
+		while (rn->rn_parent->rn_right == rn
+				&& !(rn->rn_flags & RNF_ROOT)) {
 			rn = rn->rn_parent;
 
 			/* if went up beyond last, stop */
@@ -940,7 +941,8 @@ ptree_walktree_from(h, a, m, f, w)
 		while ((rn = base) != 0) {
 			base = rn->rn_dupedkey;
 			printf("leaf %p\n", rn);
-			if (error = (*f)(rn, w))
+			if (!(rn->rn_flags & RNF_ROOT)
+					&& (error = (*f)(rn, w)))
 				return (error);
 		}
 		rn = next;
