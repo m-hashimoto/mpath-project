@@ -26,9 +26,11 @@ struct ptree_node_head {
 		int		pnh_multipath;
 #endif /* PTREE_MPATH */
 		struct  ptree_node *(*rnh_addaddr)
-				(void *v, void *mask, struct ptree_node_head *head);
+				(void *v, void *mask, struct ptree_node_head *head,
+				 struct rtentry *rt);
 		struct  ptree_node *(*rnh_addpkt)       /* add based on packet hdr */
-				(void *v, void *mask, struct ptree_node_head *head);
+				(void *v, void *mask, struct ptree_node_head *head,
+				 struct rtentry *rt);
 		struct  ptree_node *(*rnh_deladdr)      /* remove based on sockaddr */
 				(void *v, void *mask, struct ptree_node_head *head);
 		struct  ptree_node *(*rnh_delpkt)       /* remove based on packet hdr */
@@ -83,7 +85,8 @@ void     ptree_init(void);
 int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
 struct ptree_node
-		*ptree_addroute(void *, void *, struct ptree_node_head *),
+		*ptree_addroute(void *, void *, struct ptree_node_head *,
+					   	struct rtentry *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
