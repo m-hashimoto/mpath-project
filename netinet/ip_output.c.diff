@@ -1,62 +1,6 @@
---- ip_output.c.org	2005-02-24 11:43:31.000000000 +0900
-+++ ip_output.c	2005-02-24 16:56:27.000000000 +0900
-@@ -137,6 +137,7 @@
- #endif
- 	M_ASSERTPKTHDR(m);
- 
-+	printf("ip_output: testprint 1\n");
- 	if (inp != NULL) {
- 		INP_LOCK_ASSERT(inp);
- 		M_SETFIB(m, inp->inp_inc.inc_fibnum);
-@@ -146,6 +147,7 @@
- 		}
- 	}
- 
-+	printf("ip_output: testprint 2\n");
- 	if (ro == NULL) {
- 		ro = &iproute;
- 		bzero(ro, sizeof (*ro));
-@@ -181,6 +183,7 @@
- 	 * for Counting NATted Hosts", Proc. IMW'02, available at
- 	 * <http://www.cs.columbia.edu/~smb/papers/fnat.pdf>.
- 	 */
-+	printf("ip_output: testprint 3\n");
- 	if ((flags & (IP_FORWARDING|IP_RAWOUTPUT)) == 0) {
- 		ip->ip_v = IPVERSION;
- 		ip->ip_hl = hlen >> 2;
-@@ -199,6 +202,7 @@
- 	 * The address family should also be checked in case of sharing the
- 	 * cache with IPv6.
- 	 */
-+	printf("ip_output: testprint 4\n");
- 	if (ro->ro_rt && ((ro->ro_rt->rt_flags & RTF_UP) == 0 ||
- 			  dst->sin_family != AF_INET ||
- 			  dst->sin_addr.s_addr != ip->ip_dst.s_addr)) {
-@@ -223,6 +227,7 @@
- 	 * interface is specified by the broadcast address of an interface,
- 	 * or the destination address of a ptp interface.
- 	 */
-+	printf("ip_output: testprint 5\n");
- 	if (flags & IP_SENDONES) {
- 		if ((ia = ifatoia(ifa_ifwithbroadaddr(sintosa(dst)))) == NULL &&
- 		    (ia = ifatoia(ifa_ifwithdstaddr(sintosa(dst)))) == NULL) {
-@@ -298,6 +303,7 @@
- 	 * Calculate MTU.  If we have a route that is up, use that,
- 	 * otherwise use the interface's MTU.
- 	 */
-+	printf("ip_output: testprint 6\n");
- 	if (ro->ro_rt != NULL && (ro->ro_rt->rt_flags & (RTF_UP|RTF_HOST))) {
- 		/*
- 		 * This case can happen if the user changed the MTU
-@@ -413,6 +419,7 @@
- 	 * If the source address is not specified yet, use the address
- 	 * of the outoing interface.
- 	 */
-+	printf("ip_output: testprint 7\n");
- 	if (ip->ip_src.s_addr == INADDR_ANY) {
- 		/* Interface may have no addresses. */
- 		if (ia != NULL) {
-@@ -425,6 +432,7 @@
+--- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
++++ ip_output.c	2005-02-24 21:15:35.000000000 +0900
+@@ -425,6 +425,7 @@
  	 * packet or packet fragments, unless ALTQ is enabled on the given
  	 * interface in which case packetdrop should be done by queueing.
  	 */
@@ -64,11 +8,43 @@
  #ifdef ALTQ
  	if ((!ALTQ_IS_ENABLED(&ifp->if_snd)) &&
  	    ((ifp->if_snd.ifq_len + ip->ip_len / mtu + 1) >=
-@@ -465,6 +473,7 @@
+@@ -445,6 +446,7 @@
+ 	 * verify user is allowed to send
+ 	 * such a packet.
+ 	 */
++	printf("ip_output: testprint 9\n");
+ 	if (isbroadcast) {
+ 		if ((ifp->if_flags & IFF_BROADCAST) == 0) {
+ 			error = EADDRNOTAVAIL;
+@@ -465,6 +467,7 @@
  	}
  
  sendit:
-+	printf("ip_output: testprint 9\n");
++	printf("ip_output: testprint 10\n");
  #ifdef IPSEC
  	switch(ip_ipsec_output(&m, inp, &flags, &error, &ifp)) {
  	case 1:
+@@ -557,6 +560,7 @@
+ #endif /* IPFIREWALL_FORWARD */
+ 
+ passout:
++	printf("ip_output: passout\n");
+ 	/* 127/8 must not appear on wire - RFC1122. */
+ 	if ((ntohl(ip->ip_dst.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET ||
+ 	    (ntohl(ip->ip_src.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET) {
+@@ -661,6 +665,7 @@
+ 		IPSTAT_INC(ips_fragmented);
+ 
+ done:
++	printf("ip_output: done\n");
+ 	if (ro == &iproute && ro->ro_rt && !nortfree) {
+ 		RTFREE(ro->ro_rt);
+ 	}
+@@ -668,6 +673,7 @@
+ 		ifa_free(&ia->ia_ifa);
+ 	return (error);
+ bad:
++	printf("ip_output: bad\n");
+ 	m_freem(m);
+ 	goto done;
+ }
