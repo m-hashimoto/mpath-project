@@ -562,12 +562,12 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		 * all key/mask/gateway as rnh_lookup can match less specific entry.
 		 */
 		rt0 = rn->data;
-#if 0
+
 		/* compare key. */
 		if (rt_key(rt0)->sa_len != rt_key(rt)->sa_len ||
 						bcmp(rt_key(rt0), rt_key(rt), rt_key(rt0)->sa_len))
 				goto different;
-#endif
+
 		rt1 = rt0->mpath_array;
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
@@ -587,7 +587,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				return EEXIST;
 		} while ((rt1++) != NULL);
 
-//different:
+different:
 		dprint(("-rt_mpath_conflict: different\n"));
 		return 0;
 }
