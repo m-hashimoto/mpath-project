@@ -16,7 +16,7 @@
 #define MAX_MPATH 5
 #endif /* PTREE_MPATH */
 
-typedef int walktree_f_t(struct radix_node *, void *);
+typedef int walktree_f_t(struct ptree_node *, void *);
 
 struct ptree_node_head {
 		struct ptree *pnh_treetop;
@@ -108,6 +108,5 @@ int rt_mpath_delete(struct rtentry *, struct rtentry *);
 int     ptree4_mpath_inithead(void **, int);
 int     ptree6_mpath_inithead(void **, int);
 #endif /* PTREE_MPATH */
-
-#endif /*_PTREE_MPATH_H_*/
 #undef DEBUG
+#endif /*_PTREE_MPATH_H_*/
