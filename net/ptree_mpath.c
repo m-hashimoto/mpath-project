@@ -26,7 +26,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	if(offset == 8){ /* IPv6 */
 		struct sockaddr_in6 *key6;
 		key6 = (struct sockaddr_in6 *)pn->key;
-		pritnf("[%p] %s ",pn,inet_ntoa(key->sin6_addr));
+		pritnf("[%p] %s ",pn,inet_ntoa(key6->sin6_addr));
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
