@@ -374,10 +374,13 @@ ptree_new_mask(tt, next)
 		return (0);
 	}
 	bzero(m, sizeof *m);
-	m->rm_leaf = tt;
 	m->rm_bit = tt->rn_bit;
-	m->rm_flags = tt->rn_flags | RNF_NORMAL;
-	m->rm_mask = tt->rn_mask;
+	m->rm_flags = tt->rn_flags;
+	if(tt->rn_flags & RNF_NORMAL)
+		m->rm_leaf = tt;
+	else		
+		m->rm_mask = tt->rn_mask;
+	
 	dprint(("-ptree_new_mask: m->rm_bit = 0x%x m->rm_flags = 0x%x\n",
 							m->rm_bit,m->rm_flags));
 	dprint(("-ptree_new_mask: m->rm_leaf = %p m->rm_mask = %p tt = %p\n",
