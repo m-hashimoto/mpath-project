@@ -573,6 +573,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		tt->rn_bit = x->rn_bit;
 		tt->rn_flags = RNF_ACTIVE;
 	}
+	t = saved_tt;
 #if 0 /* 10/29 19:32 test */
 	t = saved_tt->rn_parent;
 	if(!t){
@@ -651,7 +652,7 @@ on2:
 			if (tt->rn_flags & RNF_NORMAL) {
 				log(LOG_ERR, 
 						"Non-unique normal route, mask not entered\n");
-				dprint(("-ptree_addroute End 3\n"));
+				dprint(("-ptree_addroute: rn_flags = RNF_NORMAL\n"));
 				return tt;
 			}
 		} else
@@ -659,7 +660,7 @@ on2:
 		if (mmask == netmask) {
 			m->rm_refs++;
 			tt->rn_mklist = m;
-			dprint(("-ptree_addroute End 4\n"));
+			dprint(("-ptree_addroute: if(mmask == netmask)\n"));
 			return tt;
 		}
 		if (ptree_refines(netmask, mmask)
@@ -668,7 +669,7 @@ on2:
 	}
 
 	*mp = ptree_new_mask(tt, *mp);
-	dprint(("-ptree_addroute End 5\n"));
+	dprint(("-ptree_addroute End\n"));
 	return tt;
 }
 
