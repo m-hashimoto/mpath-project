@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 14:16:25.000000000 +0900
++++ route.c	2005-01-26 14:36:27.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1658,7 +1658,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1032,295 @@
+@@ -1074,189 +1032,293 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -2007,6 +2007,7 @@
  #endif
  #endif
  
++				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2022,7 +2023,6 @@
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				dprint(("rtreq_ADD: rn = %p rt = %p rt_nodes = %p\n",
 +										rn,rt,rt->rt_nodes));
-+				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2055,7 +2055,6 @@
 +						RTFREE(rt0);
 +				}
  #endif
-+				dprint(("rtreq_ADD3: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
  
 -		/*
 -		 * If this protocol has something to add to this then
@@ -2083,7 +2082,6 @@
 +				 */
 +				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
-+				dprint(("rtreq_ADD4: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
@@ -2112,7 +2110,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1331,77 @@
+@@ -1267,71 +1329,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2244,7 +2242,7 @@
  }
  
  /*
-@@ -1339,228 +1409,235 @@
+@@ -1339,228 +1407,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
