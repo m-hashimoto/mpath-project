@@ -31,10 +31,10 @@ debug_node_print(struct ptree_node *pn)
 	printf("node[%p] ",pn);
 	if( pn->key ){
 		printf("key[%d.%d.%d.%d/%d] ",
-						(unsigned char)pn->key[0],
-						(unsigned char)pn->key[1],
-						(unsigned char)pn->key[2],
-						(unsigned char)pn->key[3],
+						(unsigned char)pn->key[4],
+						(unsigned char)pn->key[5],
+						(unsigned char)pn->key[6],
+						(unsigned char)pn->key[7],
 						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
@@ -337,7 +337,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								len,head->pnh_treetop));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
-				dprint(("-ptree_deladdr: not match\n"));
+				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
 		ptree_remove(tt);
