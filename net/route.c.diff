@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 09:03:07.000000000 +0900
++++ route.c	2005-02-11 09:17:55.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2049,8 +2049,8 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				//rn->data = rt;
-+				//rt->rt_nodes = rn;
++				rn->data = rt;
++				rt->rt_nodes = rn;
 +				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",
 +										rt,rt->rt_nodes));
 +#if 0
