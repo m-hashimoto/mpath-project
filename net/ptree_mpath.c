@@ -56,7 +56,7 @@ static int ptree_satisfies_leaf(char *trial,
 	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
 	dprint(("v = %x:%x:%x:%x head = %p\n",v[0],v[1],v[2],v[3],head));
-	dprint(("v = %8x:%8x:%8x:%8x head = %p\n",v[0],v[1],v[2],v[3],head));
+	dprint(("v = %x:%x:%x:%x head = %p\n",*v,*v+1,*v+2,*v+3,head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
 	register struct ptree_node *t = ptree_search(v, (int)LEN(v), head);
@@ -88,12 +88,14 @@ on1:
 		register int *data = NULL;
 		*data = 1;
 		cp = v;
+		dprint(("ptree_insert: top->rn_bit = %d\n",top->rn_bit));
 		do {
 			p = x;
 			if (cp[x->rn_offset] & x->rn_bmask)
 				x = x->rn_right;
 			else
 				x = x->rn_left;
+			dprint(("ptree_insert: x = %p\n",x));
 		}
 		while (b > (unsigned) x->rn_bit);
 		/* x->rn_bit < b && x->rn_bit >= 0 */
