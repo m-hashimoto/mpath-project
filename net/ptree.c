@@ -56,7 +56,7 @@ ptree_node_create (char *key, int keylen)
   x->data = NULL;
   x->lock = 1;
 
-	dprint(("--ptree_node_create: malloc x[%p] sizeof[%d]\n",x,len));
+	dprint(("--ptree_node_create: malloc x[%p] sizeoff[%d]\n",x,len));
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
@@ -81,7 +81,7 @@ check_bit (char *key, int keylen)
   int offset;
   int shift;
   //dprint(("--check_bit Start\n"));
-  //dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
+  dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
@@ -221,6 +221,10 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
+	if(!x || !x->lock){
+		printf("error: ptree_node_lock x[%p]\n",x);
+		return;
+	}
   x->lock++;
 }
 
