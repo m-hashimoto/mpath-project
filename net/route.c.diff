@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-03-10 14:40:59.000000000 +0900
++++ route.c	2005-03-10 14:59:05.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1143,7 +1143,7 @@
  }
  
  /*
-@@ -768,495 +758,533 @@
+@@ -768,495 +758,529 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2010,8 +2010,6 @@
 +							   (struct ptree_node *)rt/*&rt->rt_nodes*/);
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
-+				dprint(("rtrequest1_fib: node add\n"));
-+				debug_tree_print(rnh);
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2077,8 +2075,6 @@
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
-+				dprint(("rtrequest1_fib: give the caller\n"));
-+				debug_tree_print(rnh);
 +				if (ret_nrt) {
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
@@ -2100,7 +2096,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1295,69 @@
+@@ -1267,71 +1291,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2224,7 +2220,7 @@
  }
  
  /*
-@@ -1339,228 +1365,230 @@
+@@ -1339,228 +1361,230 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
