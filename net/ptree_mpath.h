@@ -9,6 +9,7 @@
 #include <sys/_mutex.h>
 #include <sys/_rwlock.h>
 #endif /* _KERNEL */
+#include <net/ptree.h>
 
 #define DEBUG 1
 
