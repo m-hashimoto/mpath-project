@@ -1,5 +1,5 @@
 --- nd6_rtr.c.orig	2005-01-26 12:24:20.000000000 +0900
-+++ nd6_rtr.c	2005-02-06 18:58:25.000000000 +0900
++++ nd6_rtr.c	2005-02-27 03:35:26.000000000 +0900
 @@ -53,7 +53,7 @@
  #include <net/if_types.h>
  #include <net/if_dl.h>
@@ -18,18 +18,15 @@
  
  VNET_DECLARE(int, nd6_recalc_reachtm_interval);
  #define	V_nd6_recalc_reachtm_interval	VNET(nd6_recalc_reachtm_interval)
-@@ -106,6 +106,10 @@
+@@ -106,6 +106,7 @@
  #define RTPREF_RESERVED	(-2)
  #define RTPREF_INVALID	(-3)	/* internal */
  
-+/* debug print */
-+#define DEBUG 0
-+#define dprint(x) { if(DEBUG) printf x; }
 +
  /*
   * Receive Router Solicitation Message - just for routers.
   * Router solicitation/advertisement is mostly managed by userland program
-@@ -1557,10 +1561,11 @@
+@@ -1557,10 +1558,11 @@
  	struct nd_prefix *opr;
  	u_long rtflags;
  	int error = 0;
@@ -42,7 +39,7 @@
  
  	/* sanity check */
  	if ((pr->ndpr_stateflags & NDPRF_ONLINK) != 0) {
-@@ -1670,6 +1675,7 @@
+@@ -1670,6 +1672,7 @@
  	if (ifa != NULL)
  		ifa_free(ifa);
  
@@ -50,7 +47,7 @@
  	return (error);
  }
  
-@@ -2076,7 +2082,7 @@
+@@ -2076,7 +2079,7 @@
  void
  rt6_flush(struct in6_addr *gateway, struct ifnet *ifp)
  {
@@ -59,7 +56,7 @@
  	int s = splnet();
  
  	/* We'll care only link-local addresses */
-@@ -2096,7 +2102,7 @@
+@@ -2096,7 +2099,7 @@
  }
  
  static int
@@ -68,10 +65,3 @@
  {
  #define SIN6(s)	((struct sockaddr_in6 *)s)
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -2156,3 +2162,6 @@
- 
- 	return (error);
- }
-+/* debug print */
-+#undef DEBUG
-+#undef dprint
