@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-26 07:30:59.000000000 +0900
++++ route.c	2005-02-26 07:43:25.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2008,7 +2008,7 @@
 +				dprint(("rtreq_ADD: rt[%p]\n",rt));
 +				dprint(("rtreq_ADD: rt->rt_nodes[%p]\n",rt->rt_nodes));
 +				dprint(("rtreq_ADD: rt->rt_nodes[%p]\n",&rt->rt_nodes));
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				rn = rnh->rnh_addaddr(ndst, netmask, rnh, &rt->rt_nodes);
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
 +				/*
