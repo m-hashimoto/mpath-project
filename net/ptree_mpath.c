@@ -20,6 +20,7 @@
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
+#include <rpc/rpc_com.h>
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
