@@ -146,15 +146,19 @@ ptree_search (char *key, int keylen, struct ptree *t)
 
 	match = NULL;
 	x = t->top;
+	dprint(("ptree_search: check node keylen data flag\n",x));
+	dprint(("ptree_search: %p %d %d %d\n",x,x->keylen,&(x->data),x->rn_flags));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
+		dprint(("ptree_search: %p %d %d %d\n",x,x->keylen,&(x->data),x->rn_flags));
 		if (x->data)
 			match = x;
 		x = x->child[check_bit (key, x->keylen)];
 	}
 
-	ptree_node_lock (match);
+	if(match)
+		ptree_node_lock (match);
 	dprint(("ptree_search End\n"));
 	return match;
 }

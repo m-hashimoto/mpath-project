@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-20 04:35:22.000000000 +0900
++++ route.c	2005-01-21 01:49:02.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1193,7 +1193,7 @@
  		R_Malloc(new, caddr_t, dlen + glen);
 -		if (new == NULL)
 +		if (new == NULL){
-+			dprint(("rt_setgate End 1\n"));
++			dprint(("rt_setgate End (new gateway is NULL)\n"));
  			return ENOBUFS;
 +		}
  		/*
@@ -1203,7 +1203,7 @@
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
  
-+	dprint(("rt_setgate End 2\n"));
++	dprint(("rt_setgate End (new gateway value into the memory)\n"));
  	return (0);
  }
  
