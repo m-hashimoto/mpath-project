@@ -56,7 +56,7 @@ struct ptree_node_head {
 
 #define pnh_top pnh_treetop->top
 #define rn_key	key
-#define rn_mask	((struct rtentry *)data)->rt_mask
+#define rn_mask	(struct rtentry *)(data)->rt_mask
 
 #ifndef _KERNEL
 #define R_Malloc(p, t, n) (p = (t) malloc((unsigned int)(n)))
