@@ -80,13 +80,13 @@ debug_tree_print(struct ptree *rnh)
 		for (;;) {
 			debug_node_print(rn);
 			next = ptree_next(rn);
-			if( !next ){
-				return (0);
-			}
+			if( !next )
+				break;
 			rn = next;
 		}
 		/* NOTREACHED */
 		printf("======= Debug tree print End =======\n");
+		return (0);
 }
 #endif /* DEBUG */
 	

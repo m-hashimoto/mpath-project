@@ -295,10 +295,13 @@ ptree_get (key, keylen, t, nodes)
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
-		if (x->keylen == keylen)
+		if (x->keylen == keylen){
+			dprint(("+-ptree_get End: return %p\n",x));
 			return x;
+		}
 		u = x;
 		x = x->child[check_bit (key, x->keylen)];
+		dprint(("+-ptree_get: x = %p\n",x));
 	}
 
 	if (! x)
