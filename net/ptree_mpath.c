@@ -746,11 +746,11 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		dprint(("-ptree_deladdr: testprint\n"));
 		//head_off = x->rn_offset;
 		saved_tt = tt;
-		if (tt == 0/* || bcmp(v + head_off, tt->rn_key + head_off, vlen - head_off)*/){
-				dprint(("-ptree_deladdr End1: return 0\n"));
+		if (tt == 0 || bcmp(v, tt->rn_key, len)){
+				dprint(("-ptree_deladdr: not match\n"));
 				return (0);
 		}
-		ptree_remove(saved_tt);
+		ptree_remove(tt);
 		/*
 		 * Delete our route from mask lists.
 		 */
