@@ -18,7 +18,7 @@ static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
 
-#define dprint(x) { if (DEBUG) printf(x); }
+#define dprint(x) { if(DEBUG) printf x; }
 
 #define MKGet(m) {                                              \
 	if (rn_mkfreelist) {                                    \
@@ -53,9 +53,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int *dupentry; 
 	struct ptree_node nodes[2];
 {
-	dprint("ptree_insert start\n");
-	dprint("v_arg = %p, head = %p\n",v_arg,head);
-	
+	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
@@ -102,6 +100,7 @@ on1:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
+	dprint(("ptree_insert End\n"));
 	return (tt);
 }
 
@@ -110,8 +109,8 @@ ptree_addmask(n_arg, search, skip)
 	int search, skip;
 	void *n_arg;
 {
-	dprint("ptree_addmask\n");
-	dprint("search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg);
+	dprint(("ptree_addmask Start\n"));
+	dprint(("search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg));
 
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
@@ -175,21 +174,23 @@ ptree_addmask(n_arg, search, skip)
 	x->rn_bit = -1 - b;
 	if (isnormal)
 		x->rn_flags |= RNF_NORMAL;
+	
+	dprint(("ptree_addmask End\n"));
 	return (x);
 }
 
 
 /*
- *  * Same as above, but with an additional mask.
- *   * XXX note this function is used only once.
- *    */
+ * Same as above, but with an additional mask.
+ * XXX note this function is used only once.
+ */
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
 	void *v_arg, *m_arg;
 {
-	dprint("ptree_seach_m\n");
-	dprint("v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg);
+	dprint(("ptree_seach_m\n"));
+	dprint(("v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg));
 
 	register struct ptree_node *x, *y;
 	register caddr_t v = v_arg, m = m_arg;
@@ -212,8 +213,8 @@ ptree_search_m(v_arg, head, m_arg)
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
-	dprint("ptree_refines\n");
-	dprint("m_arg = %p, n_arg = %p\n",m_arg,n_arg);
+	dprint(("ptree_refines\n"));
+	dprint(("m_arg = %p, n_arg = %p\n",m_arg,n_arg));
 
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
@@ -242,11 +243,12 @@ ptree_refines(m_arg, n_arg)
 ptree_lexobetter(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
-	dprint("ptree_lexobetter\n");
+	dprint(("ptree_lexobetter\n"));
 	register u_char *mp = m_arg, *np = n_arg, *lim;
 
 	if (LEN(mp) > LEN(np))  
-		return 1;  /* not really, but need to check longer one first */   
+		return 1;
+      	/* not really, but need to check longer one first */   
 	if (LEN(mp) == LEN(np))
 		for (lim = mp + LEN(mp); mp < lim;)
 			if (*mp++ > *np++)
@@ -259,7 +261,7 @@ ptree_new_mask(tt, next)
 	register struct ptree_node *tt; 
 	register struct ptree_mask *next;
 {
-	dprint("ptree_new_mask\n");
+	dprint(("ptree_new_mask\n"));
 	register struct ptree_mask *m;
 
 	MKGet(m);
@@ -285,7 +287,7 @@ ptree_satisfies_leaf(trial, leaf, skip)
 	register struct ptree_node *leaf;
 	int skip;
 {
-	dprint("ptree_satisfines_leaf\n");
+	dprint(("ptree_satisfines_leaf\n"));
 	register char *cp = trial, *cp2 = leaf->rn_key, *cp3 = leaf->rn_mask;
 	char *cplim;
 	int length = min(LEN(cp), LEN(cp2));
@@ -306,7 +308,7 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree *head;
 {
-	dprint("ptree_matchaddr\n");
+	dprint(("ptree_matchaddr\n"));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top, *x;
 	register caddr_t cp = v, cp2;
@@ -403,7 +405,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	struct ptree *head;
 	struct ptree_node treenodes[2];
 {
-	dprint("ptree_addroute\n");
+	dprint(("ptree_addroute\n"));
 	caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
 	register struct ptree_node *t, *x = 0, *tt;
 	struct ptree_node *saved_tt, *top = head->rnh_treetop;
@@ -567,7 +569,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	void *v_arg, *netmask_arg;
 	struct ptree *head;
 {
-	dprint("ptree_deladdr\n");
+	dprint(("ptree_deladdr\n"));
 	register struct ptree_node *t, *p, *x, *tt;
 	struct ptree_mask *m, *saved_m, **mp;
 	struct ptree_node *dupedkey, *saved_tt, *top;
@@ -759,7 +761,7 @@ ptree_walktree_from(h, a, m, f, w)
 	walktree_f_t *f;
 	void *w;
 {
-	dprint("ptree_walktree_from\n");
+	dprint(("ptree_walktree_from\n"));
 	int error;
 	struct ptree_node *base, *next;
 	u_char *xa = (u_char *)a;
@@ -861,12 +863,12 @@ ptree_walktree(h, f, w)
 {
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
-	dprint("ptree_walktree: top %p\n",rn);
+	dprint(("ptree_walktree: top %p\n",rn));
 
 	for (;;) {  
 		base = rn;
 		next = ptree_next(rn);
-		dprint("ptree_walktree: base %p next %p\n",base,next);
+		dprint(("ptree_walktree: base %p next %p\n",base,next));
 		if( !next )
 			return (0);
 		rn = next;
@@ -879,7 +881,7 @@ ptree_inithead(head, off)
 	void **head;
 	int off;
 {
-	dprint("ptree_inithead\n");
+	dprint(("ptree_inithead\n"));
 	register struct ptree *rnh;
 	register struct ptree_node *t/*, *tt, *ttt*/;
 	if (*head)
@@ -913,7 +915,7 @@ ptree_inithead(head, off)
 	void
 ptree_init()
 {
-	dprint("ptree_init\n");
+	dprint(("ptree_init\n"));
 	char *cp, *cplim;
 #ifdef _KERNEL
 	struct domain *dom;

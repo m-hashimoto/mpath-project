@@ -103,18 +103,10 @@ ptree_match (char *keyi, char *keyj, int keylen)
 /* ptree_lookup() returns the node with the key if any.
    returned node may be a branching node (that doesn't have data). */
 	struct ptree_node *
-ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
+ptree_lookup (void *key, int keylen, struct ptree *t)
 {
 	dprint("ptree_lookup Start\n");
 	struct ptree_node *x;
-	caddr_t netmask = 0;
-
-	if (mask) {
-		x = ptree_addmask(mask, 1, t->rnh_treetop->rn_offset);
-		if (x == 0)
-			return (0);
-		netmask = x->rn_key;
-	}
 
 	x = t->top;
 	while (x && x->keylen <= keylen &&
