@@ -51,7 +51,7 @@ debug_node_print(struct ptree_node *pn)
 	int
 debug_tree_print(struct ptree_node_head *pnh)
 {
-		printf("		DEBUG_TREE_PRINT_START\n");
+		printf("	DEBUG_TREE_PRINT_START\n");
 		register struct ptree_node *pn, *next;
 		if ( !pnh || !pnh->pnh_treetop )
 			    goto done;
@@ -68,7 +68,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		}
 		/* NOTREACHED */
 done:
-		printf("		DEBUG_TREE_PRINT_END\n");
+		printf("	DEBUG_TREE_PRINT_END\n");
 		return (0);
 }
 #endif /* DEBUG */
@@ -102,15 +102,16 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	//int head_off = top->rn_offset;
+	dprint(("-ptree_insert: %d.%d.%d.%d.%d.%d.%d.%d/%d treetop[%p]\n",
+							v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],
+							len,head->pnh_treetop));
 	t = ptree_search(v, len, head->pnh_treetop);
-	cp = v;// + head_off;
+	cp = v;
 	dprint(("-ptree_insert: t = %p mask_len = %d\n",t,len));
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
-		register caddr_t cp2 = t->key;// + head_off;
-		//register int cmp_res;
+		register caddr_t cp2 = t->key;
 		caddr_t cplim = v + len;
 		
 		dprint(("-ptree_insert: "));
@@ -421,6 +422,9 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		else
 			len =  LEN(v);
 
+		dprint(("-ptree_deladdr: %d.%d.%d.%d.%d.%d.%d.%d/%d treetop[%p]\n",
+								v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],
+								len,head->pnh_treetop));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
 				dprint(("-ptree_deladdr: not match\n"));
