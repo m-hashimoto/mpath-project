@@ -247,37 +247,21 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
-#if 0
-	if (t->rn_mask){
-		vlen = *(u_char *)t->rn_mask;
+	debug_node_print(t);
+	if (t->mask){
+		vlen = (int)8*(LEN(t->mask) - head_off);
 		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
-#endif
+
 	cp = t->key; cplim = v;
-	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
-							(unsigned char)cp[0],(unsigned char)cp[1],
-							(unsigned char)cp[2],(unsigned char)cp[3],
-							(unsigned char)cp[4],(unsigned char)cp[5],
-							(unsigned char)cp[6],(unsigned char)cp[7],
-							t->keylen));
 	dprint(("-ptree_matchaddr:"));
-#if 0
-	for (; cp < cplim; cp++, cp2++){
-		dprint((" + "));	
-		if (*cp != *cp2){
-			dprint(("goto on1\n"));
-			goto on1;
-		}
-	}
-#endif
-	if ( !memcmp(cp,cplim,t->keylen) )
+	if ( !memcmp(cp,cplim,vlen) )
 			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
 	 */
 	dprint(("-ptree_matchaddr: return t = %p\n",t));
-	debug_node_print(t);
 	return t;
 miss:
 	dprint(("-ptree_matchaddr End: miss\n"));
