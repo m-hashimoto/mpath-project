@@ -387,7 +387,7 @@ ptree_head (struct ptree *t)
 	struct ptree_node *
 ptree_next (struct ptree_node *v)
 {
-	dprint(("ptree_next Start\n"));
+	dprint(("ptree_next Start v = %p\n",v));
 	struct ptree_node *t;
 	struct ptree_node *u;
 	struct ptree_node *w;
@@ -398,7 +398,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[0];
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint(("ptree_next End\n"));
+		dprint(("ptree_next End (down left)\n"));
 		return w;
 	}
 
@@ -407,18 +407,24 @@ ptree_next (struct ptree_node *v)
 		w = v->child[1];
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint(("ptree_next End\n"));
+		dprint(("ptree_next End (down right)\n"));
 		return w;
 	}
 
-	u = v->parent;
+	if(v->parent)
+		u = v->parent;
+	else{
+		dprint(("ptree_next End (this node is top)\n"));
+		return NULL;
+	}
+		
 
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint(("ptree_next End\n"));
+		dprint(("ptree_next End (go parent and down right)\n"));
 		return w;
 	}
 
@@ -437,7 +443,7 @@ ptree_next (struct ptree_node *v)
 		
 		ptree_node_lock (w);
 		ptree_node_unlock (v);
-		dprint(("ptree_next End\n"));
+		dprint(("ptree_next End (not-yet-traversed right)\n"));
 		return w;
 	}
 

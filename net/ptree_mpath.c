@@ -909,20 +909,12 @@ ptree_walktree(h, f, w)
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
 
-	for (;;) {  
+	for (;;) {
 		base = rn;
-		rn = ptree_next(base);
-		dprint(("ptree_walktree: base %p next %p\n",base,rn));
-		if( !rn )
+		next = ptree_next(base);
+		dprint(("ptree_walktree: base %p next %p\n",base,next));
+		if( !next )
 			return (0);
-		next = rn;
-		/* Process leaves */
-		while ((rn = base)) {
-			base = rn->rn_dupedkey;
-			if (!(rn->rn_flags & RNF_ROOT)
-			    && (error = (*f)(rn, w)))
-				return (error);
-		}
 		rn = next;
 	}
 	/* NOTREACHED */
