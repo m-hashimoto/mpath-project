@@ -16,10 +16,11 @@
 
 #include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 
 	int
 debug_node_print(struct ptree_node *pn, int offset)
