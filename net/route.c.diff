@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-25 03:24:08.000000000 +0900
++++ route.c	2005-01-25 03:37:53.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1064,7 +1064,7 @@
 -						m++;
 -					}
 -					if (len == 0 || (*n < *m)) {
-+			dprint(("rtreq_ADD: test print 5\n"));
++			dprint(("rtreq_ADD: dst->sa_family = %d\n",dst->sa_family));
 +			if (dst->sa_family == AF_INET) {
 +				rn = rnh->rnh_matchaddr(dst, rnh);
 +				if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {

@@ -142,7 +142,7 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
-	dprint(("-ptree_addmask: search = %d, skip = %d, netmask = %x:%x:%x:%x\n",search,skip,netmask[0],netmask[1],netmask[2],netmask[3]));
+	dprint(("-ptree_addmask: search = %d, skip = %d, netmask = %p\n",search,skip,netmask));
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
 	if (skip == 0)  
@@ -485,7 +485,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	int keyduplicated;
 	caddr_t mmask;
 	struct ptree_mask *m, **mp;
-	dprint(("-ptree_addroute: key = %x:%x:%x:%x\n",v[0],v[1],v[2],v[3]));
+	dprint(("-ptree_addroute: key = %p\n",v));
 
 	/*
 	 * In dealing with non-contiguous masks, there may be
