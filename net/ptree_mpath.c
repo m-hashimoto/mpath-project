@@ -97,11 +97,11 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	
 #ifdef DEBUG
 	if(head->pnh_offset == 4){
-		printf("-ptree_insert: addr");
+		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET, v);
 		printf("/%d\n",len);
 	} else {
-		printf("-ptree_insert: addr");
+		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET6, v);
 		printf("/%d\n",len);
 	}
@@ -125,12 +125,12 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		len = 8*len;
 #ifdef DEBUG
 		if(head->pnh_offset == 4){
-			printf("-ptree_insert: addr");
-			sprint_inet_ntoa(AF_INET, v);
+			printf("-ptree_insert: mask ");
+			sprint_inet_ntoa(AF_INET, m);
 			printf("/%d\n",len);
 		} else {
-			printf("-ptree_insert: addr");
-			sprint_inet_ntoa(AF_INET6, v);
+			printf("-ptree_insert: mask ");
+			sprint_inet_ntoa(AF_INET6, m);
 			printf("/%d\n",len);
 		}
 #endif
@@ -222,11 +222,11 @@ ptree_matchaddr(v_arg, head)
 	vlen = (int)8*LEN(v);
 #ifdef DEBUG
 		if(head->pnh_offset == 4){
-			printf("-ptree_matchaddr: addr");
+			printf("-ptree_matchaddr: addr ");
 			sprint_inet_ntoa(AF_INET, v);
 			printf("/%d\n",vlen);
 		} else {
-			printf("-ptree_matchaddr: addr");
+			printf("-ptree_matchaddr: addr ");
 			sprint_inet_ntoa(AF_INET6, v);
 			printf("/%d\n",vlen);
 		}
@@ -250,11 +250,11 @@ ptree_matchaddr(v_arg, head)
 	cp = t->key; cplim = v; vlen = t->keylen;
 #ifdef DEBUG
 		if(head->pnh_offset == 4){
-			printf("-ptree_insert: save_t");
+			printf("-ptree_matchaddr: save_t ");
 			sprint_inet_ntoa(AF_INET, cp);
 			printf("/%d\n",vlen);
 		}else{
-			printf("-ptree_insert: save_t");
+			printf("-ptree_matchaddr: save_t ");
 			sprint_inet_ntoa(AF_INET6, cp);
 			printf("/%d\n",vlen);
 		}
@@ -271,13 +271,13 @@ ptree_matchaddr(v_arg, head)
 #endif
 	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen)=[%d]\n",memcmp(cp,cplim,vlen)));
 	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen/8)=[%d]\n",memcmp(cp,cplim,vlen/8)));
-	if ( !memcmp(cp,cplim,vlen) )
+	if ( memcmp(cp,cplim,vlen/8) != 0 )
 		return 0;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
 	 */
-	dprint(("-ptree_matchaddr: return t = %p\n",t));
+	dprint(("-ptree_matchaddr End: return t[%p]\n",t));
 	return t;
 }
 

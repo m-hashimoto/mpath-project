@@ -44,6 +44,8 @@ ptree_node_create (char *key, int keylen)
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+	dprint(("--ptree_node_create: x[%p] x->key[%p] x->keylen[%d]\n",
+													x,x->key,x->keylen));
 #if 0
   dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							x,(unsigned char)x->key[0],(unsigned char)x->key[1],
@@ -390,16 +392,15 @@ ptree_next (struct ptree_node *v)
       return w;
     }
 
-  if ((u = v->parent) == 0)
-	  return NULL;
-
-  if (u->child[0] == v)
+  u = v->parent;
+  if (u && u->child[0] == v)
     {
       w = u->child[1];
-	  if (w)
+	  if (w){
         ptree_node_lock (w);
-      ptree_node_unlock (v);
-      return w;
+        ptree_node_unlock (v);
+        return w;
+		  }
     }
 
   t = u->parent;
