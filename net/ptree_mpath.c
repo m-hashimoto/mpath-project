@@ -43,9 +43,9 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x]\n",rt->rt_flags);
 #endif	
 	} else { /* IPv4 */
-		struct sockaddr_in *key;
-		key = (struct sockaddr_in *)pn->key;
-		pritnf("[%p] %s ",pn,inet_ntoa(key->sin_addr));
+		struct sockaddr_in *key4;
+		key4 = (struct sockaddr_in *)pn->key;
+		pritnf("[%p] %s ",pn,inet_ntoa(key4->sin_addr));
 #if 0
 		if(pn->mask){
 			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
