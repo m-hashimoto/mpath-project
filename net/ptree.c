@@ -44,7 +44,12 @@ ptree_node_create (char *key, int keylen)
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
-
+	dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+							x,x->key[0],x->key[1],x->key[2],x->key[3],
+							x->key[4],x->key[5],x->key[6],x->key[7],
+							x->key[8],x->key[9],x->key[10],x->key[11],
+							x->key[12],x->key[13],x->key[14],x->key[15],x->keylen
+							));
   return x;
 }
 
@@ -74,7 +79,6 @@ check_bit (char *key, int keylen)
 static int
 ptree_match (char *keyi, char *keyj, int keylen)
 {
-	dprint(("--ptree_match Start: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
   int bytes;
   int bits;
   bytes = keylen / 8;
@@ -137,6 +141,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
   w->parent = v;
+  dprint(("--ptree_link: v[%p]->child[%d] = w[%p]\n",v,bit,w));
 }
 
 /* key_common_len() returns the bit length with which the keyi and
