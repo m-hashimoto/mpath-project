@@ -16,7 +16,7 @@
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-static int	head_off = 4, head_zero = 8; /* head_off[byte] struct sockaddr_in */
+static int	head_zero = 8; /* head_off[byte] struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
