@@ -222,7 +222,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
-	if(!x || !x->lock){
+	if(!x){
 		printf("error: ptree_node_lock x[%p]\n",x);
 		return;
 	}
@@ -318,8 +318,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 																	v,v->key,v->keylen));
 					dprint(("--ptree_get: branching node x[%p] key[%p] keylen[%d]\n",
 															x,x->key,x->keylen));
-					dprint(("--ptree_get: branching node &key[%p] &keylen[%p]\n",
-															&x->key,&x->keylen));
           if (! v)
             {
               XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
