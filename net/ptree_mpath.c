@@ -55,7 +55,6 @@ static int ptree_satisfies_leaf(char *trial,
 {
 	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
-	dprint(("v = %x:%x:%x:%x head = %p\n",v[0],v[1],v[2],v[3],head));
 	dprint(("v = %x:%x:%x:%x head = %p\n",*v,*v+1,*v+2,*v+3,head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
@@ -81,17 +80,13 @@ on1:
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
-		dprint(("ptree_insert: top = %p\n",top));
 		dprint(("ptree_insert: first different bit = %d\n",b));
 	}
 	{
 		register struct ptree_node *p, *x = top;
-		dprint(("ptree_insert: top = %p\n",top));
 		register int *data = NULL;
-		dprint(("ptree_insert: top = %p\n",top));
 		cp = v;
-		dprint(("ptree_insert: top = %p\n",top));
-		dprint(("ptree_insert: top->rn_bit = %d\n",top->rn_bit));
+		dprint(("ptree_insert: top = %p top->rn_bit = %d\n",x,x->rn_bit));
 		do {
 			p = x;
 			if (cp[x->rn_offset] & x->rn_bmask)
@@ -99,6 +94,8 @@ on1:
 			else
 				x = x->rn_left;
 			dprint(("ptree_insert: x = %p\n",x));
+			if (!x)
+				break;
 		}
 		while (b > (unsigned) x->rn_bit);
 		/* x->rn_bit < b && x->rn_bit >= 0 */
