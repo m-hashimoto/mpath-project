@@ -2,6 +2,10 @@
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
+/* debug print */
+#define DEBUG 1
+#define dprint(x) { if(DEBUG) printf x; }
+
 #ifdef _KERNEL
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);
