@@ -1,5 +1,5 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-26 04:38:56.000000000 +0900
++++ in_rmx.c	2005-02-26 04:42:28.000000000 +0900
 @@ -67,16 +67,18 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -35,7 +35,7 @@
  		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
 -
 -	return (rn_addroute(v_arg, n_arg, head, treenodes));
-+	dprint(("in_addroute: rmx_mtu[%d]\n",rt->rt_rmx.rmx_mtu));
++	dprint(("in_addroute: rmx_mtu[%lu]\n",rt->rt_rmx.rmx_mtu));
 +	return (ptree_addroute(v_arg, n_arg, head, rt_node));
  }
  
