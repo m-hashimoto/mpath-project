@@ -55,5 +55,5 @@ struct ptree_node *ptree_next (struct ptree_node *v);
 struct ptree *ptree_create (void);
 void ptree_delete (struct ptree *t);
 
-struct ptree_lookup (char *key, int keylen, struct ptree *t);
+struct ptree_node *ptree_lookup (char *key, int keylen, struct ptree *t);
 #endif /*_PTREE_H_*/
