@@ -29,7 +29,6 @@ static struct ptree *mask_rnhead;
 debug_node_print(struct ptree_node *rn)
 {
 	register unsigned char *ip;
-	register struct ptree_mask *rm;
 			
 	printf("/*-------------------------*/\n");
 	printf("node = %p\n",rn);
