@@ -930,7 +930,7 @@ ptree_walktree(h, f, w)
 		/* INET tree check */
 		printf("INET ptree\n");
 		struct ptree *rnh;
-		struct in_addr *rnkey;
+		struct in_addr rnkey;
 
 		rnh = rt_tables_get_rnh(0, INET);
 		rn = rnh->rnh_treetop;
@@ -938,7 +938,7 @@ ptree_walktree(h, f, w)
 				rnkey = rn->rn_key;
 				while(rnkey != NULL)
 					pritnf("address: %s\n",
-							inet_ntoa(*(struct in_addr *)rnkey++));
+							inet_ntoa(rnkey++));
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
