@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 07:53:36.000000000 +0900
++++ route.c	2005-01-27 08:11:55.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,513 @@
+@@ -768,495 +814,511 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1865,7 +1865,7 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				RT_LOCK_INIT(rt);
++				//RT_LOCK_INIT(rt);
 +				//rt->rt_flags = RTF_UP | flags;
 +				//rt->rt_fibnum = fibnum;
 +				//dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
@@ -1873,7 +1873,7 @@
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
 +			 */
-+				RT_LOCK(rt);
++				//RT_LOCK(rt);
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						RT_LOCK_DESTROY(rt);
 +						if (ifa != NULL)
@@ -1894,6 +1894,8 @@
 +						bcopy(dst, ndst, dst->sa_len);
 +				/* ? */
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				RT_LOCK_INIT(rt);
++				RT_LOCK(rt);
 +			/*
 +			 * We use the ifa reference returned by rt_getifa_fib().
 +			 * This moved from below so that rnh->rnh_addaddr() can
@@ -2027,9 +2029,6 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				//rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				dprint(("rtreq_ADD: rn = %p rt = %p rt_nodes = %p\n",
-+										rn,rt,rt->rt_nodes));
-+				dprint((" rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2087,7 +2086,6 @@
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
 +				 */
-+				dprint(("ifa->ifa_rtrequest = %p\n",ifa->ifa_rtrequest));
 +				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
 +				/*
@@ -2098,9 +2096,9 @@
 +						*ret_nrt = rt;
 +						RT_ADDREF(rt);
 +				}
-+				dprint(("rtreq_ADD1: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD: rn = %p rn_keylen = %d rt_flags = 0x%x\n",rn,rn->keylen,rn->rn_flags));
 +				RT_UNLOCK(rt);
-+				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				break;
 +		default:
 +				error = EOPNOTSUPP;
@@ -2111,12 +2109,12 @@
 -	return (error);
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+		dprint(("rtrequest1_fib End\n"));
++		dprint(("rtrequest1_fib End: error = %d\n",error));
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1331,77 @@
+@@ -1267,71 +1329,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2248,7 +2246,7 @@
  }
  
  /*
-@@ -1339,228 +1409,235 @@
+@@ -1339,228 +1407,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
