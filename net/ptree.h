@@ -155,6 +155,7 @@ struct ptree {
 
 #ifdef DEBUG
 int debug_node_print(struct ptree_node *rn);
+int debug_tree_print(struct ptree *rnh);
 #endif
 void ptree_node_lock (struct ptree_node *x);
 void ptree_node_unlock (struct ptree_node *x);

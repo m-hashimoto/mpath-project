@@ -44,14 +44,14 @@ debug_node_print(struct ptree_node *rn)
 	if( rn->rn_flags ) printf("flag 0x%x\n",rn->rn_flags);
 	if( rn->keylen ) printf("keylen %d ",rn->keylen);
 	if( rn->rn_bit ) printf("rn_bit %d ",rn->rn_bit);
-	if( rn->rn_bmask ) printf("rn_bmask 0x%x ",rn->rn_bmask);
+	if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
 	printf("parent = %p\n",rn->parent);
 	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
 	printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
 	printf("rn_offset %d\n",rn->rn_Off);
 	rm = rn->rn_mklist;
 	while(rm){
-		printf("/*+++++++++++++++++++++++++*/");
+		printf("/*+++++++++++++++++++++++++*/\n");
 		printf("- mklist = %p\n",rm);
 		printf("- rm_bit %d rm_flags 0x%x\n",rm->rm_bit,rm->rm_flags);
 		printf("- rm_unused 0x%x\n",rm->rm_unused);
@@ -61,11 +61,28 @@ debug_node_print(struct ptree_node *rn)
 		}
 		printf("- rm_leaf = %p\n",rm->rm_leaf);
 		printf("- rm_refs = %d\n",rm->rm_refs);
-		printf("/*+++++++++++++++++++++++++*/");
+		printf("/*+++++++++++++++++++++++++*/\n");
 		rm = rm->rm_mklist;
 	}
 	printf("/*-------------------------*/\n\n");
 	return 0;
+}
+
+	int
+debug_tree_print(struct ptree *rnh)
+{
+		register struct ptree_node *rn, *next;
+		rn = rnh->rnh_treetop;
+		printf("ptree = %p treetop = %p\n",rnh,rn);
+		for (;;) {
+			debug_node_print(rn);
+			next = ptree_next(rn);
+			if( !next ){
+				return (0);
+			}
+			rn = next;
+		}
+		/* NOTREACHED */
 }
 #endif /* DEBUG */
 	
@@ -515,6 +532,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		struct ptree_node treenodes[2];
 {
 		dprint(("-ptree_addroute Start\n"));
+		debug_tree_print(head);
 		caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
 		register struct ptree_node *t, *x = 0, *tt;
 		struct ptree_node *saved_tt, *top = head->rnh_treetop;
@@ -526,7 +544,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 
 		if (netmask)  {
 				if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
-						dprint(("-ptree_addroute End 1\n"));
+						dprint(("-ptree_addroute End 1(retrun 0)\n"));
 						return (0);
 				}
 				b_leaf = x->rn_bit;
@@ -653,6 +671,7 @@ on2:
 						tt->rn_mklist = m;
 						debug_node_print(tt);
 						dprint(("-ptree_addroute End 2\n"));
+						debug_tree_print(head);
 						return tt;
 				}
 				if (ptree_refines(netmask, mmask)
@@ -663,6 +682,7 @@ on2:
 		*mp = ptree_new_mask(tt, *mp);
 		debug_node_print(tt);
 		dprint(("-ptree_addroute End 3\n"));
+		debug_tree_print(head);
 		return tt;
 }
 
@@ -977,39 +997,16 @@ ptree_walktree(h, f, w)
 				return (0);
 		}
 
-		//dprint(("-ptree_walktree:  top = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		for (;;) {
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
 						dprint(("-ptree_walktree End (next == NULL)\n"));
-						//return (0);
-						break;
+						return (0);
 				}
 				rn = next;
-				//dprint(("-ptree_walktree: next = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		}
 		/* NOTREACHED */
-#ifdef DEBUG
-		/* INET tree check */
-		{
-				printf("INET4 ptree_walktree\n");
-				register struct ptree *rnh;
-
-				rnh = rt_tables_get_rnh(0, AF_INET);
-				rn = rnh->rnh_treetop;
-				for (;;) {
-						debug_node_print(rn);
-						base = rn;
-						next = ptree_next(base);
-						if( !next ){
-								dprint(("-ptree_walktree End (next == NULL)\n"));
-								return (0);
-						}
-						rn = next;
-				}
-		}
-#endif
 		dprint(("-ptree_walktree End\n"));
 }
 
