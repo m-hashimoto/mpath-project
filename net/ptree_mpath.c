@@ -912,12 +912,14 @@ ptree_walktree(h, f, w)
 		base = rn;
 		next = ptree_next(base);
 		dprint(("ptree_walktree: base %p next %p\n",base,next));
-		if( !next )
+		if( !next ){
+			dprint(("ptree_walktree End 1\n"));
 			return (0);
+		}
 		rn = next;
 	}
 	/* NOTREACHED */
-	dprint(("ptree_walktree End\n"));
+	dprint(("ptree_walktree End 2\n"));
 }
 
 	int
@@ -944,7 +946,6 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	//rnh = ptree_create();
 	t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #ifdef PTREE_MPATH

@@ -392,6 +392,7 @@ ptree_next (struct ptree_node *v)
 	struct ptree_node *u;
 	struct ptree_node *w;
 
+	ptree_node_lock (v);
 	/* if the left child exists, go left */
 	if (v->child[0])
 	{
