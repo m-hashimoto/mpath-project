@@ -58,6 +58,7 @@ ptree_node_create (char *key, int keylen)
 
 	dprint(("--ptree_node_create: malloc x[%p] sizeoff %dbytes\n",x,len));
 	dprint(("--ptree_node_create: malloc x[%p - %p]\n",x,x+len));
+	dprint(("--ptree_node_create: key[%p] keylen[%p] left[%p] rigth[%p] data[%p] lock[%p]\n",&x->key,&x->keylen,&x->child[0],&x->child[1],&x->data,&x->lock));
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
@@ -251,7 +252,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
   x = t->top;
   dprint(("--ptree_get Start\n"));
 
-	/* debug print */
 #if 0
 		struct sockaddr *sa = (struct sockaddr *)key;
 		struct ptree_node_head *pnh;
@@ -303,10 +303,8 @@ ptree_get (char *key, int keylen, struct ptree *t)
       else
         t->top = x;
 
-			/* debug print */
 			dprint(("--ptree_get: add branching node x[%p] key[%p] keylen[%d]\n",
 															x,x->key,x->keylen));
-			//debug_tree_print(pnh);
 			
       /* if the branching node is not the corresponding node,
          create the corresponding node to add */
@@ -316,8 +314,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
         {
           /* locks the branching node x for the tree holding */
           ptree_node_lock (x);
-					dprint(("--ptree_get: lock branching node x[%p] key[%p] keylen[%d]\n",
-															x,x->key,x->keylen));
 
           v = ptree_node_create (key, keylen);
 					dprint(("--ptree_get: add new node v[%p] key[%p] keylen[%d]\n",
@@ -332,9 +328,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
             }
 
           ptree_link (x, v);
-					dprint(("--ptree_get: link branching node x[%p] key[%p] keylen[%d]\n",
-															x,x->key,x->keylen));
-				//	debug_tree_print(pnh);
         }
     }
 
