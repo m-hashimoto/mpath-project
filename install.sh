@@ -44,6 +44,7 @@ patch -N < route.h.diff
 
 cd /usr/src/sys/netinet
 patch -N < in_rmx.c.diff
+patch -N < in_proto.c.diff
 patch -N < ip_fw.h.diff
 # debug print
 #patch -N < ip_output.c.diff

@@ -22,6 +22,7 @@ rm *.diff
 
 cd /usr/src/sys/netinet
 patch -R < in_rmx.c.diff
+patch -R < in_proto.c.diff
 patch -R < ip_fw.h.diff
 # debug print
 #patch -R < ip_output.c.diff

@@ -1,0 +1,13 @@
+--- in_proto.c.org	2005-03-05 10:11:35.000000000 +0900
++++ in_proto.c	2005-03-05 10:14:11.000000000 +0900
+@@ -369,8 +369,8 @@
+ 	.dom_name =		"internet",
+ 	.dom_protosw =		inetsw,
+ 	.dom_protoswNPROTOSW =	&inetsw[sizeof(inetsw)/sizeof(inetsw[0])],
+-#ifdef RADIX_MPATH
+-	.dom_rtattach =		rn4_mpath_inithead,
++#ifdef PTREE_MPATH
++	.dom_rtattach =		ptree4_mpath_inithead,
+ #else
+ 	.dom_rtattach =		in_inithead,
+ #endif
