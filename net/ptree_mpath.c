@@ -413,13 +413,20 @@ on1:
 	 */
 	dprint(("-ptree_matchaddr: on1\n"));
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
-	for (b = 7; (test >>= 1) > 0;)
+	dprint(("-ptree_matchaddr: first bit that diff = %d\n",test));
+	for (b = 7; (test >>= 1) > 0;){
+		dprint((" %d ",b));	
 		b--;
+	}
+	dprint(("= first bytes that diff\n"));	
+	
 	matched_off = cp - v;
+	dprint(("-ptree_matchaddr: matched_off = %d\n",matched_off));
 	b += matched_off << 3;
 	//rn_bit = -1 - b;
 	rn_bit = b - 1;
-	dprint(("-ptree_matchaddr: rn_bit = %d\n",rn_bit));
+	dprint(("-ptree_matchaddr: rn_bit = %d t->rn_bit = %d\n",
+							rn_bit,t->rn_bit));
 	
 	if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
@@ -434,7 +441,7 @@ on1:
 	t = saved_t;
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
-	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p\n",m,m->rm_mask));
+	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p rm_leaf = %p\n",m,m->rm_mask,m->rm_leaf));
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
 					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",
