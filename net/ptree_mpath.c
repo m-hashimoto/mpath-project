@@ -65,7 +65,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		dprint(("-debug_node_print: mrt[%p]\n",mrt));
 		while(mrt){
 			printf("mrt[%p]\n",mrt);
-			rt = mrt;	
+			rt = *mrt;	
 			if(offset == 8){
 				printf("%13s","+");
 				sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
