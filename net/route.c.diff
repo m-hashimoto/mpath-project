@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 09:58:37.000000000 +0900
++++ route.c	2005-01-27 10:16:05.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,512 @@
+@@ -768,495 +814,517 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1570,18 +1570,32 @@
 +		dprint(("rtexpunge End %d\n",error));
 +		return (error);
 +}
- 
++
 +#ifdef RADIX_MPATH
 +		static int
 +rn_mpath_update(int req, struct rt_addrinfo *info,
 +				struct ptree *rnh, struct rtentry **ret_nrt)
 +{
++		/*
++		 * if we got multipath routes, we require users to specify
++		 * a matching RTAX_GATEWAY.
++		 */
++		struct rtentry *rt, *rto = NULL;
++		register struct ptree_node *rn;
++		int error = 0;
+ 
++		rn = rnh->rnh_matchaddr(dst, rnh);
++		if (rn == NULL)
++				return (ESRCH);
++		rto = rt = RNTORT(rn);
++		rt = rt_mpath_matchgate(rt, gateway);
++		if (rt == NULL)
++				return (ESRCH);
  		/*
 -		 * If the caller wants it, then it can have it,
 -		 * but it's up to it to free the rtentry as we won't be
 -		 * doing it.
-+		 * if we got multipath routes, we require users to specify
-+		 * a matching RTAX_GATEWAY.
++		 * this is the first entry in the chain
  		 */
 -		if (ret_nrt) {
 -			*ret_nrt = rt;
@@ -1601,45 +1615,6 @@
 -		if (dst && gateway && (dst->sa_family != gateway->sa_family) && 
 -		    (gateway->sa_family != AF_UNSPEC) && (gateway->sa_family != AF_LINK))
 -			senderr(EINVAL);
-+		struct rtentry *rt, *rto = NULL;
-+		register struct ptree_node *rn;
-+		int error = 0;
- 
--		if (info->rti_ifa == NULL) {
--			error = rt_getifa_fib(info, fibnum);
--			if (error)
--				senderr(error);
--		} else
--			ifa_ref(info->rti_ifa);
--		ifa = info->rti_ifa;
--		rt = uma_zalloc(V_rtzone, M_NOWAIT | M_ZERO);
--		if (rt == NULL) {
--			if (ifa != NULL)
--				ifa_free(ifa);
--			senderr(ENOBUFS);
--		}
--		RT_LOCK_INIT(rt);
--		rt->rt_flags = RTF_UP | flags;
--		rt->rt_fibnum = fibnum;
-+		rn = rnh->rnh_matchaddr(dst, rnh);
-+		if (rn == NULL)
-+				return (ESRCH);
-+		rto = rt = RNTORT(rn);
-+		rt = rt_mpath_matchgate(rt, gateway);
-+		if (rt == NULL)
-+				return (ESRCH);
- 		/*
--		 * Add the gateway. Possibly re-malloc-ing the storage for it
--		 * 
-+		 * this is the first entry in the chain
- 		 */
--		RT_LOCK(rt);
--		if ((error = rt_setgate(rt, dst, gateway)) != 0) {
--			RT_LOCK_DESTROY(rt);
--			if (ifa != NULL)
--				ifa_free(ifa);
--			uma_zfree(V_rtzone, rt);
--			senderr(error);
 +		if (rto == rt) {
 +				rn = rn_mpath_next((struct ptree_node *)rt);
 +				/*
@@ -1672,7 +1647,19 @@
 +								KASSERT(rt == RNTORT(rn), ("radix node disappeared"));
 +								goto gwdelete;
 +						}
-+
+ 
+-		if (info->rti_ifa == NULL) {
+-			error = rt_getifa_fib(info, fibnum);
+-			if (error)
+-				senderr(error);
+-		} else
+-			ifa_ref(info->rti_ifa);
+-		ifa = info->rti_ifa;
+-		rt = uma_zalloc(V_rtzone, M_NOWAIT | M_ZERO);
+-		if (rt == NULL) {
+-			if (ifa != NULL)
+-				ifa_free(ifa);
+-			senderr(ENOBUFS);
 +				}
 +				/*
 +				 * use the normal delete code to remove
@@ -1684,16 +1671,25 @@
 +				error = ENOENT;
 +				goto done;
  		}
- 
+-		RT_LOCK_INIT(rt);
+-		rt->rt_flags = RTF_UP | flags;
+-		rt->rt_fibnum = fibnum;
++
  		/*
--		 * point to the (possibly newly malloc'd) dest address.
+-		 * Add the gateway. Possibly re-malloc-ing the storage for it
+-		 * 
 +		 * if the entry is 2nd and on up
  		 */
--		ndst = (struct sockaddr *)rt_key(rt);
 +		if ((req == RTM_DELETE) && !rt_mpath_deldup(rto, rt))
 +				panic ("rtrequest1: rt_mpath_deldup");
 +gwdelete:
-+		RT_LOCK(rt);
+ 		RT_LOCK(rt);
+-		if ((error = rt_setgate(rt, dst, gateway)) != 0) {
+-			RT_LOCK_DESTROY(rt);
+-			if (ifa != NULL)
+-				ifa_free(ifa);
+-			uma_zfree(V_rtzone, rt);
+-			senderr(error);
 +		RT_ADDREF(rt);
 +		if (req == RTM_DELETE) {
 +				rt->rt_flags &= ~RTF_UP;
@@ -1703,8 +1699,12 @@
 +				 * when RTFREE(rt) is eventually called.
 +				 */
 +				V_rttrash++;
-+		}
-+
+ 		}
+ 
+-		/*
+-		 * point to the (possibly newly malloc'd) dest address.
+-		 */
+-		ndst = (struct sockaddr *)rt_key(rt);
 +nondelete:
 +		if (req != RTM_DELETE)
 +				panic("unrecognized request %d", req);
@@ -1865,14 +1865,14 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				RT_LOCK_INIT(rt);
++				//RT_LOCK_INIT(rt);
 +				//rt->rt_flags = RTF_UP | flags;
 +				//rt->rt_fibnum = fibnum;
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
 +			 */
-+				RT_LOCK(rt);
++				//RT_LOCK(rt);
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
 +						RT_LOCK_DESTROY(rt);
@@ -1899,8 +1899,6 @@
 +			 * This moved from below so that rnh->rnh_addaddr() can
 +			 * examine the ifa and  ifa->ifa_ifp if it so desires.
 +			 */
-+				//rt->rt_flags = RTF_UP | flags; /* ? */
-+				//rt->rt_fibnum = fibnum; /* ? */
 +				//rt->rt_ifa = ifa;
 +				//rt->rt_ifp = ifa->ifa_ifp;
 +				//rt->rt_rmx.rmx_weight = 1;
@@ -2025,12 +2023,17 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				dprint(("rtreq_ADD: ndst into the rnh = %p\n",rnh));
++				RT_LOCK_INIT(rt);
++				RT_LOCK(rt);
++				dprint(("rtreq_ADD: RT_LOCK\n"));
++				
 +				rt->rt_flags = RTF_UP | flags; /* ? */
 +				rt->rt_fibnum = fibnum; /* ? */
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD: set member into the rt.\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2100,6 +2103,8 @@
 +				}
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_keylen = %d rn_flags = 0x%x\n",rt,rn,rn->keylen,rn->rn_flags));
 +				RT_UNLOCK(rt);
++				dprint(("rtreq_ADD: RT_UNLOCK\n"));
++				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				break;
 +		default:
 +				error = EOPNOTSUPP;
@@ -2115,7 +2120,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1330,78 @@
+@@ -1267,71 +1335,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2248,7 +2253,7 @@
  }
  
  /*
-@@ -1339,228 +1409,235 @@
+@@ -1339,228 +1414,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
