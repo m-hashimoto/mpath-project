@@ -929,7 +929,7 @@ ptree_inithead(head, off)
 	register struct ptree *rnh;
 	struct ptree_node *t;
 	register int *data = NULL;
-	data = 1;
+	*data = 1;
 	/*register struct ptree_node *t, *tt, *ttt;*/
 	if (*head)
 		return (1);
