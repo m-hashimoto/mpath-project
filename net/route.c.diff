@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 15:07:38.000000000 +0900
++++ route.c	2005-01-26 15:30:15.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2080,6 +2080,7 @@
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
 +				 */
++				dprint(("ifa->ifa_rtrequest = %p\n",ifa->ifa_rtrequest));
 +				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
 +				/*
@@ -2088,12 +2089,11 @@
 +				 */
 +				dprint(("rtreq_ADD1: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				if (ret_nrt) {
-+						dprint(("rtreq_ADD: RT_ADDREF\n"));
 +						*ret_nrt = rt;
 +						RT_ADDREF(rt);
 +				}
-+				dprint(("rtreq_ADD: RT_UNLOCK\n"));
 +				RT_UNLOCK(rt);
++				dprint(("rtreq_ADD: RT_UNLOCK\n"));
 +				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				break;
 +		default:
