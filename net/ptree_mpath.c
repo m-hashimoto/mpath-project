@@ -45,7 +45,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 						(unsigned char)gateway[4],(unsigned char)gateway[5],
 						(unsigned char)gateway[6],(unsigned char)gateway[7],
 						(unsigned char)gateway[8],(unsigned char)gateway[9],
-						(unsigned char)gateway[10],(unsigned char)gateway[11])
+						(unsigned char)gateway[10],(unsigned char)gateway[11]);
 		printf("[0x%x]\n",rt->rt_flags);
 	}
 #if 0
