@@ -90,9 +90,9 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	if (m_arg)
-			len = (int)LEN(m) - head_off;
+			len = (int)LEN(m);
 	else
-			len = (int)LEN(v) - head_off;
+			len = (int)LEN(v);
 	v = v + head_off; m = m + head_off;
 	dprint(("-ptree_insert: len = %d\n",len));
 	
