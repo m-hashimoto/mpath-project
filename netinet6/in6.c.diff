@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 11:08:31.000000000 +0900
++++ in6.c	2005-03-07 11:40:15.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -48,7 +48,11 @@
  
  	/*
  	 * Give the interface a chance to initialize
-@@ -1796,12 +1801,24 @@
+@@ -1793,15 +1798,30 @@
+ 		}
+ 
+ 		bzero(&rt, sizeof(rt));
++		dprint(("in6_ifinit: sizeof(rt)=[%d]\n",sizeof(rt)));
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
@@ -61,6 +65,8 @@
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",&(&rt)->rt_nodes->key));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",(struct sockaddr **)(&(&rt)->rt_nodes->key) ));
 +		dprint(("in6_ifinit: rt_nodes->key[%p]\n",(struct sockaddr *)(&(&rt)->rt_nodes->key) ));
++		dprint(("in6_ifinit: *rt_key[%p]\n",*rt_key(&rt)));
++		dprint(("in6_ifinit: &rt_key[%p]\n",&rt_key(&rt)));
 +		dprint(("in6_ifinit: rt_key[%p]\n",rt_key(&rt)));
  		rt_key(&rt) = (struct sockaddr *)&addr;
 +		dprint(("in6_ifinit: testprint 6\n"));
