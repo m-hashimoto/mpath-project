@@ -129,8 +129,10 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node_head *head;
 	int *dupentry;
 {
-	caddr_t v = v_arg, m = m_arg;
-	register caddr_t cp;
+	//caddr_t v = v_arg, m = m_arg;
+	//register caddr_t cp;
+	char *v = v_arg, *m = m_arg;
+	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len = 8*LEN(v);
 	
@@ -173,8 +175,10 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		goto on1;
 	cp = v;
 	{
-		register caddr_t cp2 = t->key;
-		caddr_t cplim = v;
+		//register caddr_t cp2 = t->key;
+		//caddr_t cplim = v;
+		register char *cp2 = t->key;
+		char *cplim = v;
 		if ( !memcmp(cp2,cplim,len) ){
 			*dupentry = 1;
 			return t;
@@ -226,15 +230,18 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node_head *head;
 {
 	dprint(("-ptree_matchaddr Start: pnh[%p]\n",head));
-	caddr_t v = v_arg;
+	//caddr_t v = v_arg;
+	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 	if(!t){
 		dprint(("-ptree_matchaddr: top = NULL\n"));
 		return 0;
 	}
 	
-	register caddr_t cp;
-	caddr_t cplim;
+	//register caddr_t cp;
+	//caddr_t cplim;
+	register char *cp;
+	char *cplim;
 	struct ptree_node *saved_t;
 	int vlen;
 	
@@ -317,7 +324,8 @@ ptree_deladdr(v_arg, gate_arg, head)
 {
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
-		caddr_t v;
+		//caddr_t v;
+		char *v;
 		struct sockaddr *gate;
 		unsigned int len;
 		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
