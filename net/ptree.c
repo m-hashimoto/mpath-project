@@ -173,13 +173,11 @@ ptree_search (char *key, int keylen, struct ptree *t)
 			ptree_match (x->key, key, x->keylen))
 	{
 		if(x->data)
-		//if (x->rn_flags & RNF_ACTIVE)
 			match = x;
 		x = x->child[check_bit (key, x->keylen)];
 		dprint(("+-ptree_search: x = %p x->child = %p\n",match,x));
 	}
 /*
- * 	if(match)	
  *		ptree_node_lock (match);
  */		
 	dprint(("+-ptree_search End match_node = %p\n",match));
@@ -297,8 +295,7 @@ ptree_get (key, keylen, t, nodes)
 	{
 		if (x->keylen == keylen){
 			dprint(("+-ptree_get: x->keylen == keylen =%d\n",x->keylen));
-			//return x;
-			break;
+			return x;
 		}
 		u = x;
 		x = x->child[check_bit (key, x->keylen)];
