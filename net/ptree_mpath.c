@@ -946,10 +946,6 @@ ptree_inithead(head, off)
 	*head = rnh;
 	rnh = ptree_create();
 	t = ptree_add(rn_zeros,off,data,rnh);
-	t->rn_bmask = 0;
-	t->rn_mask = NULL;
-	t->rn_dupedkey = NULL;
-	t->rn_parent = t;
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
