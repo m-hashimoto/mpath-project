@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 10:56:28.000000000 +0900
++++ route.c	2005-01-27 11:10:43.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,515 @@
+@@ -768,495 +814,521 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1956,18 +1956,22 @@
 +						RT_LOCK_DESTROY(rt);
 +						uma_zfree(V_rtzone, rt);
 +						senderr(EEXIST);
-+				}
-+#endif
+ 				}
+-			}
+-		}
+ #endif
 +#ifdef FLOWTABLE
-+				dprint(("rtreq_ADD: ifdef FLOWTABLn"));
++				dprint(("rtreq_ADD: ifdef FLOWTABLE Start\n"));
 +				rt0 = NULL;
 +			/* XXX
 +			 * "flow-table" only support IPv4 at the moment.
 +			 */
 +#ifdef INET
 +				if (dst->sa_family == AF_INET) {
++						dprint(("FLOWTABLE: ?AF_INET\n"));
 +						rn = rnh->rnh_matchaddr(dst, rnh);
 +						if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
++								dprint(("FLOWTABLE: ?RNF_ROOT\n"));
 +								struct sockaddr *mask;
 +								u_char *m, *n;
 +								int len;
@@ -1985,9 +1989,11 @@
 +								 * leave the flow-table entries as is.
 +								 */
 +								if (rt0->rt_flags & RTF_HOST) {
++										dprint(("FLOWTABLE: ?RTF_HOST\n"));
 +										RTFREE(rt0);
 +										rt0 = NULL;
 +								} else if (!(flags & RTF_HOST) && netmask) {
++										dprint(("FLOWTABLE: !RTF_HOST\n"));
 +										mask = rt_mask(rt0);
 +										len = mask->sa_len;
 +										m = (u_char *)mask;
@@ -1999,17 +2005,17 @@
 +												m++;
 +										}
 +										if (len == 0 || (*n < *m)) {
++										dprint(("FLOWTABLE: len = 0\n"));
 +												RTFREE(rt0);
 +												rt0 = NULL;
 +										}
 +								}
 +						}
- 				}
--			}
--		}
- #endif
++				}
  #endif
 -
++#endif
++				dprint(("rtreq_ADD: ifdef FLOWTABLE End\n"));
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2119,7 +2125,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1333,78 @@
+@@ -1267,71 +1339,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2252,7 +2258,7 @@
  }
  
  /*
-@@ -1339,228 +1412,235 @@
+@@ -1339,228 +1418,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
