@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-04 13:08:01.000000000 +0900
++++ route.h	2005-02-04 14:13:58.000000000 +0900
 @@ -88,31 +88,33 @@
  
  /* MRT compile-time constants */
@@ -140,7 +140,7 @@
  } while (0)
  
 -struct radix_node_head *rt_tables_get_rnh(int, int);
-+struct ptree *rt_tables_get_rnh(int, int);
++struct ptree_node_head *rt_tables_get_rnh(int, int);
  
  struct ifmultiaddr;
  
