@@ -359,7 +359,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								(unsigned char)d[0],(unsigned char)d[1],
 								(unsigned char)d[2],(unsigned char)d[3],
 								(unsigned char)d[4],(unsigned char)d[5],
-								(unsigned char)d[6],(unsigned char)d[7],));
+								(unsigned char)d[6],(unsigned char)d[7]));
 		if ((tt == 0) || (memcmp(cp, cplim, len) != 0)){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
