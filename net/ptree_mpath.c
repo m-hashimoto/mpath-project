@@ -17,7 +17,7 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 	int
