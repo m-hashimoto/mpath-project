@@ -74,6 +74,9 @@ debug_node_print(struct ptree_node *pn, int offset)
 	}
 	//printf("[0x%x]",rt->rt_flags);
 	printf("data(%p) <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
+#ifdef PTREE_MPATH
+  
+#endif
 	return 0;
 }
 
