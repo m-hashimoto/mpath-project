@@ -69,6 +69,7 @@ ptree_node_create (key, keylen, nodes)
 	dprint(("+-ptree_node_create: new node = %p keylen = %d\n",
 							x,keylen));
 	dprint(("+-ptree_node_create End\n"));
+	ptree_node_lock(x);
 	return x;
 }
 

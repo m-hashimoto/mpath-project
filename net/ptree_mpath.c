@@ -37,18 +37,19 @@ debug_node_print(struct ptree_node *rn)
 		ip = (unsigned char *)rn->rn_key;
 		printf("key %d.%d.%d.%d: ",ip[3],ip[2],ip[1],ip[0]);
 	}
-	if( rn->rn_mask ){
-		ip = (unsigned char *)rn->rn_mask;
-		printf("mask %d.%d.%d.%d: ",ip[3],ip[2],ip[1],ip[0]);
-	}
+	//if( rn->rn_mask ){
+	//	ip = (unsigned char *)rn->rn_mask;
+	//	printf("mask %d.%d.%d.%d: ",ip[3],ip[2],ip[1],ip[0]);
+	//}
 	printf("flag 0x%x\n",rn->rn_flags);
 	printf("keylen %d ",rn->keylen);
-	printf("rn_bit %d ",rn->rn_bit);
-	if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
+	//printf("rn_bit %d ",rn->rn_bit);
+	//if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
 	printf("parent = %p\n",rn->parent);
 	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
-	printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
-	printf("rn_offset %d\n",rn->rn_Off);
+	//printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
+	//printf("rn_offset %d\n",rn->rn_Off);
+#if 0
 	rm = rn->rn_mklist;
 	while(rm){
 		printf("/*+++++++++++++++++++++++++*/\n");
@@ -64,6 +65,7 @@ debug_node_print(struct ptree_node *rn)
 		printf("/*+++++++++++++++++++++++++*/\n");
 		rm = rm->rm_mklist;
 	}
+#endif
 	printf("/*-------------------------*/\n");
 	return 0;
 }
