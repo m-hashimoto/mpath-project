@@ -31,10 +31,9 @@ static struct ptree *mask_rnhead;
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
 #define LEN(x) (*(const u_char *)(x))
 #define rn_masktop (mask_rnhead->rnh_treetop)
-#if 0
+
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
-#endif
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
 		int *dupentry, struct ptree_node nodes[2]);
 static int ptree_lexobetter(void *m_arg, void *n_arg);
@@ -183,6 +182,7 @@ ptree_addmask(n_arg, search, skip)
 		dprint(("-ptree_addmask End if(x||search)\n"));
 		return (x);
 	}
+
 on1:
 	R_Zalloc(x, struct ptree_node *, max_keylen + 2 * sizeof (*x));
 	if ((saved_x = x) == 0){
@@ -212,7 +212,8 @@ on1:
 			isnormal = 0;
 	}
 	b += (cp - netmask) << 3;
-	x->rn_bit = -1 - b;
+	//x->rn_bit = -1 - b;
+	x->rn_bit = b - 1;
 	dprint(("-ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
 	if (isnormal)
 		x->rn_flags |= RNF_NORMAL;
@@ -226,7 +227,6 @@ on1:
  * Same as above, but with an additional mask.
  * XXX note this function is used only once.
  */
-#if 0
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
@@ -250,7 +250,6 @@ ptree_search_m(v_arg, head, m_arg)
 	dprint(("-ptree_seach_m End\n"));
 	return x;
 }
-#endif
 
 	int
 ptree_refines(m_arg, n_arg)
@@ -378,7 +377,7 @@ ptree_matchaddr(v_arg, head)
 	
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
-	struct ptree_node *saved_t;
+	struct ptree_node *saved_t, *x;
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
@@ -389,7 +388,7 @@ ptree_matchaddr(v_arg, head)
 	}
 	if (t->rn_mask){
 		vlen = *(u_char *)t->rn_mask;
-		dprint(("ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
+		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
 
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
@@ -404,7 +403,7 @@ ptree_matchaddr(v_arg, head)
 	/*
 	 * match exactly as a host.
 	 */
-	dprint(("return t = %p\n",t));
+	dprint(("-ptree_matchaddr: return t = %p\n",t));
 	return t;
 on1:
 	/*
@@ -418,8 +417,9 @@ on1:
 		b--;
 	matched_off = cp - v;
 	b += matched_off << 3;
-	rn_bit = -1 - b;
-	dprint(("ptree_matchaddr: rn_bit = %d\n",rn_bit));
+	//rn_bit = -1 - b;
+	rn_bit = b - 1;
+	dprint(("-ptree_matchaddr: rn_bit = %d\n",rn_bit));
 	
 	if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
@@ -431,7 +431,6 @@ on1:
 			return t;
 	}
 		
-#if 0	
 	t = saved_t;
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
@@ -453,7 +452,7 @@ on1:
 			}
 			m = m->rm_mklist;
 	}
-#endif
+
 miss:
 	dprint(("-ptree_matchaddr End: miss\n"));
 	return 0;
