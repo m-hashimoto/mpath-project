@@ -27,13 +27,13 @@
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	if(offset == 8){ /* IPv6 */
+		struct sockaddr_in *sa;
 		struct sockaddr_in6 *sa6;
-		char str[INET6_ADDRSTRLEN];
-		
+		char str[INET_ADDRSTRLEN], str6[INET6_ADDRSTRLEN];
+	if(offset == 8){ /* IPv6 */
 		sa6 = (struct sockaddr_in6 *)pn->key;
-		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str, INET6_ADDRSTRLEN);
-		printf("[%p] %s ",pn,str);
+		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str6, INET6_ADDRSTRLEN);
+		printf("[%p] %s/%3d ",pn,str,pn->keylen-8*offset);
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
@@ -50,12 +50,9 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x]\n",rt->rt_flags);
 #endif	
 	} else { /* IPv4 */
-		struct sockaddr_in *sa;
-		char str[INET_ADDRSTRLEN];
-		
 		sa = (struct sockaddr_in *)pn->key;
 		__rpc_inet_ntop(AF_INET, &sa->sin_addr, str, INET_ADDRSTRLEN);
-		printf("[%p] %s ",pn,str);
+		printf("[%p] %s/%3d ",pn,str,pn->keylen-8*offset);
 #if 0
 		if(pn->mask){
 			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
@@ -72,7 +69,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 				gateway[4],gateway[5],gateway[6],gateway[7]);
 #endif
 	}
-	//printf("[0x%x]",rt->rt_flags);
 	printf("data(%p) <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 #ifdef PTREE_MPATH
   
