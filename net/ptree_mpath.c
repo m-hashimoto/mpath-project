@@ -471,10 +471,11 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	 * Deal with duplicated keys: attach node to previous instance
 	 */
 	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
+	dprint(("ptree_addroute: keyduplicated = %d\n",keyduplicated));
 	if (keyduplicated) {
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
 			if (tt->rn_mask == netmask){
-				dprint(("ptree_addroute End 2\n"));
+				dprint(("ptree_addroute End(keyduplicated)\n"));
 				return (0);
 			}
 			if (netmask == 0 ||
@@ -527,6 +528,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	/*
 	 * Put mask in tree.
 	 */
+	dprint(("ptree_addroute: put mask in treee\n"));
 	if (netmask) {
 		tt->rn_mask = netmask;
 		tt->rn_bit = x->rn_bit;
