@@ -161,7 +161,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
 			ptree_match (x->key, key, x->keylen))
 	{
 		dprint(("  	   %x:%x:%x:%x   %d    %d\n",
-	x->key[0],x->key[1],x->key[2],x->key[3],,x->keylen,x->rn_flags));
+	x->key[0],x->key[1],x->key[2],x->key[3],x->keylen,x->rn_flags));
 		/* if(x->data) */
 		if (x->rn_flags & RNF_ACTIVE)
 			match = x;
