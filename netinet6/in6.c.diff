@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-11 02:28:35.000000000 +0900
++++ in6.c	2005-02-11 02:39:03.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -174,19 +174,29 @@
  
  	/* Add ownaddr as loopback rtentry, if necessary (ex. on p2p link). */
  	if (newhost) {
-@@ -1791,6 +1812,7 @@
+@@ -1791,16 +1812,25 @@
  			/* */
  			LLE_WUNLOCK(ln);
  		}
 +		printf("in6_ifinit: testprint 4\n");
  
  		bzero(&rt, sizeof(rt));
++		printf("in6_ifinit: testprint 5\n");
  		rt.rt_gateway = (struct sockaddr *)&gateway;
-@@ -1801,6 +1823,7 @@
++		printf("in6_ifinit: testprint 6\n");
+ 		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
++		printf("in6_ifinit: testprint 7\n");
+ 		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
++		printf("in6_ifinit: testprint 8\n");
+ 		rt_mask(&rt) = (struct sockaddr *)&mask;
++		printf("in6_ifinit: testprint 9\n");
+ 		rt_key(&rt) = (struct sockaddr *)&addr;
++		printf("in6_ifinit: testprint 10\n");
  		rt.rt_flags = RTF_UP | RTF_HOST | RTF_STATIC;
++		printf("in6_ifinit: testprint 11\n");
  		rt_newaddrmsg(RTM_ADD, &ia->ia_ifa, 0, &rt);
  	}
-+	printf("in6_ifinit: testprint 5\n");
++	printf("in6_ifinit End: error = %d\n",error);
  
  	return (error);
  }
