@@ -546,6 +546,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		 * We also reverse, or doubly link the list through the
 		 * parent pointer.
 		 */
+#if 0 /* 10/29 22:00 */
 		if (tt == saved_tt) {
 			struct	ptree_node *xx = x;
 			/* link in at head of list */
@@ -565,6 +566,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 			if (tt->rn_dupedkey)			/* parent */
 				tt->rn_dupedkey->rn_parent = tt; /* parent */
 		}
+#endif
 #ifdef RN_DEBUG
 		t=tt+1; tt->rn_info = rn_nodenum++; t->rn_info = rn_nodenum++;
 		tt->rn_twin = t; tt->rn_ybro = rn_clist; rn_clist = tt;
@@ -648,6 +650,7 @@ on2:
 	 * Need same criteria as when sorting dupedkeys to avoid
 	 * double loop on deletion.
 	 */
+#if 0 /* 10/29 22:00 */
 	x = saved_tt;
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 		if (m->rm_bit < b_leaf)
@@ -676,6 +679,7 @@ on2:
 	}
 
 	*mp = ptree_new_mask(tt, *mp);
+#endif
 	dprint(("-ptree_addroute End\n"));
 	return tt;
 }
