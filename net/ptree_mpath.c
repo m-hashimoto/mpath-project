@@ -372,7 +372,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 			if ((LEN(netmask) - head_off) > 0)
 				len = (int)8*(LEN(netmask) - head_off);
 		}
-		v = v + head_off; netmask = netmask + head_off;
+		v = v + head_off;
 
 		dprint(("-ptree_deladdr: %d.%d.%d.%d.%d.%d.%d.%d/%d treetop[%p]\n",
 								(unsigned char)v[0],(unsigned char)v[1],
