@@ -114,7 +114,6 @@ ptree_lookup (char *key, int keylen, struct ptree *t)
 struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
-  dprint(("--ptree_search Start: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
   struct ptree_node *x, *match;
 
   match = NULL;
@@ -125,7 +124,6 @@ ptree_search (char *key, int keylen, struct ptree *t)
       if (x->data)
         match = x;
       x = x->child[check_bit (key, x->keylen)];
-	  dprint(("--ptree_search: x[%p]\n",x));
     }
   if (match)
     ptree_node_lock (match);
@@ -225,7 +223,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
       u = x;
       x = x->child[check_bit (key, x->keylen)];
     }
-  dprint(("--ptree_get: x[%p]\n",x));
+
   if (! x)
     {
       v = ptree_node_create (key, keylen);
@@ -280,6 +278,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
   /* locks for the tree holding */
   ptree_node_lock (v);
+  dprint(("--ptree_get: return[%p]\n",v));
   return v;
 }
 
