@@ -84,7 +84,7 @@ options		FLOWTABLE		# per-cpu routing cache
 # patricia-trie for multi path routing
 options		PATRICIA
 
-# for debug
+# for kernel debug
 options		DEBUG
 options		KDB
 options		DDB
