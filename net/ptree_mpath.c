@@ -35,9 +35,16 @@ debug_node_print(struct ptree_node *pn)
 						(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],
 						(unsigned char)pn->key[7],
-						pn->keylen);
+						pn->keylen - 8*head_off);
 	}
-	printf("data[%p] ",pn->data);
+	if( pn->mask ){
+		printf("key[%d.%d.%d.%d]\n",
+						(unsigned char)pn->mask[4],
+						(unsigned char)pn->mask[5],
+						(unsigned char)pn->mask[6],
+						(unsigned char)pn->mask[7]);
+	}
+	printf("		data[%p] ",pn->data);
 	//printf("parent[%p] ",pn->parent);
 	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	return 0;
