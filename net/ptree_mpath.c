@@ -29,6 +29,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 {
 	if(pn->data){
 		struct rtentry *rt = pn->data;
+		unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 
 		printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[0],(unsigned char)pn->key[1],
@@ -41,22 +42,14 @@ debug_node_print(struct ptree_node *pn, int offset)
 						(unsigned char)pn->key[14],(unsigned char)pn->key[15],
 						pn->keylen - 8*offset);
 		printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d] ",
-						(unsigned char)rt->rt_gateway[0],
-						(unsigned char)rt->rt_gateway[1],
-						(unsigned char)rt->rt_gateway[2],
-						(unsigned char)rt->rt_gateway[3],
-						(unsigned char)rt->rt_gateway[4],
-						(unsigned char)rt->rt_gateway[5],
-						(unsigned char)rt->rt_gateway[6],
-						(unsigned char)rt->rt_gateway[7],
-						(unsigned char)rt->rt_gateway[8],
-						(unsigned char)rt->rt_gateway[9],
-						(unsigned char)rt->rt_gateway[10],
-						(unsigned char)rt->rt_gateway[11],
-						(unsigned char)rt->rt_gateway[12],
-						(unsigned char)rt->rt_gateway[13],
-						(unsigned char)rt->rt_gateway[14],
-						(unsigned char)rt->rt_gateway[15]);
+						(unsigned char)gateway[0],(unsigned char)gateway[1],
+						(unsigned char)gateway[2],(unsigned char)gateway[3],
+						(unsigned char)gateway[4],(unsigned char)gateway[5],
+						(unsigned char)gateway[6],(unsigned char)gateway[7],
+						(unsigned char)gateway[8],(unsigned char)gateway[9],
+						(unsigned char)gateway[10],(unsigned char)gateway[11],
+						(unsigned char)gateway[12],(unsigned char)gateway[13],
+						(unsigned char)gateway[14],(unsigned char)gateway[15]);
 		printf("[0x%x]\n",rt->rt_flags);
 	}
 #if 0
