@@ -55,7 +55,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 {
 		register struct ptree_node *pn, *next;
 		if ( !pnh || !pnh->pnh_treetop )
-			    goto done;
+			    return (0);
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
 		printf("dst				gateway			flags\n");
@@ -188,7 +188,7 @@ ptree_matchaddr(v_arg, head)
 	register struct ptree_node *t = head->pnh_top;
 	if(!t){
 		dprint(("-ptree_matchaddr: top = NULL\n"));
-		goto miss;
+		return 0;
 	}
 	
 	register caddr_t cp;
@@ -219,7 +219,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)cp[10],(unsigned char)cp[11],
 							vlen-8*head->pnh_offset));
 	if ( !memcmp(cp,cplim,vlen) )
-			goto miss;
+		return 0;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
