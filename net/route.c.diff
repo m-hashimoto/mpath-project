@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 12:05:35.000000000 +0900
++++ route.c	2005-01-26 12:56:25.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -30,7 +30,7 @@
  
  /* compare two sockaddr structures */
  #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
-@@ -122,196 +123,215 @@
+@@ -122,196 +123,216 @@
  SYSCTL_INT(_net, OID_AUTO, tunnelfib, CTLFLAG_RD, &tunnel_fib, 0, "");
  #endif
  
@@ -70,6 +70,7 @@
  {
 -	struct radix_node_head **rnh;
 +		dprint(("rt_tables_get_rnh_ptr Start\n"));
++		dprint(("rt_tables_get_rnh_ptr: table = %d family = %d\n",table,fam));
 +		struct ptree **rnh;
  
 -	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.",
@@ -90,7 +91,7 @@
 +		rnh += table * (AF_MAX+1) + fam;
  
 -	return (rnh);
-+		dprint(("rt_tables_get_rnh_ptr End: rnh[fib=%d][fam=%d] = %p\n",table,fam,rnh));
++		dprint(("rt_tables_get_rnh_ptr End: rnh = %p\n",rnh));
 +		return (rnh);
  }
  
@@ -364,7 +365,7 @@
  }
  
  /*
-@@ -320,156 +340,178 @@
+@@ -320,156 +341,178 @@
   *
   * The returned route, if any, is locked.
   */
@@ -667,7 +668,7 @@
  }
  
  
-@@ -479,282 +521,285 @@
+@@ -479,282 +522,285 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1179,7 +1180,7 @@
  }
  
  /*
-@@ -768,305 +813,217 @@
+@@ -768,305 +814,217 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1657,7 +1658,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1031,302 @@
+@@ -1074,189 +1032,303 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -2101,6 +2102,7 @@
 +						dprint(("rtreq_ADD: if(ret_nrt) 3\n"));
 +				}
 +				RT_UNLOCK(rt);
++				dprint(("rtreq_ADD: RT_UNLOCK\n"));
 +				break;
 +		default:
 +				dprint(("rtreq_default\n"));
@@ -2113,12 +2115,12 @@
 +		dprint(("rtrequest1_fib: needlock = %d\n",needlock));
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+		dprint(("rtrequest1_fib End error = %d\n",error));
++		dprint(("rtrequest1_fib End: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt_fibnum));
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1337,77 @@
+@@ -1267,71 +1339,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2250,7 +2252,7 @@
  }
  
  /*
-@@ -1339,228 +1415,235 @@
+@@ -1339,228 +1417,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
