@@ -39,6 +39,7 @@ sprint_inet_ntoa(int af, void *sa)
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
+	dprint(("-debug_node_print: pn[%p] pn->key[%p]\n",pn,pn->key));
 	if(offset == 8){ /* IPv6 */
 		printf("[%p] ",pn);
 		sprint_inet_ntoa(AF_INET6,pn->key);
