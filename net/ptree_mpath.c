@@ -39,7 +39,7 @@ sprint_inet_ntoa(int af, void *sa)
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	if(!pn->key || !pn->keylen){
+	if(!pn->key){
 		dprint(("-debug_node_print: pn[%p] pn->key[%p]\n",pn,pn->key));
 		dprint(("-debug_node_print: pn->parent[%p] pn->left[%p] pn->rigth[%p]\n",
 														pn->parent,pn->child[0],pn->child[1]));
@@ -428,12 +428,12 @@ ptree_walktree(h, f, w)
 	 */
 
 	/* First time through node, go left */
-	printf("-ptree_walktree Start\n");
+	//printf("-ptree_walktree Start\n");
 	if(!pn)
 		return (0);
 	while (pn && pn->child[0])
 		pn = pn->child[0];
-	printf("-ptree_walktree: print 1\n");
+	//printf("-ptree_walktree: print 1\n");
 	for (;;) {
 		base = pn;
 		/* If at right child go back up, otherwise, go right */
@@ -452,7 +452,7 @@ ptree_walktree(h, f, w)
 				return (error);
 		}
 #endif
-	printf("-ptree_walktree: print 2\n");
+	//printf("-ptree_walktree: print 2\n");
 		pn = next;
 		if (!pn->parent)
 			return (0);
