@@ -125,7 +125,8 @@ ptree_search (char *key, int keylen, struct ptree *t)
       if (x->data)
         match = x;
       x = x->child[check_bit (key, x->keylen)];
-	  dprint(("--ptree_search: x[%p] x->key[%p]\n",x,x->key));
+	  dprint(("--ptree_search: x[%p]\n",x));
+	  dprint(("--ptree_search: x->key[%p]\n",x->key));
     }
   if (match)
     ptree_node_lock (match);

@@ -20,6 +20,8 @@ static int  max_keylen;
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
+	struct rtentry *rt = pn->data;
+	
 	if(offset == 8){ /* IPv6 */
 		if(pn->key){
 			printf("[%X.%X.%X.%X.%X.%X.%X.%X/%d] ",
@@ -32,7 +34,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[%p] parent[%p] child[%p, %p]\n",
 						pn,pn->parent,pn->child[0],pn->child[1]);
 #if 0
-		struct rtentry *rt = pn->data;
 		unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 		printf("[%X.%X.%X.%X.%X.%X.%X.%X] ",
 				gateway[8],gateway[9],gateway[10],gateway[11],
@@ -54,9 +55,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 #if 0
 		printf("[%3d.%3d.%3d.%3d] ",
 				gateway[4],gateway[5],gateway[6],gateway[7]);
-		
-		printf("[0x%x]\n",rt->rt_flags);
 #endif
+		printf("[0x%x]\n",rt->rt_flags);
 	}
 	printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
