@@ -17,6 +17,9 @@
 #endif /* PTREE_MPATH */
 
 typedef int walktree_f_t(struct ptree_node *, void *);
+struct route;
+struct rtentry;
+struct sockaddr;
 
 struct ptree_node_head {
 		struct ptree *pnh_treetop;
@@ -27,10 +30,10 @@ struct ptree_node_head {
 #endif /* PTREE_MPATH */
 		struct  ptree_node *(*rnh_addaddr)
 				(void *v, void *mask, struct ptree_node_head *head,
-				 struct ptree_node *rt_nodes);
+				 struct ptree_node *rt_nodes, struct rtentry *rt);
 		struct  ptree_node *(*rnh_addpkt)       /* add based on packet hdr */
 				(void *v, void *mask, struct ptree_node_head *head,
-				 struct ptree_node *rt_nodes);
+				 struct ptree_node *rt_nodes, struct rtentry *rt);
 		struct  ptree_node *(*rnh_deladdr)      /* remove based on sockaddr */
 				(void *v, void *mask, struct ptree_node_head *head);
 		struct  ptree_node *(*rnh_delpkt)       /* remove based on packet hdr */
@@ -86,7 +89,7 @@ int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
 struct ptree_node
 		*ptree_addroute(void *, void *, struct ptree_node_head *,
-					   	struct ptree_node *),
+					   	struct ptree_node *, struct rtentry *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
@@ -95,10 +98,6 @@ struct ptree_node
 /*
  * Patricia trie API with multipath support
  */
-struct route;
-struct rtentry;
-struct sockaddr;
-
 int     ptree_mpath_capable(struct ptree *);
 u_int32_t ptree_mpath_count(struct ptree_node *);
 struct rtentry *rt_mpath_matchgate(struct rtentry *, struct sockaddr *);

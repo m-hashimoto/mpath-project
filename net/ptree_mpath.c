@@ -551,10 +551,11 @@ miss:
 
 
 		struct ptree_node *
-ptree_addroute(v_arg, n_arg, head, rt_node)
+ptree_addroute(v_arg, n_arg, head, rt_node, rt)
 		void *v_arg, *n_arg;
 		struct ptree_node_head *head;
 		struct ptree_node *rt_node;
+		struct rtentry *rt;
 {
 		dprint(("-ptree_addroute Start head = %p\n",head));
 		debug_tree_print(head);
@@ -586,6 +587,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
+		tt->data = rt;
+		rt->rt_nodes = tt;
 		rt_node = tt;
 		dprint(("-ptree_addroute: tt = %p keydup = %d\n",tt,keyduplicated));
 #if 0 /* multi path */

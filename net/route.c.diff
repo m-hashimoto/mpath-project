@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-08 19:16:34.000000000 +0900
++++ route.c	2005-02-08 19:45:38.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1823,7 +1823,6 @@
 -					if (len == 0 || (*n < *m)) {
 -						RTFREE(rt0);
 -						rt0 = NULL;
--					}
 +				rn = rnh->rnh_deladdr(dst, netmask, rnh);
 +				if (rn == NULL)
 +						senderr(ESRCH);
@@ -1887,7 +1886,7 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				RT_LOCK_INIT(rt);
++RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
 +				dprint(("rtreq_ADD: rt_flags = 0x%x fibnum = %d\n",
@@ -1898,19 +1897,21 @@
 +			 */
 +				RT_LOCK(rt);
 +				int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
-+				caddr_t new;
++				if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
++					caddr_t new;
 +				
-+				R_Malloc(new, caddr_t, dlen + glen);
-+				if (new == NULL){
-+						dprint(("rtreq_ADD: setgate error = %d\n",error));
-+						RT_LOCK_DESTROY(rt);
-+						if (ifa != NULL)
-+								ifa_free(ifa);
-+						uma_zfree(V_rtzone, rt);
-+						senderr(ENOBUFS);
++					R_Malloc(new, caddr_t, dlen + glen);
++					if (new == NULL){
++							dprint(("rtreq_ADD: setgate error = %d\n",error));
++							RT_LOCK_DESTROY(rt);
++							if (ifa != NULL)
++									ifa_free(ifa);
++							uma_zfree(V_rtzone, rt);
++							senderr(ENOBUFS);
+ 					}
++					bcopy(dst, new, dlen);
++					rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +				}
-+				bcopy(dst, new, dlen);
-+				rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
@@ -2026,9 +2027,7 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				rt->rt_nodes = rn;
-+				rn->data = rt;
++				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes,rt);
 +				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",rt,rt->rt_nodes));
 +				dprint(("rtreq_ADD: rt_ifa = %p\n",rt->rt_ifa));
 +#if 0
@@ -2405,10 +2404,10 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
-+		}
+ 		}
 +		if (dst->sa_len == 0){
 +				return(EINVAL);
- 		}
++		}
 +
  		/*
 -		 * Do the actual request
