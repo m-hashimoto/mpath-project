@@ -450,14 +450,17 @@ ptree_create ()
 {
 	dprint(("ptree_create Start\n"));
 	struct ptree *t;
+	struct ptree_node *x;
 
 	XRTMALLOC(t, struct ptree *, sizeof (struct ptree));
 	if (! t){
 		dprint(("ptree_create End\n"));
 		return NULL;
 	}
+	x = ptree_node_create(0,0);
+	x->flags = RNF_ROOT;
 
-	t->top = NULL;
+	t->top = x;
 	dprint(("ptree_create End\n"));
 	return t;
 }
