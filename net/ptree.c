@@ -57,6 +57,7 @@ ptree_node_create (char *key, int keylen)
   x->lock = 1;
 
 	dprint(("--ptree_node_create: malloc x[%p] sizeoff %dbytes\n",x,len));
+	dprint(("--ptree_node_create: malloc x[%p - %p]\n",x,x+len));
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
@@ -159,7 +160,8 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
   /* check the w's key bit just after the v->key (keylen'th bit) */
   int bit;
   dprint(("--ptree_link Start: v[%p] w[%p]\n",v,w));
-  dprint(("--ptree_link : v->keylen[%d] w->key[%p]\n",v->keylen,w->key));
+  dprint(("--ptree_link : v->key[%p] v->keylen[%]\n",v->key,v->keylen));
+  dprint(("--ptree_link : w->key[%p] w->keylen[%]\n",w->key,w->keylen));
 
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
