@@ -30,7 +30,7 @@ debug_node_print(struct ptree_node *pn)
 {
 	printf("node[%p] ",pn);
 	if( pn->key ){
-		printf("key[%d.%d.%d.%d/%d]\n",
+		printf("key[%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 						(unsigned char)pn->key[8],(unsigned char)pn->key[9],
@@ -40,7 +40,7 @@ debug_node_print(struct ptree_node *pn)
 						pn->keylen);
 	}
 	if( pn->mask ){
-		printf("key[%d.%d.%d.%d]\n",
+		printf("key[%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d]\n",
 						(unsigned char)pn->mask[4],(unsigned char)pn->mask[5],
 						(unsigned char)pn->mask[6],(unsigned char)pn->mask[7],
 						(unsigned char)pn->mask[8],(unsigned char)pn->mask[9],
