@@ -294,8 +294,8 @@ ptree_get (key, keylen, t, nodes)
 	{
 		if (x->keylen == keylen){
 			dprint(("+-ptree_get: x->keylen == keylen =%d\n",x->keylen));
-		//	return x;
-			break;
+			return x;
+			//break;
 		}
 		u = x;
 		x = x->child[check_bit (key, x->keylen)];
