@@ -1168,7 +1168,6 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	struct rtentry *rt1;
 	char *p, *q, *eq;
 	int same, l, skip;
-	uint32_t i = 0;
 
 	rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
 	if (!rn)
