@@ -1,11 +1,11 @@
---- in6_ifattach.c.org	2010-09-28 10:59:49.000000000 +0900
-+++ in6_ifattach.c	2010-09-28 11:04:00.000000000 +0900
+--- in6_ifattach.c.orig	2005-02-06 18:42:00.000000000 +0900
++++ in6_ifattach.c	2005-02-06 18:42:50.000000000 +0900
 @@ -781,7 +781,7 @@
  {
  	struct in6_ifaddr *ia;
  	struct ifaddr *ifa, *next;
 -	struct radix_node_head *rnh;
-+	struct ptree *rnh;
++	struct ptree_node_head *rnh;
  	struct rtentry *rt;
  	short rtflags;
  	struct sockaddr_in6 sin6;
