@@ -212,11 +212,13 @@ on1:
 			isnormal = 0;
 	}
 	b += (cp - netmask) << 3;
-	//x->rn_bit = -1 - b;
-	x->rn_bit = b - 1;
+	x->rn_bit = -1 - b;
+	//x->rn_bit = b - 1;
 	dprint(("-ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
-	if (isnormal)
+	if (isnormal){
 		x->rn_flags |= RNF_NORMAL;
+		dprint(("-ptree_addmask: RNF_NORMAL flag ON\n"));
+	}
 	
 	dprint(("-ptree_addmask End\n"));
 	return (x);
@@ -423,8 +425,8 @@ on1:
 	matched_off = cp - v;
 	dprint(("-ptree_matchaddr: matched_off = %d\n",matched_off));
 	b += matched_off << 3;
-	//rn_bit = -1 - b;
-	rn_bit = b - 1;
+	rn_bit = -1 - b;
+	//rn_bit = b - 1;
 	dprint(("-ptree_matchaddr: rn_bit = %d t->rn_bit = %d\n",
 							rn_bit,t->rn_bit));
 	
@@ -562,14 +564,17 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 				goto on2;
 		}
-		//b_leaf = -1 - t->rn_bit;
-		b_leaf = tt->rn_bit;
+		b_leaf = -1 - t->rn_bit;
+		//b_leaf = tt->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 		for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
 				if(tt->rn_mask && tt->rn_mklist == 0){
 						*mp = m = ptree_new_mask(tt,0);
-						if (m)
+						dprint(("-ptree_addroute: m = %p \n",m));
+						if (m){
+								dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
 								mp = &m->rm_mklist;
+						}
 				}
 				else if(tt->rn_mklist){
 						for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
