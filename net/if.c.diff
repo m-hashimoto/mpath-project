@@ -1,5 +1,5 @@
 --- if.c.orig	2005-02-04 12:42:10.000000000 +0900
-+++ if.c	2005-02-13 02:39:36.000000000 +0900
++++ if.c	2005-03-07 11:23:52.000000000 +0900
 @@ -34,6 +34,7 @@
  #include "opt_inet6.h"
  #include "opt_inet.h"
@@ -1936,7 +1936,7 @@
 -				(struct rtentry **) NULL, rt->rt_fibnum);
 -		if (err) {
 -			log(LOG_WARNING, "if_rtdel: error %d\n", err);
-+				err = rtrequest_fib(RTM_DELETE, rt_key(rt), rt->rt_gateway,
++				err = rtrequest_fib(RTM_DELETE, *rt_key(rt), rt->rt_gateway,
 +								rt_mask(rt), rt->rt_flags|RTF_RNH_LOCKED,
 +								(struct rtentry **) NULL, rt->rt_fibnum);
 +				if (err) {
@@ -2673,7 +2673,7 @@
 +		RT_LOCK_ASSERT(rt);
 +
 +		if (cmd != RTM_ADD || ((ifa = rt->rt_ifa) == 0) ||
-+						((ifp = ifa->ifa_ifp) == 0) || ((dst = rt_key(rt)) == 0))
++						((ifp = ifa->ifa_ifp) == 0) || ((dst = *rt_key(rt)) == 0))
 +				return;
 +		ifa = ifaof_ifpforaddr(dst, ifp);
 +		if (ifa) {
