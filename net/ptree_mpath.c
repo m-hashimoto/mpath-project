@@ -86,14 +86,16 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	caddr_t v = v_arg, m = m_arg;
 	register caddr_t cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
-	unsigned int len;
+	int len;
 	if (m){
 			dprint(("LEN(m) = %d\n",(int)LEN(m)));
 			len = (int)8*(LEN(m) - head_off);
+			dprint(("-ptree_insert: len = %d\n",len));
 			if(len<0) len = 0;
+			dprint(("-ptree_insert: len = %d\n",len));
 	} else{
 			dprint(("LEN(v) = %d\n",(int)LEN(v)));
-			len = (unsigned int)8*(LEN(v) - head_off - head_zero);
+			len = (int)8*(LEN(v) - head_off - head_zero);
 	}
 	v = v + head_off; m = m + head_off;
 	dprint(("-ptree_insert: len = %d\n",len));
@@ -102,14 +104,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d.%d.%d.%d.%d.%d.%d/%u] treetop[%p]\n",
+	dprint(("-ptree_insert: v[%d.%d.%d.%d.%d.%d.%d.%d/%d] treetop[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
 							len,head->pnh_treetop));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d.%d.%d.%d.%d.%d.%d/%u]\n",
+		dprint(("-ptree_insert: m[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
 							(unsigned char)v[4],(unsigned char)v[5],
