@@ -30,12 +30,13 @@ sprint_inet_ntoa(int af, void *sa)
 	if(af == AF_INET){
 		char str[INET_ADDRSTRLEN];
 		__rpc_inet_ntop(af, &((struct sockaddr_in *)sa)->sin_addr, str, INET_ADDRSTRLEN);
+	ip = str;
 	} else if(af == AF_INET6) {
 		char str[INET6_ADDRSTRLEN];
 		__rpc_inet_ntop(af, &((struct sockaddr_in6 *)sa)->sin6_addr, str, INET6_ADDRSTRLEN);
+	ip = str;
 	}
 
-	ip = str;
 	return (ip);
 }
 
