@@ -63,7 +63,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
-
+		dprint(("-debug_node_print: mrt[%p] mrt[0]=%p\n",mrt,mrt[0]));
 		while(mrt[i]){
 				printf("mrt[%d]=%p\n",i,mrt[i]);
 			if(offset == 8){
@@ -298,12 +298,9 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			rt_array[n] = rt;
 		} else {
 			struct rtentry *rt = tt->data;
-			//dprint(("-ptree_addroute: rt=%p\n",rt));
-			//struct rtentry **rt_array = rt->mpath_array;
-			dprint(("-ptree_addroute: rt=%p\n",rt));
 			if(rt){
 				rt->mpath_array[0] = NULL; 
-				dprint(("-ptree_addroute: rt.mpath_array=%p\n",rt->mpath_array));
+				dprint(("-ptree_addroute: rt->mpath_array=%p\n",rt->mpath_array));
 			}
 		}
 #endif /* mluti path */
