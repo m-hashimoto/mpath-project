@@ -56,7 +56,8 @@ static int ptree_satisfies_leaf(char *trial,
 {
 	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
-	dprint(("v = %x:%x:%x:%x head = %p\n",*v,*v+1,*v+2,*v+3,head));
+	dprint(("ptree_insert: v = %x:%x:%x:%x:%x:%x head = %p\n",
+				v[0],v[1],v[2],v[3],v[4],v[5],head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
 	register struct ptree_node *t = ptree_search(v, vlen, head);
@@ -128,7 +129,7 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
-	dprint(("ptree_addmask: search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg));
+	dprint(("ptree_addmask: search = %d, skip = %d, netmask = %x\n",search,skip,netmask));
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
 	if (skip == 0)  
@@ -152,7 +153,7 @@ ptree_addmask(n_arg, search, skip)
 	if (m0 < last_zeroed)  
 		bzero(addmask_key + m0, last_zeroed - m0); 
 	*addmask_key = last_zeroed = mlen;
-	x = ptree_search(addmask_key, mlen/*(int)LEN(netmask)*/, mask_rnhead);
+	x = ptree_search(addmask_key, mlen, mask_rnhead);
 	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
@@ -583,6 +584,7 @@ on2:
 		return tt; /* can't lift at all */
 	}
 	b_leaf = tt->rn_bit;
+	dprint(("ptree_addroute: b_leaf = %d\n",b_leaf));
 	do {
 		x = t;
 		t = t->rn_parent;
