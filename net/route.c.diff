@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 15:12:36.000000000 +0900
++++ route.c	2005-01-27 15:22:12.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2110,7 +2110,7 @@
 +					dprint(("rtreq_ADD: RT_ADDREF > rt->rt_mtx = %p\n",
 +											&(rt)->rt_mtx));
 +				}
-+				if( mtx_initialized(&(rt)->rt_mtx) == 0 ){
++				if( (error = mtx_initialized(&(rt)->rt_mtx)) == 0 ){
 +					RT_UNLOCK(rt);
 +					dprint(("rtreq_ADD: RT_UNLOCK > rt->rt_mtx = a%p\n",
 +										&(rt)->rt_mtx));
