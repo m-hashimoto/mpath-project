@@ -550,8 +550,10 @@ rt_mpath_conflict(struct ptree *pnh, struct rtentry *rt,
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
-		char *p, *q, *eq;
-		int same, l, skip;
+		//char *p, *q, *eq;
+		//int same, l, skip;
+		int l;
+		l = (int)LEN(rt_key(rt));
 
 		rn = rnh->rnh_lookup(rt_key(rt), l, pnh);
 		if (!rn)
@@ -702,7 +704,7 @@ ptree4_mpath_inithead(void **head, int off)
 		hashjitter = arc4random();
 		if (in_inithead(head, off) == 1) {
 				rnh = (struct ptree *)*head;
-				rnh->rnh_multipath = 1;
+				rnh->pnh_multipath = 1;
 				return 1;
 		} else
 				return 0;
@@ -718,7 +720,7 @@ ptree6_mpath_inithead(void **head, int off)
 		hashjitter = arc4random();
 		if (in6_inithead(head, off) == 1) {
 				rnh = (struct ptree *)*head;
-				rnh->rnh_multipath = 1;
+				rnh->pnh_multipath = 1;
 				return 1;
 		} else
 				return 0;
