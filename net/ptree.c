@@ -35,9 +35,7 @@ ptree_node_create (char *key, int keylen)
 	dprint(("--ptree_node_create: malloc x[%p] len[%d]\n",x,len));
 
   x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
-	dprint(("--ptree_node_create: malloc x->key[%p]\n",x->key));
   x->keylen = keylen;
-	dprint(("--ptree_node_create: malloc x->keylen[%p]\n",&x->keylen));
   x->parent = NULL;
   x->child[0] = NULL;
   x->child[1] = NULL;
@@ -47,9 +45,6 @@ ptree_node_create (char *key, int keylen)
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
   x->lock = 1;
-	dprint(("--ptree_node_create: malloc x->key[%p]\n",x->key));
-	dprint(("--ptree_node_create: malloc x->keylen[%p]\n",&x->keylen));
-	dprint(("--ptree_node_create: malloc x->lock[%p]\n",&x->data));
 	dprint(("--ptree_node_create: x[%p] x->key[%p] x->keylen[%d]\n",
 													x,x->key,x->keylen));
   return x;
@@ -59,6 +54,7 @@ static void
 ptree_node_delete (struct ptree_node *x)
 {
   XRTFREE (x);
+	dprint(("--ptree_node_delete: x[%p]\n",x));
 }
 
 /* check_bit() returns the "keylen"-th bit in the key.
