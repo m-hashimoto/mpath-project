@@ -1,5 +1,5 @@
 --- ip_fw2.c.orig	2005-02-06 20:25:32.000000000 +0900
-+++ ip_fw2.c	2005-02-07 13:50:35.000000000 +0900
++++ ip_fw2.c	2005-03-07 08:03:42.000000000 +0900
 @@ -65,7 +65,7 @@
  #include <sys/ucred.h>
  #include <net/ethernet.h> /* for ETHERTYPE_IP */
@@ -39,7 +39,7 @@
  	struct table_entry *ent;
  	struct sockaddr_in sa, mask;
  
-@@ -1875,9 +1875,9 @@
+@@ -1875,13 +1875,15 @@
  }
  
  static int
@@ -49,9 +49,16 @@
 -	struct radix_node_head * const rnh = arg;
 +	struct ptree_node_head * const rnh = arg;
  	struct table_entry *ent;
++	struct rtentry *rt;
  
++	rt = (struct rtentry *)rn->data;
  	ent = (struct table_entry *)
-@@ -1890,7 +1890,7 @@
+-	    rnh->rnh_deladdr(rn->rn_key, rn->rn_mask, rnh);
++	    rnh->rnh_deladdr(rn->rn_key, rt->rt_mask, rnh);
+ 	if (ent != NULL)
+ 		free(ent, M_IPFW_TBL);
+ 	return (0);
+@@ -1890,7 +1892,7 @@
  static int
  flush_table(struct ip_fw_chain *ch, uint16_t tbl)
  {
@@ -60,7 +67,7 @@
  
  	IPFW_WLOCK_ASSERT(ch);
  
-@@ -1920,7 +1920,7 @@
+@@ -1920,7 +1922,7 @@
  	uint16_t j;
  
  	for (i = 0; i < IPFW_TABLES_MAX; i++) {
@@ -69,7 +76,7 @@
  			for (j = 0; j < i; j++) {
  				(void) flush_table(ch, j);
  			}
-@@ -1934,7 +1934,7 @@
+@@ -1934,7 +1936,7 @@
  lookup_table(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
      uint32_t *val)
  {
@@ -78,7 +85,7 @@
  	struct table_entry *ent;
  	struct sockaddr_in sa;
  
-@@ -1943,7 +1943,8 @@
+@@ -1943,7 +1945,8 @@
  	rnh = ch->tables[tbl];
  	sa.sin_len = 8;
  	sa.sin_addr.s_addr = addr;
@@ -88,7 +95,7 @@
  	if (ent != NULL) {
  		*val = ent->value;
  		return (1);
-@@ -1952,7 +1953,7 @@
+@@ -1952,7 +1955,7 @@
  }
  
  static int
@@ -97,7 +104,7 @@
  {
  	u_int32_t * const cnt = arg;
  
-@@ -1963,7 +1964,7 @@
+@@ -1963,7 +1966,7 @@
  static int
  count_table(struct ip_fw_chain *ch, uint32_t tbl, uint32_t *cnt)
  {
@@ -106,7 +113,7 @@
  
  	if (tbl >= IPFW_TABLES_MAX)
  		return (EINVAL);
-@@ -1974,7 +1975,7 @@
+@@ -1974,7 +1977,7 @@
  }
  
  static int
@@ -115,7 +122,7 @@
  {
  	struct table_entry * const n = (struct table_entry *)rn;
  	ipfw_table * const tbl = arg;
-@@ -1997,7 +1998,7 @@
+@@ -1997,7 +2000,7 @@
  static int
  dump_table(struct ip_fw_chain *ch, ipfw_table *tbl)
  {
