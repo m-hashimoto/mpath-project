@@ -1,10 +1,10 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-10 22:02:02.000000000 +0900
++++ in6.c	2005-02-10 22:09:19.000000000 +0900
 @@ -680,6 +680,7 @@
  in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
      struct in6_ifaddr *ia, int flags)
  {
-+	printf("in6_update_ifa: testprint Start\n")
++	printf("in6_update_ifa: testprint Start\n");
  	int error = 0, hostIsNew = 0, plen = -1;
  	struct sockaddr_in6 dst6;
  	struct in6_addrlifetime *lt;
@@ -13,7 +13,7 @@
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
 -
-+	printf("in6_update_ifa: testprint 1")
++	printf("in6_update_ifa: testprint 1\n");
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
@@ -21,7 +21,7 @@
  	 * The destination address for a p2p link must have a family
  	 * of AF_UNSPEC or AF_INET6.
  	 */
-+	printf("in6_update_ifa: testprint 2")
++	printf("in6_update_ifa: testprint 2\n");
  	if ((ifp->if_flags & IFF_POINTOPOINT) != 0 &&
  	    ifra->ifra_dstaddr.sin6_family != AF_INET6 &&
  	    ifra->ifra_dstaddr.sin6_family != AF_UNSPEC)
@@ -29,7 +29,7 @@
  	 * validate ifra_prefixmask.  don't check sin6_family, netmask
  	 * does not carry fields other than sin6_len.
  	 */
-+	printf("in6_update_ifa: testprint 3")
++	printf("in6_update_ifa: testprint 3\n");
  	if (ifra->ifra_prefixmask.sin6_len > sizeof(struct sockaddr_in6))
  		return (EINVAL);
  	/*
@@ -37,7 +37,7 @@
  	 * We also require the prefix (when specified) mask is valid, and thus
  	 * reject a non-consecutive mask.
  	 */
-+	printf("in6_update_ifa: testprint 4")
++	printf("in6_update_ifa: testprint 4\n");
  	if (ia == NULL && ifra->ifra_prefixmask.sin6_len == 0)
  		return (EINVAL);
  	if (ifra->ifra_prefixmask.sin6_len != 0) {
@@ -45,7 +45,7 @@
  	 * and the address is a scoped one, validate/set the scope
  	 * zone identifier.
  	 */
-+	printf("in6_update_ifa: testprint 5")
++	printf("in6_update_ifa: testprint 5\n");
  	dst6 = ifra->ifra_dstaddr;
  	if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) != 0 &&
  	    (dst6.sin6_family == AF_INET6)) {
@@ -53,7 +53,7 @@
  	 * loopback interface.  If specified, the corresponding prefix length
  	 * must be 128.
  	 */
-+	printf("in6_update_ifa: testprint 6")
++	printf("in6_update_ifa: testprint 6\n");
  	if (ifra->ifra_dstaddr.sin6_family == AF_INET6) {
  		if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) == 0) {
  			/* XXX: noisy message */
@@ -61,7 +61,7 @@
  		}
  	}
  	/* lifetime consistency check */
-+	printf("in6_update_ifa: testprint 7")
++	printf("in6_update_ifa: testprint 7\n");
  	lt = &ifra->ifra_lifetime;
  	if (lt->ia6t_pltime > lt->ia6t_vltime)
  		return (EINVAL);
@@ -69,7 +69,7 @@
  	 * If this is a new address, allocate a new ifaddr and link it
  	 * into chains.
  	 */
-+	printf("in6_update_ifa: testprint 8")
++	printf("in6_update_ifa: testprint 8\n");
  	if (ia == NULL) {
  		hostIsNew = 1;
  		/*
@@ -77,7 +77,7 @@
  	ia->ia6_updatetime = time_second;
  
  	/* set prefix mask */
-+	printf("in6_update_ifa: testprint 9")
++	printf("in6_update_ifa: testprint 9\n");
  	if (ifra->ifra_prefixmask.sin6_len) {
  		/*
  		 * We prohibit changing the prefix length of an existing
@@ -85,7 +85,7 @@
  	 * install the new destination.  Note that the interface must be
  	 * p2p or loopback (see the check above.)
  	 */
-+	printf("in6_update_ifa: testprint 10")
++	printf("in6_update_ifa: testprint 10\n");
  	if (dst6.sin6_family == AF_INET6 &&
  	    !IN6_ARE_ADDR_EQUAL(&dst6.sin6_addr, &ia->ia_dstaddr.sin6_addr)) {
  		int e;
@@ -93,7 +93,7 @@
  	 * to see if the address is deprecated or invalidated, but initialize
  	 * these members for applications.
  	 */
-+	printf("in6_update_ifa: testprint 11")
++	printf("in6_update_ifa: testprint 11\n");
  	ia->ia6_lifetime = ifra->ifra_lifetime;
  	if (ia->ia6_lifetime.ia6t_vltime != ND6_INFINITE_LIFETIME) {
  		ia->ia6_lifetime.ia6t_expire =
@@ -101,7 +101,7 @@
  	 * so that corresponding MLD responses would not have a tentative
  	 * source address.
  	 */
-+	printf("in6_update_ifa: testprint 12")
++	printf("in6_update_ifa: testprint 12\n");
  	ia->ia6_flags &= ~IN6_IFF_DUPLICATED;	/* safety */
  	if (hostIsNew && in6if_do_dad(ifp))
  		ia->ia6_flags |= IN6_IFF_TENTATIVE;
@@ -109,7 +109,7 @@
  	 * XXX It may be of use, if we can administratively
  	 * disable DAD.
  	 */
-+	printf("in6_update_ifa: testprint 13")
++	printf("in6_update_ifa: testprint 13\n");
  	if (in6if_do_dad(ifp) && ((ifra->ifra_flags & IN6_IFF_NODAD) == 0) &&
  	    (ia->ia6_flags & IN6_IFF_TENTATIVE))
  	{
