@@ -88,6 +88,7 @@ on1:
 		register int *data = NULL;
 		*data = 1;
 		cp = v;
+		dprint(("ptree_insert: top = %p\n",top));
 		dprint(("ptree_insert: top->rn_bit = %d\n",top->rn_bit));
 		do {
 			p = x;
