@@ -1,16 +1,66 @@
-608a609
-> 	dprint(("flowtable_lookup Start\n"));
-642a644
-> 	dprint(("flowtable_lookup test print 1\n"));
-649a652
-> 	dprint(("flowtable_lookup test print 2\n"));
-664a668
-> 		dprint(("flowtable_lookup End: lookup success\n"));
-672a677
-> 	dprint(("flowtable_lookup test print 3\n"));
-697a703
-> 			dprint(("flowtable_lookup End: flags error\n"));
-710a717
-> 			dprint(("flowtable_lookup End: lle == NULL\n"));
-723a731
-> 	dprint(("flowtable_lookup End\n"));
+--- flowtable.c.org	2005-01-24 17:59:50.000000000 +0900
++++ flowtable.c	2005-01-24 18:11:18.000000000 +0900
+@@ -606,6 +606,7 @@
+ int
+ flowtable_lookup(struct flowtable *ft, struct mbuf *m, struct route *ro, uint32_t fibnum)
+ {
++	dprint(("flowtable_lookup Start\n"));
+ 	uint32_t key[9], hash;
+ 	struct flentry *fle;
+ 	uint16_t flags;
+@@ -640,6 +641,7 @@
+ 	if (hash == 0 || (key[0] == 0 && (ft->ft_flags & FL_HASH_PORTS)))
+ 		return (ENOENT);
+ 
++	dprint(("flowtable_lookup test print 1\n"));
+ 	V_flowtable_lookups++;
+ 	FL_ENTRY_LOCK(ft, hash);
+ 	if ((fle = FL_ENTRY(ft, hash)) == NULL) {
+@@ -647,6 +649,7 @@
+ 		goto uncached;
+ 	}
+ keycheck:	
++	dprint(("flowtable_lookup test print 2\n"));
+ 	rt = __DEVOLATILE(struct rtentry *, fle->f_rt);
+ 	lle = __DEVOLATILE(struct llentry *, fle->f_lle);
+ 	if ((rt != NULL)
+@@ -662,6 +665,7 @@
+ 		ro->ro_rt = rt;
+ 		ro->ro_lle = lle;
+ 		FL_ENTRY_UNLOCK(ft, hash);
++		dprint(("flowtable_lookup End: lookup success\n"));
+ 		return (0);
+ 	} else if (fle->f_next != NULL) {
+ 		fle = fle->f_next;
+@@ -670,6 +674,7 @@
+ 	FL_ENTRY_UNLOCK(ft, hash);
+ 
+ uncached:
++	dprint(("flowtable_lookup test print 3\n"));
+ 	V_flowtable_misses++;
+ 	/*
+ 	 * This bit of code ends up locking the
+@@ -695,6 +700,7 @@
+ 		if (ifp->if_flags & (IFF_POINTOPOINT | IFF_LOOPBACK)) {
+ 			RTFREE(rt);
+ 			ro->ro_rt = NULL;
++			dprint(("flowtable_lookup End: flags error\n"));
+ 			return (ENOENT);
+ 		}
+ 
+@@ -708,6 +714,7 @@
+ 		if (lle == NULL) {
+ 			RTFREE(rt);
+ 			ro->ro_rt = NULL;
++			dprint(("flowtable_lookup End: lle == NULL\n"));
+ 			return (ENOENT);
+ 		}
+ 		error = flowtable_insert(ft, hash, key, proto, fibnum,
+@@ -721,6 +728,7 @@
+ 		}
+ 	} 
+ 
++	dprint(("flowtable_lookup End\n"));
+ 	return (error);
+ }
+ 
