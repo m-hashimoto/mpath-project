@@ -76,7 +76,7 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-void     ptree_init(void);
+//void     ptree_init(void);
 int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
 struct ptree_node *ptree_addroute (void *, void *, struct ptree_node_head *),
