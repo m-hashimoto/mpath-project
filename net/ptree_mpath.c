@@ -416,15 +416,16 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
-		int len;
+		unsigned int len;
 
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		if (netmask)
-			len =  LEN(netmask);
+		if (netmask_arg)
+				len = (unsigned int)8*(LEN(netmask) - head_off);
 		else
-			len =  LEN(v);
+				len = (unsigned int)8*(LEN(v) - head_off - head_zero);
+		v = v + head_off; netmask = netmask + head_off;
 
 		dprint(("-ptree_deladdr: %d.%d.%d.%d.%d.%d.%d.%d/%d treetop[%p]\n",
 								v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],
