@@ -924,7 +924,8 @@ ptree_walktree(h, f, w)
 				next = ptree_next(base);
 				if( !next ){
 						dprint(("-ptree_walktree End (next == NULL)\n"));
-						return (0);
+						//return (0);
+						break;
 				}
 				rn = next;
 				dprint(("-ptree_walktree: next = %p keylen = 0x%x\n",rn->key,rn->keylen));
