@@ -100,12 +100,12 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d.%d.%d/%d] treetop[%p]\n",
+	dprint(("-ptree_insert: v[%d.%d.%d.%d/%u] treetop[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							len,head->pnh_treetop));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_insert: m[%d.%d.%d.%d/%u]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
 							len));
@@ -227,9 +227,9 @@ ptree_matchaddr(v_arg, head)
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
-	int vlen;
+	unsigned int vlen;
 	
-	vlen = (int)8*(LEN(v) - head_off - head_zero);
+	vlen = (unsigned int)8*(LEN(v) - head_off - head_zero);
 
 	dprint(("-ptree_matchaddr: v = %p vlen = %d head = %p top = %p\n",
 							v,vlen,head,t));
