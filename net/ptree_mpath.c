@@ -88,27 +88,27 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
-	len = (int)8*(LEN(v) - head_off - head_zero);
+	len = (int)8*LEN(v);
 	if (m){
 		dprint(("LEN(m) = %d\n",(int)LEN(m)));
-		if ((LEN(m) - head_off - head_zero) > 0)
-			len = (int)8*(LEN(m) - head_off - head_zero);
+		if ((LEN(m) - head_off) > 0)
+			len = (int)8*LEN(m);
 	}
-	v = v + head_off; m = m + head_off;
+
 	dprint(("-ptree_insert: len = %d\n",len));
 	
 	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d.%d.%d.%d.%d.%d.%d/%d] treetop[%p]\n",
+	dprint(("-ptree_insert: v[%d.%d|%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
 							len,head->pnh_treetop));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_insert: m[%d.%d|%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
 							(unsigned char)m[4],(unsigned char)m[5],
@@ -136,44 +136,13 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("key dupentry\n"));
 		*dupentry = 1;  
 		return t;
-#if 0
-on1:
-		dprint(("-ptree_insert: on1\n"));
-		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;
-		for (b = (cp - v) << 3; cmp_res; b--)
-			cmp_res >>= 1;
-		dprint(("-ptree_insert: first different bit = %d\n",b));
-#endif
-on1:
-		*dupentry = 0;
 	}
+on1:
+	*dupentry = 0;
 	{
-		//register struct ptree_node *p, *x = top;
 		int *data = NULL;
-#if 0
-		cp = v;
-		do {
-			p = x;
-			if (cp[x->rn_offset] & x->rn_bmask)
-				x = x->rn_right;
-			else
-				x = x->rn_left;
-			dprint(("-ptree_insert: x = %p\n",x));
-			if (!x) break;
-		}
-		while (b > (unsigned) x->rn_bit);
-		/* x->rn_bit < b && x->rn_bit >= 0 */
-#endif
-#ifdef RN_DEBUG
-		if (rn_debug)
-			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
-#endif 
 		tt = ptree_add(v, len, data, head->pnh_treetop);
 		tt->mask = m;
-#ifdef RN_DEBUG
-		if (rn_debug)
-			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
-#endif
 	}
 	dprint(("-ptree_insert End: insert tt = %p\n",tt));
 	return (tt);
@@ -234,9 +203,8 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int vlen;
 	
-	vlen = (int)8*(LEN(v) - head_off - head_zero);
-	v = v + head_off;
-	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d.%d.%d.%d.%d/%d] pnh[%p]\n",
+	vlen = (int)8*LEN(v);
+	dprint(("-ptree_matchaddr: v[%d.%d|%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
@@ -249,8 +217,8 @@ ptree_matchaddr(v_arg, head)
 	}
 	debug_node_print(t);
 	if (t->mask){
-		if ((LEN(t->mask)-head_off - head_zero) > 0 )
-			vlen = (int)8*(LEN(t->mask) - head_off - head_zero);
+		if ((LEN(t->mask)-head_off) > 0 )
+			vlen = (int)8*LEN(t->mask);
 	}
 
 	cp = t->key; cplim = v;
@@ -284,18 +252,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		int keyduplicated;
 		dprint(("-ptree_addroute: key = %p netmask = %p\n",v_arg,n_arg));
 
-#if 0
-		if (netmask)  {
-				if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
-						dprint(("-ptree_addroute End 1(retrun 0)\n"));
-						return (0);
-				}
-				b_leaf = x->rn_bit;
-				b = -1 - x->rn_bit;
-				netmask = x->rn_key;
-				dprint(("-ptree_addroute: set netmask\n"));
-		}
-#endif
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
@@ -366,15 +322,14 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		len = (int)8*(LEN(v) - head_off - head_zero);
+		len = (int)8*LEN(v);
 		if (netmask){
 			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
-			if ((LEN(netmask) - head_off - head_zero) > 0)
-				len = (int)8*(LEN(netmask) - head_off - head_zero);
+			if ((LEN(netmask) - head_off) > 0)
+				len = (int)8*LEN(netmask);
 		}
-		v = v + head_off;
 
-		dprint(("-ptree_deladdr: %d.%d.%d.%d.%d.%d.%d.%d/%d treetop[%p]\n",
+		dprint(("-ptree_deladdr: v[%d.%d|%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
 								(unsigned char)v[0],(unsigned char)v[1],
 								(unsigned char)v[2],(unsigned char)v[3],
 								(unsigned char)v[4],(unsigned char)v[5],
