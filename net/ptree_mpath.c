@@ -257,6 +257,12 @@ ptree_matchaddr(v_arg, head)
 	}
 #endif
 	cp2 = t->key; cplim = v;
+	dprint(("-ptree_matchaddr: cp2[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
+							(unsigned char)cp2[0],(unsigned char)cp2[1],
+							(unsigned char)cp2[2],(unsigned char)cp2[3],
+							(unsigned char)cp2[4],(unsigned char)cp2[5],
+							(unsigned char)cp2[6],(unsigned char)cp2[7],
+							t->keylen));
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
 		dprint((" + "));	
