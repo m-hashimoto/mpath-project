@@ -425,15 +425,16 @@ ptree_next (struct ptree_node *v)
 	}
 
 	dprint(("ptree_next: check parent node\n"));
-	if(v->parent)
+	if(v->parent){
 		u = v->parent;
+		dprint(("ptree_next: v->parent = %p\n",u));
+	}
 	else{
 		dprint(("ptree_next End (this node is top)\n"));
 		return NULL;
 	}
-		
 
-	dprint(("ptree_next: if(v->parent->rn_left == v)\n"));
+	dprint(("ptree_next: check if(v->parent->rn_left == v)\n"));
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
@@ -446,16 +447,20 @@ ptree_next (struct ptree_node *v)
 	}
 
 	t = u->parent;
+	dprint(("ptree_next: u->parent = %p\n",t));
 	while (t && (t->child[1] == u || ! t->child[1]))
 	{
 		u = t;
 		t = t->parent;
+		dprint(("ptree_next: u->parent = %p\n",t));
 	}
 
+	dprint(("ptree_next: check if( t )\n"));
 	if (t)
 	{
 		/* return the not-yet-traversed right-child node */
 		w = t->child[1];
+		dprint(("ptree_next: t->rn_right = %p\n",w));
 		if( w->rn_flags & RNF_ACTIVE ){
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));	
 			ptree_node_lock (w);
