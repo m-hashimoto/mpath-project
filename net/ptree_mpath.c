@@ -739,7 +739,9 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		x = head->pnh_top;
 		vlen =  LEN(v);
 		mlen =  LEN(netmask);
+		dprint(("-ptree_deladdr: vlen = %d mlen = %d\n",vlen,mlen));
 		tt = ptree_search(v, mlen, head->pnh_treetop);
+		dprint(("-ptree_deladdr: testprint\n"));
 		//head_off = x->rn_offset;
 		saved_tt = tt;
 		top = x;
