@@ -1,5 +1,5 @@
---- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-24 13:14:33.000000000 +0900
+--- route.c.orig	2005-02-24 13:50:32.000000000 +0900
++++ route.c	2005-02-24 13:49:11.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1159,7 +1159,7 @@
  }
  
  /*
-@@ -768,495 +771,517 @@
+@@ -768,495 +771,520 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1816,7 +1816,6 @@
 -					if (len == 0 || (*n < *m)) {
 -						RTFREE(rt0);
 -						rt0 = NULL;
--					}
 +				rn = rnh->rnh_deladdr(dst, netmask, rnh);
 +				if (rn == NULL)
 +						senderr(ESRCH);
@@ -1888,15 +1887,6 @@
 +			 */
 +				RT_LOCK(rt);
 +				int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
-+				caddr_t new;
-+				R_Malloc(new, caddr_t, dlen + glen);
-+				if (new == NULL){
-+					RT_LOCK_DESTROY(rt);
-+					if (ifa != NULL)
-+						ifa_free(ifa);
-+						uma_zfree(V_rtzone, rt);
-+						senderr(ENOBUFS);
-+				}
 +#ifdef INVARIANTS
 +				struct ptree_node_head *rnh;
 +	
@@ -1904,10 +1894,26 @@
 +#endif
 +				RT_LOCK_ASSERT(rt);
 +				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
-+				if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
++				if(rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)){
++					caddr_t new;
++					R_Malloc(new, caddr_t, dlen + glen);
++					if (new == NULL){
++						RT_LOCK_DESTROY(rt);
++						if (ifa != NULL)
++							ifa_free(ifa);
++							uma_zfree(V_rtzone, rt);
++							senderr(ENOBUFS);
+ 					}
 +					bcopy(dst, new, dlen);
 +					rt->rt_gateway = (struct sockaddr *)(new + dlen);
++					/*
++					 * point to the (possibly newly malloc'd) dest address.
++					 */
++					ndst = (struct sockaddr *)new;
 +				}
++				else
++					ndst = (struct sockaddr *)rt_key(rt);
++				
 +				bcopy(gateway, rt->rt_gateway, glen);
 +				
 +#if 0
@@ -1920,10 +1926,6 @@
 +						senderr(error);
 +				}
 +#endif
-+			/*
-+			 * point to the (possibly newly malloc'd) dest address.
-+			 */
-+				ndst = (struct sockaddr *)new;
 +			/*
 +			 * make sure it contains the value we want (masked if needed).
 +			 */
@@ -2100,7 +2102,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1292,69 @@
+@@ -1267,71 +1295,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2224,7 +2226,7 @@
  }
  
  /*
-@@ -1339,228 +1362,232 @@
+@@ -1339,228 +1365,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2341,7 +2343,15 @@
 -					    ifa->ifa_addr);
 -					if (!rt) 
 -						error = ESRCH;
--				}
++		if ( dst->sa_family != AF_INET)
++				fibnum = 0;
++		if (fibnum == -1) {
++				if (rt_add_addr_allfibs == 0 && cmd == (int)RTM_ADD) {
++						startfib = endfib = curthread->td_proc->p_fibnum;
++				} else {
++						startfib = 0;
++						endfib = rt_numfibs - 1;
+ 				}
 -			}
 -			else
 -#endif
@@ -2355,15 +2365,6 @@
 -				/* this is only an error if bad on ALL tables */
 -				continue;
 -			}
-+		if ( dst->sa_family != AF_INET)
-+				fibnum = 0;
-+		if (fibnum == -1) {
-+				if (rt_add_addr_allfibs == 0 && cmd == (int)RTM_ADD) {
-+						startfib = endfib = curthread->td_proc->p_fibnum;
-+				} else {
-+						startfib = 0;
-+						endfib = rt_numfibs - 1;
-+				}
 +		} else {
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
