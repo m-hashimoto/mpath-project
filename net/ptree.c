@@ -66,7 +66,7 @@ ptree_node_create (key, keylen, nodes)
 	len = sizeof(struct ptree_node *) * MAX_MPATH;
 	XRTMALLOC(m, struct ptree_node **, len);
 #endif
-	dprint(("+-ptree_node_create: new node = %p keylen = 0x%x\n",
+	dprint(("+-ptree_node_create: new node = %p keylen = %d\n",
 							x,keylen));
 	dprint(("+-ptree_node_create End\n"));
 	return x;
@@ -293,8 +293,8 @@ ptree_get (key, keylen, t, nodes)
 			ptree_match (x->key, key, x->keylen))
 	{
 		if (x->keylen == keylen){
-			dprint(("+-ptree_get End: return %p\n",x));
-			return x;
+			dprint(("+-ptree_get: x->keylen == keylen =%d\n",x->keylen));
+		//	return x;
 		}
 		u = x;
 		x = x->child[check_bit (key, x->keylen)];

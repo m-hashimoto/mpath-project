@@ -35,11 +35,11 @@ debug_node_print(struct ptree_node *rn)
 	printf("node = %p\n",rn);
 	if( rn->rn_key ){
 		ip = (unsigned char *)rn->rn_key;
-		printf("key %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("key %d.%d.%d.%d: ",ip[0],ip[1],ip[2],ip[3]);
 	}
 	if( rn->rn_mask ){
 		ip = (unsigned char *)rn->rn_mask;
-		printf("mask %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("mask %d.%d.%d.%d: ",ip[0],ip[1],ip[2],ip[3]);
 	}
 	if( rn->rn_flags ) printf("flag 0x%x\n",rn->rn_flags);
 	if( rn->keylen ) printf("keylen %d ",rn->keylen);
@@ -57,7 +57,7 @@ debug_node_print(struct ptree_node *rn)
 		printf("- rm_unused 0x%x\n",rm->rm_unused);
 		if(rm->rm_mask){
 			ip = (unsigned char *)rm->rm_mask;
-			printf("- rm_mask %d.%d.%d.%d\n",*ip,*ip+1,*ip+2,*ip+3);
+			printf("- rm_mask %d.%d.%d.%d\n",ip[0],ip[1],ip[2],ip[3]);
 		}
 		printf("- rm_leaf = %p\n",rm->rm_leaf);
 		printf("- rm_refs = %d\n",rm->rm_refs);
