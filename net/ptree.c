@@ -36,11 +36,10 @@ ptree_node_create (key, keylen, nodes)
 {
 	dprint(("+-ptree_node_create Start\n"));
 	struct ptree_node *x = nodes;
-	//int len;
+	int len;
 
-	//len = sizeof (struct ptree_node) + keylen / 8 + 1;
-
-	//XRTMALLOC(x, struct ptree_node *, len);
+	len = sizeof (struct ptree_node) + keylen / 8 + 1;
+	XRTMALLOC(x, struct ptree_node *, len);
 	if (! x)
 		return NULL;
 

@@ -61,7 +61,7 @@ static int ptree_satisfies_leaf(char *trial,
 	register int b = vlen;
 	dprint(("-ptree_insert Start\n"));
 	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
-	struct ptree_node *top = head->rnh_treetop, *tt = nodes;
+	struct ptree_node *top = head->rnh_treetop, *tt;
 	
 	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
@@ -71,6 +71,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int head_off = top->rn_offset;
 	register struct ptree_node *t = ptree_search(v, vlen, head);
 	cp = v + head_off;
+	
 	if(!t){
 		dprint(("-ptree_insert: search(v) = NULL\n"));
 		b = vlen;
@@ -81,6 +82,7 @@ static int ptree_satisfies_leaf(char *trial,
 		register caddr_t cp2 = t->rn_key + head_off;  
 		register int cmp_res;
 		caddr_t cplim = v + vlen;
+		
 		dprint(("-ptree_insert: "));
 		while (cp < cplim){
 			dprint((" +"));
@@ -124,7 +126,7 @@ on2:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		tt = ptree_add(v, b, data, head, nodes);
+		tt = ptree_add(v_arg, b, data, head, nodes);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
@@ -497,7 +499,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 {
 		dprint(("-ptree_addroute Start\n"));
 		caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
-		register struct ptree_node *t, *x = 0, *tt = treenodes;
+		register struct ptree_node *t, *x = 0, *tt;
 		struct ptree_node *saved_tt, *top = head->rnh_treetop;
 		short b = 0, b_leaf = 0;
 		int keyduplicated;
@@ -588,22 +590,23 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		b_leaf = -1 - t->rn_bit;
 		//b_leaf = tt->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-		for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
-				if(tt->rn_mask && tt->rn_mklist == 0){
-						*mp = m = ptree_new_mask(tt,0);
-						dprint(("-ptree_addroute: m = %p \n",m));
-						if (m){
-								dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
-								mp = &m->rm_mklist;
-						}
-				}
-				else if(tt->rn_mklist){
-						for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
-								if(m->rm_bit >= b_leaf)
-										break;
-						t->rn_mklist = m;
-						*mp = 0;
-				}
+		if(x->rn_bit < 0) {
+			for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
+			if(tt->rn_mask && tt->rn_mklist == 0){
+				*mp = m = ptree_new_mask(tt,0);
+				dprint(("-ptree_addroute: m = %p \n",m));
+					if (m){
+						dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
+						mp = &m->rm_mklist;
+					}
+			}
+		} else if(tt->rn_mklist){
+				for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
+					if(m->rm_bit >= b_leaf)
+						break;
+					t->rn_mklist = m;
+					*mp = 0;
+		}
 #if 0 /* 10/29 19:32 test */
 		if (t->rn_right == saved_tt)
 				x = t->rn_left;
