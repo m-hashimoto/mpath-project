@@ -582,7 +582,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				goto on2;
 		}
 #endif
-		t = tt;
+		t = saved_tt;
 		if (keyduplicated){
 				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 				goto on2;
@@ -681,9 +681,9 @@ on2:
 						break;
 		}
 #endif
-		*mp = ptree_new_mask(t, *mp);
+		*mp = ptree_new_mask(tt, *mp);
 		dprint(("-ptree_addroute End\n"));
-		return t;
+		return tt;
 }
 
 
