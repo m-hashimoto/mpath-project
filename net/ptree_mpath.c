@@ -60,7 +60,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int vlen = (int)LEN(v);
 	register int b = vlen;
 	dprint(("-ptree_insert Start\n"));
-	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
+	dprint(("-ptree_insert: v = %p vlen = 0x%x head = %p\n",v,vlen,head));
 	struct ptree_node *top = head->rnh_treetop, *tt;
 	
 	if (!top){
@@ -99,7 +99,7 @@ on1:
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
-		dprint(("-ptree_insert: first different bit = %d\n",b));
+		dprint(("-ptree_insert: first different bit = 0x%x\n",b));
 on2:
 		*dupentry = 0;
 	}
@@ -107,7 +107,7 @@ on2:
 		//register struct ptree_node *p, *x = top;
 		int *data;
 		data = &vlen;
-		dprint(("-ptree_insert: data = %d\n",*data));
+		dprint(("-ptree_insert: data = 0x%x\n",*data));
 		cp = v;
 #if 0
 		do {
@@ -186,7 +186,8 @@ ptree_addmask(n_arg, search, skip)
 		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = %d\n",addmask_key,x,mlen));
+	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = 0x%x\n",
+							addmask_key,x,mlen));
 	if(x) dprint(("x->rn_key = %p\n",x->key));
 	
 	if (!x->rn_key || memcmp(addmask_key, x->rn_key, mlen))  
@@ -227,7 +228,7 @@ on1:
 	b += (cp - netmask) << 3;
 	x->rn_bit = -1 - b;
 	//x->rn_bit = b - 1;
-	dprint(("-ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
+	dprint(("-ptree_addmask: x->rn_bit = 0x%x\n",x->rn_bit));
 	if (isnormal){
 		x->rn_flags |= RNF_NORMAL;
 		dprint(("-ptree_addmask: RNF_NORMAL flag ON\n"));
@@ -343,7 +344,7 @@ ptree_new_mask(tt, next)
 	bzero(m, sizeof *m);
 	m->rm_bit = tt->rn_bit;
 	m->rm_flags = tt->rn_flags | RNF_NORMAL;
-	dprint(("-ptree_new_mask: m->rm_bit = %d m->rm_flags = 0x%x\n",
+	dprint(("-ptree_new_mask: m->rm_bit = 0x%x m->rm_flags = 0x%x\n",
 							m->rm_bit,m->rm_flags));
 	m->rm_leaf = tt;
 	m->rm_mask = tt->rn_mask;
@@ -407,7 +408,7 @@ ptree_matchaddr(v_arg, head)
 	}
 	if (t->rn_mask){
 		vlen = *(u_char *)t->rn_mask;
-		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
+		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = 0x%x\n",vlen));
 	}
 
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
@@ -433,17 +434,17 @@ on1:
 	 */
 	dprint(("-ptree_matchaddr: on1\n"));
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
-	dprint(("-ptree_matchaddr: first bit that diff = %d\n",test));
+	dprint(("-ptree_matchaddr: first bit that diff = 0x%x\n",test));
 	for (b = 7; (test >>= 1) > 0;){
 		b--;
 	}
 	
 	matched_off = cp - v;
-	dprint(("-ptree_matchaddr: matched_off = %d\n",matched_off));
+	dprint(("-ptree_matchaddr: matched_off = 0x%x\n",matched_off));
 	b += matched_off << 3;
 	rn_bit = -1 - b;
 	//rn_bit = b - 1;
-	dprint(("-ptree_matchaddr: rn_bit = %d t->rn_bit = %d\n",
+	dprint(("-ptree_matchaddr: rn_bit = 0x%x t->rn_bit = 0x%x\n",
 							rn_bit,t->rn_bit));
 	
 	if (t->rn_flags & RNF_NORMAL) {
@@ -462,8 +463,7 @@ on1:
 	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p rm_leaf = %p flag = 0x%x\n",m,m->rm_mask,m->rm_leaf,m->rm_flags));
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
-					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",
-											rn_bit,m->rm_bit));
+					dprint(("-ptree_matchaddr: rn_bit = 0x%x rm_bit = 0x%x\n",rn_bit,m->rm_bit));
 					if (rn_bit <= m->rm_bit)
 							return (m->rm_leaf);
 			}
@@ -580,13 +580,13 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				goto on2;
 		}
 		b_leaf = -1 - t->rn_bit;
-		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
+		dprint(("-ptree_addroute: b_leaf = 0x%x\n",b_leaf));
 		for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
 		if(t->rn_mask && t->rn_mklist == 0){
 			*mp = m = ptree_new_mask(t,0);
-			dprint(("-ptree_addroute: m = %p \n",m));
+			dprint(("-ptree_addroute: m = %p\n",m));
 			if (m){
-				dprint(("-ptree_addroute: m->rm_mklist = %p \n",m->rm_mklist));
+				dprint(("-ptree_addroute: m->rm_mklist = %p\n",m->rm_mklist));
 				mp = &m->rm_mklist;
 			}
 		} else if(t->rn_mklist){
@@ -597,7 +597,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
-		dprint(("-ptree_addroute: tt = %p nodes = %p tt->rn_bit = %d tt->keylen = %d tt->rn_flags = 0x%x\n",tt,treenodes,tt->rn_bit,tt->keylen,tt->rn_flags));
+		dprint(("-ptree_addroute: tt = %p nodes = %p tt->rn_bit = 0x%x tt->keylen = 0x%x tt->rn_flags = 0x%x\n",tt,treenodes,tt->rn_bit,tt->keylen,tt->rn_flags));
 		*mp = ptree_new_mask(tt, *mp);
 		dprint(("-ptree_addroute End\n"));
 		return tt;
@@ -854,7 +854,7 @@ ptree_walktree_from(h, a, m, f, w)
 				rn = rn->rn_left;
 
 		while (!stopping) {
-				printf("node %p (%d)\n", rn, rn->rn_bit);
+				printf("node %p (0x%x)\n", rn, rn->rn_bit);
 				base = rn;
 				/* If at right child go back up, otherwise, go right */
 				while (rn->rn_parent->rn_right == rn
@@ -914,7 +914,7 @@ ptree_walktree(h, f, w)
 				return (0);
 		}
 
-		dprint(("-ptree_walktree: treetop = %p keylen = %d\n",rn->key,rn->keylen));
+		dprint(("-ptree_walktree: treetop = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		for (;;) {
 				base = rn;
 				next = ptree_next(base);
@@ -923,7 +923,7 @@ ptree_walktree(h, f, w)
 						return (0);
 				}
 				rn = next;
-				dprint(("-ptree_walktree: next = %p keylen = %d\n",rn->key,rn->keylen));
+				dprint(("-ptree_walktree: next = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		}
 		/* NOTREACHED */
 		dprint(("-ptree_walktree End\n"));

@@ -66,7 +66,8 @@ ptree_node_create (key, keylen, nodes)
 	len = sizeof(struct ptree_node *) * MAX_MPATH;
 	XRTMALLOC(m, struct ptree_node **, len);
 #endif
-	dprint(("+-ptree_node_create: new node = %p keylen = %d\n",x,keylen));
+	dprint(("+-ptree_node_create: new node = %p keylen = 0x%x\n",
+							x,keylen));
 	dprint(("+-ptree_node_create End\n"));
 	return x;
 }
@@ -109,10 +110,10 @@ ptree_match (char *keyi, char *keyj, int keylen)
 
 	if (! memcmp (keyi, keyj, bytes) &&
 		       !((keyi[bytes] ^ keyj[bytes]) & mask[bits]) ){
-		dprint(("+-ptree_match End (%d bit match)\n",keylen));
+		dprint(("+-ptree_match End (0x%x bit match)\n",keylen));
 		return 1;
 	}
-	dprint(("+-ptree_match End (%d bit not match)\n",keylen));
+	dprint(("+-ptree_match End (0x%x bit not match)\n",keylen));
 	return 0;
 }
 
@@ -122,7 +123,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 {
 	dprint(("+-ptree_lookup Start\n"));
-	dprint(("+-ptree_lookup: key = %p mask = %p keylen = %d head = %p\n",key,mask,keylen,t->top));
+	dprint(("+-ptree_lookup: key = %p mask = %p keylen = 0x%x head = %p\n",key,mask,keylen,t->top));
 	struct ptree_node *x;
 	caddr_t netmask = 0;
 
@@ -158,7 +159,7 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 ptree_search (char *key, int keylen, struct ptree *t)
 {
 	dprint(("+-ptree_search Start\n"));
-	dprint(("+-ptree_search: search_key = %p len = %d\n",
+	dprint(("+-ptree_search: search_key = %p len = 0x%x\n",
 				key,keylen));
 	struct ptree_node *x, *match;
 
@@ -226,7 +227,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 		keylen++;
 		bitmask >>= 1;
 	}
-	dprint(("+-ptree_common_len End: keylen = %d\n",keylen));
+	dprint(("+-ptree_common_len End: keylen = 0x%x\n",keylen));
 	return keylen;
 }
 
@@ -243,7 +244,7 @@ ptree_common (keyi, keyilen, keyj, keyjlen, nodes)
 	struct ptree_node *x;
 
 	keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
-	dprint(("+-ptree_common: keylen = %d\n",keylen));
+	dprint(("+-ptree_common: keylen = 0x%x\n",keylen));
 	x = ptree_node_create (keyi, keylen, nodes);
 	if (! x){
 		dprint(("+-ptree_common End: NULL\n"));
@@ -375,7 +376,7 @@ ptree_add (key, keylen, data, t, nodes)
 		struct ptree_node *nodes;
 {
 	dprint(("+-ptree_add Start\n"));
-	dprint(("+-ptree_add: key = %p keylen = %d ptree = %p\n",
+	dprint(("+-ptree_add: key = %p keylen = 0x%x ptree = %p\n",
 				key,keylen,t));
 	struct ptree_node *x;
 
