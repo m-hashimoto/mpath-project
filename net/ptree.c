@@ -56,9 +56,7 @@ ptree_node_create (char *key, int keylen)
   x->data = NULL;
   x->lock = 1;
 
-	dprint(("--ptree_node_create: malloc x[%p] sizeoff %dbytes\n",x,len));
-	dprint(("--ptree_node_create: malloc x[%p - %p]\n",x,x+len));
-	dprint(("--ptree_node_create: key[%p] keylen[%p] left[%p] rigth[%p] data[%p] lock[%p]\n",&x->key,&x->keylen,&x->child[0],&x->child[1],&x->data,&x->lock));
+	dprint(("--ptree_node_create: malloc x[%p - %p] %dbytes\n",x,&x->lock,len));
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
@@ -320,6 +318,8 @@ ptree_get (char *key, int keylen, struct ptree *t)
 																	v,v->key,v->keylen));
 					dprint(("--ptree_get: branching node x[%p] key[%p] keylen[%d]\n",
 															x,x->key,x->keylen));
+					dprint(("--ptree_get: branching node &key[%p] &keylen[%p]\n",
+															&x->key,&x->keylen));
           if (! v)
             {
               XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
