@@ -38,17 +38,17 @@ debug_node_print(struct ptree_node *rn)
 	rn_mask = (struct sockaddr_in *)rt_mask(rt);
 	rt_gate = (struct sockaddr_in *)rt->rt_gateway;
 	
-	if( !rn_dst && !rn_dst->sin_addr ){
+	if( rn_dst && &rn_dst->sin_addr ){
 		dst = &rn_dst->sin_addr;
 		ip = (unsigned char *)dst;
 		printf("host %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rn_mask && rn_mask->sin_addr ){
+	if( rn_mask && &rn_mask->sin_addr ){
 		mask = &rn_mask->sin_addr;
 		ip = (unsigned char *)mask;
 		printf("mask %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rt_gate && rt_gate->sin_addr ){
+	if( rt_gate && &rt_gate->sin_addr ){
 		gate = &rt_gate->sin_addr;
 		ip = (unsigned char *)gate;
 		printf("gateway %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
@@ -498,7 +498,6 @@ on1:
 	t = saved_t;
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
-	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p rm_leaf = %p flag = 0x%x\n",m,m->rm_mask,m->rm_leaf,m->rm_flags));
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
 					dprint(("-ptree_matchaddr: rn_bit = 0x%x rm_bit = 0x%x\n",rn_bit,m->rm_bit));
