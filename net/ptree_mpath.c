@@ -368,7 +368,7 @@ ptree_matchaddr(v_arg, head)
 	register int test, b, rn_bit;
 
 	t = saved_t = ptree_search(v, vlen, head);
-	if(!t){
+	if( !saved_t ){
 		dprint(("ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
@@ -550,7 +550,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	/*
 	 * Put mask in tree.
 	 */
-	dprint(("ptree_addroute: put netmask = %s\n",netmask));
 	if (netmask) {
 		dprint(("ptree_addroute: put netmask in %p\n",tt));
 		tt->rn_mask = netmask;
@@ -604,6 +603,7 @@ on2:
 		return tt; /* can't lift at all */
 	}
 	b_leaf = tt->rn_bit;
+	dprint(("ptree_addroute: put netmask = %s\n",netmask));
 	dprint(("ptree_addroute: b_leaf = %d\n",b_leaf));
 	do {
 		x = t;

@@ -283,6 +283,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 		}
 		else{
 			t->top = v;
+			v->rn_flags = RNF_ACTIVE | RNF_ROOT;
 			dprint(("ptree_get: if(!x) t->top = %p\n",v));
 		}
 	}
@@ -307,8 +308,10 @@ ptree_get (char *key, int keylen, struct ptree *t)
 		/* set upper link */
 		if (u)
 			ptree_link (u, x);
-		else
+		else{
 			t->top = x;
+			x->rn_flags = RNF_ACTIVE | RNF_ROOT;
+		}
 
 		/* if the branching node is not the corresponding node,
 		   create the corresponding node to add */
