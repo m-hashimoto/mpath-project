@@ -546,17 +546,17 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
  */
 		int
 rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
-				struct sockaddr *netmask)
+				struct sockaddr *dst /**netmask*/)
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
 		//char *p, *q, *eq;
 		//int same, l, skip;
 		int l;
-		l = (int)LEN(rt_key(rt));
+		l = (int)LEN(dst);
 		dprint(("-rt_mpath_conflict: len[%d]\n",l));
 
-		rn = pnh->rnh_lookup((char *)rt_key(rt), l, pnh->pnh_treetop);
+		rn = pnh->rnh_lookup((char *)dst, l, pnh->pnh_treetop);
 		dprint(("-rt_mpath_conflict: lookup[%p]\n",rn));
 		if (!rn)
 				return 0;
