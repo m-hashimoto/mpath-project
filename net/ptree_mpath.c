@@ -429,6 +429,8 @@ ptree_init()
 		cplim = pn_ones + max_keylen;
 		while (cp < cplim)
 				*cp++ = -1;
+	if (ptree_inithead((void **)(void *)&pnhead, 0) == 0)
+		panic("ptree_init 2");
 
 }
 
@@ -512,6 +514,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 		uint32_t i = 0, n;
 		struct rtentry *rt0,**rt1;
+		dprint(("-rt_mpath_delete Start\n"));
 
 		if (!headrt || !rt)
 				return (0);
@@ -544,6 +547,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		//char *p, *q, *eq;
 		//int same, l, skip;
 		int l;
+		dprint(("-rt_mpath_conflict Start\n"));
 		l = (int)LEN(dst);
 
 		rn = pnh->rnh_lookup((char *)dst, l, pnh->pnh_treetop);
@@ -561,56 +565,6 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 						bcmp(rt_key(rt0), rt_key(rt), rt_key(rt0)->sa_len))
 				goto different;
 
-#if 0
-		/* key was the same.  compare netmask.  hairy... */
-		if (rt_mask(rt1) && netmask) {
-				skip = rnh->rnh_treetop->rn_offset;
-				if (rt_mask(rt1)->sa_len > netmask->sa_len) {
-						/*
-						 * as rt_mask(rt1) is made optimal by radix.c,
-						 * there must be some 1-bits on rt_mask(rt1)
-						 * after netmask->sa_len.  therefore, in
-						 * this case, the entries are different.
-						 */
-						if (rt_mask(rt1)->sa_len > skip)
-								goto different;
-						else {
-								/* no bits to compare, i.e. same*/
-								goto maskmatched;
-						}
-				}
-
-				l = rt_mask(rt1)->sa_len;
-				if (skip > l) {
-						/* no bits to compare, i.e. same */
-						goto maskmatched;
-				}
-				p = (char *)rt_mask(rt1);
-				q = (char *)netmask;
-				if (bcmp(p + skip, q + skip, l - skip))
-						goto different;
-				/*
-				 * need to go through all the bit, as netmask is not
-				 * optimal and can contain trailing 0s
-				 */
-				eq = (char *)netmask + netmask->sa_len;
-				q += l;
-				same = 1;
-				while (eq > q)
-						if (*q++) {
-								same = 0;
-								break;
-						}
-				if (!same)
-						goto different;
-		} else if (!rt_mask(rt1) && !netmask)
-				; /* no mask to compare, i.e. same */
-		else {
-				/* one has mask and the other does not, different */
-				goto different;
-		}
-maskmatched:
-#endif
 		rt1 = rt0->mpath_array;
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
@@ -641,6 +595,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		u_int32_t n;
 		struct rtentry *rt, *rt0;
 		//struct ptree_node *rn;
+		dprint(("-rtallc_mpath_fib Start\n"));
 
 		/*
 		 * XXX we don't attempt to lookup cached route again; what should
@@ -692,6 +647,7 @@ extern int	in_inithead(void **head, int off);
 ptree4_mpath_inithead(void **head, int off)
 {
 		struct ptree_node_head *rnh;
+		dprint(("-ptree4_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
 		if (in_inithead(head, off) == 1) {
@@ -708,6 +664,7 @@ ptree4_mpath_inithead(void **head, int off)
 ptree6_mpath_inithead(void **head, int off)
 {
 		struct ptree_node_head *rnh;
+		dprint(("-ptree6_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
 		if (in6_inithead(head, off) == 1) {
@@ -719,6 +676,3 @@ ptree6_mpath_inithead(void **head, int off)
 }
 #endif
 #endif /* PTREE_MPATH */
-
-//#undef dprint
-//#undef DEBUG

@@ -1,5 +1,5 @@
---- in6_proto.c.org	2010-09-28 11:49:36.000000000 +0900
-+++ in6_proto.c	2010-09-28 11:49:57.000000000 +0900
+--- in6_proto.c.orig	2005-03-05 10:16:53.000000000 +0900
++++ in6_proto.c	2005-03-05 10:18:01.000000000 +0900
 @@ -84,7 +84,7 @@
  #include <sys/sysctl.h>
  
@@ -9,3 +9,14 @@
  #include <net/route.h>
  #ifdef RADIX_MPATH
  #include <net/radix_mpath.h>
+@@ -360,8 +360,8 @@
+ 	.dom_protosw =		(struct protosw *)inet6sw,
+ 	.dom_protoswNPROTOSW =	(struct protosw *)
+ 				&inet6sw[sizeof(inet6sw)/sizeof(inet6sw[0])],
+-#ifdef RADIX_MPATH
+-	.dom_rtattach =		rn6_mpath_inithead,
++#ifdef PTREE_MPATH
++	.dom_rtattach =		ptree6_mpath_inithead,
+ #else
+ 	.dom_rtattach =		in6_inithead,
+ #endif
