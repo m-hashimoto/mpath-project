@@ -73,7 +73,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 #endif
 	}
 	//printf("[0x%x]",rt->rt_flags);
-	printf("<%p, %p>\n",pn->child[0],pn->child[1]);
+	printf("data(%p) <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 	return 0;
 }
 
