@@ -417,20 +417,23 @@ ptree_walktree(h, f, w)
 	 */
 
 	/* First time through node, go left */
-	if(!pn)
+	if(!pn){
+		dprint(("-ptree_walktree: pnh_top = NULL\n"));
 		return (0);
+	}
 	while (pn && pn->child[0])
 		pn = pn->child[0];
 	for (;;) {
 		base = pn;
 		/* If at right child go back up, otherwise, go right */
+		dprint(("-ptree_walktree: base[%p] ",base));
 		while (pn->parent && pn->parent->child[1] == pn)
 			pn = pn->parent;
 		/* Find the next *leaf* since next node might vanish, too */
 		for (pn = pn->parent->child[1]; !pn->child[0];)
 			pn = pn->child[0];
 		next = pn;
-		dprint(("-ptree_walktree: base[%p] next[%p]\n",base,next));
+		dprint(("next[%p]\n",next));
 		if (!pn->parent)
 			return (0);
 	}
