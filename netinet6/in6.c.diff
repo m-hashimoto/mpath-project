@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-11 00:08:06.000000000 +0900
++++ in6.c	2005-02-11 00:26:58.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -89,15 +89,36 @@
  	ia->ia6_lifetime = ifra->ifra_lifetime;
  	if (ia->ia6_lifetime.ia6t_vltime != ND6_INFINITE_LIFETIME) {
  		ia->ia6_lifetime.ia6t_expire =
-@@ -914,6 +924,7 @@
+@@ -894,17 +904,20 @@
+ 		ia->ia6_lifetime.ia6t_preferred = 0;
+ 
+ 	/* reset the interface and routing table appropriately. */
++	printf("in6_update_ifa: testprint 12\n");
+ 	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
+ 		goto unlink;
+ 
+ 	/*
+ 	 * configure address flags.
+ 	 */
++	printf("in6_update_ifa: testprint 13\n");
+ 	ia->ia6_flags = ifra->ifra_flags;
+ 	/*
+ 	 * backward compatibility - if IN6_IFF_DEPRECATED is set from the
+ 	 * userland, make it deprecated.
+ 	 */
++	printf("in6_update_ifa: testprint 14\n");
+ 	if ((ifra->ifra_flags & IN6_IFF_DEPRECATED) != 0) {
+ 		ia->ia6_lifetime.ia6t_pltime = 0;
+ 		ia->ia6_lifetime.ia6t_preferred = time_second;
+@@ -914,6 +927,7 @@
  	 * so that corresponding MLD responses would not have a tentative
  	 * source address.
  	 */
-+	printf("in6_update_ifa: testprint 12\n");
++	printf("in6_update_ifa: testprint 15\n");
  	ia->ia6_flags &= ~IN6_IFF_DUPLICATED;	/* safety */
  	if (hostIsNew && in6if_do_dad(ifp))
  		ia->ia6_flags |= IN6_IFF_TENTATIVE;
-@@ -1102,6 +1113,7 @@
+@@ -1102,6 +1116,7 @@
  	 * XXX It may be of use, if we can administratively
  	 * disable DAD.
  	 */
