@@ -303,6 +303,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			if(rt){
 				rt->mpath_array[0] = NULL; 
 				dprint(("-ptree_addroute: rt->mpath_array=%p\n",rt->mpath_array));
+				dprint(("-ptree_addroute: rt->mpath_array[0]=%p\n",rt->mpath_array[0]));
+				dprint(("-ptree_addroute: rt->mpath_array[1]=%p\n",rt->mpath_array[1]));
 			}
 		}
 #endif /* mluti path */
