@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-04 12:11:29.000000000 +0900
++++ route.c	2005-02-04 13:16:47.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -28,7 +28,7 @@
  TUNABLE_INT("net.add_addr_allfibs", &rt_add_addr_allfibs);
  
 -VNET_DEFINE(struct radix_node_head *, rt_tables);
-+VNET_DEFINE(struct ptree *, rt_tables);
++VNET_DEFINE(struct ptree_node_head *, rt_tables);
  static VNET_DEFINE(uma_zone_t, rtzone);		/* Routing table UMA zone. */
  VNET_DEFINE(int, rttrash);		/* routes not in table but not freed */
  VNET_DEFINE(struct rtstat, rtstat);
@@ -74,13 +74,13 @@
 +				NULL, 0, &sysctl_my_fibnum, "I", "default FIB of caller");
  
 -static __inline struct radix_node_head **
-+		static __inline struct ptree **
++		static __inline struct ptree_node_head **
  rt_tables_get_rnh_ptr(int table, int fam)
  {
 -	struct radix_node_head **rnh;
 +		dprint(("rt_tables_get_rnh_ptr Start: table = %d family = %d\n",
 +								table,fam));
-+		struct ptree **rnh;
++		struct ptree_node_head **rnh;
  
 -	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.",
 -	    __func__));
@@ -95,7 +95,7 @@
 -	/* Get the offset to the requested table and fam. */
 -	rnh += table * (AF_MAX+1) + fam;
 +		/* rnh is [fib=0][af=0]. */
-+		rnh = (struct ptree **)V_rt_tables;
++		rnh = (struct ptree_node_head **)V_rt_tables;
 +		/* Get the offset to the requested table and fam. */
 +		rnh += table * (AF_MAX+1) + fam;
  
@@ -105,7 +105,7 @@
  }
  
 -struct radix_node_head *
-+		struct ptree *
++		struct ptree_node_head *
  rt_tables_get_rnh(int table, int fam)
  {
 -
@@ -172,12 +172,12 @@
 -				} else {
 -					break;
 +		struct domain *dom;
-+		struct ptree **rnh;
++		struct ptree_node_head **rnh;
 +		int table;
 +		int fam;
 +
 +		V_rt_tables = malloc(rt_numfibs * (AF_MAX+1) *
-+						sizeof(struct ptree *), M_RTABLE, M_WAITOK|M_ZERO);
++				sizeof(struct ptree_node_head *), M_RTABLE, M_WAITOK|M_ZERO);
 +
 +		V_rtzone = uma_zcreate("rtentry", sizeof(struct rtentry), NULL, NULL,
 +						NULL, NULL, UMA_ALIGN_PTR, 0);
@@ -238,7 +238,7 @@
 +		int table;
 +		int fam;
 +		struct domain *dom;
-+		struct ptree **rnh;
++		struct ptree_node_head **rnh;
 +
 +		for (dom = domains; dom; dom = dom->dom_next) {
 +				if (dom->dom_rtdetach) {
@@ -405,7 +405,7 @@
 +		dprint(("rtalloc1_fib Start\n"));
 +		dprint(("rtalloc1_fib: dst = %p report = %d ignflags = %d\n",
 +								dst,report,(int)ignflags));
-+		struct ptree *rnh;
++		struct ptree_node_head *rnh;
 +		struct rtentry *rt;
 +		struct ptree_node *rn;
 +		struct rtentry *newrt;
@@ -515,7 +515,7 @@
  rtfree(struct rtentry *rt)
  {
 -	struct radix_node_head *rnh;
-+		struct ptree *rnh;
++		struct ptree_node_head *rnh;
 +
 +		KASSERT(rt != NULL,("%s: NULL rt", __func__));
 +		rnh = rt_tables_get_rnh(rt->rt_fibnum, rt_key(rt)->sa_family);
@@ -770,7 +770,7 @@
 +		short *stat = NULL;
 +		struct rt_addrinfo info;
 +		struct ifaddr *ifa;
-+		struct ptree *rnh;
++		struct ptree_node_head *rnh;
  
 -			/*
 -			 * Smash the current notion of the gateway to
@@ -1304,7 +1304,7 @@
 -	if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest) {
 -		struct rt_addrinfo info;
 +		struct ptree_node *rn;
-+		struct ptree *rnh;
++		struct ptree_node_head *rnh;
 +		struct ifaddr *ifa;
 +		int error = 0;
  
@@ -1552,7 +1552,7 @@
 +#ifdef RADIX_MPATH
 +		static int
 +rn_mpath_update(int req, struct rt_addrinfo *info,
-+				struct ptree *rnh, struct rtentry **ret_nrt)
++				struct ptree_node_head *rnh, struct rtentry **ret_nrt)
 +{
  		/*
 -		 * If the caller wants it, then it can have it,
@@ -1718,7 +1718,7 @@
 +		register struct rtentry *rt0;
 +#endif
 +		register struct ptree_node *rn;
-+		register struct ptree *rnh;
++		register struct ptree_node_head *rnh;
 +		struct ifaddr *ifa;
 +		struct sockaddr *ndst, *saved_gateway;
 +#define senderr(x) { error = x ; dprint(("goto bad %d\n",x)); goto bad; }
@@ -2123,7 +2123,7 @@
 +		int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
 -	struct radix_node_head *rnh;
-+		struct ptree *rnh;
++		struct ptree_node_head *rnh;
  
 -	rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
 +		rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
@@ -2429,7 +2429,7 @@
 +		 */
 +		for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
 +				if (cmd == RTM_DELETE) {
-+						struct ptree *rnh;
++						struct ptree_node_head *rnh;
 +						struct ptree_node *rn;
 +						/*
 +						 * Look up an rtentry that is in the routing tree and
