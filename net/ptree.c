@@ -17,6 +17,10 @@
 #include "ptree.h"
 #endif /*_KERNEL*/
 
+#ifdef DEBUG
+#include <net/route.h>
+#endif
+
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
 
