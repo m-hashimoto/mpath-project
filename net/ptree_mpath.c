@@ -33,7 +33,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	if(offset == 8){ /* IPv6 */
 		sa6 = (struct sockaddr_in6 *)pn->key;
 		__rpc_inet_ntop(AF_INET6, &sa6->sin6_addr, str6, INET6_ADDRSTRLEN);
-		printf("[%p] %s/%3d ",pn,str,pn->keylen-8*offset);
+		printf("[%p] %s/%3d ",pn,str6,pn->keylen-8*offset);
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
