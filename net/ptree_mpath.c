@@ -145,22 +145,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	dprint(("-ptree_insert: search t = %p len = %d\n",
 							t,t->keylen-8*head->pnh_offset));
 	
-	/* Find first bit at which v and t->rn_key differ */ 
 	{
-#if 0
-		register caddr_t cp2 = t->key;
-		caddr_t cplim = v + len;
-		
-		dprint(("-ptree_insert: "));
-		while (cp < cplim){
-			dprint((" + "));
-			if (*cp2++ != *cp++){
-				dprint(("goto on1\n"));
-				goto on1;
-			}
-		}
-#endif
-
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v;
 		if ( !memcmp(cp2,cplim,t->keylen) ){
@@ -250,13 +235,20 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)v[14],(unsigned char)v[15],
 							vlen-8*head->pnh_offset));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
-	if( !saved_t ){
-		dprint(("-ptree_matchaddr: search result is NULL\n"));
+	if( !saved_t )
 		goto miss;
-	} 
 
-	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
-	cp = t->key; cplim = v;
+	cp = t->key; cplim = v; vlen = t->keylen;
+	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+							(unsigned char)cp[0],(unsigned char)cp[1],
+							(unsigned char)cp[2],(unsigned char)cp[3],
+							(unsigned char)cp[4],(unsigned char)cp[5],
+							(unsigned char)cp[6],(unsigned char)cp[7],
+							(unsigned char)cp[8],(unsigned char)cp[9],
+							(unsigned char)cp[10],(unsigned char)cp[11],
+							(unsigned char)cp[12],(unsigned char)cp[13],
+							(unsigned char)cp[14],(unsigned char)cp[15],
+							vlen-8*head->pnh_offset));
 	if ( !memcmp(cp,cplim,vlen) )
 			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
@@ -277,20 +269,14 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node_head *head;
 		struct ptree_node *rt_node;
 {
-		dprint(("-ptree_addroute Start head = %p\n",head));
-
 		register struct ptree_node *tt;
 		register struct rtentry *rt = (struct rtentry *)&rt_node;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
-		dprint(("-ptree_addroute: key = %p netmask = %p\n",v_arg,n_arg));
-
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
-		dprint(("-ptree_addroute: tt = %p rt = %p keydup = %d\n",
-								tt,rt,keyduplicated));
 #if 0 /* multi path */
 		if (keyduplicated) {
 				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
@@ -331,7 +317,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				tt->rn_flags = RNF_ACTIVE;
 		}
 #endif /* mluti path */
-		dprint(("-ptree_addroute End\n"));
 		return tt;
 }
 
