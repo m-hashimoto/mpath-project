@@ -60,11 +60,11 @@ static int ptree_satisfies_leaf(char *trial,
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
 	register struct ptree_node *t = ptree_search(v, vlen, head);
 	register caddr_t cp = v + head_off; 
-	//register int b; 
+	register int b; 
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
 		register caddr_t cp2 = t->rn_key + head_off;  
-		//register int cmp_res;
+		register int cmp_res;
 		caddr_t cplim = v + vlen;
 
 		while (cp < cplim) 
@@ -76,12 +76,10 @@ static int ptree_satisfies_leaf(char *trial,
 on1:
 		dprint(("ptree_insert: on1\n"));
 		*dupentry = 0;
-#if 0
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
 		dprint(("ptree_insert: first different bit = %d\n",b));
-#endif /* 0 */
 	}
 	{
 		//register struct ptree_node *p, *x = top;
@@ -99,13 +97,14 @@ on1:
 		}
 		while (b > (unsigned) x->rn_bit);
 		/* x->rn_bit < b && x->rn_bit >= 0 */
-#endif /* 0 */
+#endif
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		*data = 1;
-		t = ptree_add(v, vlen, data, head);
+		*data = vlen;
+		dprint(("ptree_insert: data = %d\n",*data));
+		t = ptree_add(v, b, data, head);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
