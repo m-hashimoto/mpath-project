@@ -1,5 +1,5 @@
 --- flowtable.c.org	2005-01-24 17:59:50.000000000 +0900
-+++ flowtable.c	2005-01-26 08:39:28.000000000 +0900
++++ flowtable.c	2005-01-26 09:00:45.000000000 +0900
 @@ -131,6 +131,8 @@
  #define	FIN_WAIT_IDLE		600
  #define	TCP_IDLE		SECS_PER_DAY
@@ -49,25 +49,28 @@
  	if (ro->ro_rt == NULL) 
  		error = ENETUNREACH;
  	else {
-@@ -691,10 +698,13 @@
+@@ -691,10 +698,14 @@
  		struct sockaddr *l3addr;
  		struct rtentry *rt = ro->ro_rt;
  		struct ifnet *ifp = rt->rt_ifp;
-+		dprint(("flowtable_lookup: test print 2\n"));
++		
++		dprint(("flowtable_lookup: ifp = %p IFF_POINTTOPOINT | IFF_LOOPBACK = %d\n",ifp,IFF_POINTTOPOINT|IFF_LOOPBACK));
  
  		if (ifp->if_flags & (IFF_POINTOPOINT | IFF_LOOPBACK)) {
-+			dprint(("flowtable_lookup: test print 3\n"));
++			dprint(("flowtable_lookup: if_flags = 0x%x\n",ifp->if_flags));
  			RTFREE(rt);
  			ro->ro_rt = NULL;
 +			dprint(("flowtable_lookup End: flags error\n"));
  			return (ENOENT);
  		}
  
-@@ -703,16 +713,20 @@
+@@ -702,17 +713,22 @@
+ 			l3addr = rt->rt_gateway;
  		else
  			l3addr = &ro->ro_dst;
- 		llentry_update(&lle, LLTABLE(ifp), l3addr, ifp);
++		
 +		dprint(("flowtable_lookup: test print 4\n"));
+ 		llentry_update(&lle, LLTABLE(ifp), l3addr, ifp);
  		ro->ro_lle = lle;
  
  		if (lle == NULL) {
@@ -84,7 +87,7 @@
  		if (error) {
  			RTFREE(rt);
  			LLE_FREE(lle);
-@@ -721,6 +735,7 @@
+@@ -721,6 +737,7 @@
  		}
  	} 
  
@@ -92,7 +95,7 @@
  	return (error);
  }
  
-@@ -1190,3 +1205,6 @@
+@@ -1190,3 +1207,6 @@
  	}
  }
  #endif
