@@ -1,6 +1,7 @@
 /*
  * ptree-mpath header
  */
+
 #ifndef _NET_PTREE_MPATH_H_
 #define _NET_PTREE_MPATH_H_
 
@@ -10,8 +11,6 @@
 #include <sys/_rwlock.h>
 #endif /* _KERNEL */
 #include <net/ptree.h>
-
-#define DEBUG 1
 
 #ifdef PTREE_MPATH
 #define MAX_MPATH 5
@@ -75,6 +74,7 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_DESTROY(rnh)	rw_destroy(&(rnh)->rnh_lock)
 #define	RADIX_NODE_HEAD_LOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_LOCKED)
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
+#endif /* _KERNEL */
 
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
@@ -83,9 +83,8 @@ struct ptree_node
 				*ptree_addroute (void *, void *, struct ptree_node_head *),
 				*ptree_deladdr(void *, void *, struct ptree_node_head *),
 				*ptree_matchaddr(void *, struct ptree_node_head *);
-#endif /* _KERNEL */
 
-#ifdef PTREE_MPATH
+#if 0
 #ifdef _KERNEL
 /*
  * Patricia trie API with multipath support
@@ -106,6 +105,5 @@ int     ptree4_mpath_inithead(void **, int);
 int     ptree6_mpath_inithead(void **, int);
 #endif /* _KERNEL */
 #endif /* PTREE_MPATH */
-#undef DEBUG
 
 #endif /*_NET_PTREE_MPATH_H_*/
