@@ -17,12 +17,12 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x; }
 
-#ifdef DEBUG
-#include <sys/types.h>
-#include <netinet/in.h>
+//#ifdef DEBUG
+//#include <sys/types.h>
+//#include <netinet/in.h>
 		
 	int
 debug_node_print(struct ptree_node *pn, int offset)
@@ -79,7 +79,7 @@ done:
 		printf("	DEBUG_TREE_PRINT_END\n\n");
 		return (0);
 }
-#endif /* DEBUG */
+//#endif /* DEBUG */
 
 #define LEN(x) (*(const u_char *)(x))
 
