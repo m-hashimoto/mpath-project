@@ -2,6 +2,8 @@
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
+#include <sys/types.h>
+
 #if 0
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);
