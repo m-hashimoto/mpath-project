@@ -939,7 +939,7 @@ ptree_walktree(h, f, w)
 			for (;;) {
 				rt = (struct rtentry *)rn;
 				gateway = (struct sockaddr_in *)rt->rt_gateway;
-				printf("address: %x\n",*gateway->sin_addr);
+				printf("address: %x\n",*gateway->sin_addr->s_addr);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
