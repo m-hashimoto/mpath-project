@@ -69,7 +69,7 @@ static int ptree_satisfies_leaf(char *trial,
 	
 	int head_off = top->rn_offset;
 	register struct ptree_node *t = ptree_search(v, vlen, head);
-	register int b; 
+	register int b = vlen; 
 	cp = v + head_off;
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
