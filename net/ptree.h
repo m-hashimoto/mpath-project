@@ -2,12 +2,6 @@
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
-//#ifdef _KERNEL
-//#include <sys/_lock.h>
-//#include <sys/_mutex.h>
-//#include <sys/_rwlock.h>
-//#endif
-
 //#if 0
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);
