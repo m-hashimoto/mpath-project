@@ -383,9 +383,12 @@ ptree_matchaddr(v_arg, head)
 	 * with a long one.  This wins big for class B&C netmasks which
 	 * are probably the most common case...
 	 */
+	dprint(("ptree_matchaddr: test 1\n"));
 	if (t->rn_mask)
 		vlen = *(u_char *)t->rn_mask;
+	dprint(("ptree_matchaddr: test 2\n"));
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
+	dprint(("ptree_matchaddr: test 3\n"));
 	for (; cp < cplim; cp++, cp2++)
 		if (*cp != *cp2)
 			goto on1;
@@ -396,6 +399,7 @@ ptree_matchaddr(v_arg, head)
 	 * Never return the root node itself, it seems to cause a
 	 * lot of confusion.
 	 */
+	dprint(("ptree_matchaddr: test 4\n"));
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
 	dprint(("ptree_matchaddr End 1\n"));
