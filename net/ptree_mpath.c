@@ -407,6 +407,7 @@ ptree_matchaddr(v_arg, head)
 			goto on1;
 		}
 	}
+	dprint(("match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
 	 */
