@@ -9,6 +9,7 @@
 #include <sys/domain.h>
 #include <sys/syslog.h>
 #include <net/ptree.h>
+#include <net/ptree_mpath.h>
 #include <net/route.h>
 #include <net/if.h>
 #include <net/if_var.h>

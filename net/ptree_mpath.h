@@ -1,8 +1,8 @@
 /*
  * ptree-mpath header
  */
-#ifndef _PTREE_MPATH_H_
-#define _PTREE_MPATH_H_
+#ifndef _PTREE_MULTIPATH_H_
+#define _PTREE_MULTIPATH_H_
 
 #ifdef _KERNEL
 #include <sys/_lock.h>
@@ -76,7 +76,7 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-//void     ptree_init(void);
+void     ptree_init(void);
 int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
 struct ptree_node *ptree_addroute (void *, void *, struct ptree_node_head *),
