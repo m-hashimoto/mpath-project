@@ -16,7 +16,7 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x;}
 
 static struct ptree_node 
@@ -52,9 +52,8 @@ ptree_node_create (key, keylen, nodes)
 	x->lock = 0;
 
 	/* fill in the key */
-	x->key = key;
-	//memcpy (x->key, key, keylen);
-	//x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+	memcpy (x->key, key, keylen);
+	x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
 
 	x->rn_bit = keylen;
 	x->rn_bmask = 0x80 >> (keylen & 7);
