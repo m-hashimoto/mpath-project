@@ -450,12 +450,12 @@ ptree_matchaddr(v_arg, head)
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
-	int off = t->rn_offset, vlen = LEN(cp), matched_off;
-	register int test, b, rn_bit;
+	int /*off = t->rn_offset, */vlen = LEN(cp);//, matched_off;
+	//register int test, b, rn_bit;
 
 	dprint(("-ptree_matchaddr: v = %p vlen = %d head = %p top = %p\n",
 							v,vlen,head,t));
-	t = saved_t = ptree_search(v, vlen, head);
+	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
@@ -553,10 +553,10 @@ ptree_addroute(v_arg, n_arg, head)
 {
 		dprint(("-ptree_addroute Start\n"));
 		debug_tree_print(head);
-		caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
+		caddr_t /*v = (caddr_t)v_arg,*/ netmask = (caddr_t)n_arg;
 		
 		register struct ptree_node /* *t, *x = 0, */*tt;
-		struct ptree_node *saved_tt, *top = head->pnh_top;
+		struct ptree_node *saved_tt;//, *top = head->pnh_top;
 		//short b = 0, b_leaf = 0;
 		int keyduplicated;
 		//caddr_t mmask;
@@ -1012,6 +1012,7 @@ ptree_walktree_from(h, a, m, f, w)
 		return 0;
 }
 #endif
+
 		static int
 ptree_walktree(h, f, w)
 		struct ptree_node_head *h;
@@ -1077,7 +1078,7 @@ ptree_inithead(head, off)
 }
 
 		void
-ptree_init(void)
+ptree_init()
 {
 		dprint(("-ptree_init Start\n"));
 		char *cp, *cplim;
