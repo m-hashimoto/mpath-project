@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-01 11:56:28.000000000 +0900
++++ route.c	2005-02-04 05:50:07.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -8,7 +8,18 @@
  
  #include <sys/param.h>
  #include <sys/systm.h>
-@@ -85,10 +86,10 @@
+@@ -58,10 +59,6 @@
+ #include <net/vnet.h>
+ #include <net/flowtable.h>
+ 
+-#ifdef RADIX_MPATH
+-#include <net/radix_mpath.h>
+-#endif
+-
+ #include <netinet/in.h>
+ #include <netinet/ip_mroute.h>
+ 
+@@ -85,10 +82,10 @@
   */
  u_int rt_add_addr_allfibs = 1;
  SYSCTL_INT(_net, OID_AUTO, add_addr_allfibs, CTLFLAG_RW,
@@ -21,7 +32,7 @@
  static VNET_DEFINE(uma_zone_t, rtzone);		/* Routing table UMA zone. */
  VNET_DEFINE(int, rttrash);		/* routes not in table but not freed */
  VNET_DEFINE(struct rtstat, rtstat);
-@@ -99,7 +100,7 @@
+@@ -99,7 +96,7 @@
  #define	V_rtstat	VNET(rtstat)
  
  static void rt_maskedcopy(struct sockaddr *,
@@ -30,7 +41,7 @@
  
  /* compare two sockaddr structures */
  #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
-@@ -122,196 +123,201 @@
+@@ -122,196 +119,201 @@
  SYSCTL_INT(_net, OID_AUTO, tunnelfib, CTLFLAG_RD, &tunnel_fib, 0, "");
  #endif
  
@@ -350,7 +361,7 @@
  }
  
  /*
-@@ -320,156 +326,165 @@
+@@ -320,156 +322,165 @@
   *
   * The returned route, if any, is locked.
   */
@@ -641,7 +652,7 @@
  }
  
  
-@@ -479,282 +494,283 @@
+@@ -479,282 +490,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1151,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +784,523 @@
+@@ -768,495 +780,523 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1292,7 +1303,11 @@
 -	 */
 -	if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest) {
 -		struct rt_addrinfo info;
--
++		struct ptree_node *rn;
++		struct ptree *rnh;
++		struct ifaddr *ifa;
++		int error = 0;
+ 
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_flags = rt->rt_flags;
 -		info.rti_info[RTAX_DST] = rt_key(rt);
@@ -1309,11 +1324,7 @@
 -bad:
 -	return (error);
 -}
-+		struct ptree_node *rn;
-+		struct ptree *rnh;
-+		struct ifaddr *ifa;
-+		int error = 0;
- 
+-
 -#ifdef RADIX_MPATH
 -static int
 -rn_mpath_update(int req, struct rt_addrinfo *info,
@@ -2098,7 +2109,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1311,69 @@
+@@ -1267,71 +1307,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2222,7 +2233,7 @@
  }
  
  /*
-@@ -1339,228 +1381,232 @@
+@@ -1339,228 +1377,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
