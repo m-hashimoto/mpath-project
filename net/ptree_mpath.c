@@ -61,7 +61,7 @@ static int ptree_satisfies_leaf(char *trial,
 	register int b = vlen;
 	dprint(("-ptree_insert Start\n"));
 	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
-	struct ptree_node *top = head->rnh_treetop;
+	struct ptree_node *top = head->rnh_treetop, *tt = nodes;
 	
 	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
@@ -124,14 +124,14 @@ on2:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		nodes = ptree_add(v, b, data, head);
+		tt = ptree_add(v, b, data, head);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
 	dprint(("-ptree_insert End: insert node = %p\n",nodes));
-	return (nodes);
+	return (tt);
 }
 
 	struct ptree_node *
@@ -497,7 +497,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 {
 		dprint(("-ptree_addroute Start\n"));
 		caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
-		register struct ptree_node *t, *x = 0, *tt;
+		register struct ptree_node *t, *x = 0, *tt = nodes;
 		struct ptree_node *saved_tt, *top = head->rnh_treetop;
 		short b = 0, b_leaf = 0;
 		int keyduplicated;
@@ -518,7 +518,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
+		dprint(("-ptree_addroute: tt = %p nodes = %p",tt,nodes));
 		saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
+		dprint(("-ptree_addroute: tt = %p nodes = %p",tt,nodes));
 		dprint(("-ptree_addroute: keyduplicated = %d\n",keyduplicated));
 		if (keyduplicated) {
 				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
