@@ -94,8 +94,10 @@ on1:
 			else
 				x = x->rn_left;
 			dprint(("ptree_insert: x = %p\n",x));
-			if (!x)
+			if (!x){
+				dprint(("ptree_insert: link NULL\n"));
 				break;
+			}
 		}
 		while (b > (unsigned) x->rn_bit);
 		/* x->rn_bit < b && x->rn_bit >= 0 */
