@@ -284,7 +284,8 @@ ptree_deladdr(v_arg, gate_arg, head)
 {
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
-		caddr_t v, gate;
+		caddr_t v;
+		struct sockaddr *gate;
 		unsigned int len;
 		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 
