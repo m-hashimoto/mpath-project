@@ -226,6 +226,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
   struct ptree_node *u, *v, *w; /* u->v->w or u->x->{v, w}*/
   u = w = NULL;
   x = t->top;
+  dprint(("--ptree_get Start\n"));
   while (x && x->key && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
     {
@@ -235,6 +236,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
       x = x->child[check_bit (key, x->keylen)];
     }
 
+  dprint(("--ptree_get: x[%p]\n",x));
   if (! x)
     {
       v = ptree_node_create (key, keylen);
