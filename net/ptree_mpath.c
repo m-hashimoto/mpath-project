@@ -30,9 +30,15 @@ debug_node_print(struct ptree_node *pn)
 {
 	printf("node[%p] ",pn);
 	if( pn->key ){
-		printf("key[%d.%d.%d.%d/%d] ",
+		printf("key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+						(unsigned char)pn->key[0],(unsigned char)pn->key[1],
+						(unsigned char)pn->key[2],(unsigned char)pn->key[3],
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
+						(unsigned char)pn->key[8],(unsigned char)pn->key[9],
+						(unsigned char)pn->key[10],(unsigned char)pn->key[11],
+						(unsigned char)pn->key[12],(unsigned char)pn->key[13],
+						(unsigned char)pn->key[14],(unsigned char)pn->key[15],
 						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
@@ -109,28 +115,32 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d.%d.%d|%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
+	dprint(("-ptree_insert: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
 							(unsigned char)v[8],(unsigned char)v[9],
 							(unsigned char)v[10],(unsigned char)v[11],
+							(unsigned char)v[12],(unsigned char)v[13],
+							(unsigned char)v[14],(unsigned char)v[15],
 							len));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
 							(unsigned char)m[4],(unsigned char)m[5],
 							(unsigned char)m[6],(unsigned char)m[7],
 							(unsigned char)m[8],(unsigned char)m[9],
 							(unsigned char)m[10],(unsigned char)m[11],
+							(unsigned char)m[12],(unsigned char)m[13],
+							(unsigned char)m[14],(unsigned char)m[15],
 							len));
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
 		goto on1;
 	cp = v;
-	//len = t->keylen;
+	len = t->keylen;
 	dprint(("-ptree_insert: search t = %p len = %d\n",t,t->keylen));
 	
 	/* Find first bit at which v and t->rn_key differ */ 
