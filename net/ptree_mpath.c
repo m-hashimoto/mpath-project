@@ -495,8 +495,8 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	struct ptree_node *saved_tt, *top = head->rnh_treetop;
 	short b = 0, b_leaf = 0;
 	int keyduplicated;
-	caddr_t mmask;
-	struct ptree_mask *m, **mp;
+	//caddr_t mmask;
+	//struct ptree_mask *m, **mp;
 	dprint(("-ptree_addroute: key = %p\n",v));
 
 	/*
