@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-24 14:08:52.000000000 +0900
++++ route.c	2005-02-24 14:25:01.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1828,7 +1828,6 @@
 +				RT_LOCK(rt);
 +				RT_ADDREF(rt);
 +				rt->rt_flags &= ~RTF_UP;
-+				debug_tree_print(rnh);	/* after del */
 +				/*
 +				 * give the protocol a chance to keep things in sync.
 +				 */
@@ -2016,7 +2015,6 @@
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
-+				debug_tree_print(rnh);	/* after add */
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2095,6 +2093,8 @@
 -	return (error);
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
++		if (DEBUG)
++			debug_tree_print(rnh);
 +		return (error);
  #undef senderr
  }
