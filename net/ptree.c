@@ -44,16 +44,14 @@ ptree_node_create (char *key, int keylen)
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
-	dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+  dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							x,(unsigned char)x->key[0],(unsigned char)x->key[1],
 							(unsigned char)x->key[2],(unsigned char)x->key[3],
 							(unsigned char)x->key[4],(unsigned char)x->key[5],
 							(unsigned char)x->key[6],(unsigned char)x->key[7],
 							(unsigned char)x->key[8],(unsigned char)x->key[9],
 							(unsigned char)x->key[10],(unsigned char)x->key[11],
-							(unsigned char)x->key[12],(unsigned char)x->key[13],
-							(unsigned char)x->key[14],(unsigned char)x->key[15],x->keylen
-							));
+							x->keylen));
   return x;
 }
 
@@ -118,7 +116,7 @@ ptree_lookup (char *key, int keylen, struct ptree *t)
 struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
-	dprint(("--ptree_search Start: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
+  dprint(("--ptree_search Start: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
   struct ptree_node *x, *match;
 
   match = NULL;
@@ -132,7 +130,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
     }
   if (match)
     ptree_node_lock (match);
-	dprint(("--ptree_search End: match[%p]\n",match));
+  dprint(("--ptree_search End: match[%p]\n",match));
   return match;
 }
 
@@ -428,7 +426,6 @@ ptree_delete (struct ptree *t)
 
   XRTFREE (t);
 }
-
 
 #undef dprint
 #undef DEBUG
