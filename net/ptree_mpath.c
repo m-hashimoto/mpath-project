@@ -416,32 +416,23 @@ ptree_walktree(h, f, w)
 	 * the successor node in advance.
 	 */
 
-	/* First time through node, go left */
-	if(!pn){
-		dprint(("-ptree_walktree: pnh_top = NULL\n"));
+	if(!pn)
 		return (0);
-	}
+	/* First time through node, go left */
 	while (pn && pn->child[0])
 		pn = pn->child[0];
 	for (;;) {
 		base = pn;
+		if(!pn->parent)
+			return (0);
 		/* If at right child go back up, otherwise, go right */
-		dprint(("-ptree_walktree: base[%p] ",base));
 		pn = pn->parent;
-		while (pn && pn->child[1] == pn)
+		while (pn && pn->parent && pn->child[1] == pn)
 			pn = pn->parent;
 		/* Find the next *leaf* since next node might vanish, too */
-		dprint(("pn[%p] ",pn));
-		if(!pn->parent){
-			dprint(("-ptree_walktree: pn == pnh_top\n"));
-			return (0);
-		}
-		for (pn = pn->parent->child[1]; !pn->child[0];)
+		for (pn = pn->parent->child[1]; !pn;)
 			pn = pn->child[0];
 		next = pn;
-		dprint(("next[%p]\n",next));
-		if (!pn->parent)
-			return (0);
 	}
 #if 0
 		struct ptree_node *base, *next;
