@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-24 12:11:27.000000000 +0900
++++ route.c	2005-02-24 12:49:09.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -365,7 +365,7 @@
  }
  
  /*
-@@ -320,156 +317,180 @@
+@@ -320,156 +317,182 @@
   *
   * The returned route, if any, is locked.
   */
@@ -511,16 +511,18 @@
 -		RT_LOCK_ASSERT(newrt);
 -	return (newrt);
 +		if (newrt){
-+#ifdef DEBUG
 +				printf("rtalloc1_fib: newrt = %p newrt_flag = 0x%x\n",
 +										newrt,newrt->rt_flags);
 +				unsigned char *g = (unsigned char *)newrt->rt_gateway;
-+				printf("rtalloc1_fib: gate[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++				unsigned char *ifa = (unsigned char *)newrt->rt_ifa->ifa_addr;
++				printf("rtalloc1_fib: gate[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]",
 +								g[0],g[1],g[2],g[3],
 +								g[4],g[5],g[6],g[7],
-+								g[8],g[9],g[10],g[11],
-+								g[12],g[13],g[14],g[15]);
-+#endif
++								g[8],g[9],g[10],g[11]);
++				printf("ifa[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++								ifa[0],ifa[1],ifa[2],ifa[3],
++								ifa[4],ifa[5],ifa[6],ifa[7],
++								ifa[8],ifa[9],ifa[10],ifa[11]);
 +				RT_LOCK_ASSERT(newrt);
 +		}
 +		return (newrt);
@@ -670,7 +672,7 @@
  }
  
  
-@@ -479,282 +500,283 @@
+@@ -479,282 +502,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -813,15 +815,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1180,7 +1182,7 @@
  }
  
  /*
-@@ -768,495 +790,537 @@
+@@ -768,495 +792,537 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1204,21 +1206,6 @@
 -	int error = 0;
 +		struct ifaddr *ifa;
 +		int error = 0;
-+
-+		/*
-+		 * ifp may be specified by sockaddr_dl
-+		 * when protocol address is ambiguous.
-+		 */
-+		if (info->rti_ifp == NULL && ifpaddr != NULL &&
-+						ifpaddr->sa_family == AF_LINK &&
-+						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
-+				info->rti_ifp = ifa->ifa_ifp;
-+				ifa_free(ifa);
-+		}
-+		if (info->rti_ifa == NULL && ifaaddr != NULL)
-+				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
-+		if (info->rti_ifa == NULL) {
-+				struct sockaddr *sa;
  
 -	/*
 -	 * ifp may be specified by sockaddr_dl
@@ -1252,6 +1239,21 @@
 -	} else
 -		error = ENETUNREACH;
 -	return (error);
++		/*
++		 * ifp may be specified by sockaddr_dl
++		 * when protocol address is ambiguous.
++		 */
++		if (info->rti_ifp == NULL && ifpaddr != NULL &&
++						ifpaddr->sa_family == AF_LINK &&
++						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
++				info->rti_ifp = ifa->ifa_ifp;
++				ifa_free(ifa);
++		}
++		if (info->rti_ifa == NULL && ifaaddr != NULL)
++				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
++		if (info->rti_ifa == NULL) {
++				struct sockaddr *sa;
++
 +				sa = ifaaddr != NULL ? ifaaddr :
 +						(gateway != NULL ? gateway : dst);
 +				if (sa != NULL && info->rti_ifp != NULL)
@@ -2141,7 +2143,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1331,69 @@
+@@ -1267,71 +1333,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2265,7 +2267,7 @@
  }
  
  /*
-@@ -1339,228 +1401,232 @@
+@@ -1339,228 +1403,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
