@@ -308,7 +308,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 		ptree_link (x, w);
 
 		/* set upper link */
-		ptree_link (x, w);
 		if (u)
 			ptree_link (u, x);
 		else
