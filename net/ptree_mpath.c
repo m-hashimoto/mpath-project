@@ -55,7 +55,7 @@ static int ptree_satisfies_leaf(char *trial,
 {
 	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
-	dprint(("v_arg = %x head = %p\n",*v,,head));
+	dprint(("v_arg = %x head = %p\n",*v,head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
 	register struct ptree_node *t = ptree_search(v, (int)LEN(v), head);
