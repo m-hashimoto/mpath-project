@@ -17,9 +17,6 @@
 #endif /* PTREE_MPATH */
 
 typedef int walktree_f_t(struct ptree_node *, void *);
-//struct route;
-//struct rtentry;
-//struct sockaddr;
 
 struct ptree_node_head {
 		struct ptree *pnh_treetop;
@@ -98,11 +95,14 @@ int debug_tree_print(struct ptree_node_head *);
 
 #ifdef PTREE_MPATH
 #ifdef _KERNEL
+struct route;
+struct rtentry;
+struct sockaddr;
 /*
  * Patricia trie API with multipath support
  */
 int     ptree_mpath_capable(struct ptree *);
-u_int32_t ptree_mpath_count(struct ptree_node *);
+u_int32_t ptree_mpath_count(struct rtentry *);
 struct rtentry *rt_mpath_matchgate(struct rtentry *, struct sockaddr *);
 int rt_mpath_conflict(struct ptree *, struct rtentry *,
 				struct sockaddr *);

@@ -17,7 +17,7 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x; }
 
 	int
@@ -447,12 +447,12 @@ ptree_mpath_capable(struct ptree *pnh)
 }
 
 		uint32_t
-ptree_mpath_count(struct ptree_node *rn)
+ptree_mpath_count(struct rtentry *rt)
 {
 		dprint(("ptree_mpath_count Start\n"));
-		struct rtentry *rt, **rt1;
+		struct rtentry **rt1;
 		uint32_t i = 0;
-		rt = rn->data;
+
 		rt1 = rt->mpath_array;
 		/* count mpath_array */
 		while (rt1 != NULL) {
@@ -514,21 +514,23 @@ static uint32_t hashjitter;
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 		uint32_t i = 0, n;
-		struct ptree_node *t, **t1;
+		struct rtentry *rt0,**rt1;
 
-		t = (struct ptree_node *)headrt;
 		if (!headrt || !rt)
 				return (0);
-
-		n = ptree_mpath_count(t);
-		t1 = t->mpath_array;
-		while (t1) {
-				if ((struct rtentry *)t1 == rt) {
-						t->mpath_array[i] = t->mpath_array[n-1];
-						t->mpath_array[n-1] = NULL;
+		
+		rt0 = headrt;
+		n = ptree_mpath_count(rt0);
+		rt1 = rt0->mpath_array;
+		
+		while (*rt1) {
+				if (*rt1 == rt) {
+						rt0->mpath_array[i] = rt0->mpath_array[n-1];
+						rt0->mpath_array[n-1] = NULL;
 						return (1);
 				}
-				t1++;
+				rt1++;
+				i++;
 		}
 		return (0);
 }
