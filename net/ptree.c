@@ -161,7 +161,6 @@ ptree_search (char *key, int keylen, struct ptree *t)
 		return match;
 	}
 
-	dprint(("+-ptree_search: key = %x:%x:%x:%x keylen = %d flag = %d\n",x->key[0],x->key[1],x->key[2],x->key[3],x->keylen,x->rn_flags));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
