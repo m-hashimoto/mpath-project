@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-01-19 18:04:26.000000000 +0900
++++ in6_rmx.c	2005-01-19 22:08:03.000000000 +0900
 @@ -112,17 +112,19 @@
  #endif
  
@@ -116,10 +116,11 @@
  	arg.nextstop = time_uptime + V_rtq_timeout6;
  	arg.draining = arg.updating = 0;
 -	RADIX_NODE_HEAD_LOCK(rnh);
+-	rnh->rnh_walktree(rnh, in6_rtqkill, &arg);
+-	RADIX_NODE_HEAD_UNLOCK(rnh);
 +	//RADIX_NODE_HEAD_LOCK(rnh);
 +	dprint(("in6_rtqtimo: LOCK rnh\n"));
- 	rnh->rnh_walktree(rnh, in6_rtqkill, &arg);
--	RADIX_NODE_HEAD_UNLOCK(rnh);
++	//rnh->rnh_walktree(rnh, in6_rtqkill, &arg);
 +	//RADIX_NODE_HEAD_UNLOCK(rnh);
 +	dprint(("in6_rtqtimo: UNLOCK rnh\n"));
  
