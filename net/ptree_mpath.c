@@ -81,12 +81,14 @@ on1:
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
+		dprint(("ptree_insert: top = %p\n",top));
 		dprint(("ptree_insert: first different bit = %d\n",b));
 	}
 	{
 		register struct ptree_node *p, *x = top;
+		dprint(("ptree_insert: top = %p\n",top));
 		register int *data = NULL;
-		*data = 1;
+		dprint(("ptree_insert: top = %p\n",top));
 		cp = v;
 		dprint(("ptree_insert: top = %p\n",top));
 		dprint(("ptree_insert: top->rn_bit = %d\n",top->rn_bit));
@@ -104,6 +106,7 @@ on1:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
+		*data = 1;
 		t = ptree_add(v, b, data, head);
 #ifdef RN_DEBUG
 		if (rn_debug)
