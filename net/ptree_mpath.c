@@ -38,10 +38,8 @@ debug_node_print(struct ptree_node *pn)
 						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
-	printf("parent[%p] ",pn->parent);
+	//printf("parent[%p] ",pn->parent);
 	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
-	//printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
-	//printf("rn_offset %d\n",rn->rn_Off);
 	return 0;
 }
 
@@ -91,7 +89,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	unsigned int len;
 	if (m_arg){
 			dprint(("LEN(m) = %d\n",(int)LEN(m)));
-			len = (unsigned int)8*(LEN(m) - head_off);
+			//len = (unsigned int)8*(LEN(m) - head_off);
+			len = (unsigned int)8*LEN(m);
 	} else{
 			dprint(("LEN(v) = %d\n",(int)LEN(v)));
 			len = (unsigned int)8*(LEN(v) - head_off - head_zero);
