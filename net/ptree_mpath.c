@@ -30,15 +30,11 @@ debug_node_print(struct ptree_node *pn)
 {
 	printf("node[%p] ",pn);
 	if( pn->key ){
-		printf("key[%d.%d.%d.%d.%d.%d.%d.%d/%d] ",
+		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],
 						(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],
 						(unsigned char)pn->key[7],
-						(unsigned char)pn->key[8],
-						(unsigned char)pn->key[9],
-						(unsigned char)pn->key[10],
-						(unsigned char)pn->key[12],
 						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
@@ -93,10 +89,10 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	register caddr_t cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
-	if (m)
-			len = (int)LEN(m);
+	if (m_arg)
+			len = (int)LEN(m) - head_off;
 	else
-			len = (int)LEN(v);
+			len = (int)LEN(v) - head_off;
 	v = v + head_off; m = m + head_off;
 	dprint(("-ptree_insert: len = %d\n",len));
 	
@@ -104,18 +100,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d.%d.%d.%d.%d.%d.%d/%d] treetop[%p]\n",
+	dprint(("-ptree_insert: v[%d.%d.%d.%d/%d] treetop[%p]\n",
 							(signed char)v[0],(signed char)v[1],
 							(signed char)v[2],(signed char)v[3],
-							(signed char)v[4],(signed char)v[5],
-							(signed char)v[6],(signed char)v[7],
 							len,head->pnh_treetop));
-	if (m)
+	if (m_arg)
 		dprint(("-ptree_insert: m[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
 							(signed char)m[0],(signed char)m[1],
 							(signed char)m[2],(signed char)m[3],
-							(signed char)m[4],(signed char)m[5],
-							(signed char)m[6],(signed char)m[7],
 							len));
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
