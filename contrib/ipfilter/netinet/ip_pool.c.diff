@@ -1,5 +1,5 @@
 --- ip_pool.c.orig	2005-02-06 19:09:31.000000000 +0900
-+++ ip_pool.c	2005-02-06 20:15:25.000000000 +0900
++++ ip_pool.c	2005-02-06 20:20:05.000000000 +0900
 @@ -71,7 +71,7 @@
  #if defined(IPFILTER_LOOKUP) && defined(_KERNEL) && \
        ((BSD >= 198911) && !defined(__osf__) && \
@@ -20,7 +20,7 @@
  	SPL_NET(s);
  	RADIX_NODE_HEAD_LOCK(ipo->ipo_head);
 -	n = ipo->ipo_head->rnh_lookup(addr, mask, ipo->ipo_head);
-+	n = ipo->ipo_head->rnh_lookup((char *)addr, (int)mask, ipo->ipo_head);
++	n = ipo->ipo_head->rnh_lookup((char *)addr, (int)mask, ipo->ipo_head->pnh_treetop);
  	RADIX_NODE_HEAD_UNLOCK(ipo->ipo_head);
  	SPL_X(s);
  	return (ip_pool_node_t *)n;
