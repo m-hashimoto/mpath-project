@@ -561,7 +561,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		//caddr_t netmask = (caddr_t)n_arg;
 
 		register struct ptree_node *tt;
-		//register struct rtentry *rt = (struct rtentry *)rt_node;
+		register struct rtentry *rt = (struct rtentry *)&rt_node;
 		struct ptree_node *saved_tt;
 		//, *top = head->pnh_top;
 		//short b = 0, b_leaf = 0;
@@ -586,9 +586,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
-		//tt->data = rt;
-		//rt->rt_nodes = tt;
-		rt_node = tt;
+		tt->data = rt;
+		rt->rt_nodes = tt;
 		dprint(("-ptree_addroute: tt = %p keydup = %d\n",tt,keyduplicated));
 #if 0 /* multi path */
 		if (keyduplicated) {
