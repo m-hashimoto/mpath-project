@@ -165,7 +165,7 @@ on1:
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
-		dprint(("-ptree_insert: first different bit = 0x%x\n",b));
+		dprint(("-ptree_insert: first different bit = %d\n",b));
 on2:
 		*dupentry = 0;
 	}
@@ -193,7 +193,6 @@ on2:
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
 		tt = ptree_add(v_arg, b, data, head, nodes);
-		//tt->rn_bit = - 1 - tt->keylen;
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
