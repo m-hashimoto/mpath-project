@@ -99,15 +99,16 @@ default:
 endsw
 end
 
-while ( 1 );
-echo -n " Reboot Now? [Yes/No] "
-set reboot = $<
-switch ($reboot)
-case [yY][eE][sS]:
-	reboot
-case [nN][oO]:
-	exit
-default:
-	echo "Type Yes/No."
-endsw
-end
+reboot
+#while ( 1 );
+#echo -n " Reboot Now? [Yes/No] "
+#set reboot = $<
+#switch ($reboot)
+#case [yY][eE][sS]:
+#	reboot
+#case [nN][oO]:
+#	exit
+#default:
+#	echo "Type Yes/No."
+#endsw
+#end

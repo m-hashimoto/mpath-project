@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-24 12:01:06.000000000 +0900
++++ route.c	2005-02-24 12:11:27.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -406,7 +406,6 @@
 -	needlock = !(ignflags & RTF_RNH_LOCKED);
 -	if (needlock)
 -		RADIX_NODE_HEAD_RLOCK(rnh);
-+		printf("rtalloc1_fib Start\n");
 +		struct ptree_node_head *rnh;
 +		struct rtentry *rt;
 +		struct ptree_node *rn;
@@ -512,6 +511,7 @@
 -		RT_LOCK_ASSERT(newrt);
 -	return (newrt);
 +		if (newrt){
++#ifdef DEBUG
 +				printf("rtalloc1_fib: newrt = %p newrt_flag = 0x%x\n",
 +										newrt,newrt->rt_flags);
 +				unsigned char *g = (unsigned char *)newrt->rt_gateway;
@@ -520,9 +520,9 @@
 +								g[4],g[5],g[6],g[7],
 +								g[8],g[9],g[10],g[11],
 +								g[12],g[13],g[14],g[15]);
++#endif
 +				RT_LOCK_ASSERT(newrt);
 +		}
-+		printf("rtalloc1_fib End\n");
 +		return (newrt);
  }
  
@@ -813,15 +813,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1204,6 +1204,21 @@
 -	int error = 0;
 +		struct ifaddr *ifa;
 +		int error = 0;
++
++		/*
++		 * ifp may be specified by sockaddr_dl
++		 * when protocol address is ambiguous.
++		 */
++		if (info->rti_ifp == NULL && ifpaddr != NULL &&
++						ifpaddr->sa_family == AF_LINK &&
++						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
++				info->rti_ifp = ifa->ifa_ifp;
++				ifa_free(ifa);
++		}
++		if (info->rti_ifa == NULL && ifaaddr != NULL)
++				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
++		if (info->rti_ifa == NULL) {
++				struct sockaddr *sa;
  
 -	/*
 -	 * ifp may be specified by sockaddr_dl
@@ -1237,21 +1252,6 @@
 -	} else
 -		error = ENETUNREACH;
 -	return (error);
-+		/*
-+		 * ifp may be specified by sockaddr_dl
-+		 * when protocol address is ambiguous.
-+		 */
-+		if (info->rti_ifp == NULL && ifpaddr != NULL &&
-+						ifpaddr->sa_family == AF_LINK &&
-+						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
-+				info->rti_ifp = ifa->ifa_ifp;
-+				ifa_free(ifa);
-+		}
-+		if (info->rti_ifa == NULL && ifaaddr != NULL)
-+				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
-+		if (info->rti_ifa == NULL) {
-+				struct sockaddr *sa;
-+
 +				sa = ifaaddr != NULL ? ifaaddr :
 +						(gateway != NULL ? gateway : dst);
 +				if (sa != NULL && info->rti_ifp != NULL)
