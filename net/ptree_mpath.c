@@ -119,8 +119,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	{
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v;
-		if ( !memcmp(cp2,cplim,t->keylen) ){
-			*dupentry = 1;  
+		if ( !memcmp(cp2,cplim,len) ){
+			*dupentry = 1;
 			return t;
 		}
 	}
