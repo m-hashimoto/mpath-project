@@ -53,7 +53,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	} else { /* IPv4 */
 		printf("[%p] ",pn);
 		sprint_inet_ntoa(AF_INET,pn->key);
-		printf("/%3d ",pn->keylen-8*offset);
+		printf("/%3d ",(pn->keylen % 64)-8*offset);
 	}
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 #ifdef PTREE_MPATH
@@ -332,11 +332,11 @@ ptree_deladdr(v_arg, gate_arg, head)
 
 #ifdef DEBUG
 		if(head->pnh_offset == 4){
-			printf("-ptree_deladdr: addr ");
+			printf("-ptree_deladdr: addr[%p] ",v);
 			sprint_inet_ntoa(AF_INET, v);
 			printf("/%d\n",len);
 		} else {
-			printf("-ptree_deladdr: addr ");
+			printf("-ptree_deladdr: addr[%p] ",v);
 			sprint_inet_ntoa(AF_INET6, v);
 			printf("/%d\n",len);
 		}
@@ -381,11 +381,11 @@ ptree_deladdr(v_arg, gate_arg, head)
 		headrt = tt->data;
 #ifdef DEBUG
 		if(head->pnh_offset == 4){
-			printf("-ptree_deladdr: gate ");
+			printf("-ptree_deladdr: gate[%p] ",gate);
 			sprint_inet_ntoa(AF_INET, gate);
 			printf("/%d\n",len);
 		} else {
-			printf("-ptree_deladdr: gate ");
+			printf("-ptree_deladdr: gate[%p] ",gate);
 			sprint_inet_ntoa(AF_INET6, gate);
 			printf("/%d\n",len);
 		}

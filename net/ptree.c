@@ -66,7 +66,7 @@ check_bit (char *key, int keylen)
 {
   int offset;
   int shift;
-  dprint(("--check_bit Start\n"));
+  //dprint(("--check_bit Start\n"));
   //dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
   offset = keylen / 8;
   shift = 7 - keylen % 8;
@@ -83,7 +83,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 {
   int bytes;
   int bits;
-  dprint(("--ptree_match Start\n"));
+  //dprint(("--ptree_match Start\n"));
   bytes = keylen / 8;
   bits = keylen % 8;
   //dprint(("--ptree_match: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
@@ -144,7 +144,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
 {
   /* check the w's key bit just after the v->key (keylen'th bit) */
   int bit;
-  dprint(("--ptree_link Start\n"));
+  //dprint(("--ptree_link Start\n"));
 
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
@@ -162,7 +162,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
   int keylen = 0;
   unsigned char bitmask;
   unsigned char diff;
-  dprint(("--key_common_len Start\n"));
+  //dprint(("--key_common_len Start\n"));
   //dprint(("--key_common_len: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   nmatch = 0;
@@ -191,7 +191,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
   int keylen;
   struct ptree_node *x;
-  dprint(("--key_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
+  //dprint(("--key_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
   x = ptree_node_create (keyi, keylen);
@@ -236,7 +236,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
         return x;
       u = x;
       x = x->child[check_bit (key, x->keylen)];
-			dprint(("--ptree_get: x[%p]\n",x));
+			//dprint(("--ptree_get: x[%p]\n",x));
     }
 
   if (! x || ! x->key)
@@ -306,7 +306,7 @@ struct ptree_node *
 ptree_add (char *key, int keylen, void *data, struct ptree *t)
 {
   struct ptree_node *x;
-  dprint(("--ptree_add Start\n"));
+  //dprint(("--ptree_add Start\n"));
   //dprint(("--ptree_add: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
   x = ptree_get (key, keylen, t);
   //dprint(("--ptree_add: x[%p]\n",x));
