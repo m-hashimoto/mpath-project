@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 07:12:05.000000000 +0900
++++ route.c	2005-02-11 07:34:56.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1171,7 +1171,7 @@
  }
  
  /*
-@@ -768,495 +780,556 @@
+@@ -768,495 +780,558 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1840,9 +1840,11 @@
 +						panic ("rtrequest delete");
 +#endif
 +				rt = RNTORT(rn);
-+				dprint(("case RTM_DELETE: rt = %p rn = %p\n",rt,rn));
++				dprint(("rtreq_DELETE: rt = %p rn = %p\n",rt,rn));
 +				//RT_LOCK(rt);
 +				//RT_ADDREF(rt);
++				dprint(("rtreq_DELETE: rt_flags = 0x%x\n",rt->rt_flags));
++				dprint(("rtreq_DELETE: rt_ifa = %p\n",rt->rt_ifa));
 +				rt->rt_flags &= ~RTF_UP;
 +				/*
 +				 * give the protocol a chance to keep things in sync.
@@ -2150,7 +2152,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1340,70 @@
+@@ -1267,71 +1342,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2275,7 +2277,7 @@
  }
  
  /*
-@@ -1339,228 +1411,232 @@
+@@ -1339,228 +1413,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
