@@ -226,7 +226,6 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
-	debug_node_print(saved_t);
 	if (t->mask){
 		if ((LEN(t->mask)-head_off) > 0 )
 			vlen = (int)8*LEN(t->mask);
