@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-11 02:15:39.000000000 +0900
++++ in6.c	2005-02-11 02:28:35.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -134,3 +134,59 @@
  	/*
  	 * XXX: if a change of an existing address failed, keep the entry
  	 * anyway.
+@@ -1152,6 +1168,7 @@
+ 	return (error);
+ 
+   cleanup:
++	printf("in6_update_ifa: cleanup\n");
+ 	KASSERT(hostIsNew, ("in6_update_ifa: cleanup: !hostIsNew"));
+ 	ifa_free(&ia->ia_ifa);
+ 	in6_purgeaddr(&ia->ia_ifa);
+@@ -1704,6 +1721,7 @@
+ 	 * if this is its first address,
+ 	 * and to validate the address if necessary.
+ 	 */
++	printf("in6_ifinit Start\n");
+ 	IF_ADDR_LOCK(ifp);
+ 	TAILQ_FOREACH(ifa, &ifp->if_addrhead, ifa_link) {
+ 		if (ifa->ifa_addr->sa_family != AF_INET6)
+@@ -1735,6 +1753,7 @@
+ 	 * XXX: the logic below rejects assigning multiple addresses on a p2p
+ 	 * interface that share the same destination.
+ 	 */
++	printf("in6_ifinit: testprint 1\n");
+ 	plen = in6_mask2len(&ia->ia_prefixmask.sin6_addr, NULL); /* XXX */
+ 	if (!(ia->ia_flags & IFA_ROUTE) && plen == 128 &&
+ 	    ia->ia_dstaddr.sin6_family == AF_INET6) {
+@@ -1749,6 +1768,7 @@
+ 			return (error);
+ 		ia->ia_flags |= IFA_ROUTE;
+ 	}
++	printf("in6_ifinit: testprint 2\n");
+ 
+ 	/*
+ 	 * add a loopback route to self
+@@ -1759,6 +1779,7 @@
+ 		error = ifa_add_loopback_route((struct ifaddr *)ia,
+ 				       (struct sockaddr *)&ia->ia_addr);
+ 	}
++	printf("in6_ifinit: testprint 3\n");
+ 
+ 	/* Add ownaddr as loopback rtentry, if necessary (ex. on p2p link). */
+ 	if (newhost) {
+@@ -1791,6 +1812,7 @@
+ 			/* */
+ 			LLE_WUNLOCK(ln);
+ 		}
++		printf("in6_ifinit: testprint 4\n");
+ 
+ 		bzero(&rt, sizeof(rt));
+ 		rt.rt_gateway = (struct sockaddr *)&gateway;
+@@ -1801,6 +1823,7 @@
+ 		rt.rt_flags = RTF_UP | RTF_HOST | RTF_STATIC;
+ 		rt_newaddrmsg(RTM_ADD, &ia->ia_ifa, 0, &rt);
+ 	}
++	printf("in6_ifinit: testprint 5\n");
+ 
+ 	return (error);
+ }
