@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-25 04:10:42.000000000 +0900
++++ route.c	2005-01-25 04:55:30.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1126,7 +1126,7 @@
 -			uma_zfree(V_rtzone, rt);
 +			/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+			dprint(("rtreq_ADD: test print 6\n"));
++			dprint(("rtreq_ADD: rn = addaddr = %p\n",rn));
 +			/*
 +			 * If it still failed to go into the tree,
 +			 * then un-make it (this should be a function)
