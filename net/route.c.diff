@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-08 19:59:35.000000000 +0900
++++ route.c	2005-02-10 18:41:55.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,550 @@
+@@ -768,495 +780,552 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2031,8 +2031,6 @@
 +										rt,rt->rt_nodes,&(rt->rt_nodes)));
 +				dprint(("rtreq_ADD: rt_ifa = %p\n",rt->rt_ifa));
 +#if 0
-+				/* gateway Re-set */
-+				rt->rt_gateway = saved_gateway;
 +				/* rtentry's value re-added */
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
@@ -2060,6 +2058,7 @@
 -		} 
 +						senderr(EEXIST);
 +				} 
++				dprint(("rtreq_ADD: test print 1\n"));
  #ifdef FLOWTABLE
 -		else if (rt0 != NULL) {
 +				else if (rt0 != NULL) {
@@ -2093,6 +2092,7 @@
 -	default:
 -		error = EOPNOTSUPP;
 -	}
++				dprint(("rtreq_ADD: test print 2\n"));
 +				/*
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
@@ -2103,10 +2103,12 @@
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
++				dprint(("rtreq_ADD: test print 3\n"));
 +				if (ret_nrt) {
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
 +				}
++				dprint(("rtreq_ADD: test print 4\n"));
 +				
 +				if( mtx_initialized(&(rt)->rt_mtx) ){
 +					RT_UNLOCK(rt);
@@ -2135,7 +2137,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1334,70 @@
+@@ -1267,71 +1336,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2260,7 +2262,7 @@
  }
  
  /*
-@@ -1339,228 +1405,232 @@
+@@ -1339,228 +1407,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
