@@ -16,7 +16,7 @@
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-static int	head_off = 4; /* head_off struct sockaddr_in */
+static int	head_off = 4, head_zero = 8; /* head_off struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
@@ -88,11 +88,11 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
-	len = (int)8*LEN(v);
+	len = (int)8*(LEN(v) - head_off - head_zero);
 	if (m){
 		dprint(("LEN(m) = %d\n",(int)LEN(m)));
 		if ((LEN(m) - head_off) > 0)
-			len = (int)8*LEN(m);
+			len = (int)8*(LEN(m) - head_off);
 	}
 
 	dprint(("-ptree_insert: len = %d\n",len));
@@ -114,7 +114,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(unsigned char)m[4],(unsigned char)m[5],
 							(unsigned char)m[6],(unsigned char)m[7],
 							len));
-	t = ptree_search(v, len, head->pnh_treetop);
+	t = ptree_search(v, len+8*head_off, head->pnh_treetop);
 	if (!t)
 		goto on1;
 	cp = v;
@@ -136,8 +136,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		}
 #endif
 
-		register caddr_t cp2 = t->key;
-		caddr_t cplim = v;
+		register caddr_t cp2 = t->key + head_off;
+		caddr_t cplim = v + head_off;
 		if ( !memcmp(cp2,cplim,len) ){
 			dprint(("key dupentry\n"));
 			*dupentry = 1;  
@@ -210,14 +210,14 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int vlen;
 	
-	vlen = (int)8*LEN(v);
+	vlen = (int)8*(LEN(v) - head_off - head_zero);
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
 							vlen,head));
-	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
+	t = saved_t = ptree_search(v, vlen+8*head_off, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
@@ -225,12 +225,12 @@ ptree_matchaddr(v_arg, head)
 	debug_node_print(saved_t);
 	if (t->mask){
 		if ((LEN(t->mask)-head_off) > 0 )
-			vlen = (int)8*LEN(t->mask);
+			vlen = (int)8*(LEN(t->mask) - head_off);
 	} 
 	else
 		vlen = t->keylen;
 
-	cp = t->key; cplim = v;
+	cp = t->key + head_off; cplim = v + head_off;
 	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
 	if ( !memcmp(cp,cplim,vlen) )
 			goto miss;
@@ -302,10 +302,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 								tt->rn_dupedkey->rn_parent = tt; /* parent */
 				}
 
-#ifdef RN_DEBUG
-				t=tt+1; tt->rn_info = rn_nodenum++; t->rn_info = rn_nodenum++;
-				tt->rn_twin = t; tt->rn_ybro = rn_clist; rn_clist = tt;
-#endif
 				tt->key = (caddr_t) v;
 				tt->rn_bit = -1;
 				tt->rn_flags = RNF_ACTIVE;
@@ -331,11 +327,11 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		len = (int)8*LEN(v);
+		len = (int)8*(LEN(v) - head_off - head_zero);
 		if (netmask){
 			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
 			if ((LEN(netmask) - head_off) > 0)
-				len = (int)8*LEN(netmask);
+				len = (int)8*(LEN(netmask) - head_off);
 		}
 
 		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
@@ -344,15 +340,18 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								(unsigned char)v[4],(unsigned char)v[5],
 								(unsigned char)v[6],(unsigned char)v[7],
 								len,head->pnh_treetop));
-		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
-		if(tt) debug_node_print(tt);
-		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
+		saved_tt = tt = ptree_search(v, len+8*head_off, head->pnh_treetop);
+
+		register caddr_t cp, cplim;
+		cp = tt->key + head_off; cplim = v + head_off;
+		if ((tt == 0) || (memcmp(cp, cplim, len) != 0)){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
-		ptree_remove(tt);
+		debug_node_print(tt);
 		if (tt == top)
 			head->pnh_top = NULL;
+		ptree_remove(tt);
 		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
 		return (tt);
 }
