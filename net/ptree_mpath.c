@@ -203,6 +203,7 @@ on1:
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
 		tt = ptree_add(v, mlen, data, head->treetop);
+		tt->mask = m;
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
@@ -313,7 +314,7 @@ on1:
 	dprint(("-ptree_addmask End\n"));
 	return (x);
 }
-
+#endif /* 0 */
 
 	int
 ptree_refines(m_arg, n_arg)
@@ -350,6 +351,7 @@ ptree_refines(m_arg, n_arg)
 	return (!masks_are_equal);
 }
 
+#if 0
 	static int      
 ptree_lexobetter(m_arg, n_arg)
 	void *m_arg, *n_arg;
@@ -557,8 +559,8 @@ ptree_addroute(v_arg, n_arg, head)
 		//struct ptree_mask *m, **mp = 0;
 		dprint(("-ptree_addroute: key = %p netmask = %p\n",v_arg,n_arg));
 
-#if 0
 		if (netmask)  {
+#if 0
 				if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
 						dprint(("-ptree_addroute End 1(retrun 0)\n"));
 						return (0);
@@ -566,7 +568,7 @@ ptree_addroute(v_arg, n_arg, head)
 				b_leaf = x->rn_bit;
 				b = -1 - x->rn_bit;
 				netmask = x->rn_key;
-				dprint(("-ptree_addroute: set netmask\n"));
+			dprint(("-ptree_addroute: set netmask\n"));
 		}
 #endif
 		/*
