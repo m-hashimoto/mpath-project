@@ -940,12 +940,12 @@ ptree_walktree(h, f, w)
 			register struct rtentry *rt;
 			register struct in_addr *gateway;
 
-			rnh = rt_tables_get_rnh(0, INET);
+			rnh = rt_tables_get_rnh(0, AF_INET);
 			rn = rnh->rnh_treetop;
 			for (;;) {
 				rt = (struct rtentry *)rn;
 				gateway = (struct sockaddr_in *)rt->rt_gateway;
-				printf("address: %s\n",inet_ntoa(gateway->s_addr));
+				printf("address: %s\n",inet_ntoa(gateway->sin_addr));
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
