@@ -24,7 +24,7 @@
  void
 sprint_inet_ntoa(int af, void *sa)
 {
-	dprint(("-sprint_inet_ntoa: af[%d] sa[%p]\n",af,sa));
+	//dprint(("-sprint_inet_ntoa: af[%d] sa[%p]\n",af,sa));
 	if(af == AF_INET){
 		char str[INET_ADDRSTRLEN];
 		__rpc_inet_ntop(AF_INET, &((struct sockaddr_in *)sa)->sin_addr, str, INET_ADDRSTRLEN);

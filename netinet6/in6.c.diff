@@ -1,21 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
 +++ in6.c	2005-03-07 12:25:11.000000000 +0900
-@@ -688,7 +688,6 @@
- 	struct rtentry *rt;
- 	int delay;
- 	char ip6buf[INET6_ADDRSTRLEN];
--
- 	/* Validate parameters */
- 	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
- 		return (EINVAL);
-@@ -896,6 +895,7 @@
- 	/* reset the interface and routing table appropriately. */
- 	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
- 		goto unlink;
-+	
- 
- 	/*
- 	 * configure address flags.
 @@ -1766,6 +1766,7 @@
  		struct rtentry rt;
  		struct sockaddr_dl gateway;
