@@ -17,7 +17,7 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 	int
@@ -27,7 +27,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 	
 	if(offset == 8){ /* IPv6 */
-		printf("[%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X/%d] ",
+		printf("[%p][%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X.%2X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 				(unsigned char)pn->key[12],(unsigned char)pn->key[13],
@@ -42,7 +42,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x]\n",rt->rt_flags);
 	} else { /* IPv4 */
 		if(pn->mask){
-			printf("[%3d.%3d.%3d.%3d/%3d] ",
+			printf("[%p][%3d.%3d.%3d.%3d/%3d] ",pn,
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*offset);
@@ -81,6 +81,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			pn = next;
 		}
 		/* NOTREACHED */
+		printf("------------------------------------------\n");
 		return (0);
 }
 
