@@ -458,14 +458,14 @@ on1:
 			while (x && x->rn_mask != m->rm_mask)
 				x = x->rn_dupedkey;
 			if (x && ptree_satisfies_leaf(v, x, off)){
-				dprint((" ptree_matchaddr End 4\n"));
+				dprint((" ptree_matchaddr End: return x\n"));
 				return x;
 			}
 		}
 		m = m->rm_mklist;
 	}
 miss:
-	dprint((" ptree_matchaddr End 5\n"));
+	dprint((" ptree_matchaddr End: miss\n"));
 	return 0;
 }
 
