@@ -1006,13 +1006,13 @@ ptree_walktree_from(h, a, m, f, w)
 #endif
 		static int
 ptree_walktree(h, f, w)
-		struct ptree *h;
+		struct ptree_node_head *h;
 		walktree_f_t *f;
 		void *w;
 {
 		dprint(("-ptree_walktree Start\n"));
 		struct ptree_node *base, *next;
-		register struct ptree_node *rn = h->rnh_treetop;
+		register struct ptree_node *rn = h->pnh_top;
 		if (!rn){
 				dprint(("-ptree_walktree End (treetop = NULL)\n"));
 				return (0);
