@@ -336,6 +336,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								(unsigned char)v[6],(unsigned char)v[7],
 								len,head->pnh_treetop));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
+		if(tt) debug_node_print(tt);
 		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
