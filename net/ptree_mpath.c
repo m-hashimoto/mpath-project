@@ -99,8 +99,8 @@ debug_tree_print(struct ptree *rnh)
 	R_Malloc(m, struct ptree_mask *, sizeof (struct ptree_mask)); }
 
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
-//#define LEN(x) (*(const u_char *)(x))
-#define LEN(x) ( 8*sizeof(x) )
+#define LEN(x) (*(const u_char *)(x))
+//#define LEN(x) ( 8*sizeof(x) )
 #define rn_masktop (mask_rnhead->rnh_treetop)
 
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
@@ -157,12 +157,14 @@ static int ptree_satisfies_leaf(char *trial,
 		dprint(("key dupentry\n"));
 		*dupentry = 1;  
 		return t;
-//on1:
+#if 0
+on1:
 		dprint(("-ptree_insert: on1\n"));
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;
 		for (b = (cp - v) << 3; cmp_res; b--)
 			cmp_res >>= 1;
 		dprint(("-ptree_insert: first different bit = %d\n",b));
+#endif
 on2:
 		*dupentry = 0;
 	}
