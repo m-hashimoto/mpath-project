@@ -1,8 +1,8 @@
 /*
  * ptree-mpath header
  */
-#ifndef _PTREE_MULTIPATH_H_
-#define _PTREE_MULTIPATH_H_
+#ifndef _PTREE_MPATH_H_
+#define _PTREE_MPATH_H_
 
 #ifdef _KERNEL
 #include <sys/_lock.h>
@@ -86,8 +86,7 @@ struct ptree_node *ptree_addroute (void *, void *, struct ptree_node_head *),
 /*
  * Patricia trie API with multipath support
  */
-
-#ifdef PTREE_MPATH
+#if 0
 struct route;
 struct rtentry;
 struct sockaddr;
