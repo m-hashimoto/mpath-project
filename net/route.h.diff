@@ -1,17 +1,14 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-27 03:22:48.000000000 +0900
-@@ -33,6 +33,10 @@
++++ route.h	2005-02-27 03:31:17.000000000 +0900
+@@ -33,6 +33,7 @@
  #ifndef _NET_ROUTE_H_
  #define _NET_ROUTE_H_
  
-+/* debug print */
-+#define DEBUG 1
-+#define dprint(x) { if(DEBUG) printf x; }
 +
  /*
   * Kernel resident routing tables.
   *
-@@ -124,20 +128,23 @@
+@@ -124,20 +125,23 @@
   * gateway rather than the ultimate destination.
   */
  #ifndef RNF_NORMAL
@@ -39,7 +36,7 @@
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
-@@ -149,8 +156,12 @@
+@@ -149,8 +153,12 @@
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
  #endif
@@ -52,7 +49,7 @@
  /*
   * Following structure necessary for 4.3 compatibility;
   * We should eventually move it to a compat file.
-@@ -373,7 +384,7 @@
+@@ -373,7 +381,7 @@
  	}							\
  } while (0)
  
