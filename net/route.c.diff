@@ -1,5 +1,5 @@
---- route.c.org	2010-10-21 01:20:28.000000000 +0900
-+++ route.c	2010-10-21 08:14:24.000000000 +0900
+--- route.c.orig	2005-01-11 01:52:53.000000000 +0900
++++ route.c	2005-01-18 14:20:27.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1294,7 +1294,7 @@
  			else
  #endif
 -			rn = rnh->rnh_lookup(dst, netmask, rnh);
-+				rn = rnh->rnh_lookup(dst, netmask,(int)dst, rnh);
++				rn = rnh->rnh_lookup(dst,(int)dst, rnh);
  			error = (rn == NULL ||
 -			    (rn->rn_flags & RNF_ROOT) ||
 -			    RNTORT(rn)->rt_ifa != ifa ||

@@ -82,14 +82,14 @@ cd /usr/src/sys/i386/conf/
 config PATRICIA
 
 cd ../compile/PATRICIA
-make cleandepend && make depend && make
+make cleandepend && make depend && make >& make.log
 
 while ( 1 );
 echo -n " Install Now? [Yes/No] "
 set configure = $<
 switch ($configure)
 case [yY][eE][sS]:
-	make install;
+	make install >& install.log;
 	break
 case [nN][oO]:
 	exit
