@@ -1214,4 +1214,4 @@ ptree6_mpath_inithead(void **head, int off)
 #endif
 #endif /* PTREE_MPATH */
 
-#undef dprintf(x)
+#undef dprint

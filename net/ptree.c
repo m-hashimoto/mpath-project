@@ -470,4 +470,4 @@ ptree_delete (struct ptree *t)
 	XRTFREE (t);
 	dprint("ptree_delete End\n");
 }
-#undef dprint(x)
+#undef dprint

@@ -153,7 +153,7 @@ struct ptree {
 #endif /* _KERNEL */
 
 void ptree_node_lock (struct ptree_node *x);
-void ptree_unnode_lock (struct ptree_node *x);
+void ptree_node_unlock (struct ptree_node *x);
 
 struct ptree_node *ptree_lookup (void *key, void *mask, 
 		int keylen, struct ptree *t);
