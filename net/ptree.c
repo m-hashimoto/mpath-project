@@ -45,10 +45,14 @@ ptree_node_create (char *key, int keylen)
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
 	dprint(("--ptree_node_create: x[%p] key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-							x,x->key[0],x->key[1],x->key[2],x->key[3],
-							x->key[4],x->key[5],x->key[6],x->key[7],
-							x->key[8],x->key[9],x->key[10],x->key[11],
-							x->key[12],x->key[13],x->key[14],x->key[15],x->keylen
+							x,(unsigned char)x->key[0],(unsigned char)x->key[1],
+							(unsigned char)x->key[2],(unsigned char)x->key[3],
+							(unsigned char)x->key[4],(unsigned char)x->key[5],
+							(unsigned char)x->key[6],(unsigned char)x->key[7],
+							(unsigned char)x->key[8],(unsigned char)x->key[9],
+							(unsigned char)x->key[10],(unsigned char)x->key[11],
+							(unsigned char)x->key[12],(unsigned char)x->key[13],
+							(unsigned char)x->key[14],(unsigned char)x->key[15],x->keylen
 							));
   return x;
 }
@@ -162,6 +166,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
     }
 
   keylen = nmatch * 8;
+  dprint(("--key_common_len: keylen[%d]\n",keylen));
   bitmask = 0x80;
   diff = keyi[nmatch] ^ keyj[nmatch];
   while (keylen < minkeylen && ! (bitmask & diff))
