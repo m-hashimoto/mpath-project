@@ -400,7 +400,7 @@ ptree_next (struct ptree_node *v)
 
 	ptree_node_lock (v);
 	/* if the left child exists, go left */
-	if (v->child[0])
+	if (v->child[0] && (v->child[0]->rn_flags & RNF_ACTIVE))
 	{
 		w = v->child[0];
 		ptree_node_lock (w);
