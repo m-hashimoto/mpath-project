@@ -89,7 +89,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	int *dupentry;
 {
 	dprint(("-ptree_insert Start\n"));
-	caddr_t v = v_arg + head_off, m = m_arg + head_off;
+	caddr_t v = v_arg, m = m_arg;
 	register caddr_t cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
@@ -97,6 +97,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			len = (int)LEN(m);
 	else
 			len = (int)LEN(v);
+	v = v + head_off; m = m + head_off;
 	dprint(("-ptree_insert: len = %d\n",len));
 	
 	if (!top){
