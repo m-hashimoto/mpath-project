@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 08:11:55.000000000 +0900
++++ route.c	2005-01-27 08:47:55.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,511 @@
+@@ -768,495 +814,505 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1865,15 +1865,14 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				//RT_LOCK_INIT(rt);
-+				//rt->rt_flags = RTF_UP | flags;
-+				//rt->rt_fibnum = fibnum;
-+				//dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
++				RT_LOCK_INIT(rt);
++				rt->rt_flags = RTF_UP | flags;
++				rt->rt_fibnum = fibnum;
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
 +			 */
-+				//RT_LOCK(rt);
++				RT_LOCK(rt);
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						RT_LOCK_DESTROY(rt);
 +						if (ifa != NULL)
@@ -1894,8 +1893,6 @@
 +						bcopy(dst, ndst, dst->sa_len);
 +				/* ? */
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				RT_LOCK_INIT(rt);
-+				RT_LOCK(rt);
 +			/*
 +			 * We use the ifa reference returned by rt_getifa_fib().
 +			 * This moved from below so that rnh->rnh_addaddr() can
@@ -1906,9 +1903,6 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
-+				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n",
-+										rt,rt->rt_ifa,rt->rt_ifp));
 +#ifdef RADIX_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (rn_mpath_capable(rnh) &&
@@ -1981,7 +1975,7 @@
 +								 * more specific than the existing one
 +								 */
 +								rt0 = RNTORT(rn);
-+								//RT_LOCK_INIT(rt0);
++								RT_LOCK_INIT(rt0);
 +								RT_LOCK(rt0);
 +								RT_ADDREF(rt0);
 +								RT_UNLOCK(rt0);
@@ -2096,7 +2090,7 @@
 +						*ret_nrt = rt;
 +						RT_ADDREF(rt);
 +				}
-+				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				dprint(("rtreq_ADD: rn = %p rn_keylen = %d rt_flags = 0x%x\n",rn,rn->keylen,rn->rn_flags));
 +				RT_UNLOCK(rt);
 +				break;
@@ -2114,7 +2108,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1329,77 @@
+@@ -1267,71 +1323,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2127,6 +2121,7 @@
 +		dprint(("rt_setgate Start\n"));
 +		/* XXX dst may be overwritten, can we move this to below */
 +		int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
++		dprint(("rt_setgate: dst_len = %d gate_len  %d\n",dlen,glen));
  #ifdef INVARIANTS
 -	struct radix_node_head *rnh;
 +		struct ptree *rnh;
@@ -2246,7 +2241,7 @@
  }
  
  /*
-@@ -1339,228 +1407,235 @@
+@@ -1339,228 +1402,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
