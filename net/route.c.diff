@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 13:27:05.000000000 +0900
++++ route.c	2005-01-27 13:56:21.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,529 @@
+@@ -768,495 +814,531 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1865,7 +1865,6 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				dprint(("rtreq_ADD: rt->rt_mtx = %p\n",&(rt)->rt_mtx));
 +				RT_LOCK_INIT(rt);
 +				dprint(("rtreq_ADD: RT_LOCK_INIT > rt->rt_mtx = %p\n",
 +										&(rt)->rt_mtx));
@@ -2112,12 +2111,15 @@
 +											&(rt)->rt_mtx));
 +				}
 +				dprint(("rtreq_ADD: rt->rt_mtx = %p\n",&(rt)->rt_mtx));
-+				error = mtx_initialized(&(rt)->rt_mtx);
-+				if(!error)
++				if(error = mtx_initialized(&(rt)->rt_mtx) == 0){
 +					RT_UNLOCK(rt);
-+				dprint(("rtreq_ADD: RT_UNLOCK > rt->rt_mtx = %p\n",
++					dprint(("rtreq_ADD: RT_UNLOCK > rt->rt_mtx = a%p\n",
 +										&(rt)->rt_mtx));
-+				dprint(("rtreq_ADD: set member into the rt(3).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				}
++				else{
++					dprint(("mtx_init error = %d\n",error));
++					senderr(error);
++				}
 +				break;
 +		default:
 +				error = EOPNOTSUPP;
@@ -2133,7 +2135,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1347,78 @@
+@@ -1267,71 +1349,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2266,7 +2268,7 @@
  }
  
  /*
-@@ -1339,228 +1426,235 @@
+@@ -1339,228 +1428,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
