@@ -29,7 +29,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		char str[INET6_ADDRSTRLEN];
 		
 		sa6 = (struct sockaddr_in6 *)pn->key;
-		inet_ntop(AF_INET6, sa6->sin6_addr, str, INET6_ADDRSTRLEN);
+		inet_ntop(AF_INET6, &(sa6->sin6_addr), str, INET6_ADDRSTRLEN);
 		pritnf("[%p] %s ",pn,str);
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
@@ -51,7 +51,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		char str[INET_ADDRSTRLEN];
 		
 		sa = (struct sockaddr_in *)pn->key;
-		inet_ntop(AF_INET, sa->sin_addr, str, INET_ADDRSTRLEN);
+		inet_ntop(AF_INET, &(sa->sin_addr), str, INET_ADDRSTRLEN);
 		pritnf("[%p] %s ",pn,str);
 #if 0
 		if(pn->mask){
