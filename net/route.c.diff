@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-25 06:14:54.000000000 +0900
++++ route.c	2005-01-25 06:20:57.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1850,7 +1850,7 @@
 +						RT_LOCK_INIT(rt);
 +						rt->rt_flags = RTF_UP | flags;
 +						rt->rt_fibnum = fibnum;
-+						dprint(("rtreq_ADD: rt_flags = 0x%x rt_fibnum = %d\n",rt->rt_flags,rt->fibnum));
++						dprint(("rtreq_ADD: rt_flags = 0x%x rt_fibnum = %d\n",rt->rt_flags,rt->rt_fibnum));
 +						/*
 +						 * Add the gateway. Possibly re-malloc-ing the storage for it
 +						 * 
