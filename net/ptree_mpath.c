@@ -127,7 +127,6 @@ static int ptree_satisfies_leaf(char *trial,
 	int vlen = (int)LEN(v);
 	register int b = vlen;
 	dprint(("-ptree_insert Start\n"));
-	dprint(("-ptree_insert: v = %p head = %p\n",v,head));
 	struct ptree_node *top = head->rnh_treetop, *tt;
 	
 	if (!top){
@@ -138,6 +137,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int head_off = top->rn_offset;
 	register struct ptree_node *t = ptree_search(v, vlen, head);
 	cp = v + head_off;
+	dprint(("-ptree_insert: t = %p\n",t));
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{

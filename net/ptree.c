@@ -177,9 +177,9 @@ ptree_search (char *key, int keylen, struct ptree *t)
 		x = x->child[check_bit (key, x->keylen)];
 		dprint(("+-ptree_search: x = %p x->child = %p\n",match,x));
 	}
-/*
- *		ptree_node_lock (match);
- */		
+
+		ptree_node_lock (match);
+ 	
 	dprint(("+-ptree_search End match_node = %p\n",match));
 	return match;
 }
@@ -211,10 +211,9 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 	unsigned char diff;
 
 	dprint(("+-ptree_common_len minkeylen = %d\n",minkeylen));
-	for (i = 0; i < minkeylen / 8; i++)
+	while (nmatch < minkeylen / 8 && keyi[nmatch] == keyj[nmatch] )
 	{
-		if (keyi[i] == keyj[i])
-			nmatch = i + 1;
+			nmatch++;
 	}
 
 	keylen = nmatch * 8;
@@ -352,7 +351,7 @@ ptree_get (key, keylen, t, nodes)
 		else
 		{
 			/* locks the branching node x for the tree holding */
-			//ptree_node_lock (x);
+			ptree_node_lock (x);
 
 			v = ptree_node_create (key, keylen, nodes);
 			if (! v)
@@ -367,7 +366,7 @@ ptree_get (key, keylen, t, nodes)
 	}
 	dprint(("+-ptree_get: t->top = %p get node = %p\n",t->top,v));
 	/* locks for the tree holding */
-	//ptree_node_lock (v);
+	ptree_node_lock (v);
 	dprint(("+-ptree_get End\n"));
 	return v;
 }
@@ -452,21 +451,19 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
-		if( w->rn_flags & RNF_ACTIVE ){
-			//ptree_node_lock (w);
-			//ptree_node_unlock (v);
-			dprint(("+-ptree_next: down left\n"));
-			return w;
+		ptree_node_lock (w);
+		ptree_node_unlock (v);
+		dprint(("+-ptree_next: down left\n"));
+		return w;
 		}
 	}
 
 	if (v->child[1])
 	{
 		w = v->child[1];
-		if( w->rn_flags & RNF_ACTIVE ){
-			//ptree_node_lock (w);
-			//ptree_node_unlock (v);
-			dprint(("+-ptree_next: down right\n"));
+		ptree_node_lock (w);
+		ptree_node_unlock (v);
+		dprint(("+-ptree_next: down right\n"));
 		return w;
 		}
 	}
@@ -483,13 +480,12 @@ ptree_next (struct ptree_node *v)
 
 	if (u->child[0] == v)
 	{
-		if( u->child[1]){
-			w = u->child[1];
-			//ptree_node_lock (w);
-			//ptree_node_unlock (v);
-			dprint(("+-ptree_next: down right 2\n"));
-			return w;
-		}
+		w = u->child[1];
+		if(w)
+			ptree_node_lock (w);
+		ptree_node_unlock (v);
+		dprint(("+-ptree_next: down right 2\n"));
+		return w;
 	}
 
 	t = u->parent;
@@ -506,15 +502,15 @@ ptree_next (struct ptree_node *v)
 		if( t->child[1] ){
 			w = t->child[1];
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));	
-			//ptree_node_lock (w);
-			//ptree_node_unlock (v);
+			ptree_node_lock (w);
+			ptree_node_unlock (v);
 			dprint(("+-ptree_next End (not-yet-traversed right)\n"));
 		return w;
 		}
 	}
 
 	/* end of traverse */
-	//ptree_node_unlock (v);
+	ptree_node_unlock (v);
 	dprint(("+-ptree_next End of traverse\n"));
 	return NULL;
 }
