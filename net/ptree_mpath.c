@@ -56,7 +56,6 @@ static int ptree_satisfies_leaf(char *trial,
 	dprint(("ptree_insert Start\n"));
 	caddr_t v = v_arg;
 	dprint(("v = %x:%x:%x:%x head = %p\n",*v,*v+1,*v+2,*v+3,head));
-	dprint(("v = %s head = %p\n",v,head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
 	register struct ptree_node *t = ptree_search(v, vlen, head);
@@ -121,8 +120,6 @@ ptree_addmask(n_arg, search, skip)
 	void *n_arg;
 {
 	dprint(("ptree_addmask Start\n"));
-	dprint(("search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg));
-
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
 	register caddr_t cp, cplim;
@@ -130,6 +127,7 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
+	dprint(("ptree_addmask: search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg));
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
 	if (skip == 0)  
@@ -147,22 +145,22 @@ ptree_addmask(n_arg, search, skip)
 	if (mlen <= skip) {        
 		if (m0 >= last_zeroed)  
 			last_zeroed = mlen;  
-		dprint(("ptree_addmask End\n"));
+		dprint(("ptree_addmask End if(mlen<=skip)\n"));
 		return (mask_rnhead->rnh_nodes); 
 	}     
 	if (m0 < last_zeroed)  
 		bzero(addmask_key + m0, last_zeroed - m0); 
-	*addmask_key = last_zeroed = mlen;  
-	x = ptree_search(addmask_key, LEN(addmask_key), mask_rnhead);  
+	*addmask_key = last_zeroed = mlen;
+	x = ptree_search(addmask_key, mlen, mask_rnhead);  
 	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
-		dprint(("ptree_addmask End\n"));
+		dprint(("ptree_addmask End if(x||search)\n"));
 		return (x);
 	}	
 	R_Zalloc(x, struct ptree_node *, max_keylen + 2 * sizeof (*x));
 	if ((saved_x = x) == 0){
-		dprint(("ptree_addmask End\n"));
+		dprint(("ptree_addmask End if(saved_x==0)\n"));
 		return (0);
 	}
 	netmask = cp = (caddr_t)(x + 2);
@@ -171,7 +169,7 @@ ptree_addmask(n_arg, search, skip)
 	if (maskduplicated) { 
 		log(LOG_ERR, "rn_addmask: mask impossibly already in tree");
 		Free(saved_x);
-		dprint(("ptree_addmask End\n"));
+		dprint(("ptree_addmask End if(maskduplicated)\n"));
 		return (x);
 	}
 	cplim = netmask + mlen;
@@ -578,8 +576,10 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 	/* Add new route to highest possible ancestor's list */
 	dprint(("ptree_addroute: add new route to highest list\n"));
-	if ((netmask == 0) || (b > t->rn_bit ))
+	if ((netmask == 0) || (b > t->rn_bit )){
+		dprint(("ptree_addroute: can't lift at all\n"));
 		return tt; /* can't lift at all */
+	}
 	b_leaf = tt->rn_bit;
 	do {
 		x = t;
