@@ -383,7 +383,7 @@ ptree_matchaddr(v_arg, head)
 	
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
-	struct ptree_node *saved_t, *x;
+	struct ptree_node *saved_t;
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
