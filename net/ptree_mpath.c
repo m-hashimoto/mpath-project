@@ -53,7 +53,7 @@ debug_node_print(struct ptree_node *pn)
 	//if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
 	printf("data[%p]\n",pn->data);
 	printf("parent[%p] ",pn->parent);
-	printf("[%p, %p]\n",PTREE_LEFT(pn),PTREE_RIGHT(pn));
+	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	//printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
 	//printf("rn_offset %d\n",rn->rn_Off);
 #if 0
