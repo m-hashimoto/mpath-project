@@ -1,10 +1,9 @@
 --- options.i386.orig	2005-02-05 04:10:20.000000000 +0900
-+++ options.i386	2005-02-05 04:11:02.000000000 +0900
-@@ -116,3 +116,7 @@
++++ options.i386	2005-02-25 05:00:46.000000000 +0900
+@@ -116,3 +116,6 @@
  
  NATIVE			opt_global.h
  XEN			opt_global.h
 +
 +#Patricia mpath option
-+#PATRICIA		opt_ptree.h
 +PTREE_MPATH		opt_ptree.h
