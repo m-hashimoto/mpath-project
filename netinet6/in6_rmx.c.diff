@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-01-20 01:10:47.000000000 +0900
++++ in6_rmx.c	2005-01-20 02:22:55.000000000 +0900
 @@ -112,17 +112,19 @@
  #endif
  
@@ -201,7 +201,15 @@
  		return 0;		/* See above */
  
  	if (off == 0)		/* See above */
-@@ -435,6 +455,7 @@
+@@ -428,6 +448,7 @@
+ 	V_rtq_timeout6 = RTQ_TIMEOUT;
+ 
+ 	rnh = *head;
++	dprint(("in6_inithead: rnh = %p\n",rnh));
+ 	KASSERT(rnh == rt_tables_get_rnh(0, AF_INET6), ("rnh?"));
+ 	rnh->rnh_addaddr = in6_addroute;
+ 	rnh->rnh_matchaddr = in6_matroute;
+@@ -435,6 +456,7 @@
  	callout_init(&V_rtq_mtutimer, CALLOUT_MPSAFE);
  	in6_rtqtimo(curvnet);	/* kick off timeout first time */
  	in6_mtutimo(curvnet);	/* kick off timeout first time */
@@ -209,7 +217,7 @@
  	return 1;
  }
  
-@@ -448,3 +469,4 @@
+@@ -448,3 +470,4 @@
  	return (1);
  }
  #endif
