@@ -59,7 +59,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int vlen = (int)LEN(v);
 	register int b = vlen;
 	dprint(("ptree_insert Start\n"));
-	dprint(("ptree_insert: v = %d:%d:%d:%d vlen = %d head = %p\n",
+	dprint(("ptree_insert: v = %x:%x:%x:%x vlen = %d head = %p\n",
 				v[0],v[1],v[2],v[3],vlen,head));
 	struct ptree_node *top = head->rnh_treetop;
 	
@@ -142,7 +142,7 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
-	dprint(("ptree_addmask: search = %d, skip = %d, netmask = %d:%d:%d:%d\n",
+	dprint(("ptree_addmask: search = %d, skip = %d, netmask = %x:%x:%x:%x\n",
 				search,skip,netmask[0],netmask[1],netmask[2],netmask[3]));
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
@@ -364,7 +364,7 @@ ptree_matchaddr(v_arg, head)
 	dprint(("ptree_matchaddr Start\n"));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top, *x;
-	dprint(("ptree_matchaddr: v = %d:%d:%d:%d head = %p top = %p\n",
+	dprint(("ptree_matchaddr: v = %x:%x:%x:%x head = %p top = %p\n",
 				v[0],v[1],v[2],v[3],head,t));
 	if(!t){
 		dprint(("ptree_matchaddr: top = NULL\n"));
@@ -972,16 +972,18 @@ ptree_walktree(h, f, w)
 		return (0);
 	}
 
+	dprint(("ptree_walktree: treetop = %x:%x:%x:%x\n",
+			rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
 	for (;;) {
 		base = rn;
 		next = ptree_next(base);
-		dprint(("ptree_walktree: base = %x:%x:%x:%x\n",
-					rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
 		if( !next ){
 			dprint(("ptree_walktree End (next == NULL)\n"));
 			return (0);
 		}
 		rn = next;
+		dprint(("ptree_walktree: next = %x:%x:%x:%x\n",
+			rn->key[0],rn->key[1],rn->key[2],rn->key[3]));
 	}
 	/* NOTREACHED */
 	dprint(("ptree_walktree End\n"));
@@ -1013,8 +1015,6 @@ ptree_inithead(head, off)
 	//t = ptree_add(rn_zeros,off,data,rnh);
 	//t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 	t = NULL;
-	dprint(("ptree_inithead: head = %p len = %d flag = %d\n",
-				t,t->keylen,t->rn_flags));
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
 #endif
@@ -1025,7 +1025,7 @@ ptree_inithead(head, off)
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
-	dprint(("ptree_inithead End 3\n"));
+	dprint(("ptree_inithead End (success)\n"));
 	return (1);
 }
 
