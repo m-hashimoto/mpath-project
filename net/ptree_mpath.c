@@ -14,8 +14,9 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
-#include <sys/types.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
+#include <netinet6/in6.h>
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
