@@ -92,10 +92,9 @@ struct ptree_node
 					   	struct ptree_node *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
-#ifdef DEBUG
+
 int debug_node_print(struct ptree_node *);
 int debug_tree_print(struct ptree_node_head *);
-#endif
 
 #ifdef PTREE_MPATH
 #ifdef _KERNEL
