@@ -169,6 +169,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
   keylen = nmatch * 8;
   bitmask = 0x80;
   diff = keyi[nmatch] ^ keyj[nmatch];
+  dprint(("--key_common_len: diff[%d]\n",diff));
   while (keylen < minkeylen && ! (bitmask & diff))
     {
       keylen++;
@@ -187,8 +188,9 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
   struct ptree_node *x;
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
+  dprint(("--key_common: keylen[%d]\n",keylen));
   x = ptree_node_create (keyi, keylen);
-  dprint(("--key_common: x[%p] keylen[%d]\n",x,keylen));
+  dprint(("--key_common: x[%p]\n",x));
   if (! x)
     return NULL;
 
