@@ -32,6 +32,7 @@ ptree_node_create (char *key, int keylen)
   XRTMALLOC(x, struct ptree_node *, len);
   if (! x)
     return NULL;
+
 	dprint(("--ptree_node_create: malloc x[%p] len[%d]\n",x,len));
 
   x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
@@ -40,7 +41,7 @@ ptree_node_create (char *key, int keylen)
   x->child[0] = NULL;
   x->child[1] = NULL;
   x->data = NULL;
-  x->lock = NULL;
+  x->lock = 0;
 
   /* fill in the key */
   memcpy (x->key, key, keylen);
