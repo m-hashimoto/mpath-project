@@ -1,5 +1,5 @@
 --- ip_fw2.c.orig	2005-02-06 20:25:32.000000000 +0900
-+++ ip_fw2.c	2005-02-06 21:07:53.000000000 +0900
++++ ip_fw2.c	2005-02-06 21:19:06.000000000 +0900
 @@ -65,7 +65,7 @@
  #include <sys/ucred.h>
  #include <net/ethernet.h> /* for ETHERTYPE_IP */
@@ -87,16 +87,17 @@
  	struct table_entry *ent;
  	struct sockaddr_in sa;
  
-@@ -1943,7 +1943,7 @@
+@@ -1943,7 +1943,8 @@
  	rnh = ch->tables[tbl];
  	sa.sin_len = 8;
  	sa.sin_addr.s_addr = addr;
 -	ent = (struct table_entry *)(rnh->rnh_lookup(&sa, NULL, rnh));
-+	ent = (struct table_entry *)(rnh->rnh_lookup((char *)sa, (int)sa->sin_len, rnh->pnh_treetop));
++	ent = (struct table_entry *)
++			(rnh->rnh_lookup((char *)sa, (int)sa.sin_len, rnh->pnh_treetop));
  	if (ent != NULL) {
  		*val = ent->value;
  		return (1);
-@@ -1952,7 +1952,7 @@
+@@ -1952,7 +1953,7 @@
  }
  
  static int
@@ -105,7 +106,7 @@
  {
  	u_int32_t * const cnt = arg;
  
-@@ -1963,7 +1963,7 @@
+@@ -1963,7 +1964,7 @@
  static int
  count_table(struct ip_fw_chain *ch, uint32_t tbl, uint32_t *cnt)
  {
@@ -114,7 +115,7 @@
  
  	if (tbl >= IPFW_TABLES_MAX)
  		return (EINVAL);
-@@ -1974,7 +1974,7 @@
+@@ -1974,7 +1975,7 @@
  }
  
  static int
@@ -123,7 +124,7 @@
  {
  	struct table_entry * const n = (struct table_entry *)rn;
  	ipfw_table * const tbl = arg;
-@@ -1997,7 +1997,7 @@
+@@ -1997,7 +1998,7 @@
  static int
  dump_table(struct ip_fw_chain *ch, ipfw_table *tbl)
  {
