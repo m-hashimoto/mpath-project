@@ -22,15 +22,15 @@
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
 	static struct ptree_node *
-ptree_node_create (char *key, int keylen)
+ptree_node_create (char *key, int keylen, struct ptree_node *nodes)
 {
 	dprint(("+-ptree_node_create Start\n"));
-	struct ptree_node *x;
-	int len;
+	struct ptree_node *x = nodes;
+	//int len;
 
-	len = sizeof (struct ptree_node) + keylen / 8 + 1;
+	//len = sizeof (struct ptree_node) + keylen / 8 + 1;
 
-	XRTMALLOC(x, struct ptree_node *, len);
+	//XRTMALLOC(x, struct ptree_node *, len);
 	if (! x)
 		return NULL;
 
@@ -224,7 +224,10 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 /* ptree_common() creates and returns the branching node
    between keyi and keyj */
 	static struct ptree_node *
-ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
+ptree_common (keyi, keyilen, keyj, keyjlen, nodes)
+		char *keyi, *keyj;
+		int keyilen, keyjlen;
+		struct ptree_node *nodes;
 {
 	dprint(("+-ptree_common Start\n"));
 	int keylen;
@@ -232,7 +235,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 
 	keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
 	dprint(("+-ptree_common: keylen = %d\n",keylen));
-	x = ptree_node_create (keyi, keylen);
+	x = ptree_node_create (keyi, keylen, nodes);
 	if (! x){
 		dprint(("+-ptree_common End: NULL\n"));
 		return NULL;
@@ -266,7 +269,11 @@ ptree_node_unlock (struct ptree_node *x)
 /* locks for the tree holding
    but does not lock for the caller reference. */
 	static struct ptree_node *
-ptree_get (char *key, int keylen, struct ptree *t)
+ptree_get (key, keylen, t, nodes)
+		char *key;
+		int keylen;
+		struct ptree *t;
+		struct ptree_node *nodes;
 {
 	dprint(("+-ptree_get Start\n"));
 	struct ptree_node *x;
@@ -286,7 +293,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
 	if (! x)
 	{
-		v = ptree_node_create (key, keylen);
+		v = ptree_node_create (key, keylen, nodes);
 		if (u){
 			ptree_link (u, v);
 			dprint(("+-ptree_get: if(!x) new_node = %p\n",v));
@@ -304,7 +311,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 		w = x;
 
 		/* create branching node */
-		x = ptree_common (key, keylen, w->key, w->keylen);
+		x = ptree_common (key, keylen, w->key, w->keylen, nodes);
 		if (! x)
 		{
 			XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
@@ -332,7 +339,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 			/* locks the branching node x for the tree holding */
 			ptree_node_lock (x);
 
-			v = ptree_node_create (key, keylen);
+			v = ptree_node_create (key, keylen, nodes);
 			if (! v)
 			{
 				XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
@@ -351,14 +358,19 @@ ptree_get (char *key, int keylen, struct ptree *t)
 }
 
 	struct ptree_node *
-ptree_add (char *key, int keylen, void *data, struct ptree *t)
+ptree_add (key, keylen, data, t, nodes)
+		char *key;
+		int keylen;
+		void *data;
+		struct ptree *t;
+		struct ptree_node *nodes;
 {
 	dprint(("+-ptree_add Start\n"));
 	dprint(("+-ptree_add: key = %p keylen = %d ptree = %p\n",
 				key,keylen,t));
 	struct ptree_node *x;
 
-	x = ptree_get (key, keylen, t);
+	x = ptree_get (key, keylen, t, nodes);
 	if (! x)
 	{
 		XRTLOG (LOG_ERR, "ptree_add(%p,%d): "

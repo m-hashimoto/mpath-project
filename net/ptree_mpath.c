@@ -124,7 +124,7 @@ on2:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		tt = ptree_add(v, b, data, head);
+		tt = ptree_add(v, b, data, head, nodes);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
@@ -518,9 +518,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
-		dprint(("-ptree_addroute: tt = %p nodes = %p",tt,treenodes));
+		dprint(("-ptree_addroute: tt = %p nodes = %p\n",tt,treenodes));
 		saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
-		dprint(("-ptree_addroute: tt = %p nodes = %p",tt,treenodes));
+		dprint(("-ptree_addroute: tt = %p nodes = %p\n",tt,treenodes));
 		dprint(("-ptree_addroute: keyduplicated = %d\n",keyduplicated));
 		if (keyduplicated) {
 				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
