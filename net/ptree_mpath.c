@@ -25,8 +25,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 {
 	struct rtentry *rt = pn->data;
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
-
-	if(offset = 8){
+	
+	if(offset == 8){ /* IPv6 */
 		if(pn->key){
 			printf("[%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d.%3d/%3d]\n",
 					(unsigned char)pn->key[8],(unsigned char)pn->key[9],
@@ -47,7 +47,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 					(unsigned char)gateway[18],(unsigned char)gateway[19]);
 		}
 		printf("[0x%x]\n",rt->rt_flags);
-	} else {
+	} else { /* IPv4 */
 		if(pn->key){
 			printf("[%3d.%3d.%3d.%3d/%3d] ",
 					(unsigned char)pn->key[4],(unsigned char)pn->key[5],
