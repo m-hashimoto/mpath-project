@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 09:17:55.000000000 +0900
++++ route.c	2005-02-11 09:44:03.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1171,7 +1171,7 @@
  }
  
  /*
-@@ -768,495 +780,562 @@
+@@ -768,495 +780,564 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1866,10 +1866,12 @@
 +				 */
 +				dprint(("rtreq_DELETE: test3\n"));
 +				if (ret_nrt) {
++						dprint(("rtreq_DELETE: if(ret_nrt)\n"));
 +						*ret_nrt = rt;
 +						RT_UNLOCK(rt);
 +				} else
 +						RTFREE_LOCKED(rt);
++				dprint(("rtreq_DELETE: test4\n"));
 +				break;
 +		case RTM_RESOLVE:
 +				dprint(("case RTM_RESOLVE:\n"));
@@ -2156,7 +2158,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1346,70 @@
+@@ -1267,71 +1348,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2281,7 +2283,7 @@
  }
  
  /*
-@@ -1339,228 +1417,232 @@
+@@ -1339,228 +1419,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
