@@ -447,7 +447,7 @@ ptree_init()
  */
 #ifdef PTREE_MPATH
 		int
-ptree_mpath_capable(struct ptree *pnh)
+ptree_mpath_capable(struct ptree_node_head *pnh)
 {
 		return pnh->pnh_multipath;
 }
@@ -489,7 +489,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 
 		/* beyond here, we use rn as the master copy */
 		do {
-				rt = match;
+				rt = *match;
 				/*
 				 * we are removing an address alias that has 
 				 * the same prefix as another address
@@ -507,7 +507,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				i++;
 		} while ( (match++) != NULL);
 
-		return match;
+		return *match;
 }
 
 /* 
@@ -545,7 +545,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
  * check if we have the same key/mask/gateway on the table already.
  */
 		int
-rt_mpath_conflict(struct ptree *pnh, struct rtentry *rt,
+rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				struct sockaddr *netmask)
 {
 		struct ptree_node *rn;
@@ -555,7 +555,7 @@ rt_mpath_conflict(struct ptree *pnh, struct rtentry *rt,
 		int l;
 		l = (int)LEN(rt_key(rt));
 
-		rn = rnh->rnh_lookup(rt_key(rt), l, pnh);
+		rn = pnh->pnh_lookup(rt_key(rt), l, pnh->pnh_treetop);
 		if (!rn)
 				return 0;
 

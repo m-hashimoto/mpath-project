@@ -101,10 +101,10 @@ struct sockaddr;
 /*
  * Patricia trie API with multipath support
  */
-int     ptree_mpath_capable(struct ptree *);
+int     ptree_mpath_capable(struct ptree_node_head *);
 u_int32_t ptree_mpath_count(struct rtentry *);
 struct rtentry *rt_mpath_matchgate(struct rtentry *, struct sockaddr *);
-int rt_mpath_conflict(struct ptree *, struct rtentry *,
+int rt_mpath_conflict(struct ptree_node_head *, struct rtentry *,
 				struct sockaddr *);
 void rtalloc_mpath_fib(struct route *, u_int32_t, u_int);
 #define rtalloc_mpath(_route, _hash) rtalloc_mpath_fib((_route), (_hash), 0)
