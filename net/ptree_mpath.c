@@ -406,9 +406,11 @@ ptree_matchaddr(v_arg, head)
 	 * Never return the root node itself, it seems to cause a
 	 * lot of confusion.
 	 */
+#if 0
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
-	dprint((" ptree_matchaddr End: return saved_t\n"));
+#endif
+	dprint((" ptree_matchaddr End: return saved_t = %p\n",saved_t));
 	return t;
 on1:
 	dprint((" ptree_matchaddr: on1\n"));
