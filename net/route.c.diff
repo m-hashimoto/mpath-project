@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-03-11 03:17:36.000000000 +0900
++++ route.c	2005-03-11 03:35:44.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1804,7 +1804,7 @@
 -						RTFREE(rt0);
 -						rt0 = NULL;
 -					}
-+				rn = rnh->rnh_deladdr(dst, gateway, rnh);
++				rn = rnh->rnh_deladdr(dst, ret_nrt->rt_gateway, rnh);
 +				if (rn == NULL)
 +						senderr(ESRCH);
 +#if 0
