@@ -331,7 +331,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
-#ifdef PTREE_MPATH
+#if 0
 		struct rtentry *headrt, *rt;
 		headrt = 		
 
