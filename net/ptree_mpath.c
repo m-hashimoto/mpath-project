@@ -229,7 +229,7 @@ ptree_matchaddr(v_arg, head)
 		goto miss;
 	}
 	
-	register caddr_t cp = v, cp2;
+	register caddr_t cp;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
 	int vlen;
@@ -253,12 +253,12 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
 #endif
-	cp2 = t->key; cplim = v;
-	dprint(("-ptree_matchaddr: cp2[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
-							(unsigned char)cp2[0],(unsigned char)cp2[1],
-							(unsigned char)cp2[2],(unsigned char)cp2[3],
-							(unsigned char)cp2[4],(unsigned char)cp2[5],
-							(unsigned char)cp2[6],(unsigned char)cp2[7],
+	cp = t->key; cplim = v;
+	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
+							(unsigned char)cp[0],(unsigned char)cp[1],
+							(unsigned char)cp[2],(unsigned char)cp[3],
+							(unsigned char)cp[4],(unsigned char)cp[5],
+							(unsigned char)cp[6],(unsigned char)cp[7],
 							t->keylen));
 	dprint(("-ptree_matchaddr:"));
 #if 0
@@ -270,7 +270,7 @@ ptree_matchaddr(v_arg, head)
 		}
 	}
 #endif
-	if ( !memcmp(cp2,cplim,t->keylen) )
+	if ( !memcmp(cp,cplim,t->keylen) )
 			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
