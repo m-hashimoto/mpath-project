@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-03-07 08:26:23.000000000 +0900
++++ route.h	2005-03-07 08:32:51.000000000 +0900
 @@ -33,6 +33,7 @@
  #ifndef _NET_ROUTE_H_
  #define _NET_ROUTE_H_
@@ -22,7 +22,7 @@
  #endif
  struct rtentry {
 -	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
-+	struct	ptree_node rt_nodes;	/* tree glue, and other values */
++	struct	ptree_node *rt_nodes;	/* tree glue, and other values */
  	/*
  	 * XXX struct rtentry must begin with a struct radix_node (or two!)
  	 * because the code does some casts of a 'struct radix_node *'
