@@ -64,7 +64,7 @@ debug_node_print(struct ptree_node *rn)
 		printf("/*+++++++++++++++++++++++++*/\n");
 		rm = rm->rm_mklist;
 	}
-	printf("/*-------------------------*/\n\n");
+	printf("/*-------------------------*/\n");
 	return 0;
 }
 
@@ -73,6 +73,7 @@ debug_tree_print(struct ptree *rnh)
 {
 		register struct ptree_node *rn, *next;
 		rn = rnh->rnh_treetop;
+		printf("======= Debug tree print Start =======\n");
 		printf("ptree = %p treetop = %p\n",rnh,rn);
 		if(!rn)
 			return (0);
@@ -85,6 +86,7 @@ debug_tree_print(struct ptree *rnh)
 			rn = next;
 		}
 		/* NOTREACHED */
+		printf("======= Debug tree print End =======\n");
 }
 #endif /* DEBUG */
 	
