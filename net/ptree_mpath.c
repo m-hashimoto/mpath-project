@@ -27,6 +27,39 @@ static int  max_keylen;
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
+	if(pn->data){
+		struct rtentry *rt = pn->data;
+
+		printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] ",
+						(unsigned char)pn->key[0],(unsigned char)pn->key[1],
+						(unsigned char)pn->key[2],(unsigned char)pn->key[3],
+						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
+						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
+						(unsigned char)pn->key[8],(unsigned char)pn->key[9],
+						(unsigned char)pn->key[10],(unsigned char)pn->key[11],
+						(unsigned char)pn->key[12],(unsigned char)pn->key[13],
+						(unsigned char)pn->key[14],(unsigned char)pn->key[15],
+						pn->keylen - 8*offset);
+		printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d] ",
+						(unsigned char)rt->rt_gateway[0],
+						(unsigned char)rt->rt_gateway[1],
+						(unsigned char)rt->rt_gateway[2],
+						(unsigned char)rt->rt_gateway[3],
+						(unsigned char)rt->rt_gateway[4],
+						(unsigned char)rt->rt_gateway[5],
+						(unsigned char)rt->rt_gateway[6],
+						(unsigned char)rt->rt_gateway[7],
+						(unsigned char)rt->rt_gateway[8],
+						(unsigned char)rt->rt_gateway[9],
+						(unsigned char)rt->rt_gateway[10],
+						(unsigned char)rt->rt_gateway[11],
+						(unsigned char)rt->rt_gateway[12],
+						(unsigned char)rt->rt_gateway[13],
+						(unsigned char)rt->rt_gateway[14],
+						(unsigned char)rt->rt_gateway[15]);
+		printf("[0x%x]\n",rt->rt_flags);
+	}
+#if 0
 	printf("node[%p] ",pn);
 	if( pn->key ){
 		printf("key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] ",
@@ -41,7 +74,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 						pn->keylen - 8*offset);
 	}
 	printf("data[%p] ",pn->data);
-#if 0
 	if( pn->data ){
 		struct rtentry *rt = pn->data;
 		unsigned char *gate = (unsigned char *)rt->rt_gateway;
@@ -51,8 +83,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 						(unsigned char)gate[4],(unsigned char)gate[5],
 						(unsigned char)gate[6],(unsigned char)gate[7]);
 	}
-#endif
 	printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
+#endif
 	return 0;
 }
 
@@ -65,6 +97,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			    goto done;
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
+		printf("	dst			gateway			flags\n");
 		if(!pn)
 			goto done;
 		for (;;) {
