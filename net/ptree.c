@@ -250,7 +250,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
 		struct sockaddr *sa = (struct sockaddr *)key;
 		struct ptree_node_head *pnh;
-		if (sa->sa_family = 2) /* AF_INET */
+		if (sa->sa_family == AF_INET) /* AF_INET */
 			pnh = rt_tables_get_rnh(0,2);
 		else /* AF_INET6 */
 			pnh = rt_tables_get_rnh(0,28);
