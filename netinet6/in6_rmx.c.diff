@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-01-19 15:58:39.000000000 +0900
++++ in6_rmx.c	2005-01-19 17:00:32.000000000 +0900
 @@ -112,17 +112,19 @@
  #endif
  
@@ -117,8 +117,8 @@
  	arg.draining = arg.updating = 0;
  	RADIX_NODE_HEAD_LOCK(rnh);
 +	dprint(("in6_rtqtimo: LOCK rnh\n"));
++	dprint(("in6_rtqtimo: walktree rnh = %p arg = %p\n",rnh,&arg));
  	rnh->rnh_walktree(rnh, in6_rtqkill, &arg);
-+	dprint(("in6_rtqtimo: walktree rnh\n"));
  	RADIX_NODE_HEAD_UNLOCK(rnh);
 +	dprint(("in6_rtqtimo: UNLOCK rnh\n"));
  
