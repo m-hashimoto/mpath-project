@@ -52,7 +52,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 #ifdef PTREE_MPATH
 	if(pn->data){
 		int i = 0;
-		struct rtentry *rt0 = pn->data;
+		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 	
 		printf("%12s ","gateway");
@@ -64,19 +64,19 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 		dprint(("-debug_node_print: mrt[%p]\n",mrt));
-		dprint(("-debug_node_print: mrt[0]=%p\n",mrt[0]));
-		while(mrt[i]){
-				printf("mrt[%d]=%p\n",i,mrt[i]);
+		while(mrt){
+			printf("mrt[%p]\n",mrt);
+			rt = mrt;	
 			if(offset == 8){
 				printf("%13s","+");
-				sprint_inet_ntoa(AF_INET6,mrt[i]->rt_gateway);
-				printf(" flags[0x%x]\n",mrt[i]->rt_flags);
+				sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
+				printf(" flags[0x%x]\n",rt->rt_flags);
 			} else {
 				printf("%13s","+");
-				sprint_inet_ntoa(AF_INET,mrt[i]->rt_gateway);
-				printf(" flags[0x%x]\n",mrt[i]->rt_flags);
+				sprint_inet_ntoa(AF_INET,rt->rt_gateway);
+				printf(" flags[0x%x]\n",rt->rt_flags);
 			}
-			i++;
+			mrt++;
 		}
 	}
 #endif
