@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-08 18:32:24.000000000 +0900
++++ route.c	2005-02-08 18:50:45.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,555 @@
+@@ -768,495 +780,551 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1909,10 +1909,8 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(ENOBUFS);
 +				}
-+				dprint(("case rtreq_ADD: test print2\n"));
 +				bcopy(dst, new, dlen);
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
-+				dprint(("case rtreq_ADD: test print3\n"));
 +#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
@@ -1944,7 +1942,6 @@
 +			 * This moved from below so that rnh->rnh_addaddr() can
 +			 * examine the ifa and  ifa->ifa_ifp if it so desires.
 +			 */
-+				dprint(("case rtreq_ADD: test print4\n"));
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
@@ -2030,8 +2027,10 @@
 -			uma_zfree(V_rtzone, rt);
 +				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",rt,rt->rt_nodes));
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",rt,rt->rt_nodes));
 +				rt->rt_nodes = rn;
-+				dprint(("rtreq_ADD: rn = %p rt_nodes = %p\n",rn,rt->rt_nodes));
++				rn->data = rt;
++				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",rt,rt->rt_nodes));
 +#if 0
 +				/* gateway Re-set */
 +				rt->rt_gateway = saved_gateway;
@@ -2100,19 +2099,16 @@
 +				 * If this protocol has something to add to this then
 +				 * allow it to do that as well.
 +				 */
-+				dprint(("rtreq_ADD: test print 1\n"));
 +				if (ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(req, rt, info);
 +				/*
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
-+				dprint(("rtreq_ADD: test print 2\n"));
 +				if (ret_nrt) {
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
 +				}
-+				dprint(("rtreq_ADD: test print 3\n"));
 +				
 +				if( mtx_initialized(&(rt)->rt_mtx) ){
 +					RT_UNLOCK(rt);
@@ -2141,7 +2137,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1339,70 @@
+@@ -1267,71 +1335,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2266,7 +2262,7 @@
  }
  
  /*
-@@ -1339,228 +1410,232 @@
+@@ -1339,228 +1406,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
