@@ -729,26 +729,28 @@ ptree_deladdr(v_arg, netmask_arg, head)
 {
 		dprint(("-ptree_deladdr Start\n"));
 		register struct ptree_node *x, *tt;
-		//struct ptree_mask *m, *saved_m, **mp;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
-		int vlen, mlen;
+		int len;
 
 		v = v_arg;
 		netmask = netmask_arg;
-		x = head->pnh_top;
-		vlen =  LEN(v);
-		mlen =  LEN(netmask);
-		dprint(("-ptree_deladdr: vlen = %d mlen = %d\n",vlen,mlen));
-		tt = ptree_search(v, mlen, head->pnh_treetop);
+		top = head->pnh_top;
+		if (netmask)
+			len =  LEN(netmask);
+		else
+			len =  LEN(v);
+
+		dprint(("-ptree_deladdr: len = %d\n",len));
+		tt = ptree_search(v, len, head->pnh_treetop);
 		dprint(("-ptree_deladdr: testprint\n"));
 		//head_off = x->rn_offset;
 		saved_tt = tt;
-		top = x;
 		if (tt == 0/* || bcmp(v + head_off, tt->rn_key + head_off, vlen - head_off)*/){
 				dprint(("-ptree_deladdr End1: return 0\n"));
 				return (0);
 		}
+		ptree_remove(saved_tt);
 		/*
 		 * Delete our route from mask lists.
 		 */
