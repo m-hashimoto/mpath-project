@@ -54,7 +54,7 @@ ptree_node_create (char *key, int keylen)
 #ifdef PTREE_MPATH
 	x->mpath_array = 0;
 #endif
-	dprint(("ptree_node_create: new node = %p len = %d\n",x,len));
+	dprint(("ptree_node_create: new node = %p keylen = %d\n",x,keylen));
 	dprint(("ptree_node_create End\n"));
 	return x;
 }
