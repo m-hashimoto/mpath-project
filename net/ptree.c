@@ -56,7 +56,7 @@ ptree_node_create (char *key, int keylen)
 	XRTMALLOC(array, struct ptree_node **,
 		       	sizeof(struct ptree_node *) * MAX_MPATH);
 	array = NULL;
-	x->mpath_array = array;
+	x->mpath_array = &array;
 #endif
 	dprint(("+-ptree_node_create: new node = %p keylen = %d\n",x,keylen));
 	dprint(("+-ptree_node_create End\n"));
