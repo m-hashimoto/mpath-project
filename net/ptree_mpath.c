@@ -13,6 +13,12 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
+#ifdef DEBUG
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
+
 static char *rn_zeros, *rn_ones, *addmask_key;
 static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
