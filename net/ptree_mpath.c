@@ -610,7 +610,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				dprint(("-ptree_addroute: put netmask in %p\n",tt));
 				tt->rn_mask = netmask;
 				tt->rn_bit = x->rn_bit;
-				tt->rn_flags |= x->rn_flags & RNF_ACTIVE;
+				tt->rn_flags = RNF_ACTIVE;
 		}
 
 		t = saved_tt;
