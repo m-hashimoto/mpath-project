@@ -1,5 +1,5 @@
 --- ip_fw2.c.orig	2005-02-06 20:25:32.000000000 +0900
-+++ ip_fw2.c	2005-02-06 21:34:58.000000000 +0900
++++ ip_fw2.c	2005-02-06 21:40:56.000000000 +0900
 @@ -65,7 +65,7 @@
  #include <sys/ucred.h>
  #include <net/ethernet.h> /* for ETHERTYPE_IP */
@@ -93,7 +93,7 @@
  	sa.sin_addr.s_addr = addr;
 -	ent = (struct table_entry *)(rnh->rnh_lookup(&sa, NULL, rnh));
 +	ent = (struct table_entry *)
-+			(rnh->rnh_lookup((caddr_t)sa, (int)sa.sin_len, rnh->pnh_treetop));
++			(rnh->rnh_lookup((char *)addr, (int)sa.sin_len, rnh->pnh_treetop));
  	if (ent != NULL) {
  		*val = ent->value;
  		return (1);
