@@ -76,17 +76,18 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-//void     ptree_init(void);
-//int      ptree_inithead(void **, int),
-//		 ptree_refines(void *, void *);
-//struct ptree_node *ptree_addroute (void *, void *, struct ptree_node_head *),
-//				  *ptree_deladdr(void *, void *, struct ptree_node_head *),
-//				  *ptree_matchaddr(void *, struct ptree_node_head *);
+void     ptree_init(void);
+int      ptree_inithead(void **, int),
+		 ptree_refines(void *, void *);
+struct ptree_node
+				*ptree_addroute (void *, void *, struct ptree_node_head *),
+				*ptree_deladdr(void *, void *, struct ptree_node_head *),
+				*ptree_matchaddr(void *, struct ptree_node_head *);
 
 /*
  * Patricia trie API with multipath support
  */
-#if 0
+#ifdef PTREE_MPATH
 struct route;
 struct rtentry;
 struct sockaddr;
