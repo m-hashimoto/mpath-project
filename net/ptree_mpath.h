@@ -23,8 +23,9 @@ typedef int walktree_f_t(struct ptree_node *, void *);
 
 struct ptree_node_head {
 		struct ptree *pnh_treetop;
-		int      pnh_addsize;           /* permit, but not require fixed keys */
-		int      pnh_pktsize;           /* permit, but not require fixed keys */
+//		int     pnh_addsize;    /* permit, but not require fixed keys */
+//		int     pnh_pktsize;    /* permit, but not require fixed keys */
+		int		head_offset;	/* IPv4:32 IPv6:64 */
 #ifdef PTREE_MPATH
 		int		pnh_multipath;
 #endif /* PTREE_MPATH */
@@ -42,7 +43,6 @@ struct ptree_node_head {
 				(void *v, struct ptree_node_head *head);
 		struct  ptree_node *(*rnh_lookup)       /* locate based on sockaddr */
 				(char *key, int keylen, struct ptree *top);
-				//(void *v, void *mask, int keylen, struct ptree_node_head *head);
 		struct  ptree_node *(*rnh_matchpkt)     /* locate based on packet hdr */
 				(void *v, struct ptree_node_head *head);
 		int     (*rnh_walktree)                 /* traverse tree */

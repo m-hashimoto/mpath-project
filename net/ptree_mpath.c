@@ -476,7 +476,7 @@ ptree_walktree(h, f, w)
 		int
 ptree_inithead(void **head, int off)
 {
-		dprint(("-ptree_inithead Start\n"));
+		dprint(("-ptree_inithead Start off[%d]\n",off));
 		register struct ptree_node_head *pnh;
 		register struct ptree *top;
 		register struct ptree_node *t;
