@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 11:21:11.000000000 +0900
++++ route.c	2005-01-27 11:31:24.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,521 @@
+@@ -768,495 +814,520 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1914,7 +1914,8 @@
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
 +			 */
-+				//RT_LOCK(rt);
++				RT_LOCK(rt);
++				dprint(("rtreq_ADD: RT_LOCK\n"));
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
 +						RT_LOCK_DESTROY(rt);
@@ -2028,8 +2029,6 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				RT_LOCK(rt);
-+				dprint(("rtreq_ADD: RT_LOCK\n"));
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				dprint(("rtreq_ADD: ndst into the rnh = %p\n",rnh));
 +				
@@ -2125,7 +2124,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1339,78 @@
+@@ -1267,71 +1338,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2258,7 +2257,7 @@
  }
  
  /*
-@@ -1339,228 +1418,235 @@
+@@ -1339,228 +1417,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
