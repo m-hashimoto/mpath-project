@@ -1,11 +1,11 @@
---- ip_fw.h.org	2010-09-28 10:24:34.000000000 +0900
-+++ ip_fw.h	2010-09-28 10:25:04.000000000 +0900
+--- ip_fw.h.orig	2005-02-06 20:41:02.000000000 +0900
++++ ip_fw.h	2005-02-06 20:41:43.000000000 +0900
 @@ -667,7 +667,7 @@
  	struct ip_fw	*rules;		/* list of rules */
  	struct ip_fw	*reap;		/* list of rules to reap */
  	LIST_HEAD(, cfg_nat) nat;       /* list of nat entries */
 -	struct radix_node_head *tables[IPFW_TABLES_MAX];
-+	struct ptree *tables[IPFW_TABLES_MAX];
++	struct ptree_node_head *tables[IPFW_TABLES_MAX];
  	struct rwlock	rwmtx;
  	uint32_t	id;		/* ruleset id */
  };
