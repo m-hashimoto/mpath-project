@@ -1,10 +1,10 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-01-19 14:20:01.000000000 +0900
++++ in6_rmx.c	2005-01-19 14:29:26.000000000 +0900
 @@ -112,17 +112,18 @@
  #endif
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
-+#define dprint (x) { if(DEBUG) printf x; }
++#define dprint(x) { if(DEBUG) printf x; }
  
  /*
   * Do what we need to do when inserting a route.
@@ -121,3 +121,8 @@
  	return 1;
  }
  
+@@ -448,3 +451,4 @@
+ 	return (1);
+ }
+ #endif
++#undef dprint
