@@ -16,7 +16,7 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x;}
 
 static struct ptree_node 
@@ -493,14 +493,12 @@ ptree_next (struct ptree_node *v)
 	if (t)
 	{
 		/* return the not-yet-traversed right-child node */
-		if( t->child[1] ){
 			w = t->child[1];
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));	
 			ptree_node_lock (w);
 			ptree_node_unlock (v);
 			dprint(("+-ptree_next End (not-yet-traversed right)\n"));
 			return w;
-		}
 	}
 
 	/* end of traverse */
