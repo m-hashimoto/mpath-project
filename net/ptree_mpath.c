@@ -151,7 +151,7 @@ static int ptree_satisfies_leaf(char *trial,
 			dprint((" + "));
 			if (*cp2++ != *cp++){
 				dprint(("goto on1\n"));
-				goto on1;
+				goto on2;
 			}
 		}
 		dprint(("key dupentry\n"));
