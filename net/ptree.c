@@ -233,6 +233,17 @@ ptree_get (char *key, int keylen, struct ptree *t)
   u = w = NULL;
   x = t->top;
   dprint(("--ptree_get Start\n"));
+
+	if(DEBUG){
+		struct sockaddr *sa = key;
+		struct ptree_node_head *pnh;
+		if (sa->sa_family = 2) /* AF_INET */
+			pnh = rt_tables_get_rnh(0,2);
+		else /* AF_INET6 */
+			pnh = rt_tables_get_rnh(0,28);
+		debug_tree_print(pnh);
+	}
+	
   while (x && x->key && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
     {
@@ -240,7 +251,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
         return x;
       u = x;
       x = x->child[check_bit (key, x->keylen)];
-			//dprint(("--ptree_get: x[%p]\n",x));
     }
 
   if (! x || ! x->key)
@@ -258,7 +268,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
       /* we're going to insert between u and w (previously x) */
       w = x;
   	  dprint(("--ptree_get: w[%p]\n",w));
-
+			debug_tree_print(pnh);
       /* create branching node */
       x = ptree_common (key, keylen, w->key, w->keylen);
       if (! x)
@@ -280,6 +290,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
       /* if the branching node is not the corresponding node,
          create the corresponding node to add */
 			dprint(("--ptree_get: add branching node[%p] key[%p]\n",x,x->key));
+			debug_tree_print(pnh);
       if (x->keylen == keylen)
         v = x;
       else
@@ -297,6 +308,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
           ptree_link (x, v);
 					dprint(("--ptree_get: add new node[%p] key[%p]\n",v,v->key));
+					debug_tree_print(pnh);
         }
     }
 

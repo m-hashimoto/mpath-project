@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-03-11 04:48:26.000000000 +0900
++++ route.c	2005-03-11 04:59:37.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -50,7 +50,7 @@
  
  #if 0
  /* default fib for tunnels to use */
-@@ -125,193 +122,191 @@
+@@ -125,193 +122,190 @@
  /*
   * handler for net.my_fibnum
   */
@@ -110,7 +110,6 @@
  {
 -
 -	return (*rt_tables_get_rnh_ptr(table, fam));
-+		dprint(("rt_tables_get_rnh: fibnum[%d] fam[%d]\n",table,fam));
 +		return (*rt_tables_get_rnh_ptr(table, fam));
  }
  
@@ -360,7 +359,7 @@
  }
  
  /*
-@@ -320,156 +315,154 @@
+@@ -320,156 +314,154 @@
   *
   * The returned route, if any, is locked.
   */
@@ -637,7 +636,7 @@
  }
  
  
-@@ -479,282 +472,281 @@
+@@ -479,282 +471,281 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1145,7 +1144,7 @@
  }
  
  /*
-@@ -768,495 +760,529 @@
+@@ -768,495 +759,529 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2098,7 +2097,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1293,69 @@
+@@ -1267,71 +1292,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2222,7 +2221,7 @@
  }
  
  /*
-@@ -1339,228 +1363,230 @@
+@@ -1339,228 +1362,230 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */

@@ -183,10 +183,10 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 on1:
 	*dupentry = 0;
-	{
+	//{
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
-	}
+	//}
 	dprint(("-ptree_insert End: insert tt[%p]\n",tt));
 	return (tt);
 }
@@ -290,14 +290,10 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
-		dprint(("-ptree_addroute Start\n"));
-		debug_tree_print(head);
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
-		dprint(("-ptree_insert: test print\n"));
-		debug_tree_print(head);
 #ifdef PTREE_MPATH /* multi path */
 		if (keyduplicated) {
 			int n;
