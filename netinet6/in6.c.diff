@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 06:48:40.000000000 +0900
++++ in6.c	2005-03-07 06:58:21.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -107,11 +107,12 @@
  
  	/*
  	 * Give the interface a chance to initialize
-@@ -1796,12 +1813,20 @@
+@@ -1796,12 +1813,21 @@
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
-+		sprint_inet_ntoa(AF_INET6,&mask);
++		printf("addr "); sprint_inet_ntoa(AF_INET6,&addr); printf("\n");
++		printf("mask "); sprint_inet_ntoa(AF_INET6,&mask); printf("\n");
 +		dprint(("in6_ifinit: rt[%p] rt->rt_nodes[%p]\n",&rt,(&rt)->rt_nodes));
 +		dprint(("in6_ifinit: rt->rt_nodes->mask[%p]\n",(struct sockaddr *)&(&rt)->rt_nodes->mask));
 +		dprint(("in6_ifinit: rt->rt_nodes->key[%p]\n",&(&rt)->rt_nodes->key));
