@@ -363,7 +363,10 @@ ptree_matchaddr(v_arg, head)
 	register int test, b, rn_bit;
 
 	t = saved_t = ptree_search(v, vlen, head);
-
+	if(!t){
+		dprint(("ptree_matchaddr: search result is NULL\n"));
+		goto miss;
+	}
 	/*
 	 * See if we match exactly as a host destination
 	 * or at least learn how many bits match, for normal mask finesse.
@@ -445,6 +448,7 @@ on1:
 		}
 		m = m->rm_mklist;
 	}
+miss:
 	dprint(("ptree_matchaddr End 5\n"));
 	return 0;
 }
@@ -591,7 +595,7 @@ on2:
 	/* Add new route to highest possible ancestor's list */
 	dprint(("ptree_addroute: add new route to highest list\n"));
 	if ((netmask == 0) || (b > t->rn_bit )){
-		dprint(("ptree_addroute: can't lift at all\n"));
+		dprint(("ptree_addroute End (can't lift at all)\n"));
 		return tt; /* can't lift at all */
 	}
 	b_leaf = tt->rn_bit;
