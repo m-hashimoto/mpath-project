@@ -96,6 +96,8 @@ ptree_match (char *keyi, char *keyj, int keylen)
 	bits = (int)keylen % 8;
 	dprint(("  ptree_match: keylen = %d bytes = %d bits = %d\n",keylen,bytes,bits));
 
+	dprint(("  ptree_match: memcmp(keyi,keyj) = %d\n",memcmp(keyi,keyj,bytes)));
+	dprint(("keyi = %x keyj = %x mask = %x\n",keyi[bytes],keyj[bytes],mask[bits]));
 	if (! memcmp (keyi, keyj, bytes) &&
 			! (keyi[bytes] ^ keyj[bytes]) & mask[bits]){
 		dprint(("  ptree_match End (%d bit match)\n",keylen));
@@ -147,7 +149,8 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 ptree_search (char *key, int keylen, struct ptree *t)
 {
 	dprint(("  ptree_search Start\n"));
-	dprint(("  ptree_search: search_key = %p len = %d\n",key,keylen));
+	dprint(("  ptree_search: search_key = %x:%x:%x:%x len = %d\n",
+				key[0],key[1],key[2],key[3],keylen));
 	struct ptree_node *x, *match;
 
 	match = x = t->top;
@@ -157,15 +160,15 @@ ptree_search (char *key, int keylen, struct ptree *t)
 		return match;
 	}
 	dprint(("  ptree_search: check node keylen flag\n"));
+	dprint(("  	        %x:%x:%x:%x   %d    %d\n",x->key[0],x->key[1],x->key[2],x->key[3],x->keylen,x->rn_flags));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
-		dprint(("  	   %x:%x:%x:%x   %d    %d\n",
-	x->key[0],x->key[1],x->key[2],x->key[3],x->keylen,x->rn_flags));
 		/* if(x->data) */
 		if (x->rn_flags & RNF_ACTIVE)
 			match = x;
 		x = x->child[check_bit (key, x->keylen)];
+		dprint(("  ptree_search: x = %p x->child = %p\n",match,x));
 	}
 	if(match)	
 		ptree_node_lock (match);
@@ -350,7 +353,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 ptree_add (char *key, int keylen, void *data, struct ptree *t)
 {
 	dprint(("  ptree_add Start\n"));
-	dprint(("  ptree_add: key = %d:%d:%d:%d keylen = %d ptree = %p\n",
+	dprint(("  ptree_add: key = %x:%x:%x:%x keylen = %d ptree = %p\n",
 				key[0],key[1],key[2],key[3],keylen,t));
 	struct ptree_node *x;
 
