@@ -26,7 +26,7 @@ static int  max_keylen;
 #include <netinet/in.h>
 		
 	int
-debug_node_print(struct ptree_node *pn)
+debug_node_print(struct ptree_node *pn, int offset)
 {
 	printf("node[%p] ",pn);
 	if( pn->key ){
@@ -39,7 +39,7 @@ debug_node_print(struct ptree_node *pn)
 						(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 						(unsigned char)pn->key[12],(unsigned char)pn->key[13],
 						(unsigned char)pn->key[14],(unsigned char)pn->key[15],
-						pn->keylen);
+						pn->keylen - 8*offset);
 	}
 	printf("data[%p] ",pn->data);
 #if 0
@@ -69,7 +69,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if(!pn)
 			goto done;
 		for (;;) {
-			debug_node_print(pn);
+			debug_node_print(pn, pnh->pnh_offset);
 			next = ptree_next(pn);
 			if( !next )
 				break;
@@ -93,7 +93,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	static struct ptree_node 
 *ptree_insert(v_arg, m_arg, head, dupentry)  
 	void *v_arg, *m_arg;
-	struct ptree_node_head *head;   
+	struct ptree_node_head *head;
 	int *dupentry;
 {
 	dprint(("-ptree_insert Start\n"));
@@ -103,10 +103,19 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	int len;
 	
 	len = (int)8*(LEN(v)/* - head_zero*/);
-	if (m){ /* ?? */
+#if 0
+	if (m){ /* before modification */
 		dprint(("LEN(m) = %d\n",(int)LEN(m)));
 		if ((8*LEN(m) - head->pnh_offset) > 0)
 			len = (int)8*LEN(m);
+	}
+#endif
+	if(m){
+		unsigned char bitmask = 0xff;
+		len = head->pnh_offset;
+		while(m[len] == bitmask)
+			len++;
+		len = 8*len;
 	}
 
 	dprint(("-ptree_insert: len = %d\n",len));
@@ -354,10 +363,19 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		netmask = netmask_arg;
 		top = head->pnh_top;
 		len = (int)8*(LEN(v)/* - head_zero*/);
+#if 0
 		if (netmask){
 			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
 			if ((8*LEN(netmask) - head->pnh_offset) > 0)
 				len = (int)8*LEN(netmask);
+		}
+#endif
+		if(netmask){
+			unsigned char bitmask = 0xff;
+			len = head->pnh_offset;
+			while(netmask[len] == bitmask)
+				len++;
+			len = 8*len;
 		}
 
 		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
@@ -546,7 +564,7 @@ ptree_inithead(void **head, int off)
 #ifdef PTREE_MPATH
 		pnh->pnh_multipath = 1;
 #endif
-		pnh->pnh_offset = off;
+		pnh->pnh_offset = off / 8;
 		pnh->rnh_addaddr = ptree_addroute;
 		pnh->rnh_deladdr = ptree_deladdr;
 		pnh->rnh_matchaddr = ptree_matchaddr;
