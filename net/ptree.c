@@ -186,6 +186,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
   int keylen;
   struct ptree_node *x;
+  dprint(("--key_common Start\n"));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
   dprint(("--key_common: keylen[%d]\n",keylen));
