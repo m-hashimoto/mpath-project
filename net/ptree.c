@@ -210,7 +210,6 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
-  dprint(("--ptree_node_lock Start\n"));
   x->lock++;
 }
 
@@ -219,7 +218,6 @@ ptree_node_lock (struct ptree_node *x)
 void
 ptree_node_unlock (struct ptree_node *x)
 {
-  dprint(("--ptree_node_unlock Start\n"));
   x->lock--;
   if (x->lock == 0)
     ptree_remove (x);
