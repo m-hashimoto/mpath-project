@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-06 23:27:29.000000000 +0900
++++ route.c	2005-02-07 01:11:49.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1885,11 +1885,10 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				rn = rnh->rnh_addaddr(dst, netmask, rnh);
++				//rn = rnh->rnh_addaddr(dst, netmask, rnh);
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
-+				rt->rt_nodes = rn;
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -2005,7 +2004,8 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				//rn = rnh->rnh_addaddr(ndst, netmask, rnh);
++				rn = rnh->rnh_addaddr(ndst, netmask, rnh);
++				rt->rt_nodes = rn;
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
