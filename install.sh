@@ -65,7 +65,8 @@ cd /usr/src/sys/fs/nfs/
 patch -N < nfsport.h.diff
 
 cd /usr/src/sys/i386/conf/
-config PATRICIA
+#config PATRICIA
+config -g PATRICIA
 
 cd ../compile/PATRICIA
 make cleandepend

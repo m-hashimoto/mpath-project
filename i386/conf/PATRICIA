@@ -84,6 +84,11 @@ options		FLOWTABLE		# per-cpu routing cache
 # patricia-trie for multi path routing
 options		PATRICIA
 
+# for debug
+options		DEBUG
+options		KDB
+options		DDB
+
 # To make an SMP kernel, the next two lines are needed
 options 	SMP			# Symmetric MultiProcessor Kernel
 device		apic			# I/O APIC
