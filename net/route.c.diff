@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 19:48:33.000000000 +0900
++++ route.c	2005-01-27 20:01:12.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2035,14 +2035,14 @@
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				dprint(("rtreq_ADD: ndst into the rnh = %p\n",rnh));
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_keylen = %d rn_flags = 0x%x\n",rt,rn,rn->keylen,rn->rn_flags));
++				/* gateway Re-set */
++				rt->rt_gateway = saved_gateway;
 +				/* rtentry's value re-added */
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				/* gateway Re-set */
-+				rt->rt_gateway = saved_gateway;
 +				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
@@ -2144,7 +2144,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1358,87 @@
+@@ -1267,71 +1358,88 @@
  #undef ifpaddr
  #undef flags
  
@@ -2212,6 +2212,7 @@
 +		 */
 +		dprint(("rt_setgate: rt = %p\n",rt));
 +		dprint(("rt_setgate: rt_gateway = %p\n",rt->rt_gateway));
++		dprint(("rt_setgate: rt_key(rt) = %p\n",rt_key(rt)));
 +		if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
 +				dprint(("rt_setgate: if rt_gateway == NULL\n"));
 +				caddr_t new;
@@ -2230,13 +2231,13 @@
 +				 */
 +				dprint(("rt_setgate: test print 3\n"));
 +				bcopy(dst, new, dlen);
-+				dprint(("rt_setgate: test print 5\n"));
++				dprint(("rt_setgate: test print 4\n"));
 +				Free(rt_key(rt));	/* free old block, if any */
-+				dprint(("rt_setgate: test print 6\n"));
++				dprint(("rt_setgate: test print 5\n"));
 +				rt_key(rt) = (struct sockaddr *)new;
-+				dprint(("rt_setgate: test print 7\n"));
++				dprint(("rt_setgate: test print 6\n"));
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
-+				dprint(("rt_setgate: test print 8\n"));
++				dprint(("rt_setgate: test print 7\n"));
 +		}
  
 -	return (0);
@@ -2286,7 +2287,7 @@
  }
  
  /*
-@@ -1339,228 +1446,235 @@
+@@ -1339,228 +1447,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
