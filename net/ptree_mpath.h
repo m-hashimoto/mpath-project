@@ -9,8 +9,8 @@
 #include <sys/_lock.h>
 #include <sys/_mutex.h>
 #include <sys/_rwlock.h>
-#endif /* _KERNEL */
 #include <net/ptree.h>
+#endif /* _KERNEL */
 
 #ifdef PTREE_MPATH
 #define MAX_MPATH 5
@@ -49,7 +49,7 @@ struct ptree_node_head {
 #ifdef _KERNEL
 		struct rwlock rnh_lock;
 #endif /* _KERNEL */
-}
+};
 
 #define pnh_top pnh_treetop->top
 
