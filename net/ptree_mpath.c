@@ -16,7 +16,6 @@
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-//static int	head_zero = 8; /* head_off[byte] struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
@@ -102,22 +101,12 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
-	len = (int)8*(LEN(v)/* - head_zero*/);
-#if 0
-	if (m){ /* before modification */
-		dprint(("LEN(m) = %d\n",(int)LEN(m)));
-		if ((8*LEN(m) - head->pnh_offset) > 0)
-			len = (int)8*LEN(m);
-	}
-#endif
+	len = (int)8*LEN(v);
 	if(m && (LEN(m) > head->pnh_offset)){
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
-		printf("m[%d] = %d\n",len,(unsigned char)m[len]);
-		while(m[len] & bitmask) {
+		while(m[len] & bitmask)
 			len++;
-			printf("m[%d] = %d\n",len,(unsigned char)m[len]);
-		}
 		len = 8*len;
 	}
 
@@ -136,7 +125,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(unsigned char)v[10],(unsigned char)v[11],
 							(unsigned char)v[12],(unsigned char)v[13],
 							(unsigned char)v[14],(unsigned char)v[15],
-							len));
+							len-8*head->pnh_offset));
 	if (m_arg)
 		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
@@ -147,13 +136,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 							(unsigned char)m[10],(unsigned char)m[11],
 							(unsigned char)m[12],(unsigned char)m[13],
 							(unsigned char)m[14],(unsigned char)m[15],
-							len));
+							len-8*head->pnh_offset));
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
 		goto on1;
 	cp = v;
 	len = t->keylen;
-	dprint(("-ptree_insert: search t = %p len = %d\n",t,t->keylen));
+	dprint(("-ptree_insert: search t = %p len = %d\n",
+							t,t->keylen-8*head->pnh_offset));
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
@@ -184,7 +174,7 @@ on1:
 	{
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
-		if (m)
+		if(m && (LEN(m) > head->pnh_offset))
 			tt->mask = m;
 		else
 			tt->mask = NULL;
@@ -248,7 +238,7 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int vlen;
 	
-	vlen = (int)8*(LEN(v)/* - head_zero*/);
+	vlen = (int)8*LEN(v);
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
@@ -258,18 +248,13 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)v[10],(unsigned char)v[11],
 							(unsigned char)v[12],(unsigned char)v[13],
 							(unsigned char)v[14],(unsigned char)v[15],
-							vlen));
+							vlen-8*head->pnh_offset));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
-	}
-#if 0
-	if (t->mask){
-		if ((LEN(t->mask)-head_off) > 0 )
-			vlen = (int)8*LEN(t->mask);
 	} 
-#endif
+
 	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
 	cp = t->key; cplim = v;
 	if ( !memcmp(cp,cplim,vlen) )
@@ -365,14 +350,8 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		len = (int)8*(LEN(v)/* - head_zero*/);
-#if 0
-		if (netmask){
-			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
-			if ((8*LEN(netmask) - head->pnh_offset) > 0)
-				len = (int)8*LEN(netmask);
-		}
-#endif
+		len = (int)8*LEN(v);
+
 		if(netmask && (LEN(netmask) > head->pnh_offset)){
 			unsigned char bitmask = 0xff;
 			len = head->pnh_offset;
@@ -390,7 +369,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								(unsigned char)v[10],(unsigned char)v[11],
 								(unsigned char)v[12],(unsigned char)v[13],
 								(unsigned char)v[14],(unsigned char)v[15],
-								len));
+								len-8*head->pnh_offset));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 
 		if (!tt){
@@ -420,105 +399,6 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		return (tt);
 }
 
-#if 0
-/*
- * This is the same as rn_walktree() except for the parameters and the
- * exit.
- */
-		static int
-ptree_walktree_from(h, a, m, f, w)
-		struct ptree *h;
-		void *a, *m;
-		walktree_f_t *f;
-		void *w;
-{
-		dprint(("-ptree_walktree_from Start\n"));
-		int error;
-		struct ptree_node *base, *next;
-		u_char *xa = (u_char *)a;
-		u_char *xm = (u_char *)m;
-		register struct ptree_node *rn, *last = 0 /* shut up gcc */;
-		int stopping = 0;
-		int lastb;
-
-		/*
-		 * rn_search_m is sort-of-open-coded here. We cannot use the
-		 * function because we need to keep track of the last node seen.
-		 */
-		for (rn = h->rnh_treetop; rn->rn_bit >= 0; ) {
-				last = rn;
-				if (!(rn->rn_bmask & xm[rn->rn_offset])) {
-						break;
-				}
-				if (rn->rn_bmask & xa[rn->rn_offset]) {
-						rn = rn->rn_right;
-				} else {
-						rn = rn->rn_left;
-				}
-		}
-
-		/*
-		 * Two cases: either we stepped off the end of our mask,
-		 * in which case last == rn, or we reached a leaf, in which
-		 * case we want to start from the last node we looked at.
-		 * Either way, last is the node we want to start from.
-		 */
-		rn = last;
-		lastb = rn->rn_bit;
-		/*
-		 * This gets complicated because we may delete the node
-		 * while applying the function f to it, so we need to calculate
-		 * the successor node in advance.
-		 */
-		while (rn->rn_bit >= 0)
-				rn = rn->rn_left;
-
-		while (!stopping) {
-				printf("node %p (0x%x)\n", rn, rn->rn_bit);
-				base = rn;
-				/* If at right child go back up, otherwise, go right */
-				while (rn->rn_parent->rn_right == rn
-								&& !(rn->rn_flags & RNF_ROOT)) {
-						rn = rn->rn_parent;
-
-						/* if went up beyond last, stop */
-						if (rn->rn_bit < lastb) {
-								stopping = 1;
-								printf("up too far\n");
-								/*
-								 * XXX we should jump to the 'Process leaves'
-								 * part, because the values of 'rn' and 'next'
-								 * we compute will not be used. Not a big deal
-								 * because this loop will terminate, but it is
-								 * inefficient and hard to understand!
-								 */
-						}
-				}
-
-				/* Find the next *leaf* since next node might vanish, too */
-				for (rn = rn->rn_parent->rn_right; rn->rn_bit >= 0;)
-						rn = rn->rn_left;
-				next = rn;
-				/* Process leaves */
-				while ((rn = base) != 0) {
-						base = rn->rn_dupedkey;
-						printf("leaf %p\n", rn);
-						if (!(rn->rn_flags & RNF_ROOT)
-										&& (error = (*f)(rn, w)))
-								return (error);
-				}
-				rn = next;
-
-				if (rn->rn_flags & RNF_ROOT) {
-						printf("root, stopping");
-						stopping = 1;
-				}
-
-		}
-		dprint(("-ptree_walktree_from End\n"));
-		return 0;
-}
-#endif
 
 		static int
 ptree_walktree(h, f, w)
@@ -573,7 +453,6 @@ ptree_inithead(void **head, int off)
 		pnh->rnh_matchaddr = ptree_matchaddr;
 		pnh->rnh_lookup = ptree_lookup;
 		pnh->rnh_walktree = ptree_walktree;
-		//rnh->rnh_walktree_from = ptree_walktree_from;
 		pnh->pnh_treetop = top;
 		dprint(("-ptree_inithead End (success)\n"));
 		return (1);
@@ -605,8 +484,6 @@ ptree_init()
 		cplim = pn_ones + max_keylen;
 		while (cp < cplim)
 				*cp++ = -1;
-		//if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
-		//		panic("ptree_init 2");
 
 		dprint(("-ptree_init End2\n"));
 }

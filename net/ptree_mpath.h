@@ -47,9 +47,9 @@ struct ptree_node_head {
 				(void *v, struct ptree_node_head *head);
 		int     (*rnh_walktree)                 /* traverse tree */
 				(struct ptree_node_head *head, walktree_f_t *f, void *w);
-		int     (*rnh_walktree_from)            /* traverse tree below a */
-				(struct ptree_node_head *head, void *a, void *m,
-				 walktree_f_t *f, void *w);
+	//	int     (*rnh_walktree_from)            /* traverse tree below a */
+	//			(struct ptree_node_head *head, void *a, void *m,
+	//			 walktree_f_t *f, void *w);
 		void    (*rnh_close)         /* do something when the last ref drops */
 				(struct ptree_node *rn, struct ptree_node_head *head);
 #ifdef _KERNEL
