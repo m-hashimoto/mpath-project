@@ -124,14 +124,14 @@ on2:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		t = ptree_add(v, b, data, head);
+		nodes = ptree_add(v, b, data, head);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
 	dprint(("-ptree_insert End\n"));
-	return (t);
+	return (nodes);
 }
 
 	struct ptree_node *
