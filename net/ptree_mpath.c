@@ -642,7 +642,7 @@ on2:
 		dprint(("-ptree_addroute: on2\n"));
 		if( netmask == 0 ){
 			dprint(("-ptree_addroute End 1\n"));	
-			debug_tree_print(tt);
+			debug_tree_print(head);
 			return tt;
 		}
 		b_leaf = tt->rn_bit;
