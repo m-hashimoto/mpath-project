@@ -442,11 +442,12 @@ ptree_next (struct ptree_node *v)
       w = t->child[1];
       XRTASSERT (w, ("xrt: an impossible end of traverse"));
 
-	  if (w)
+	  if (w){
         ptree_node_lock (w);
-      ptree_node_unlock (v);
+        ptree_node_unlock (v);
 
-      return w;
+        return w;
+		  }
     }
 
   /* end of traverse */
