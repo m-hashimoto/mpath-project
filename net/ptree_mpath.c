@@ -551,7 +551,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		 */
 		saved_tt = tt = ptree_insert(v_arg, head, &keyduplicated, treenodes);
 		dprint(("-ptree_addroute: tt = %p nodes = %p\n",tt,treenodes));
-		dprint(("-ptree_addroute: keyduplicated = %d\n",keyduplicated));
 		if (keyduplicated) {
 				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
 						if (tt->rn_mask == netmask){
@@ -560,7 +559,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 						}
 						if (netmask == 0 ||
 										(tt->rn_mask &&
-										 ((b_leaf < tt->rn_bit) /* index(netmask) > node */
+										 ((b_leaf < tt->rn_bit) /* index>node */
 										  || ptree_refines(netmask, tt->rn_mask)
 										  || ptree_lexobetter(netmask, tt->rn_mask))))
 								break;
@@ -573,10 +572,10 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 						tt->rn_flags = t->rn_flags;
 						tt->rn_parent = x = t->rn_parent;
 						t->rn_parent = tt;	 		/* parent */
-						if (x->rn_left == t)
-								x->rn_left = tt;
-						else
-								x->rn_right = tt;
+						//if (x->rn_left == t)
+						//		x->rn_left = tt;
+						//else
+						//		x->rn_right = tt;
 						saved_tt = tt; x = xx;
 				} else {
 						(tt = treenodes)->rn_dupedkey = t->rn_dupedkey;
@@ -606,6 +605,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 
 		t = saved_tt;
+		dprint(("-ptree_addroute: t = %p\n",t));
 		if (keyduplicated){
 				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 				goto on2;
@@ -631,8 +631,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
-		dprint(("-ptree_addroute: on2 t=%p tt=%p\n",t,tt));
-		if((netmask == 0) || (b > t->rn_bit) )
+		if( netmask == 0 )
 				return tt;
 		b_leaf = tt->rn_bit;
 		dprint(("-ptree_addroute: on2 b_leaf = %d\n",b_leaf));
