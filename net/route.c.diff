@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 16:22:41.000000000 +0900
++++ route.c	2005-01-27 16:37:41.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,536 @@
+@@ -768,495 +814,533 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2112,18 +2112,15 @@
 +											&(rt)->rt_mtx));
 +				}
 +				
-+				error = mtx_initialized(&(rt)->rt_mtx);
-+				if( error ){
++				if( mtx_initialized(&(rt)->rt_mtx) ){
 +					RT_UNLOCK(rt);
 +					dprint(("rtreq_ADD: RT_UNLOCK > rt->rt_mtx = a%p\n",
 +										&(rt)->rt_mtx));
 +				}
 +				else{
-+					dprint(("mtx_lock_init error = %d\n",error));
-+					//error = 0; /* Temporary process */
++					dprint(("mtx_lock_init error\n"));
 +					RT_TRYLOCK(rt);
 +					RT_UNLOCK(rt);
-+					senderr(error);
 +				}
 +				break;
 +		default:
@@ -2140,7 +2137,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1354,78 @@
+@@ -1267,71 +1351,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2273,7 +2270,7 @@
  }
  
  /*
-@@ -1339,228 +1433,235 @@
+@@ -1339,228 +1430,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
