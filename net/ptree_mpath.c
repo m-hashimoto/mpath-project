@@ -101,24 +101,28 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
+	dprint(("-ptree_insert: v[%d.%d.%d.%d|%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
-							len,head->pnh_treetop));
+							(unsigned char)v[8],(unsigned char)v[9],
+							(unsigned char)v[10],(unsigned char)v[11],
+							len));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d.%d.%d.%d.%d/%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
 							(unsigned char)m[4],(unsigned char)m[5],
 							(unsigned char)m[6],(unsigned char)m[7],
+							(unsigned char)m[8],(unsigned char)m[9],
+							(unsigned char)m[10],(unsigned char)m[11],
 							len));
 	t = ptree_search(v, len+8*head_off, head->pnh_treetop);
 	if (!t)
 		goto on1;
 	cp = v;
-	dprint(("-ptree_insert: t = %p mask_len = %d\n",t,len));
+	dprint(("-ptree_insert: t = %p len = %d\n",t,len));
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
