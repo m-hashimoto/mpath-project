@@ -1092,13 +1092,13 @@ ptree_mpath_count(struct ptree_node *rn)
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
 	uint32_t	i = 0;
-	struct ptree_node *rn, *match;
+	struct ptree_node *rn, **match;
 
 	rn = (struct ptree_node *)rt;
 	if (!rn->mpath_array)
 		return rt;
 	else
-		match = &rn->mpath_array[i];
+		match = rn->mpath_array;
 
 	if (!gate)
 		return NULL;
@@ -1137,14 +1137,14 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 	dprint(("rt_mpath_delete Start\n"));
 	uint32_t i = 0, n;
-	struct ptree_node *t, *t1;
+	struct ptree_node *t, **t1;
 	
 	t = (struct ptree_node *)headrt;
 	if (!headrt || !rt)
 		return (0);
 
 	n = ptree_mpath_count(t);
-	t1 = &t->mpath_array[i];
+	t1 = t->mpath_array;
 	while (t1) {
 		if ((struct rtentry *)t1 == rt) {
 			t->mpath_array[i] = t->mpath_array[n-1];
@@ -1164,7 +1164,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 		struct sockaddr *netmask)
 {
-	struct ptree_node *rn, rn1;
+	struct ptree_node *rn, **rn1;
 	struct rtentry *rt1;
 	char *p, *q, *eq;
 	int same, l, skip;
@@ -1252,7 +1252,7 @@ maskmatched:
 
 		/* all key/mask/gateway are the same.  conflicting entry. */
 		return EEXIST;
-	} while ((rn1 = rn->mpath_array[i++]) != NULL);
+	} while ((rn1++) != NULL);
 
 different:
 	return 0;
