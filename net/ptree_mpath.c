@@ -58,13 +58,13 @@ static int ptree_satisfies_leaf(char *trial,
 	register caddr_t cp;
 	int vlen = (int)LEN(v);
 	register int b = vlen;
-	dprint((" ptree_insert Start\n"));
-	dprint((" ptree_insert: v = %x:%x:%x:%x vlen = %d head = %p\n",
+	dprint(("-ptree_insert Start\n"));
+	dprint(("-ptree_insert: v = %x:%x:%x:%x vlen = %d head = %p\n",
 				v[0],v[1],v[2],v[3],vlen,head));
 	struct ptree_node *top = head->rnh_treetop;
 	
 	if (!top){
-		dprint((" ptree_insert: top = NULL\n"));
+		dprint(("-ptree_insert: top = NULL\n"));
 		goto on2;
 	}
 	
@@ -72,7 +72,7 @@ static int ptree_satisfies_leaf(char *trial,
 	register struct ptree_node *t = ptree_search(v, vlen, head);
 	cp = v + head_off;
 	if(!t){
-		dprint((" ptree_insert: search(v) = NULL\n"));
+		dprint(("-ptree_insert: search(v) = NULL\n"));
 		goto on2;
 	}
 	/* Find first bit at which v and t->rn_key differ */ 
@@ -85,14 +85,14 @@ static int ptree_satisfies_leaf(char *trial,
 			if (*cp2++ != *cp++)
 				goto on1;   
 		*dupentry = 1;  
-		dprint((" ptree_insert End (key dupentry)\n"));
+		dprint(("-ptree_insert End (key dupentry)\n"));
 		return t;
 on1:
-		dprint((" ptree_insert: on1\n"));
+		dprint(("-ptree_insert: on1\n"));
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
-		dprint((" ptree_insert: first different bit = %d\n",b));
+		dprint(("-ptree_insert: first different bit = %d\n",b));
 on2:
 		*dupentry = 0;
 	}
@@ -100,7 +100,7 @@ on2:
 		//register struct ptree_node *p, *x = top;
 		int *data;
 		data = &vlen;
-		dprint((" ptree_insert: data = %d\n",*data));
+		dprint(("-ptree_insert: data = %d\n",*data));
 		cp = v;
 #if 0
 		do {
@@ -109,7 +109,7 @@ on2:
 				x = x->rn_right;
 			else
 				x = x->rn_left;
-			dprint(("ptree_insert: x = %p\n",x));
+			dprint(("-ptree_insert: x = %p\n",x));
 			if (!x) break;
 		}
 		while (b > (unsigned) x->rn_bit);
@@ -125,7 +125,7 @@ on2:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
-	dprint((" ptree_insert End\n"));
+	dprint(("-ptree_insert End\n"));
 	return (t);
 }
 
@@ -134,7 +134,7 @@ ptree_addmask(n_arg, search, skip)
 	int search, skip;
 	void *n_arg;
 {
-	dprint((" ptree_addmask Start\n"));
+	dprint(("-ptree_addmask Start\n"));
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
 	register caddr_t cp, cplim;
@@ -142,8 +142,7 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
-	dprint((" ptree_addmask: search = %d, skip = %d, netmask = %x:%x:%x:%x\n",
-				search,skip,netmask[0],netmask[1],netmask[2],netmask[3]));
+	dprint(("-ptree_addmask: search = %d, skip = %d, netmask = %x:%x:%x:%x\n",search,skip,netmask[0],netmask[1],netmask[2],netmask[3]));
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
 	if (skip == 0)  
@@ -161,7 +160,7 @@ ptree_addmask(n_arg, search, skip)
 	if (mlen <= skip) {        
 		if (m0 >= last_zeroed)  
 			last_zeroed = mlen;  
-		dprint((" ptree_addmask End if(mlen<=skip)\n"));
+		dprint(("-ptree_addmask End if(mlen<=skip)\n"));
 		return (mask_rnhead->rnh_nodes); 
 	}     
 	if (m0 < last_zeroed)  
@@ -169,19 +168,19 @@ ptree_addmask(n_arg, search, skip)
 	*addmask_key = last_zeroed = mlen;
 	x = ptree_search(addmask_key, mlen, mask_rnhead);
 	if(!x){
-		dprint((" ptree_addmask: search result is NULL\n"));
+		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
 	if (/*bcmp*/memcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
-		dprint((" ptree_addmask End if(x||search)\n"));
+		dprint(("-ptree_addmask End if(x||search)\n"));
 		return (x);
 	}
 on1:
 	R_Zalloc(x, struct ptree_node *, max_keylen + 2 * sizeof (*x));
 	if ((saved_x = x) == 0){
-		dprint((" ptree_addmask End if(saved_x==0)\n"));
+		dprint(("-ptree_addmask End if(saved_x==0)\n"));
 		return (0);
 	}
 	netmask = cp = (caddr_t)(x + 2);
@@ -190,7 +189,7 @@ on1:
 	if (maskduplicated) { 
 		log(LOG_ERR, "rn_addmask: mask impossibly already in tree");
 		Free(saved_x);
-		dprint((" ptree_addmask End if(maskduplicated)\n"));
+		dprint(("-ptree_addmask End if(maskduplicated)\n"));
 		return (x);
 	}
 	cplim = netmask + mlen;
@@ -207,12 +206,12 @@ on1:
 			isnormal = 0;
 	}
 	b += (cp - netmask) << 3;
-	dprint((" ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
+	dprint(("-ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
 	x->rn_bit = -1 - b;
 	if (isnormal)
 		x->rn_flags |= RNF_NORMAL;
 	
-	dprint((" ptree_addmask End\n"));
+	dprint(("-ptree_addmask End\n"));
 	return (x);
 }
 
@@ -226,8 +225,8 @@ ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
 	void *v_arg, *m_arg;
 {
-	dprint((" ptree_seach_m Start\n"));
-	dprint((" v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg));
+	dprint(("-ptree_seach_m Start\n"));
+	dprint(("-ptree_search_m: v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg));
 
 	register struct ptree_node *x, *y;
 	register caddr_t v = v_arg, m = m_arg;
@@ -242,7 +241,7 @@ ptree_search_m(v_arg, head, m_arg)
 		if ( !x || (x->rn_bit <= y->rn_bit) )
 			break;
 	}
-	dprint((" ptree_seach_m End\n"));
+	dprint(("-ptree_seach_m End\n"));
 	return x;
 }
 
@@ -251,8 +250,8 @@ ptree_search_m(v_arg, head, m_arg)
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
-	dprint((" ptree_refines Start\n"));
-	dprint((" m_arg = %p, n_arg = %p\n",m_arg,n_arg));
+	dprint(("-ptree_refines Start\n"));
+	dprint(("-ptree_refines: m_arg = %p, n_arg = %p\n",m_arg,n_arg));
 
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
@@ -269,16 +268,16 @@ ptree_refines(m_arg, n_arg)
 	}
 	while (n < lim2)
 		if (*n++){
-			dprint((" ptree_refines End 1\n"));
+			dprint(("-ptree_refines End 1\n"));
 			return 0;
 		}
 	if (masks_are_equal && (longer < 0))
 		for (lim2 = m - longer; m < lim2; )
 			if (*m++){
-				dprint((" ptree_refines End 2\n"));
+				dprint(("-ptree_refines End 2\n"));
 				return 1;
 			}
-	dprint((" ptree_refines End 3\n"));
+	dprint(("-ptree_refines End 3\n"));
 	return (!masks_are_equal);
 }
 
@@ -286,21 +285,21 @@ ptree_refines(m_arg, n_arg)
 ptree_lexobetter(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
-	dprint((" ptree_lexobetter Start\n"));
+	dprint(("-ptree_lexobetter Start\n"));
 	register u_char *mp = m_arg, *np = n_arg, *lim;
 
 	if (LEN(mp) > LEN(np)){	
-		dprint((" ptree_lexobetter End 1\n"));
+		dprint(("-ptree_lexobetter End: return 1\n"));
 		return 1;
 	}
       	/* not really, but need to check longer one first */   
 	if (LEN(mp) == LEN(np))
 		for (lim = mp + LEN(mp); mp < lim;)
 			if (*mp++ > *np++){
-				dprint((" ptree_lexobetter End 2\n"));
+				dprint(("-ptree_lexobetter End: return 1\n"));
 				return 1;
 			}
-	dprint((" ptree_lexobetter End 3\n"));
+	dprint(("-ptree_lexobetter End: return 0\n"));
 	return 0;
 }
 
@@ -309,13 +308,13 @@ ptree_new_mask(tt, next)
 	register struct ptree_node *tt; 
 	register struct ptree_mask *next;
 {
-	dprint((" ptree_new_mask Start\n"));
+	dprint(("-ptree_new_mask Start\n"));
 	register struct ptree_mask *m;
 
 	MKGet(m);
 	if (m == 0) {
 		log(LOG_ERR, "Mask for route not entered\n");
-		dprint((" ptree_new_mask End 1\n"));
+		dprint(("-ptree_new_mask End: return 0\n"));
 		return (0);
 	}
 	bzero(m, sizeof *m);
@@ -327,7 +326,7 @@ ptree_new_mask(tt, next)
 		m->rm_mask = tt->rn_mask;
 	m->rm_mklist = next;
 	tt->rn_mklist = m;
-	dprint((" ptree_new_mask End 2\n"));
+	dprint(("-ptree_new_mask End\n"));
 	return m;
 }
 
@@ -337,7 +336,7 @@ ptree_satisfies_leaf(trial, leaf, skip)
 	register struct ptree_node *leaf;
 	int skip;
 {
-	dprint((" ptree_satisfines_leaf Start\n"));
+	dprint(("-ptree_satisfines_leaf Start\n"));
 	register char *cp = trial, *cp2 = leaf->rn_key, *cp3 = leaf->rn_mask;
 	char *cplim;
 	int length = min(LEN(cp), LEN(cp2));
@@ -349,10 +348,10 @@ ptree_satisfies_leaf(trial, leaf, skip)
 	cplim = cp + length; cp3 += skip; cp2 += skip;
 	for (cp += skip; cp < cplim; cp++, cp2++, cp3++)
 		if ((*cp ^ *cp2) & *cp3){
-			dprint((" ptree_satisfines_leaf End 1\n"));
+			dprint(("-ptree_satisfines_leaf End: return 0\n"));
 			return 0;
 		}
-	dprint((" ptree_satisfines_leaf End 2\n"));
+	dprint(("-ptree_satisfines_leaf End: retrun 1\n"));
 	return 1;
 }
 
@@ -361,13 +360,13 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree *head;
 {
-	dprint((" ptree_matchaddr Start\n"));
+	dprint(("-ptree_matchaddr Start\n"));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top, *x;
-	dprint((" ptree_matchaddr: v = %x:%x:%x:%x head = %p top = %p\n",
+	dprint(("-ptree_matchaddr: v = %x:%x:%x:%x head = %p top = %p\n",
 				v[0],v[1],v[2],v[3],head,t));
 	if(!t){
-		dprint((" ptree_matchaddr: top = NULL\n"));
+		dprint(("-ptree_matchaddr: top = NULL\n"));
 		goto miss;
 	}
 	
@@ -379,7 +378,7 @@ ptree_matchaddr(v_arg, head)
 
 	t = saved_t = ptree_search(v, vlen, head);
 	if( !saved_t ){
-		dprint((" ptree_matchaddr: search result is NULL\n"));
+		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
 	/*
@@ -410,10 +409,10 @@ ptree_matchaddr(v_arg, head)
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
 #endif
-	dprint((" ptree_matchaddr End: return saved_t = %p\n",saved_t));
+	dprint(("-ptree_matchaddr End: return saved_t = %p\n",saved_t));
 	return t;
 on1:
-	dprint((" ptree_matchaddr: on1\n"));
+	dprint(("-ptree_matchaddr: on1\n"));
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
 	for (b = 7; (test >>= 1) > 0;)
 		b--;
@@ -433,11 +432,11 @@ on1:
 		 */
 		if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
-				dprint((" ptree_matchaddr End 2\n"));
+				dprint(("-ptree_matchaddr End 2\n"));
 				return t;
 			}
 		} else if (ptree_satisfies_leaf(v, t, matched_off)){
-			dprint((" ptree_matchaddr End 3\n"));
+			dprint(("-ptree_matchaddr End 3\n"));
 			return t;
 		}	
 	t = saved_t;
@@ -460,14 +459,14 @@ on1:
 			while (x && x->rn_mask != m->rm_mask)
 				x = x->rn_dupedkey;
 			if (x && ptree_satisfies_leaf(v, x, off)){
-				dprint((" ptree_matchaddr End: return x\n"));
+				dprint(("-ptree_matchaddr End: return x\n"));
 				return x;
 			}
 		}
 		m = m->rm_mklist;
 	}
 miss:
-	dprint((" ptree_matchaddr End: miss\n"));
+	dprint(("-ptree_matchaddr End: miss\n"));
 	return 0;
 }
 
@@ -477,7 +476,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	struct ptree *head;
 	struct ptree_node treenodes[2];
 {
-	dprint((" ptree_addroute Start\n"));
+	dprint(("-ptree_addroute Start\n"));
 	caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
 	register struct ptree_node *t, *x = 0, *tt;
 	struct ptree_node *saved_tt, *top = head->rnh_treetop;
@@ -485,7 +484,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	int keyduplicated;
 	caddr_t mmask;
 	struct ptree_mask *m, **mp;
-	dprint((" ptree_addroute: key = %x:%x:%x:%x\n",v[0],v[1],v[2],v[3]));
+	dprint(("-ptree_addroute: key = %x:%x:%x:%x\n",v[0],v[1],v[2],v[3]));
 
 	/*
 	 * In dealing with non-contiguous masks, there may be
@@ -496,7 +495,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	 */
 	if (netmask)  {
 		if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
-			dprint((" ptree_addroute End 1\n"));
+			dprint(("-ptree_addroute End 1\n"));
 			return (0);
 		}
 		b_leaf = x->rn_bit;
@@ -507,11 +506,11 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	 * Deal with duplicated keys: attach node to previous instance
 	 */
 	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
-	dprint((" ptree_addroute: keyduplicated = %d\n",keyduplicated));
+	dprint(("-ptree_addroute: keyduplicated = %d\n",keyduplicated));
 	if (keyduplicated) {
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
 			if (tt->rn_mask == netmask){
-				dprint((" ptree_addroute End(keyduplicated)\n"));
+				dprint(("-ptree_addroute End(keyduplicated)\n"));
 				return (0);
 			}
 			if (netmask == 0 ||
@@ -565,35 +564,35 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	 * Put mask in tree.
 	 */
 	if (netmask) {
-		dprint((" ptree_addroute: put netmask in %p\n",tt));
+		dprint(("-ptree_addroute: put netmask in %p\n",tt));
 		tt->rn_mask = netmask;
 		tt->rn_bit = x->rn_bit;
 		tt->rn_flags = RNF_ACTIVE;
 	}
 	t = saved_tt->rn_parent;
 	if(!t){
-		dprint((" ptree_addroute: goto on2 if(!tt->parent)\n"));
+		dprint(("-ptree_addroute: goto on2 if(!tt->parent)\n"));
 		goto on2;
 	}
-	dprint((" ptree_addroute: saved_tt->rn_parent = %p\n",t));
+	dprint(("-ptree_addroute: saved_tt->rn_parent = %p\n",t));
 	if (keyduplicated){
-		dprint((" ptree_addroute: goto on2 if(keyduplicated)\n"));
+		dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 		goto on2;
 	}
 	b_leaf = -1 - t->rn_bit;
-	dprint((" ptree_addroute: b_leaf = %d\n",b_leaf));
+	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 	if (t->rn_right == saved_tt)
 		x = t->rn_left;
 	else
 		x = t->rn_right;
 	if(!x){
-		dprint((" ptree_addroute: goto on2 if(!x)\n"));
+		dprint(("-ptree_addroute: goto on2 if(!x)\n"));
 		goto on2;
 	}
 
 	/* Promote general routes from below */
 	if (x->rn_bit < 0) {
-		dprint((" ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
+		dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
 		for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
 			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
 				*mp = m = ptree_new_mask(x, 0);
@@ -611,20 +610,20 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	}
 on2:
 	/* Add new route to highest possible ancestor's list */
-	dprint((" ptree_addroute: add new route to highest list\n"));
+	dprint(("-ptree_addroute: add new route to highest list\n"));
 	if ((netmask == 0) || (b > t->rn_bit )){
-		dprint((" ptree_addroute End (can't lift at all)\n"));
+		dprint(("-ptree_addroute End (can't lift at all)\n"));
 		return tt; /* can't lift at all */
 	}
 	b_leaf = tt->rn_bit;
-	dprint((" ptree_addroute: b_leaf = %d\n",b_leaf));
+	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 	do {
 		x = t;
 		t = t->rn_parent;
 		if(!t)
 			break;
 	} while (x != top && b <= t->rn_bit);
-	dprint((" ptree_addroute: x = %p\n",x));
+	dprint(("-ptree_addroute: x = %p\n",x));
 	/*
 	 * Search through routes associated with node to
 	 * insert new route according to index.
@@ -642,7 +641,7 @@ on2:
 			if (tt->rn_flags & RNF_NORMAL) {
 				log(LOG_ERR, 
 						"Non-unique normal route, mask not entered\n");
-				dprint((" ptree_addroute End 3\n"));
+				dprint(("-ptree_addroute End 3\n"));
 				return tt;
 			}
 		} else
@@ -650,7 +649,7 @@ on2:
 		if (mmask == netmask) {
 			m->rm_refs++;
 			tt->rn_mklist = m;
-			dprint((" ptree_addroute End 4\n"));
+			dprint(("-ptree_addroute End 4\n"));
 			return tt;
 		}
 		if (ptree_refines(netmask, mmask)
@@ -659,7 +658,7 @@ on2:
 	}
 
 	*mp = ptree_new_mask(tt, *mp);
-	dprint((" ptree_addroute End 5\n"));
+	dprint(("-ptree_addroute End 5\n"));
 	return tt;
 }
 
@@ -669,7 +668,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	void *v_arg, *netmask_arg;
 	struct ptree *head;
 {
-	dprint((" ptree_deladdr Start\n"));
+	dprint(("-ptree_deladdr Start\n"));
 	register struct ptree_node *t, *p, *x, *tt;
 	struct ptree_mask *m, *saved_m, **mp;
 	struct ptree_node *dupedkey, *saved_tt, *top;
@@ -685,7 +684,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	saved_tt = tt;
 	top = x;
 	if (tt == 0 || bcmp(v + head_off, tt->rn_key + head_off, vlen - head_off)){
-		dprint((" ptree_deladdr End 1\n"));
+		dprint(("-ptree_deladdr End1: return 0\n"));
 		return (0);
 	}
 	/*
@@ -693,13 +692,13 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	 */
 	if (netmask) {
 		if ((x = ptree_addmask(netmask, 1, head_off)) == 0){
-			dprint((" ptree_deladdr End 2\n"));
+			dprint(("-ptree_deladdr End2: return 0\n"));
 			return (0);
 		}
 		netmask = x->rn_key;
 		while (tt->rn_mask != netmask)
 			if ((tt = tt->rn_dupedkey) == 0){
-		dprint((" ptree_deladdr End 3\n"));
+		dprint(("-ptree_deladdr End3: return 0\n"));
 				return (0);
 			}
 	}
@@ -708,7 +707,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	if (tt->rn_flags & RNF_NORMAL) {
 		if (m->rm_leaf != tt || m->rm_refs > 0) {
 			log(LOG_ERR, "rn_delete: inconsistent annotation\n");
-		dprint((" ptree_deladdr End 4\n"));
+		dprint(("-ptree_deladdr End4: return 0\n"));
 			return 0;  /* dangling ref could cause disaster */
 		}
 	} else {
@@ -736,7 +735,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	if (m == 0) {
 		log(LOG_ERR, "rn_delete: couldn't find our annotation\n");
 		if (tt->rn_flags & RNF_NORMAL){
-		dprint((" ptree_deladdr End 5\n"));
+		dprint(("-ptree_deladdr End5: return 0\n"));
 			return (0); /* Dangling ref to us */
 		}
 	}
@@ -745,7 +744,7 @@ on1:
 	 * Eliminate us from tree
 	 */
 	if (tt->rn_flags & RNF_ROOT){
-		dprint((" ptree_deladdr End 6\n"));
+		dprint(("-ptree_deladdr End6: return 0\n"));
 		return (0);
 	}
 #ifdef RN_DEBUG
@@ -857,7 +856,7 @@ on1:
 out:
 	tt->rn_flags &= ~RNF_ACTIVE;
 	tt[1].rn_flags &= ~RNF_ACTIVE;
-	dprint((" ptree_deladdr End 7\n"));
+	dprint(("-ptree_deladdr End\n"));
 	return (tt);
 }
 
@@ -872,7 +871,7 @@ ptree_walktree_from(h, a, m, f, w)
 	walktree_f_t *f;
 	void *w;
 {
-	dprint((" ptree_walktree_from Start\n"));
+	dprint(("-ptree_walktree_from Start\n"));
 	int error;
 	struct ptree_node *base, *next;
 	u_char *xa = (u_char *)a;
@@ -955,7 +954,7 @@ ptree_walktree_from(h, a, m, f, w)
 		}
 
 	}
-	dprint((" ptree_walktree_from End\n"));
+	dprint(("-ptree_walktree_from End\n"));
 	return 0;
 }
 
@@ -966,28 +965,28 @@ ptree_walktree(h, f, w)
 	walktree_f_t *f;
 	void *w;
 {
-	dprint((" ptree_walktree Start\n"));
+	dprint(("-ptree_walktree Start\n"));
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
 	if (!rn){
-		dprint((" ptree_walktree End (treetop = NULL)\n"));
+		dprint(("-ptree_walktree End (treetop = NULL)\n"));
 		return (0);
 	}
 
-	dprint((" ptree_walktree: treetop = %x:%x:%x:%x keylen = %d\n",
+	dprint(("-ptree_walktree: treetop = %x:%x:%x:%x keylen = %d\n",
 		rn->key[0],rn->key[1],rn->key[2],rn->key[3],rn->keylen));
 	for (;;) {
 		base = rn;
 		next = ptree_next(base);
 		if( !next ){
-			dprint((" ptree_walktree End (next == NULL)\n"));
+			dprint(("-ptree_walktree End (next == NULL)\n"));
 			return (0);
 		}
 		rn = next;
-		dprint((" ptree_walktree: next = %x:%x:%x:%x keylen = %d\n",rn->key[0],rn->key[1],rn->key[2],rn->key[3],rn->keylen));
+		dprint(("-ptree_walktree: next = %x:%x:%x:%x keylen = %d\n",rn->key[0],rn->key[1],rn->key[2],rn->key[3],rn->keylen));
 	}
 	/* NOTREACHED */
-	dprint((" ptree_walktree End\n"));
+	dprint(("-ptree_walktree End\n"));
 }
 
 	int
@@ -995,18 +994,18 @@ ptree_inithead(head, off)
 	void **head;
 	int off;
 {
-	dprint((" ptree_inithead Start\n"));
+	dprint(("-ptree_inithead Start\n"));
 	register struct ptree *rnh;
 	register struct ptree_node *t;
 	//int *data = NULL;
 	
 	if (*head){
-		dprint((" ptree_inithead End 1\n"));
+		dprint(("-ptree_inithead End1\n"));
 		return (1);
 	}
 	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
 	if (rnh == 0){
-		dprint((" ptree_inithead End 2\n"));
+		dprint(("-ptree_inithead End2\n"));
 		return (0);
 	}
 #ifdef _KERNEL
@@ -1026,14 +1025,14 @@ ptree_inithead(head, off)
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
-	dprint((" ptree_inithead End (success)\n"));
+	dprint(("-ptree_inithead End (success)\n"));
 	return (1);
 }
 
 	void
 ptree_init()
 {
-	dprint((" ptree_init Start\n"));
+	dprint(("-ptree_init Start\n"));
 	char *cp, *cplim;
 #ifdef _KERNEL
 	struct domain *dom;
@@ -1045,7 +1044,7 @@ ptree_init()
 	if (max_keylen == 0) {
 		log(LOG_ERR,
 			"rn_init: ptree functions require max_keylen be set\n");
-		dprint((" ptree_init End 1\n"));
+		dprint(("-ptree_init End1\n"));
 		return;
 	}
 	R_Malloc(rn_zeros, char *, 3 * max_keylen);
@@ -1059,7 +1058,7 @@ ptree_init()
 	if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
 		panic("ptree_init 2");
 
-	dprint((" ptree_init End 2\n"));
+	dprint(("-ptree_init End2\n"));
 }
 
 /*
