@@ -345,7 +345,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 	}
 	dprint(("  ptree_get: t->top = %p get node = %p\n",t->top,v));
 	/* locks for the tree holding */
-	ptree_node_lock (v);
+	//ptree_node_lock (v);
 	dprint(("  ptree_get End\n"));
 	return v;
 }
@@ -430,7 +430,7 @@ ptree_next (struct ptree_node *v)
 		if( w->rn_flags & RNF_ACTIVE ){
 			//ptree_node_lock (w);
 			//ptree_node_unlock (v);
-			dprint(("  ptree_next End (down left)\n"));
+			dprint(("  ptree_next End: down left\n"));
 			return w;
 		}
 	}
@@ -441,36 +441,33 @@ ptree_next (struct ptree_node *v)
 		if( w->rn_flags & RNF_ACTIVE ){
 			//ptree_node_lock (w);
 			//ptree_node_unlock (v);
-			dprint(("  ptree_next End (down right)\n"));
+			dprint(("  ptree_next End: down right\n"));
 		return w;
 		}
 	}
 
+	dprint(("  ptree_next: this node is lesf\n"));
 	if(v->parent){
+		dprint(("  ptree_next: back to parent node\n"));
 		u = v->parent;
-		if( !(u->rn_flags & RNF_ACTIVE) ){
-			dprint(("  ptree_next End (parent is not ACTIVE)\n"));
-			return NULL;
-		}
 	}
 	else{
-		dprint(("  ptree_next End (this node is top)\n"));
+		dprint(("  ptree_next End: this node is top\n"));
 		return NULL;
 	}
 
 	if (u->child[0] == v)
 	{
-		w = u->child[1];
-		if( w->rn_flags & RNF_ACTIVE ){
+		if( u->child[1]){
+			w = u->child[1];
 			//ptree_node_lock (w);
 			//ptree_node_unlock (v);
-			dprint(("  ptree_next End (go parent and down right)\n"));
-		return w;
+			dprint(("  ptree_next End: down right 2\n"));
+			return w;
 		}
 	}
 
 	t = u->parent;
-	dprint(("  ptree_next: u = %p u->parent = %p u->parent->rn_right = %p\n",u,t,t->child[1]));
 	while (t && (t->child[1] == u || ! t->child[1]))
 	{
 		u = t;
