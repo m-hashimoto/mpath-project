@@ -35,7 +35,7 @@ debug_node_print(struct ptree_node *rn)
 	printf("mklist = %p\n",rn->rn_mklist);
 	if( rn->rn_key ){
 		ip = (unsigned char *)rn->rn_key;
-		printf("host %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("key %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
 	if( rn->rn_mask ){
 		ip = (unsigned char *)rn->rn_mask;
@@ -89,9 +89,9 @@ static int ptree_satisfies_leaf(char *trial,
 	caddr_t v = v_arg;
 	register caddr_t cp;
 	int vlen = (int)LEN(v);
-	register int b = vlen;
+	register int b;
 	dprint(("-ptree_insert Start\n"));
-	dprint(("-ptree_insert: v = %p vlen = 0x%x head = %p\n",v,vlen,head));
+	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
 	struct ptree_node *top = head->rnh_treetop, *tt;
 	
 	if (!top){
@@ -105,7 +105,7 @@ static int ptree_satisfies_leaf(char *trial,
 	
 	if(!t){
 		dprint(("-ptree_insert: search(v) = NULL\n"));
-		b = vlen;
+		b = -1 - vlen;
 		goto on2;
 	}
 	/* Find first bit at which v and t->rn_key differ */ 
@@ -139,8 +139,8 @@ on2:
 		int *data;
 		data = &vlen;
 		dprint(("-ptree_insert: data = 0x%x\n",*data));
-		cp = v;
 #if 0
+		cp = v;
 		do {
 			p = x;
 			if (cp[x->rn_offset] & x->rn_bmask)
@@ -157,7 +157,8 @@ on2:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		tt = ptree_add(v_arg, b, data, head, nodes);
+		tt = ptree_add(v_arg, vlen, data, head, nodes);
+		tt->rn_bit = b;
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
@@ -419,7 +420,6 @@ ptree_matchaddr(v_arg, head)
 	dprint(("-ptree_matchaddr Start\n"));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top;
-	dprint(("-ptree_matchaddr: v = %p head = %p top = %p\n",v,head,t));
 	if(!t){
 		dprint(("-ptree_matchaddr: top = NULL\n"));
 		goto miss;
@@ -431,6 +431,8 @@ ptree_matchaddr(v_arg, head)
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
+	dprint(("-ptree_matchaddr: v = %p vlen = %d head = %p top = %p\n",
+							v,vlen,head,t));
 	t = saved_t = ptree_search(v, vlen, head);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
@@ -438,7 +440,7 @@ ptree_matchaddr(v_arg, head)
 	}
 	if (t->rn_mask){
 		vlen = *(u_char *)t->rn_mask;
-		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = 0x%x\n",vlen));
+		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
 
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
@@ -474,8 +476,7 @@ on1:
 	dprint(("-ptree_matchaddr: matched_off = 0x%x\n",matched_off));
 	b += matched_off << 3;
 	rn_bit = -1 - b;
-	//rn_bit = b - 1;
-	dprint(("-ptree_matchaddr: rn_bit = 0x%x t->rn_bit = 0x%x\n",
+	dprint(("-ptree_matchaddr: rn_bit = %d t->rn_bit = %d\n",
 							rn_bit,t->rn_bit));
 	
 	if (t->rn_flags & RNF_NORMAL) {

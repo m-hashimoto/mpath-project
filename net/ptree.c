@@ -159,7 +159,7 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 ptree_search (char *key, int keylen, struct ptree *t)
 {
 	dprint(("+-ptree_search Start\n"));
-	dprint(("+-ptree_search: search_key = %p len = 0x%x\n",
+	dprint(("+-ptree_search: search_key = %p len = %d\n",
 				key,keylen));
 	struct ptree_node *x, *match;
 
@@ -445,7 +445,6 @@ ptree_next (struct ptree_node *v)
 	struct ptree_node *w;
 
 	/* if the left child exists, go left */
-	dprint(("+-ptree_next: now = %p left = %p right = %p parent = %p\n",v,v->rn_left,v->rn_right,v->rn_parent));
 	if (v->child[0])
 	{
 		w = v->child[0];
@@ -497,7 +496,6 @@ ptree_next (struct ptree_node *v)
 		dprint(("+-ptree_next: u->parent = %p\n",t));
 	}
 
-	//dprint(("  ptree_next: check if( t )\n"));
 	if (t)
 	{
 		/* return the not-yet-traversed right-child node */
