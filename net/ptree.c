@@ -90,11 +90,12 @@ check_bit (char *key, int keylen)
 ptree_match (char *keyi, char *keyj, int keylen)
 {
 	dprint(("ptree_match Start\n"));
-	dprint(("ptree_match: keylen = %d\n",(unsigned int)keylen));
+	dprint(("ptree_match: keylen = %u\n",(unsigned int)keylen));
 	int bytes;
 	int bits;
-	bytes = (int)keylen / 8;
-	bits = (int)keylen % 8;
+	bytes = (unsigned int)keylen / 8;
+	bits = (unsigned int)keylen % 8;
+	dprint(("ptree_match: bytes = %d bits = %d\n",bytes,bits));
 
 	dprint(("ptree_match End\n"));
 	if (! memcmp (keyi, keyj, bytes) &&

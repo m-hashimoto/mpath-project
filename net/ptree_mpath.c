@@ -129,7 +129,7 @@ ptree_addmask(n_arg, search, skip)
 	int maskduplicated, m0, isnormal;
 	struct ptree_node *saved_x;  
 	static int last_zeroed = 0;  
-	dprint(("ptree_addmask: search = %d, skip = %d, netmask = %x:%x:%x:%x\n",
+	dprint(("ptree_addmask: search = %d, skip = %d, netmask = %d:%d:%d:%d\n",
 				search,skip,netmask[0],netmask[1],netmask[2],netmask[3]));
 	if ((mlen = LEN(netmask)) > max_keylen) 
 		mlen = max_keylen;
