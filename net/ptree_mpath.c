@@ -80,7 +80,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			    goto done;
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
-		printf("	dst			gateway			flags\n");
+		printf("dst[len.fum|addr/keylen]		gateway			flags\n");
 		if(!pn)
 			goto done;
 		for (;;) {
