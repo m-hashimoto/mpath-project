@@ -82,6 +82,7 @@ debug_node_print(struct ptree_node *pn)
 debug_tree_print(struct ptree_node_head *pnh)
 {
 		register struct ptree_node *pn, *next;
+		if (!pnh) return (0);
 		pn = pnh->pnh_top;
 		printf("======= Debug tree print Start =======\n");
 		printf("ptree = %p treetop = %p\n",pnh,pn);
@@ -552,7 +553,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node_head *head;
 		struct ptree_node *rt_node;
 {
-		dprint(("-ptree_addroute Start\n"));
+		dprint(("-ptree_addroute Start head = %p\n",head));
 		debug_tree_print(head);
 		//caddr_t netmask = (caddr_t)n_arg;
 
