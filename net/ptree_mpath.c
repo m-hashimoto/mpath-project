@@ -106,16 +106,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		printf("/%d\n",len);
 	}
 #endif
-#if 0
-	dprint(("-ptree_insert Start: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] headoff[%d]\n",
-							(unsigned char)v[0],(unsigned char)v[1],
-							(unsigned char)v[2],(unsigned char)v[3],
-							(unsigned char)v[4],(unsigned char)v[5],
-							(unsigned char)v[6],(unsigned char)v[7],
-							(unsigned char)v[8],(unsigned char)v[9],
-							(unsigned char)v[10],(unsigned char)v[11],
-							len,8*head->pnh_offset));
-#endif
 	if(m && (LEN(m) > head->pnh_offset)){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
@@ -133,16 +123,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			sprint_inet_ntoa(AF_INET6, m);
 			printf("/%d\n",len);
 		}
-#endif
-#if 0
-		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] headoff[%d]\n",
-							(unsigned char)m[0],(unsigned char)m[1],
-							(unsigned char)m[2],(unsigned char)m[3],
-							(unsigned char)m[4],(unsigned char)m[5],
-							(unsigned char)m[6],(unsigned char)m[7],
-							(unsigned char)m[8],(unsigned char)m[9],
-							(unsigned char)m[10],(unsigned char)m[11],
-							len,8*head->pnh_offset));
 #endif
 	}
 	if (!top){
@@ -231,16 +211,6 @@ ptree_matchaddr(v_arg, head)
 			printf("/%d\n",vlen);
 		}
 #endif
-#if 0
-	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-							(unsigned char)v[0],(unsigned char)v[1],
-							(unsigned char)v[2],(unsigned char)v[3],
-							(unsigned char)v[4],(unsigned char)v[5],
-							(unsigned char)v[6],(unsigned char)v[7],
-							(unsigned char)v[8],(unsigned char)v[9],
-							(unsigned char)v[10],(unsigned char)v[11],
-							vlen-8*head->pnh_offset));
-#endif
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: not match\n"));
@@ -259,17 +229,6 @@ ptree_matchaddr(v_arg, head)
 			printf("/%d\n",vlen);
 		}
 #endif
-#if 0
-	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-							(unsigned char)cp[0],(unsigned char)cp[1],
-							(unsigned char)cp[2],(unsigned char)cp[3],
-							(unsigned char)cp[4],(unsigned char)cp[5],
-							(unsigned char)cp[6],(unsigned char)cp[7],
-							(unsigned char)cp[8],(unsigned char)cp[9],
-							(unsigned char)cp[10],(unsigned char)cp[11],
-							vlen-8*head->pnh_offset));
-#endif
-	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen)=[%d]\n",memcmp(cp,cplim,vlen)));
 	dprint(("-ptree_matchaddr: memcmp(cp,cplim,vlen/8)=[%d]\n",memcmp(cp,cplim,vlen/8)));
 	if ( memcmp(cp,cplim,vlen/8) != 0 )
 		return 0;

@@ -198,10 +198,9 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
   int keylen;
   struct ptree_node *x;
-  dprint(("--key_common Start\n"));
+  dprint(("--key_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
-  //dprint(("--key_common: keylen[%d]\n",keylen));
   x = ptree_node_create (keyi, keylen);
   dprint(("--key_common: x[%p] x->key[%p]\n",x,x->key));
   if (! x)
@@ -244,6 +243,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
         return x;
       u = x;
       x = x->child[check_bit (key, x->keylen)];
+			dprint(("--ptree_get: x[%p]\n",x));
     }
 
   if (! x || ! x->key)
