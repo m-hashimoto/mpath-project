@@ -146,7 +146,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	//register int b;
 	struct ptree_node *top, *tt;
 	
-	if (!head->treetop){
+	if (!head->pnh_treetop){
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
