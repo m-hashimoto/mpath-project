@@ -21,7 +21,7 @@ struct ptree_node {
   struct  ptree_mask *rn_mklist;
   caddr_t key;
   caddr_t rn_mask;
-  int   keylen;
+  short   keylen;
 
   short	rn_bit;
   char	rn_bmask;
