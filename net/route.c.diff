@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-12 23:54:21.000000000 +0900
++++ route.c	2005-02-13 02:38:53.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -473,7 +473,7 @@
 +		dprint(("rtalloc1_fib: rn = %p\n",rn));
 +		if (rn/* && ((rn->rn_flags & RNF_ROOT) == 0)*/) {
 +				newrt = rt = RNTORT(rn);
-+				RT_LOCK_INIT(newrt); /* ? */
++			//	RT_LOCK_INIT(newrt); /* ? */
 +				RT_LOCK(newrt);
 +				RT_ADDREF(newrt);
 +				if (needlock)
@@ -1175,7 +1175,7 @@
  }
  
  /*
-@@ -768,495 +784,542 @@
+@@ -768,495 +784,544 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1905,7 +1905,7 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+RT_LOCK_INIT(rt);
++				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
 +			/*
@@ -2112,7 +2112,8 @@
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
 +				}
-+				
++				RT_UNLOCK(rt);
++#if 0
 +				if( mtx_initialized(&(rt)->rt_mtx) ){
 +					RT_UNLOCK(rt);
 +				}
@@ -2123,6 +2124,7 @@
 +					RT_ADDREF(rt);
 +					RT_UNLOCK(rt);
 +				}
++#endif
 +				dprint(("rtreq_ADD End\n"));
 +				debug_tree_print(rnh);
 +				break;
@@ -2140,7 +2142,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1330,70 @@
+@@ -1267,71 +1332,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2265,7 +2267,7 @@
  }
  
  /*
-@@ -1339,228 +1401,232 @@
+@@ -1339,228 +1403,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
