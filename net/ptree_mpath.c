@@ -928,6 +928,8 @@ ptree_inithead(head, off)
 	dprint(("ptree_inithead Start\n"));
 	register struct ptree *rnh;
 	struct ptree_node *t;
+	register int *data = NULL;
+	data = 1;
 	/*register struct ptree_node *t, *tt, *ttt;*/
 	if (*head)
 		return (1);
@@ -939,7 +941,7 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	rnh = ptree_create();
-	t = ptree_add(rn_zeros,off,rnh);
+	t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_bmask = 0;
 	t->rn_mask = NULL;
 	t->rn_dupedkey = NULL;
