@@ -1,5 +1,5 @@
 --- ip_fw2.c.orig	2005-02-06 20:25:32.000000000 +0900
-+++ ip_fw2.c	2005-02-06 21:40:56.000000000 +0900
++++ ip_fw2.c	2005-02-07 13:50:35.000000000 +0900
 @@ -65,7 +65,7 @@
  #include <sys/ucred.h>
  #include <net/ethernet.h> /* for ETHERTYPE_IP */
@@ -30,15 +30,6 @@
  
  	if (tbl >= IPFW_TABLES_MAX)
  		return (EINVAL);
-@@ -1839,7 +1839,7 @@
- 	ent->mask.sin_addr.s_addr = htonl(mlen ? ~((1 << (32 - mlen)) - 1) : 0);
- 	ent->addr.sin_addr.s_addr = addr & ent->mask.sin_addr.s_addr;
- 	IPFW_WLOCK(ch);
--	rn = rnh->rnh_addaddr(&ent->addr, &ent->mask, rnh, (void *)ent);
-+	rn = rnh->rnh_addaddr(&ent->addr, &ent->mask, rnh);
- 	if (rn == NULL) {
- 		IPFW_WUNLOCK(ch);
- 		free(ent, M_IPFW_TBL);
 @@ -1853,7 +1853,7 @@
  del_table_entry(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
      uint8_t mlen)
