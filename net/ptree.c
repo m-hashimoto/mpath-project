@@ -56,6 +56,7 @@ ptree_node_create (char *key, int keylen)
   x->data = NULL;
   x->lock = 1;
 
+	dprint(("--ptree_node_create: malloc x[%p - %p] sizeof[%d]\n",x,&x->lock,len));
 	dprint(("--ptree_node_create: malloc x[%p - %p] sizeof[%d]\n",x,&x->key,len));
   /* fill in the key */
   memcpy (x->key, key, keylen);

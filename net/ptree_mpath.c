@@ -41,7 +41,7 @@ sprint_inet_ntoa(int af, void *sa)
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	if(!pn->key){
+	if(!pn->key || !pn->keylen){
 		dprint(("-debug_node_print: pn[%p] key[%p] keylen[%d]\n",pn,pn->key,pn->keylen));
 		dprint(("-debug_node_print: pn->parent[%p] pn->left[%p] pn->rigth[%p]\n",
 														pn->parent,pn->child[0],pn->child[1]));
@@ -136,7 +136,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	char *v = v_arg, *m = m_arg;
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
-	int len = 8*(int)LEN(v);
+	int len = (int)8*LEN(v);
 	
 #ifdef DEBUG
 	if(head->pnh_offset == 4){

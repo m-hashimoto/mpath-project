@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-03-11 06:08:39.000000000 +0900
++++ route.c	2005-03-12 11:35:22.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -359,7 +359,7 @@
  }
  
  /*
-@@ -320,156 +314,154 @@
+@@ -320,156 +314,155 @@
   *
   * The returned route, if any, is locked.
   */
@@ -503,6 +503,7 @@
  rtfree(struct rtentry *rt)
  {
 -	struct radix_node_head *rnh;
++		dprint(("rtfree Start\n"));
 +		struct ptree_node_head *rnh;
 +
 +		KASSERT(rt != NULL,("%s: NULL rt", __func__));
@@ -636,7 +637,7 @@
  }
  
  
-@@ -479,282 +471,281 @@
+@@ -479,282 +472,281 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1144,7 +1145,7 @@
  }
  
  /*
-@@ -768,495 +759,531 @@
+@@ -768,495 +760,531 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2099,7 +2100,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1294,69 @@
+@@ -1267,71 +1295,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2223,7 +2224,7 @@
  }
  
  /*
-@@ -1339,228 +1364,230 @@
+@@ -1339,228 +1365,230 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
