@@ -58,10 +58,9 @@ static int ptree_satisfies_leaf(char *trial,
 	dprint(("v = %x:%x:%x:%x head = %p\n",*v,*v+1,*v+2,*v+3,head));
 	struct ptree_node *top = head->rnh_treetop;
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
-	register struct ptree_node *t = ptree_search(v, (int)LEN(v), head);
+	register struct ptree_node *t = ptree_search(v, vlen, head);
 	register caddr_t cp = v + head_off; 
 	register int b; 
-	struct ptree_node *tt = NULL;
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
 		register caddr_t cp2 = t->rn_key + head_off;  
@@ -83,10 +82,11 @@ on1:
 		dprint(("ptree_insert: first different bit = %d\n",b));
 	}
 	{
-		register struct ptree_node *p, *x = top;
+		//register struct ptree_node *p, *x = top;
 		register int *data = NULL;
 		cp = v;
 		dprint(("ptree_insert: top = %p top->rn_bit = %d\n",x,x->rn_bit));
+#if 0
 		do {
 			p = x;
 			if (cp[x->rn_offset] & x->rn_bmask)
@@ -94,26 +94,24 @@ on1:
 			else
 				x = x->rn_left;
 			dprint(("ptree_insert: x = %p\n",x));
-			if (!x){
-				dprint(("ptree_insert: link NULL\n"));
-				break;
-			}
+			if (!x) break;
 		}
 		while (b > (unsigned) x->rn_bit);
 		/* x->rn_bit < b && x->rn_bit >= 0 */
+#endif
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
 		*data = 1;
-		t = ptree_add(v, b, data, head);
+		t = ptree_add(v, vlen, data, head);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
 	dprint(("ptree_insert End\n"));
-	return (tt);
+	return (t);
 }
 
 	struct ptree_node *
