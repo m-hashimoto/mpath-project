@@ -152,7 +152,6 @@ ptree_search (char *key, int keylen, struct ptree *t)
 
 	x = match = t->top;
 	dprint(("ptree_search: check node keylen flag\n"));
-	dprint(("	      %p   %d    %d\n",x,x->keylen,x->rn_flags));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
