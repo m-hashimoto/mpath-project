@@ -301,7 +301,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			//dprint(("-ptree_addroute: rt=%p\n",rt));
 			//struct rtentry **rt_array = rt->mpath_array;
 			dprint(("-ptree_addroute: rt=%p\n",rt));
-			rt.mpath_array = NULL; 
+			rt.mpath_array[0] = NULL; 
 			dprint(("-ptree_addroute: rt=%p\n",rt));
 			dprint(("-ptree_addroute: rt.mpath_array=%p\n",rt.mpath_array));
 			//dprint(("-ptree_addroute: &rt_array=%p\n",&rt_array));
