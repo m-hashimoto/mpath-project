@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-07 02:17:00.000000000 +0900
++++ route.c	2005-02-07 02:49:28.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,550 @@
+@@ -768,495 +780,552 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1890,6 +1890,7 @@
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
++				dprint(("case rtreq_ADD: test print1\n"));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -1907,8 +1908,10 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(ENOBUFS);
 +				}
++				dprint(("case rtreq_ADD: test print2\n"));
 +				bcopy(dst, new, dlen);
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
++				dprint(("case rtreq_ADD: test print3\n"));
 +#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
@@ -1924,9 +1927,8 @@
 +			/*
 +			 * point to the (possibly newly malloc'd) dest address.
 +			 */
-+#ifdef PATRICIA
 +				ndst = (struct sockaddr *)new;
-+#else
++#if 0
 +				ndst = (struct sockaddr *)rt_key(rt);
  #endif
 -
@@ -1942,6 +1944,7 @@
 +			 * This moved from below so that rnh->rnh_addaddr() can
 +			 * examine the ifa and  ifa->ifa_ifp if it so desires.
 +			 */
++				dprint(("case rtreq_ADD: test print4\n"));
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
@@ -1957,6 +1960,7 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(EEXIST);
 +				}
++				dprint(("case rtreq_ADD: test print5\n"));
 +#endif
 +#ifdef FLOWTABLE
 +				dprint(("rtreq_ADD: ifdef FLOWTABLE Start\n"));
@@ -2025,10 +2029,8 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh);
-+#ifdef PATRICIA
 +				rt->rt_nodes = rn;
 +				rt_key(rt) = (struct sockaddr *)new;
-+#endif
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
@@ -2136,7 +2138,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1334,70 @@
+@@ -1267,71 +1336,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2261,7 +2263,7 @@
  }
  
  /*
-@@ -1339,228 +1405,232 @@
+@@ -1339,228 +1407,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
