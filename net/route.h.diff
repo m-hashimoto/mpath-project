@@ -1,63 +1,32 @@
---- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-03-07 07:13:47.000000000 +0900
-@@ -33,6 +33,7 @@
- #ifndef _NET_ROUTE_H_
- #define _NET_ROUTE_H_
- 
-+
- /*
-  * Kernel resident routing tables.
-  *
-@@ -124,21 +125,26 @@
-  * gateway rather than the ultimate destination.
-  */
- #ifndef RNF_NORMAL
--#include <net/radix.h>
-+#include "opt_ptree.h"
-+#include <net/ptree.h>
-+#include <net/ptree_mpath.h>
- #ifdef RADIX_MPATH
- #include <net/radix_mpath.h>
- #endif
- #endif
- struct rtentry {
--	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
-+	struct	ptree_node *rt_nodes;	/* tree glue, and other values */
- 	/*
- 	 * XXX struct rtentry must begin with a struct radix_node (or two!)
- 	 * because the code does some casts of a 'struct radix_node *'
- 	 * to a 'struct rtentry *'
- 	 */
--#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
--#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
-+#define	rt_key(r)		(*((struct sockaddr **)(&(r)->rt_nodes->key)))
-+#define	rt_keylen(r)	((int)(&(r)->rt_nodes->keylen))
-+//#define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_nodes->mask)))
-+#define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_mask)))
- 	struct	sockaddr *rt_gateway;	/* value */
-+	struct	sockaddr *rt_mask;
- 	int	rt_flags;		/* up/down?, host/net */
- 	int	rt_refcnt;		/* # held references */
- 	struct	ifnet *rt_ifp;		/* the answer: interface to use */
-@@ -149,8 +155,12 @@
- 	/* XXX ugly, user apps use this definition but don't have a mtx def */
- 	struct	mtx rt_mtx;		/* mutex for routing entry */
- #endif
-+#ifdef PTREE_MPATH
-+	struct rtentry *mpath_array[];
-+#endif
- };
- 
-+
- /*
-  * Following structure necessary for 4.3 compatibility;
-  * We should eventually move it to a compat file.
-@@ -373,7 +383,7 @@
- 	}							\
- } while (0)
- 
--struct radix_node_head *rt_tables_get_rnh(int, int);
-+struct ptree_node_head *rt_tables_get_rnh(int, int);
- 
- struct ifmultiaddr;
- 
+35a36
+> 
+127c128,130
+< #include <net/radix.h>
+---
+> #include "opt_ptree.h"
+> #include <net/ptree.h>
+> #include <net/ptree_mpath.h>
+133c136
+< 	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
+---
+> 	struct	ptree_node rt_nodes;	/* tree glue, and other values */
+139,140c142,145
+< #define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
+< #define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
+---
+> #define	rt_key(r)		(*((struct sockaddr **)(&(r)->rt_nodes->key)))
+> //#define	rt_keylen(r)	((int)(&(r)->rt_nodes->keylen))
+> //#define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_nodes->mask)))
+> #define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_mask)))
+141a147
+> 	struct	sockaddr *rt_mask;
+151a158,160
+> #ifdef PTREE_MPATH
+> 	struct rtentry *mpath_array[];
+> #endif
+153a163
+> 
+376c386
+< struct radix_node_head *rt_tables_get_rnh(int, int);
+---
+> struct ptree_node_head *rt_tables_get_rnh(int, int);
