@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-17 00:14:09.000000000 +0900
++++ route.c	2005-02-17 00:47:23.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -507,7 +507,7 @@
 +		if (newrt){
 +				dprint(("rtalloc1_fib: newrt = %p newrt_flag = 0x%x\n",
 +										newrt,newrt->rt_flags));
-+				char *g = (char *)newrt->rt_gateway;
++				unsigned char *g = (unsigned char *)newrt->rt_gateway;
 +				dprint(("rtalloc1_fib: gate[%d.%d.%d.%d|%d.%d.%d.%d.%d.%d.%d.%d]\n",
 +								g[0],g[1],g[2],g[3],
 +								g[4],g[5],g[6],g[7],
@@ -1177,7 +1177,7 @@
  }
  
  /*
-@@ -768,495 +786,530 @@
+@@ -768,495 +786,532 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1932,8 +1932,10 @@
 +							senderr(ENOBUFS);
  					}
 +					bcopy(dst, new, dlen);
++					dprint(("rtreq_ADD: dlen = %d glen = %d\n",dlen,glen));
 +					rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +				}
++				bcopy(gateway, rt->rt_gateway, glen);
 +#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
@@ -2130,7 +2132,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1320,70 @@
+@@ -1267,71 +1322,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2142,7 +2144,6 @@
 -	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
 +		/* XXX dst may be overwritten, can we move this to below */
 +		int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
-+		dprint(("rt_setgate: dlen = %d, glen = %d\n",dlen,glen));
  #ifdef INVARIANTS
 -	struct radix_node_head *rnh;
 +		struct ptree_node_head *rnh;
@@ -2255,7 +2256,7 @@
  }
  
  /*
-@@ -1339,228 +1391,232 @@
+@@ -1339,228 +1392,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
