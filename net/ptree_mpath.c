@@ -31,9 +31,10 @@ static struct ptree *mask_rnhead;
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
 #define LEN(x) (*(const u_char *)(x))
 #define rn_masktop (mask_rnhead->rnh_treetop)
-
+#if 0
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
+#endif
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
 		int *dupentry, struct ptree_node nodes[2]);
 static int ptree_lexobetter(void *m_arg, void *n_arg);
