@@ -47,7 +47,7 @@ ptree_node_create (char *key, int keylen)
     return NULL;
 
   //x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
-	XRTMALLOC(x->key, char *, keylen / 8 + 1)
+	XRTMALLOC(x->key, char *, keylen / 8 + 1);
   x->keylen = keylen;
   x->parent = NULL;
   x->child[0] = NULL;
