@@ -75,7 +75,6 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_DESTROY(rnh)	rw_destroy(&(rnh)->rnh_lock)
 #define	RADIX_NODE_HEAD_LOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_LOCKED)
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
-#endif /* _KERNEL */
 
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
@@ -84,6 +83,7 @@ struct ptree_node
 				*ptree_addroute (void *, void *, struct ptree_node_head *),
 				*ptree_deladdr(void *, void *, struct ptree_node_head *),
 				*ptree_matchaddr(void *, struct ptree_node_head *);
+#endif /* _KERNEL */
 
 #ifdef PTREE_MPATH
 #ifdef _KERNEL
