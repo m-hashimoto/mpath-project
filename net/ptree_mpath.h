@@ -84,7 +84,7 @@ struct ptree_node
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
-#if PTREE_MPATH
+#ifdef PTREE_MPATH
 #ifdef _KERNEL
 /*
  * Patricia trie API with multipath support
