@@ -366,7 +366,7 @@ ptree_matchaddr(v_arg, head)
 	register struct ptree_node *t = head->top, *x;
 	dprint(("ptree_matchaddr: v = %d:%d:%d:%d head = %p top = %p\n",
 				v[0],v[1],v[2],v[3],head,t));
-	if(!top){
+	if(!t){
 		dprint(("ptree_matchaddr: top = NULL\n"));
 		goto miss;
 	}
