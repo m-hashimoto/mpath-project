@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-24 13:01:55.000000000 +0900
++++ route.c	2005-02-24 13:14:33.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -494,16 +494,16 @@
 -		RT_LOCK_ASSERT(newrt);
 -	return (newrt);
 +		if (newrt){
-+				unsigned char *g = (unsigned char *)newrt->rt_gateway;
-+				unsigned char *ifa = (unsigned char *)newrt->rt_ifa->ifa_addr;
-+				dprint(("rtalloc1_fib: gate[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]",
-+								g[0],g[1],g[2],g[3],
-+								g[4],g[5],g[6],g[7],
-+								g[8],g[9],g[10],g[11]));
-+				dprint((" ifa[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
-+								ifa[0],ifa[1],ifa[2],ifa[3],
-+								ifa[4],ifa[5],ifa[6],ifa[7],
-+								ifa[8],ifa[9],ifa[10],ifa[11]));
++				//unsigned char *g = (unsigned char *)newrt->rt_gateway;
++				//unsigned char *ifa = (unsigned char *)newrt->rt_ifa->ifa_addr;
++				///dprint(("rtalloc1_fib: gate[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]",
++				//				g[0],g[1],g[2],g[3],
++				//				g[4],g[5],g[6],g[7],
++				//				g[8],g[9],g[10],g[11]));
++				//dprint((" ifa[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++				//				ifa[0],ifa[1],ifa[2],ifa[3],
++				//				ifa[4],ifa[5],ifa[6],ifa[7],
++				//				ifa[8],ifa[9],ifa[10],ifa[11]));
 +				RT_LOCK_ASSERT(newrt);
 +		}
 +		return (newrt);
