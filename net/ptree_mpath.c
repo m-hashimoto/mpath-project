@@ -632,11 +632,13 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 		dprint(("-ptree_addroute: on2\n"));
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
+			dprint(("-ptree_addroute: on2 test 1\n"));
 			if (m->rm_bit < b_leaf)
 				continue;
 			if (m->rm_bit > b_leaf)
 				break;
 			if (m->rm_flags & RNF_NORMAL) {
+				dprint(("-ptree_addroute: on2 test 2\n"));
 				mmask = m->rm_leaf->rn_mask;
 				if (tt->rn_flags & RNF_NORMAL) {
 				    log(LOG_ERR,
@@ -646,6 +648,7 @@ on2:
 			} else
 				mmask = m->rm_mask;
 			if (mmask == netmask) {
+				dprint(("-ptree_addroute: on2 test 3\n"));
 				m->rm_refs++;
 				tt->rn_mklist = m;
 				return tt;
