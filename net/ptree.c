@@ -225,7 +225,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
       u = x;
       x = x->child[check_bit (key, x->keylen)];
     }
-
+  dprint(("--ptree_get: x[%p]\n",x));
   if (! x)
     {
       v = ptree_node_create (key, keylen);
