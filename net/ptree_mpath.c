@@ -355,7 +355,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		register caddr_t cp, cplim;
 		cp = tt->key; cplim = v;
 		unsigned char *d = (unsigned char *)cp;
-		dprint(("-ptree_deladdr: cp[%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_deladdr: cp[%d.%d.%d.%d|%d.%d.%d.%d]\n",
 								(unsigned char)d[0],(unsigned char)d[1],
 								(unsigned char)d[2],(unsigned char)d[3],
 								(unsigned char)d[4],(unsigned char)d[5],
