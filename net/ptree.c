@@ -17,7 +17,7 @@
 #include "ptree.h"
 #endif /*_KERNEL*/
 
-#ifdef DEBUG
+#if 0
 #include "opt_inet.h"
 #include "opt_inet6.h"
 #include <sys/socket.h>
@@ -47,7 +47,7 @@ ptree_node_create (char *key, int keylen)
   if (! x)
     return NULL;
 
-	dprint(("--ptree_node_create: malloc x[%p - %p]\n",x,&x->lock));
+	dprint(("--ptree_node_create: malloc x[%p - %p] sizeof[%d]\n",x,x->key,len));
 
   x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
   x->keylen = keylen;
