@@ -47,7 +47,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 	}
 	printf("[0x%x]\n",rt->rt_flags);
 	//printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
-#endif
 	return 0;
 }
 
