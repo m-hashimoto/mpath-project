@@ -396,9 +396,6 @@ ptree_matchaddr(v_arg, head)
 	if (t->rn_mask)
 		vlen = *(u_char *)t->rn_mask;
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
-	dprint(("ptree_matchaddr: cp = %d:%d:%d:%d\n",cp[0],cp[1],cp[2],cp[3]));
-	dprint(("ptree_matchaddr: cp2 = %d:%d:%d:%d\n",cp2[0],cp2[1],cp2[2],cp2[3]));
-	dprint(("ptree_matchaddr: cplim = %d:%d:%d:%d\n",cplim[0],cplim[1],cplim[2],cplim[3]));
 	for (; cp < cplim; cp++, cp2++)
 		if (*cp != *cp2)
 			goto on1;
@@ -409,7 +406,7 @@ ptree_matchaddr(v_arg, head)
 	 * Never return the root node itself, it seems to cause a
 	 * lot of confusion.
 	 */
-	dprint(("ptree_matchaddr: test 4\n"));
+	dprint(("ptree_matchaddr: test\n"));
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
 	dprint(("ptree_matchaddr End 1\n"));
