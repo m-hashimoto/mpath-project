@@ -1,6 +1,15 @@
 --- flowtable.c.org	2005-01-24 17:59:50.000000000 +0900
-+++ flowtable.c	2005-01-24 18:11:18.000000000 +0900
-@@ -606,6 +606,7 @@
++++ flowtable.c	2005-01-24 18:30:53.000000000 +0900
+@@ -131,6 +131,8 @@
+ #define	FIN_WAIT_IDLE		600
+ #define	TCP_IDLE		SECS_PER_DAY
+ 
++#define DEBUG 1
++#define dprint(x) { if(DEBUG) printf x; }
+ 
+ typedef	void fl_lock_t(struct flowtable *, uint32_t);
+ typedef void fl_rtalloc_t(struct route *, uint32_t, u_int);
+@@ -606,6 +608,7 @@
  int
  flowtable_lookup(struct flowtable *ft, struct mbuf *m, struct route *ro, uint32_t fibnum)
  {
@@ -8,7 +17,7 @@
  	uint32_t key[9], hash;
  	struct flentry *fle;
  	uint16_t flags;
-@@ -640,6 +641,7 @@
+@@ -640,6 +643,7 @@
  	if (hash == 0 || (key[0] == 0 && (ft->ft_flags & FL_HASH_PORTS)))
  		return (ENOENT);
  
@@ -16,7 +25,7 @@
  	V_flowtable_lookups++;
  	FL_ENTRY_LOCK(ft, hash);
  	if ((fle = FL_ENTRY(ft, hash)) == NULL) {
-@@ -647,6 +649,7 @@
+@@ -647,6 +651,7 @@
  		goto uncached;
  	}
  keycheck:	
@@ -24,7 +33,7 @@
  	rt = __DEVOLATILE(struct rtentry *, fle->f_rt);
  	lle = __DEVOLATILE(struct llentry *, fle->f_lle);
  	if ((rt != NULL)
-@@ -662,6 +665,7 @@
+@@ -662,6 +667,7 @@
  		ro->ro_rt = rt;
  		ro->ro_lle = lle;
  		FL_ENTRY_UNLOCK(ft, hash);
@@ -32,7 +41,7 @@
  		return (0);
  	} else if (fle->f_next != NULL) {
  		fle = fle->f_next;
-@@ -670,6 +674,7 @@
+@@ -670,6 +676,7 @@
  	FL_ENTRY_UNLOCK(ft, hash);
  
  uncached:
@@ -40,7 +49,7 @@
  	V_flowtable_misses++;
  	/*
  	 * This bit of code ends up locking the
-@@ -695,6 +700,7 @@
+@@ -695,6 +702,7 @@
  		if (ifp->if_flags & (IFF_POINTOPOINT | IFF_LOOPBACK)) {
  			RTFREE(rt);
  			ro->ro_rt = NULL;
@@ -48,7 +57,7 @@
  			return (ENOENT);
  		}
  
-@@ -708,6 +714,7 @@
+@@ -708,6 +716,7 @@
  		if (lle == NULL) {
  			RTFREE(rt);
  			ro->ro_rt = NULL;
@@ -56,7 +65,7 @@
  			return (ENOENT);
  		}
  		error = flowtable_insert(ft, hash, key, proto, fibnum,
-@@ -721,6 +728,7 @@
+@@ -721,6 +730,7 @@
  		}
  	} 
  
@@ -64,3 +73,10 @@
  	return (error);
  }
  
+@@ -1190,3 +1200,6 @@
+ 	}
+ }
+ #endif
++
++#undef DEBUG
++#undef dprint
