@@ -361,16 +361,18 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree *head;
 {
+	dprint(("ptree_matchaddr Start\n"));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top, *x;
+	dprint(("ptree_matchaddr: v = %d:%d:%d:%d head = %p top = %p\n",
+				v[0],v[1],v[2],v[3],head,t));
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
+	dprint(("ptree_matchaddr: test 1\n"));
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
-	dprint(("ptree_matchaddr Start\n"));
-	dprint(("ptree_matchaddr: v = %d:%d:%d:%d head = %p top = %p\n",
-				v[0],v[1],v[2],v[3],head,t));
+	dprint(("ptree_matchaddr: test 2\n"));
 
 	t = saved_t = ptree_search(v, vlen, head);
 	if( !saved_t ){
@@ -389,10 +391,8 @@ ptree_matchaddr(v_arg, head)
 	 * with a long one.  This wins big for class B&C netmasks which
 	 * are probably the most common case...
 	 */
-	dprint(("ptree_matchaddr: test 1\n"));
 	if (t->rn_mask)
 		vlen = *(u_char *)t->rn_mask;
-	dprint(("ptree_matchaddr: test 2\n"));
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
 	dprint(("ptree_matchaddr: cp = %d:%d:%d:%d\n",cp[0],cp[1],cp[2],cp[3]));
 	dprint(("ptree_matchaddr: cp2 = %d:%d:%d:%d\n",cp2[0],cp2[1],cp2[2],cp2[3]));
