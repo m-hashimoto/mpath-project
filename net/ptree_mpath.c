@@ -172,7 +172,8 @@ ptree_addmask(n_arg, search, skip)
 		bzero(addmask_key + m0, last_zeroed - m0); 
 	*addmask_key = last_zeroed = mlen;
 	x = ptree_search(addmask_key, mlen, mask_rnhead);
-	dprint(("ptree_addmask: mask_rnhead = %p\n",mask_rnhead));
+	dprint(("-ptree_addmask: mask_rnhead = %p\n",mask_rnhead));
+	dprint(("-ptree_addmask: x->rn_key = %p\n",x->key));
 	if(!x){
 		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
