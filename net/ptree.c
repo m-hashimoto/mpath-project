@@ -52,8 +52,10 @@ ptree_node_create (char *key, int keylen)
 	x->rn_flags = RNF_ACTIVE;
 	x->rn_mklist = 0;
 #ifdef PTREE_MPATH
-	XRTMALLOC(x->mpath_array, struct ptree_node *,
-		       	sizeof(struct ptree_node *) * MAX_MPATH);
+	struct ptree_node **m;
+	m = x->mpath_array;
+	len = sizeof(struct ptree_node *) * MAX_MPATH;
+	XRTMALLOC(m, struct ptree_node *, len);
 #endif
 	dprint(("+-ptree_node_create: new node = %p keylen = %d\n",x,keylen));
 	dprint(("+-ptree_node_create End\n"));
