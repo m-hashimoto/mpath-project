@@ -1,5 +1,5 @@
 --- ip_pool.h.orig	2005-02-06 19:13:17.000000000 +0900
-+++ ip_pool.h	2005-02-06 19:14:21.000000000 +0900
++++ ip_pool.h	2005-02-06 19:37:40.000000000 +0900
 @@ -11,8 +11,9 @@
  
  #if defined(_KERNEL) && !defined(__osf__) && !defined(__hpux) && \
@@ -8,7 +8,7 @@
 -extern void rn_freehead __P((struct radix_node_head *));
 +# include <net/ptree.h>
 +# include <net/ptree_mpath.h>
-+extern void rn_freehead __P((struct ptree *));
++extern void rn_freehead __P((struct ptree_node_head *));
  # define FreeS(p, z)		KFREES(p, z)
  extern int max_keylen;
  #else
