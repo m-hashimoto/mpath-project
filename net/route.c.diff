@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-07 01:11:49.000000000 +0900
++++ route.c	2005-02-07 01:40:49.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,527 @@
+@@ -768,495 +780,543 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1186,6 +1186,21 @@
 -	int error = 0;
 +		struct ifaddr *ifa;
 +		int error = 0;
++
++		/*
++		 * ifp may be specified by sockaddr_dl
++		 * when protocol address is ambiguous.
++		 */
++		if (info->rti_ifp == NULL && ifpaddr != NULL &&
++						ifpaddr->sa_family == AF_LINK &&
++						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
++				info->rti_ifp = ifa->ifa_ifp;
++				ifa_free(ifa);
++		}
++		if (info->rti_ifa == NULL && ifaaddr != NULL)
++				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
++		if (info->rti_ifa == NULL) {
++				struct sockaddr *sa;
  
 -	/*
 -	 * ifp may be specified by sockaddr_dl
@@ -1219,21 +1234,6 @@
 -	} else
 -		error = ENETUNREACH;
 -	return (error);
-+		/*
-+		 * ifp may be specified by sockaddr_dl
-+		 * when protocol address is ambiguous.
-+		 */
-+		if (info->rti_ifp == NULL && ifpaddr != NULL &&
-+						ifpaddr->sa_family == AF_LINK &&
-+						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
-+				info->rti_ifp = ifa->ifa_ifp;
-+				ifa_free(ifa);
-+		}
-+		if (info->rti_ifa == NULL && ifaaddr != NULL)
-+				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
-+		if (info->rti_ifa == NULL) {
-+				struct sockaddr *sa;
-+
 +				sa = ifaaddr != NULL ? ifaaddr :
 +						(gateway != NULL ? gateway : dst);
 +				if (sa != NULL && info->rti_ifp != NULL)
@@ -1303,11 +1303,7 @@
 -	 */
 -	if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest) {
 -		struct rt_addrinfo info;
-+		struct ptree_node *rn;
-+		struct ptree_node_head *rnh;
-+		struct ifaddr *ifa;
-+		int error = 0;
- 
+-
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_flags = rt->rt_flags;
 -		info.rti_info[RTAX_DST] = rt_key(rt);
@@ -1324,7 +1320,11 @@
 -bad:
 -	return (error);
 -}
--
++		struct ptree_node *rn;
++		struct ptree_node_head *rnh;
++		struct ifaddr *ifa;
++		int error = 0;
+ 
 -#ifdef RADIX_MPATH
 -static int
 -rn_mpath_update(int req, struct rt_addrinfo *info,
@@ -1885,7 +1885,6 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				//rn = rnh->rnh_addaddr(dst, netmask, rnh);
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
@@ -1894,6 +1893,22 @@
 +			 * 
 +			 */
 +				RT_LOCK(rt);
++				int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
++				caddr_t new;
++				
++				R_Malloc(new, caddr_t, dlen + glen);
++				if (new == NULL){
++						dprint(("rtreq_ADD: setgate error = %d\n",error));
++						RT_LOCK_DESTROY(rt);
++						if (ifa != NULL)
++								ifa_free(ifa);
++						uma_zfree(V_rtzone, rt);
++						senderr(ENOBUFS);
++				}
++				bcopy(dst, new, dlen);
++				//rt_key(rt) = (struct sockaddr *)new;
++				rt->rt_gateway = (struct sockaddr *)(new + dlen);
++#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
 +						RT_LOCK_DESTROY(rt);
@@ -1902,11 +1917,11 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(error);
 +				}
-+				saved_gateway = rt->rt_gateway;
++#endif
 +			/*
 +			 * point to the (possibly newly malloc'd) dest address.
 +			 */
-+				ndst = (struct sockaddr *)rt_key(rt);
++				ndst = (struct sockaddr *)new;
 +			/*
 +			 * make sure it contains the value we want (masked if needed).
 +			 */
@@ -2006,6 +2021,7 @@
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh);
 +				rt->rt_nodes = rn;
++				rt_key(rt) = (struct sockaddr *)new;
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
@@ -2113,7 +2129,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1311,70 @@
+@@ -1267,71 +1327,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2190,7 +2206,7 @@
 +				 * Free()/free() handle a NULL argument just fine.
 +				 */
 +				bcopy(dst, new, dlen);
-+				//Free(rt_key(rt));	/* free old block, if any */
++				Free(rt_key(rt));	/* free old block, if any */
 +				rt_key(rt) = (struct sockaddr *)new;
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +		}
@@ -2238,7 +2254,7 @@
  }
  
  /*
-@@ -1339,228 +1382,232 @@
+@@ -1339,228 +1398,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
