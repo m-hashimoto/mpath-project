@@ -125,8 +125,8 @@ static struct ptree_node *ptree_insert(void *v_arg,
 //		walktree_f_t *f, void *w);
 
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
-static int ptree_satisfies_leaf(char *trial,
-			   	register struct ptree_node *leaf, int skip);
+//static int ptree_satisfies_leaf(char *trial,
+//			   	register struct ptree_node *leaf, int skip);
 
 
 	static struct ptree_node 
