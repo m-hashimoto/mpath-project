@@ -931,11 +931,15 @@ ptree_inithead(head, off)
 	register int *data = NULL;
 	*data = 1;
 	/*register struct ptree_node *t, *tt, *ttt;*/
-	if (*head)
+	if (*head){
+		dprint(("ptree_inithead End 1\n"));
 		return (1);
+	}
 	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
-	if (rnh == 0)
+	if (rnh == 0){
+		dprint(("ptree_inithead End 2\n"));
 		return (0);
+	}
 #ifdef _KERNEL
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
@@ -957,7 +961,7 @@ ptree_inithead(head, off)
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
-	dprint(("ptree_inithead End\n"));
+	dprint(("ptree_inithead End 3\n"));
 	return (1);
 }
 
@@ -975,7 +979,8 @@ ptree_init()
 #endif
 	if (max_keylen == 0) {
 		log(LOG_ERR,
-				"rn_init: ptree functions require max_keylen be set\n");
+			"rn_init: ptree functions require max_keylen be set\n");
+		dprint(("ptree_init End 1\n"));
 		return;
 	}
 	R_Malloc(rn_zeros, char *, 3 * max_keylen);
@@ -988,7 +993,8 @@ ptree_init()
 		*cp++ = -1;
 	if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
 		panic("ptree_init 2");
-	dprint(("ptree_init End\n"));
+
+	dprint(("ptree_init End 2\n"));
 }
 
 /*
