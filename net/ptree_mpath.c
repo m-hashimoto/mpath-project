@@ -555,7 +555,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		int l;
 		l = (int)LEN(rt_key(rt));
 
-		rn = pnh->rnh_lookup(rt_key(rt), l, pnh->pnh_treetop);
+		rn = pnh->rnh_lookup((char *)rt_key(rt), l, pnh->pnh_treetop);
 		if (!rn)
 				return 0;
 
@@ -648,7 +648,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 		u_int32_t n;
 		struct rtentry *rt, *rt0;
-		struct ptree_node *rn;
+		//struct ptree_node *rn;
 
 		/*
 		 * XXX we don't attempt to lookup cached route again; what should
@@ -703,7 +703,7 @@ ptree4_mpath_inithead(void **head, int off)
 
 		hashjitter = arc4random();
 		if (in_inithead(head, off) == 1) {
-				rnh = (struct ptree *)*head;
+				rnh = (struct ptree_node_head *)*head;
 				rnh->pnh_multipath = 1;
 				return 1;
 		} else
@@ -719,7 +719,7 @@ ptree6_mpath_inithead(void **head, int off)
 
 		hashjitter = arc4random();
 		if (in6_inithead(head, off) == 1) {
-				rnh = (struct ptree *)*head;
+				rnh = (struct ptree_node_head *)*head;
 				rnh->pnh_multipath = 1;
 				return 1;
 		} else
