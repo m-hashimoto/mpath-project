@@ -111,14 +111,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 #endif
 	if(m && (LEN(m) > head->pnh_offset)){
-		unsigned char bitmask = 0xff;
+		register char bitmask = 0xff;
 		len = head->pnh_offset;
 		printf("m[%d] = %d\n",len,(unsigned char)m[len]);
-		do {
+		while(m[len] & bitmask) {
 			len++;
 			printf("m[%d] = %d\n",len,(unsigned char)m[len]);
-		} while(m[len]&bitmask);
-		len = 8*len;
+		}
+		len = 8*(len - 1);
 	}
 
 	dprint(("-ptree_insert: len = %d\n",len));
@@ -373,12 +373,12 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				len = (int)8*LEN(netmask);
 		}
 #endif
-		if(netmask){
+		if(netmask && (LEN(netmask) > head->pnh_offset)){
 			unsigned char bitmask = 0xff;
 			len = head->pnh_offset;
 			while(netmask[len] == bitmask)
 				len++;
-			len = 8*len;
+			len = 8*(len - 1);
 		}
 
 		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
