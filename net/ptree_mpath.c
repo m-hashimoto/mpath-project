@@ -261,6 +261,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)cp2[6],(unsigned char)cp2[7],
 							t->keylen));
 	dprint(("-ptree_matchaddr:"));
+#if 0
 	for (; cp < cplim; cp++, cp2++){
 		dprint((" + "));	
 		if (*cp != *cp2){
@@ -268,6 +269,9 @@ ptree_matchaddr(v_arg, head)
 			goto on1;
 		}
 	}
+#endif
+	if ( !memcmp(cp2,cplim,t->keylen) )
+			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
@@ -275,64 +279,6 @@ ptree_matchaddr(v_arg, head)
 	dprint(("-ptree_matchaddr: return t = %p\n",t));
 	debug_node_print(t);
 	return t;
-on1:
-#if 0
-	/*
-	 * Even if we don't match exactly as a host,
-	 * we may match if the leaf we wound up at is
-	 * a route to a net.
-	 */
-	dprint(("-ptree_matchaddr: on1\n"));
-	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
-	dprint(("-ptree_matchaddr: first bit that diff = 0x%x\n",test));
-	for (b = 7; (test >>= 1) > 0;){
-		b--;
-	}
-	
-	matched_off = cp - v;
-	dprint(("-ptree_matchaddr: matched_off = 0x%x\n",matched_off));
-	b += matched_off << 3;
-	rn_bit = -1 - b;
-	dprint(("-ptree_matchaddr: rn_bit = %d t->rn_bit = %d\n",
-							rn_bit,t->rn_bit));
-	
-	if (t->rn_flags & RNF_NORMAL) {
-			if (rn_bit <= t->rn_bit){
-					dprint(("-ptree_matchaddr End 2\n"));
-					return t;
-			}
-	} else if (ptree_satisfies_leaf(v, t, matched_off)){
-			dprint(("-ptree_matchaddr End 3\n"));
-			return t;
-	}
-		
-	t = saved_t;
-	register struct ptree_mask *m;
-	m = t->rn_mklist;
-	while (m) {
-			if (m->rm_flags & RNF_NORMAL) {
-					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",rn_bit,m->rm_bit));
-					if (rn_bit <= m->rm_bit){
-						dprint(("-ptree_matchaddr: m->rm_leaf = %p\n",m->rm_leaf));
-						debug_node_print(m->rm_leaf);
-						return (m->rm_leaf);
-					}
-			}
-			else {
-					off = min(t->rn_offset, matched_off);
-					dprint(("-ptree_matchaddr: off = %d\n",off));
-					//x = ptree_search_m(v, t, m->rm_mask);
-					while (t && t->rn_mask != m->rm_mask)
-							t = t->rn_dupedkey;
-					if (t && ptree_satisfies_leaf(v, t, off)){
-							dprint(("-ptree_matchaddr End: return %p\n",t));
-							return t;
-					}
-			}
-			m = m->rm_mklist;
-			dprint(("-ptree_matchaddr: next rm_mklist = %p\n",m));
-	}
-#endif
 miss:
 	dprint(("-ptree_matchaddr End: miss\n"));
 	return 0;
