@@ -931,13 +931,14 @@ ptree_walktree(h, f, w)
 		printf("INET ptree\n");
 		struct ptree *rnh;
 		struct rtentry *rt;
+		struct sockaddr_in gateway;
 
 		rnh = rt_tables_get_rnh(0, INET);
 		rn = rnh->rnh_treetop;
 		for (;;) {
-				rt = RNTORT(rn);
-				pritnf("address: %s\n",
-					inet_ntoa((struct sockaddr_in *)(rt->rt_gateway)->sin_addr));
+				rt = (struct rtentry *)rn;
+				gateway = (struct sockaddr_in)rt->rt_gateway;
+				pritnf("address: %s\n",inet_ntoa(gateway->sin_addr));
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
