@@ -278,18 +278,19 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 
 
 		struct ptree_node *
-ptree_deladdr(v_arg, netmask_arg, head)
-		void *v_arg, *netmask_arg;
+ptree_deladdr(v_arg, gate_arg, head)
+		void *v_arg, *gate_arg;
 		struct ptree_node_head *head;
 {
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
-		caddr_t v, netmask;
+		caddr_t v, gate;
 		unsigned int len;
 		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 
 		v = v_arg;
-		netmask = netmask_arg;
+		gate = gate_arg;
+		//netmask = netmask_arg;
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
