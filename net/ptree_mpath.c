@@ -122,6 +122,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
+#if 0
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v + len;
 		
@@ -133,15 +134,15 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 				goto on1;
 			}
 		}
-#if 0
-		register caddr_t cp = t->key;
-		caddr_t cplim = v;
-		if ( !memcmp(cp,cplim,len) ){
+#endif
+
+		register caddr_t cp2 = t->key + head_off;
+		caddr_t cplim = v + head_off;
+		if ( !memcmp(cp2,cplim,len) ){
 			dprint(("key dupentry\n"));
 			*dupentry = 1;  
 			return t;
 		}
-#endif
 	}
 on1:
 	*dupentry = 0;
@@ -221,11 +222,13 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
-	debug_node_print(t);
+	debug_node_print(saved_t);
 	if (t->mask){
 		if ((LEN(t->mask)-head_off) > 0 )
 			vlen = (int)8*LEN(t->mask);
-	}
+	} 
+	else
+		vlen = t->keylen;
 
 	cp = t->key; cplim = v;
 	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
