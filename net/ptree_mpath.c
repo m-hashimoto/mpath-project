@@ -374,14 +374,14 @@ ptree_new_mask(tt, next)
 		return (0);
 	}
 	bzero(m, sizeof *m);
+	m->rm_leaf = tt;
 	m->rm_bit = tt->rn_bit;
 	m->rm_flags = tt->rn_flags | RNF_NORMAL;
+	m->rm_mask = tt->rn_mask;
 	dprint(("-ptree_new_mask: m->rm_bit = 0x%x m->rm_flags = 0x%x\n",
 							m->rm_bit,m->rm_flags));
-	m->rm_leaf = tt;
-	m->rm_mask = tt->rn_mask;
-	dprint(("-ptree_new_mask: m->rm_leaf = %p m->rm_mask = %p\n",
-							m->rm_leaf,m->rm_mask));
+	dprint(("-ptree_new_mask: m->rm_leaf = %p m->rm_mask = %p tt = %p\n",
+							m->rm_leaf,m->rm_mask,tt));
 	m->rm_mklist = next;
 	tt->rn_mklist = m;
 	dprint(("-ptree_new_mask End\n"));
@@ -598,7 +598,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		/*
 		 * Put mask in tree.
 		 */
-		dprint(("-ptree_addroute: netmask = %p\n",netmask));
+		dprint(("-ptree_addroute: netmask = %p\n",n_arg));
 		if (netmask) {
 				dprint(("-ptree_addroute: put netmask in %p\n",tt));
 				tt->rn_mask = netmask;
@@ -623,6 +623,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 									mp = &m->rm_mklist;
 				}
 		} else if(t->rn_mklist){
+				dprint(("-ptree_addroute: t->rn_mklist = %p\n",t->rn_mklist));
 				/*
 				 * Skip over masks whos index is > that of new node
 				 */
