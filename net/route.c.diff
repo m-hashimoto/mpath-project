@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 04:14:42.000000000 +0900
++++ route.c	2005-01-27 07:35:19.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,508 @@
+@@ -768,495 +814,509 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1900,6 +1900,7 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
++				dprint(("rtreq_ADD: rt = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_flags,rt->rt_fibnum));
 +				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n",
 +										rt,rt->rt_ifa,rt->rt_ifp));
 +#ifdef RADIX_MPATH
@@ -2008,6 +2009,7 @@
  #endif
  #endif
 -
++				
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2021,7 +2023,7 @@
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				dprint(("rtreq_ADD: rn = %p rt = %p rt_nodes = %p",
++				dprint(("rtreq_ADD: rn = %p rt = %p rt_nodes = %p\n",
 +										rn,rt,rt->rt_nodes));
 +				dprint((" rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
@@ -2088,13 +2090,12 @@
 +				 * actually return a resultant rtentry and
 +				 * give the caller a single reference.
 +				 */
-+				dprint(("rtreq_ADD1: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				if (ret_nrt) {
 +						*ret_nrt = rt;
 +						RT_ADDREF(rt);
 +				}
++				dprint(("rtreq_ADD1: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				RT_UNLOCK(rt);
-+				dprint(("rtreq_ADD: RT_UNLOCK\n"));
 +				dprint(("rtreq_ADD2: rt = %p rt_ifa = %p rt_ifp = %p rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				break;
 +		default:
@@ -2111,7 +2112,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1326,77 @@
+@@ -1267,71 +1327,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2167,8 +2168,7 @@
 -	bcopy(gate, rt->rt_gateway, glen);
 +		RT_LOCK_ASSERT(rt);
 +		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
- 
--	return (0);
++
 +		/*
 +		 * Prepare to store the gateway in rt->rt_gateway.
 +		 * Both dst and gateway are stored one after the other in the same
@@ -2196,7 +2196,8 @@
 +				rt_key(rt) = (struct sockaddr *)new;
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +		}
-+
+ 
+-	return (0);
 +		/*
 +		 * Copy the new gateway value into the memory chunk.
 +		 */
@@ -2243,7 +2244,7 @@
  }
  
  /*
-@@ -1339,228 +1404,235 @@
+@@ -1339,228 +1405,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */

@@ -599,50 +599,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
-		/* Add new route to highest possible ancestor's list */
-#if 0 /* 10/29 19:32 test */
-		dprint(("-ptree_addroute: add new route to highest list\n"));
-		if ((netmask == 0) || (b > t->rn_bit )){
-				dprint(("-ptree_addroute End (can't lift at all)\n"));
-				return tt; /* can't lift at all */
-		}
-		b_leaf = tt->rn_bit;
-		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-		do {
-				x = t;
-				t = t->rn_parent;
-				if(!t)
-						break;
-		} while (x != top && b <= t->rn_bit);
-		dprint(("-ptree_addroute: x = %p\n",x));
-
-		x = saved_tt;
-		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
-				if (m->rm_bit < b_leaf)
-						continue;
-				if (m->rm_bit > b_leaf)
-						break;
-				if (m->rm_flags & RNF_NORMAL) {
-						mmask = m->rm_leaf->rn_mask;
-						if (tt->rn_flags & RNF_NORMAL) {
-								log(LOG_ERR, 
-												"Non-unique normal route, mask not entered\n");
-								dprint(("-ptree_addroute: rn_flags = RNF_NORMAL\n"));
-								return tt;
-						}
-				} else
-						mmask = m->rm_mask;
-				if (mmask == netmask) {
-						m->rm_refs++;
-						tt->rn_mklist = m;
-						dprint(("-ptree_addroute: if(mmask == netmask)\n"));
-						return tt;
-				}
-				if (ptree_refines(netmask, mmask)
-								|| ptree_lexobetter(netmask, mmask))
-						break;
-		}
-#endif
 		dprint(("-ptree_addroute: tt = %p nodes = %p tt->rn_bit = %d tt->keylen = %d tt->rn_flags = 0x%x\n",tt,treenodes,tt->rn_bit,tt->keylen,tt->rn_flags));
 		*mp = ptree_new_mask(tt, *mp);
 		dprint(("-ptree_addroute End\n"));
