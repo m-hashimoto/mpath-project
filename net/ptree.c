@@ -19,10 +19,20 @@
 #define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x;}
 
+static struct ptree_node 
+	*ptree_node_create (char *, int , struct ptree_node *);
+static struct ptree_node 
+	*ptree_common (char *, int , char *, int , struct ptree_node *);
+static struct ptree_node 
+	*ptree_get (char *, int , struct ptree *, struct ptree_node *);
+
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
 	static struct ptree_node *
-ptree_node_create (char *key, int keylen, struct ptree_node *nodes)
+ptree_node_create (key, keylen, nodes)
+		char *key;
+		int keylen;
+		struct ptree_node *nodes;
 {
 	dprint(("+-ptree_node_create Start\n"));
 	struct ptree_node *x = nodes;
