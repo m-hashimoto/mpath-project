@@ -955,7 +955,6 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	rnh = ptree_create();
-	dprint(("ptree_inithead: rnh = %p\n",rnh));
 	t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #ifdef PTREE_MPATH
