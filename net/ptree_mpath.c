@@ -17,7 +17,7 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 	int
@@ -364,15 +364,13 @@ ptree_deladdr(v_arg, netmask_arg, head)
 			len = 8*len;
 		}
 
-		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 								(unsigned char)v[0],(unsigned char)v[1],
 								(unsigned char)v[2],(unsigned char)v[3],
 								(unsigned char)v[4],(unsigned char)v[5],
 								(unsigned char)v[6],(unsigned char)v[7],
 								(unsigned char)v[8],(unsigned char)v[9],
 								(unsigned char)v[10],(unsigned char)v[11],
-								(unsigned char)v[12],(unsigned char)v[13],
-								(unsigned char)v[14],(unsigned char)v[15],
 								len-8*head->pnh_offset));
 		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
 
@@ -383,21 +381,17 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		register caddr_t cp, cplim;
 		cp = tt->key; cplim = v;
 		unsigned char *d = (unsigned char *)cp;
-		dprint(("-ptree_deladdr: searched-key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
+		dprint(("-ptree_deladdr: searched-key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
 								(unsigned char)d[0],(unsigned char)d[1],
 								(unsigned char)d[2],(unsigned char)d[3],
 								(unsigned char)d[4],(unsigned char)d[5],
 								(unsigned char)d[6],(unsigned char)d[7],
 								(unsigned char)d[8],(unsigned char)d[9],
-								(unsigned char)d[10],(unsigned char)d[11],
-								(unsigned char)d[12],(unsigned char)d[13],
-								(unsigned char)d[14],(unsigned char)d[15]));
+								(unsigned char)d[10],(unsigned char)d[11]));
 		if ( memcmp(cp, cplim, len) != 0 ){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
 		}
-		if (tt == top)
-			head->pnh_top = NULL;
 		ptree_remove(tt);
 		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
 		return (tt);
