@@ -153,13 +153,15 @@ on1:
 	{
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
+#if 0
 		if(m && (LEN(m) > head->pnh_offset))
 			tt->mask = m_arg;
 		else
 			tt->mask = NULL;
+#endif
 	}
-	dprint(("-ptree_insert End: insert tt[%p] key[%p] mask[%p]\n",
-													tt,tt->key,tt->mask));
+	dprint(("-ptree_insert End: insert tt[%p] key[%p] keylen[%d]\n",
+													tt,tt->key,tt->keylen));
 	return (tt);
 }
 
