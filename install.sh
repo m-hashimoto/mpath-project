@@ -40,7 +40,7 @@ patch -N < if_clone.c.diff
 patch -N < rtsock.c.diff
 patch -N < route.c.diff
 patch -N < route.h.diff
-#patch -N < flowtable.c.diff
+patch -N < flowtable.c.diff
 
 cd /usr/src/sys/netinet
 patch -N < in_rmx.c.diff

@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-26 04:30:47.000000000 +0900
++++ route.c	2005-01-26 04:44:37.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -30,7 +30,7 @@
  
  /* compare two sockaddr structures */
  #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
-@@ -122,196 +123,216 @@
+@@ -122,196 +123,215 @@
  SYSCTL_INT(_net, OID_AUTO, tunnelfib, CTLFLAG_RD, &tunnel_fib, 0, "");
  #endif
  
@@ -358,14 +358,13 @@
 +		if (ro->ro_rt){
 +				RT_UNLOCK(ro->ro_rt);
 +				dprint(("rtalloc_ign_fib: R_UNLOCK %p\n",ro->ro_rt));
-+				dprint(("rtalloc_ign_fib: rt_gateway = %p rt_flag = %d\n",ro->ro_rt->rt_gateway,ro->ro_rt->rt_flags));
++				dprint(("rtalloc_ign_fib: rt_gateway = %p rt_flag = 0x%X\n",ro->ro_rt->rt_gateway,ro->ro_rt->rt_flags));
 +		}
-+
 +		dprint(("rtalloc_ign_fib End\n"));
  }
  
  /*
-@@ -320,156 +341,170 @@
+@@ -320,156 +340,170 @@
   *
   * The returned route, if any, is locked.
   */
@@ -661,7 +660,7 @@
  }
  
  
-@@ -479,282 +514,285 @@
+@@ -479,282 +513,285 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -804,15 +803,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1174,7 +1173,7 @@
  }
  
  /*
-@@ -768,305 +806,217 @@
+@@ -768,305 +805,217 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1652,7 +1651,7 @@
  
  		/*
  		 * If the caller wants it, then it can have it,
-@@ -1074,189 +1024,298 @@
+@@ -1074,189 +1023,298 @@
  		 * doing it.
  		 */
  		if (ret_nrt) {
@@ -2111,7 +2110,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1326,77 @@
+@@ -1267,71 +1325,77 @@
  #undef ifpaddr
  #undef flags
  
@@ -2243,7 +2242,7 @@
  }
  
  /*
-@@ -1339,228 +1404,235 @@
+@@ -1339,228 +1403,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
