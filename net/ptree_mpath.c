@@ -20,7 +20,6 @@ static int  max_keylen;
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	struct rtentry *rt = pn->data;
 	
 	if(offset == 8){ /* IPv6 */
 		if(pn->key){
@@ -34,6 +33,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[%p] parent[%p] child[%p, %p]\n",
 						pn,pn->parent,pn->child[0],pn->child[1]);
 #if 0
+		struct rtentry *rt = pn->data;
 		unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 		printf("[%X.%X.%X.%X.%X.%X.%X.%X] ",
 				gateway[8],gateway[9],gateway[10],gateway[11],
