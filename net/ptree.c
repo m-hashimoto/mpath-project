@@ -3,10 +3,10 @@
 
 #ifdef _KERNEL
 #include <sys/param.h>
-#include <sys/system.h>
+#include <sys/systm.h>
 #include <sys/malloc.h>
 #include <sys/syslog.h>
-#include <sys/net/ptree.h>
+#include <net/ptree.h>
 #else /*_KERNEL*/
 #include <stdio.h>
 #include <string.h>
