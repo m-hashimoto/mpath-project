@@ -75,12 +75,12 @@ static int ptree_satisfies_leaf(char *trial,
 		dprint(("ptree_insert End (key dupentry)\n"));
 		return t;
 on1:
-		dprintf(("ptree_insert: on1\n"));
+		dprint(("ptree_insert: on1\n"));
 		*dupentry = 0;
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
-		dprintf(("ptree_insert: first different bit = %d\n",b));
+		dprint(("ptree_insert: first different bit = %d\n",b));
 	}
 	{
 		register struct ptree_node *p, *x = top;
