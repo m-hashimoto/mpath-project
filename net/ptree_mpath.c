@@ -955,6 +955,7 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	rnh = ptree_create();
+	dprint(("ptree_inithead: rnh = %p\n",rnh));
 	t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #ifdef PTREE_MPATH
@@ -965,8 +966,10 @@ ptree_inithead(head, off)
 	rnh->rnh_matchaddr = ptree_matchaddr;
 	rnh->rnh_lookup = ptree_lookup;
 	rnh->rnh_walktree = ptree_walktree;
+	dprint(("ptree_inithead: rnh_walktree = %p\n",rnh->rnh_walktree));
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
+	dprint(("ptree_inithead: rnh = %p\n",rnh));
 	dprint(("ptree_inithead End 3\n"));
 	return (1);
 }
