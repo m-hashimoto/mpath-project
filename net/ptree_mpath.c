@@ -914,7 +914,7 @@ ptree_walktree(h, f, w)
 				return (0);
 		}
 
-		dprint(("-ptree_walktree: treetop = %p keylen = 0x%x\n",rn->key,rn->keylen));
+		dprint(("-ptree_walktree:  top = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		for (;;) {
 				base = rn;
 				next = ptree_next(base);

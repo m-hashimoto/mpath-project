@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 21:58:52.000000000 +0900
++++ route.c	2005-01-29 15:37:05.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -30,7 +30,7 @@
  
  /* compare two sockaddr structures */
  #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
-@@ -122,196 +123,216 @@
+@@ -122,196 +123,201 @@
  SYSCTL_INT(_net, OID_AUTO, tunnelfib, CTLFLAG_RD, &tunnel_fib, 0, "");
  #endif
  
@@ -50,13 +50,11 @@
 -        fibnum = curthread->td_proc->p_fibnum;
 -        error = sysctl_handle_int(oidp, &fibnum, 0, req);
 -        return (error);
-+		dprint(("sysctl_my_fibnum Start\n"));
 +		int fibnum;
 +		int error;
 +
 +		fibnum = curthread->td_proc->p_fibnum;
 +		error = sysctl_handle_int(oidp, &fibnum, 0, req);
-+		dprint(("sysctl_my_fibnum End: fibnum = %d\n",fibnum));
 +		return (error);
  }
  
@@ -119,14 +117,12 @@
 -	if (rt_numfibs == 0)
 -		rt_numfibs = 1;
 -	rn_init();	/* initialize all zeroes, all ones, mask table */
-+		dprint(("route_init Start\n"));
 +		/* whack the tunable ints into  line. */
 +		if (rt_numfibs > RT_MAXFIBS)
 +				rt_numfibs = RT_MAXFIBS;
 +		if (rt_numfibs == 0)
 +				rt_numfibs = 1;
 +		ptree_init();
-+		dprint(("route_init End\n"));
  }
  SYSINIT(route_init, SI_SUB_PROTO_DOMAIN, SI_ORDER_THIRD, route_init, 0);
  
@@ -164,7 +160,6 @@
 -				    	    dom->dom_rtoffset);
 -				} else {
 -					break;
-+		dprint(("vnet_route_init Start\n"));
 +		struct domain *dom;
 +		struct ptree **rnh;
 +		int table;
@@ -201,7 +196,6 @@
 -			}
  		}
 -	}
-+		dprint(("vnet_route_init End\n"));
  }
  VNET_SYSINIT(vnet_route_init, SI_SUB_PROTO_DOMAIN, SI_ORDER_FOURTH,
 -    vnet_route_init, 0);
@@ -230,7 +224,6 @@
 -					    dom->dom_rtoffset);
 -				} else {
 -					break;
-+		dprint(("vnet_route_uninit Start\n"));
 +		int table;
 +		int fam;
 +		struct domain *dom;
@@ -255,7 +248,6 @@
 -			}
  		}
 -	}
-+		dprint(("vnet_route_uninit End\n"));
  }
  VNET_SYSUNINIT(vnet_route_uninit, SI_SUB_PROTO_DOMAIN, SI_ORDER_THIRD,
 -    vnet_route_uninit, 0);
@@ -276,11 +268,9 @@
 -		return EINVAL;
 -	td->td_proc->p_fibnum = uap->fibnum;
 -	return (0);
-+		dprint(("setfib Start\n"));
 +		if (uap->fibnum < 0 || uap->fibnum >= rt_numfibs)
 +				return EINVAL;
 +		td->td_proc->p_fibnum = uap->fibnum;
-+		dprint(("setfib End\n"));
 +		return (0);
  }
  
@@ -308,7 +298,6 @@
  rtalloc_ign(struct route *ro, u_long ignore)
  {
 -	struct rtentry *rt;
-+		dprint(("rtalloc_ign Start\n"));
 +		struct rtentry *rt;
  
 -	if ((rt = ro->ro_rt) != NULL) {
@@ -329,7 +318,6 @@
 +		ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, ignore, 0);
 +		if (ro->ro_rt)
 +				RT_UNLOCK(ro->ro_rt);
-+		dprint(("rtalloc_ign End\n"));
  }
  
 -void
@@ -337,7 +325,6 @@
  rtalloc_ign_fib(struct route *ro, u_long ignore, u_int fibnum)
  {
 -	struct rtentry *rt;
-+		dprint(("rtalloc_ign_fib Start\n"));
 +		struct rtentry *rt;
  
 -	if ((rt = ro->ro_rt) != NULL) {
@@ -358,14 +345,12 @@
 +		ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, ignore, fibnum);
 +		if (ro->ro_rt){
 +				RT_UNLOCK(ro->ro_rt);
-+				dprint(("rtalloc_ign_fib: R_UNLOCK %p\n",ro->ro_rt));
 +				dprint(("rtalloc_ign_fib: rt_gateway = %p rt_flag = 0x%X\n",ro->ro_rt->rt_gateway,ro->ro_rt->rt_flags));
 +		}
-+		dprint(("rtalloc_ign_fib End\n"));
  }
  
  /*
-@@ -320,156 +341,178 @@
+@@ -320,156 +326,167 @@
   *
   * The returned route, if any, is locked.
   */
@@ -521,7 +506,6 @@
  rtfree(struct rtentry *rt)
  {
 -	struct radix_node_head *rnh;
-+		dprint(("rtfree Start\n"));
 +		struct ptree *rnh;
 +
 +		KASSERT(rt != NULL,("%s: NULL rt", __func__));
@@ -529,7 +513,6 @@
 +		KASSERT(rnh != NULL,("%s: NULL rnh", __func__));
 +
 +		RT_LOCK_ASSERT(rt);
-+		dprint(("rtfree: RT_LOCK_ASSET(rt)\n"));
  
 -	KASSERT(rt != NULL,("%s: NULL rt", __func__));
 -	rnh = rt_tables_get_rnh(rt->rt_fibnum, rt_key(rt)->sa_family);
@@ -579,10 +562,8 @@
 -			printf("rtfree: %p not freed (neg refs)\n", rt);
 -			goto done;
 +		RT_REMREF(rt);
-+		dprint(("rtfree: RT_REMREF(rt)\n"));
 +		if (rt->rt_refcnt > 0) {
 +				log(LOG_DEBUG, "%s: %p has %d refs\n", __func__, rt, rt->rt_refcnt);
-+				dprint(("rtfree: if(rt->rt_refcnt>0) goto done\n"));
 +				goto done;
  		}
 -#endif
@@ -592,25 +573,12 @@
 -		 */
 -		if (rt->rt_ifa)
 -			ifa_free(rt->rt_ifa);
-+
- 		/*
+-		/*
 -		 * The key is separatly alloc'd so free it (see rt_setgate()).
 -		 * This also frees the gateway, as they are always malloc'd
 -		 * together.
 -		 */
 -		Free(rt_key(rt));
-+		 * On last reference give the "close method" a chance
-+		 * to cleanup private state.  This also permits (for
-+		 * IPv4 and IPv6) a chance to decide if the routing table
-+		 * entry should be purged immediately or at a later time.
-+		 * When an immediate purge is to happen the close routine
-+		 * typically calls rtexpunge which clears the RTF_UP flag
-+		 * on the entry so that the code below reclaims the storage.
-+		 */
-+		if (rt->rt_refcnt == 0 && rnh->rnh_close){
-+				dprint(("rtfree: rt_refcnt == 0\n"));
-+				rnh->rnh_close((struct ptree_node *)rt, rnh);
-+		}
  
  		/*
 -		 * and the rtentry itself of course
@@ -619,12 +587,23 @@
 -		uma_zfree(V_rtzone, rt);
 -		return;
 -	}
++		 * On last reference give the "close method" a chance
++		 * to cleanup private state.  This also permits (for
++		 * IPv4 and IPv6) a chance to decide if the routing table
++		 * entry should be purged immediately or at a later time.
++		 * When an immediate purge is to happen the close routine
++		 * typically calls rtexpunge which clears the RTF_UP flag
++		 * on the entry so that the code below reclaims the storage.
++		 */
++		if (rt->rt_refcnt == 0 && rnh->rnh_close)
++				rnh->rnh_close((struct ptree_node *)rt, rnh);
++
++		/*
 +		 * If we are no longer "up" (and ref == 0)
 +		 * then we can free the resources associated
 +		 * with the route.
 +		 */
 +		if ((rt->rt_flags & RTF_UP) == 0) {
-+				dprint(("rtfree: rt_flags != RTF_UP\n"));
 +				if (rt->rt_nodes->rn_flags & (RNF_ACTIVE | RNF_ROOT))
 +						panic("rtfree 2");
 +				/*
@@ -650,25 +629,21 @@
 +				 * together.
 +				 */
 +				Free(rt_key(rt));
-+				dprint(("rtfree: frees thr gateway\n"));
 +
 +				/*
 +				 * and the rtentry itself of course
 +				 */
 +				RT_LOCK_DESTROY(rt);
 +				uma_zfree(V_rtzone, rt);
-+				dprint(("rtfree End: RT_LOCK_DESTROY\n"));
 +				return;
 +		}
  done:
 -	RT_UNLOCK(rt);
-+		dprint(("rtfree: done\n"));
 +		RT_UNLOCK(rt);
-+		dprint(("rtfree End: RT_UNLOCK(rt)\n"));
  }
  
  
-@@ -479,282 +522,285 @@
+@@ -479,282 +496,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -990,7 +965,6 @@
  {
 -	register struct ifaddr *ifa;
 -	int not_found = 0;
-+		dprint(("ifa_ifwithroute_fib Start\n"));
 +		register struct ifaddr *ifa;
 +		int not_found = 0;
  
@@ -1113,7 +1087,6 @@
 -	}
 -	return (ifa);
 +		return (ifa);
-+		dprint(("ifa_ifwithroute_fib End\n"));
  }
  
  /*
@@ -1180,7 +1153,7 @@
  }
  
  /*
-@@ -768,495 +814,527 @@
+@@ -768,495 +786,523 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1202,7 +1175,6 @@
  {
 -	struct ifaddr *ifa;
 -	int error = 0;
-+		dprint(("rt_getifa_fib Start\n"));
 +		struct ifaddr *ifa;
 +		int error = 0;
  
@@ -1269,7 +1241,6 @@
 +						info->rti_ifp = ifa->ifa_ifp;
 +		} else
 +				error = ENETUNREACH;
-+		dprint(("rt_getifa_fib End\n"));
 +		return (error);
  }
  
@@ -1340,7 +1311,6 @@
 -bad:
 -	return (error);
 -}
-+		dprint(("rtexpunge Start\n"));
 +		struct ptree_node *rn;
 +		struct ptree *rnh;
 +		struct ifaddr *ifa;
@@ -1567,7 +1537,6 @@
  		 */
  		V_rttrash++;
 +bad:
-+		dprint(("rtexpunge End %d\n",error));
 +		return (error);
 +}
  
@@ -2131,7 +2100,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1345,78 @@
+@@ -1267,71 +1313,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2141,10 +2110,8 @@
  {
 -	/* XXX dst may be overwritten, can we move this to below */
 -	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
-+		dprint(("rt_setgate Start\n"));
 +		/* XXX dst may be overwritten, can we move this to below */
 +		int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
-+		dprint(("rt_setgate: dst_len = %d gate_len = %d\n",dlen,glen));
  #ifdef INVARIANTS
 -	struct radix_node_head *rnh;
 +		struct ptree *rnh;
@@ -2196,14 +2163,11 @@
 +		 * Otherwise, malloc a new block and update the 'dst' address.
 +		 */
 +		if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
-+				dprint(("rt_setgate: if rt_gateway == NULL\n"));
 +				caddr_t new;
 +				
 +				R_Malloc(new, caddr_t, dlen + glen);
-+				if (new == NULL){
-+						dprint(("rt_setgate End (new gateway is NULL)\n"));
++				if (new == NULL)
 +						return ENOBUFS;
-+				}
 +				/*
 +				 * XXX note, we copy from *dst and not *rt_key(rt) because
 +				 * rt_setgate() can be called to initialize a newly
@@ -2222,8 +2186,6 @@
 +		 * Copy the new gateway value into the memory chunk.
 +		 */
 +		bcopy(gate, rt->rt_gateway, glen);
-+		dprint(("rt_setgate: rt = %p gateway = %p\n",rt,rt->rt_gateway));
-+		dprint(("rt_setgate End (new gateway value into the memory)\n"));
 +		return (0);
  }
  
@@ -2245,7 +2207,6 @@
 -		*cp2++ = *cp1++ & *cp3++;
 -	if (cp2 < cplim2)
 -		bzero((caddr_t)cp2, (unsigned)(cplim2 - cp2));
-+		dprint(("rt_maskedcopy Start\n"));
 +		register u_char *cp1 = (u_char *)src;
 +		register u_char *cp2 = (u_char *)dst;
 +		register u_char *cp3 = (u_char *)netmask;
@@ -2260,11 +2221,10 @@
 +				*cp2++ = *cp1++ & *cp3++;
 +		if (cp2 < cplim2)
 +				bzero((caddr_t)cp2, (unsigned)(cplim2 - cp2));
-+		dprint(("rt_maskedcopy End\n"));
  }
  
  /*
-@@ -1339,228 +1424,235 @@
+@@ -1339,228 +1383,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2295,7 +2255,6 @@
 -	if (fibnum == -1) {
 -		if (rt_add_addr_allfibs == 0 && cmd == (int)RTM_ADD) {
 -			startfib = endfib = curthread->td_proc->p_fibnum;
-+		dprint(("rtinit1 Start\n"));
 +		struct sockaddr *dst;
 +		struct sockaddr *netmask;
 +		struct rtentry *rt = NULL;
@@ -2410,7 +2369,6 @@
 +				endfib = fibnum;
 +		}
 +		if (dst->sa_len == 0){
-+				dprint(("rtinit1 End 1\n"));
 +				return(EINVAL);
  		}
 +
@@ -2647,7 +2605,6 @@
  		}
 -	}
 -	return (error);
-+		dprint(("rtinit1 End 2\n"));
 +		return (error);
  }
  
