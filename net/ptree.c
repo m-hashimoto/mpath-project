@@ -336,8 +336,10 @@ ptree_get (key, keylen, t, nodes)
 		/* set upper link */
 		if (u)
 			ptree_link (u, x);
-		else
+		else{
 			t->top = x;
+			t->rn_flags = RNF_ACTIVE | RNF_ROOT;
+		}
 		
 
 		/* if the branching node is not the corresponding node,
