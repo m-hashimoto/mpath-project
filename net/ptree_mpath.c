@@ -165,7 +165,7 @@ on2:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
-	dprint(("-ptree_insert End: insert node = %p\n",nodes));
+	dprint(("-ptree_insert End: insert node = %p tt = %p\n",nodes,tt));
 	return (tt);
 }
 
@@ -260,7 +260,6 @@ on1:
 	}
 	b += (cp - netmask) << 3;
 	x->rn_bit = -1 - b;
-	//x->rn_bit = b - 1;
 	dprint(("-ptree_addmask: x->rn_bit = 0x%x\n",x->rn_bit));
 	if (isnormal){
 		x->rn_flags |= RNF_NORMAL;
