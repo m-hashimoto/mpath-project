@@ -613,21 +613,21 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		b_leaf = -1 - t->rn_bit;
 		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 		if(t->rn_bit < 0){
-			for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
-			if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
-				*mp = m = ptree_new_mask(t,0);
-				dprint(("-ptree_addroute: m = %p\n",m));
-				if (m)
-					mp = &m->rm_mklist;
-			
+				for(mp = &t->rn_mklist;t;t=t->rn_dupedkey)
+						if(t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0){
+								*mp = m = ptree_new_mask(t,0);
+								dprint(("-ptree_addroute: m = %p\n",m));
+								if (m)
+										mp = &m->rm_mklist;
+						}
 		} else if(t->rn_mklist){
 				/*
 				 * Skip over masks whos index is > that of new node
 				 */
-			for(mp = &t->rn_mklist;(m = *mp);mp = &m->rm_mklist)
-				if(m->rm_bit >= b_leaf)
-					break;
-			t->rn_mklist = m; *mp = 0;
+				for(mp = &t->rn_mklist;(m = *mp);mp = &m->rm_mklist)
+						if(m->rm_bit >= b_leaf)
+								break;
+				t->rn_mklist = m; *mp = 0;
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
@@ -639,32 +639,33 @@ on2:
 				t = t->rn_parent;
 		} while (b <= t->rn_bit );
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
-			dprint(("-ptree_addroute: on2 test 1\n"));
-			if (m->rm_bit < b_leaf)
-				continue;
-			if (m->rm_bit > b_leaf)
-				break;
-			if (m->rm_flags & RNF_NORMAL) {
-				dprint(("-ptree_addroute: on2 test 2\n"));
-				mmask = m->rm_leaf->rn_mask;
-				if (tt->rn_flags & RNF_NORMAL) {
-				    log(LOG_ERR,
-			    	    "Non-unique normal route, mask not entered\n");
-					return tt;
+				dprint(("-ptree_addroute: on2 test 1\n"));
+				if (m->rm_bit < b_leaf)
+						continue;
+				if (m->rm_bit > b_leaf)
+						break;
+				if (m->rm_flags & RNF_NORMAL) {
+						dprint(("-ptree_addroute: on2 test 2\n"));
+						mmask = m->rm_leaf->rn_mask;
+						if (tt->rn_flags & RNF_NORMAL) {
+								log(LOG_ERR,
+								"Non-unique normal route, mask not entered\n");
+								return tt;
+						}
+				} else
+						mmask = m->rm_mask;
+				if (mmask == netmask) {
+						dprint(("-ptree_addroute: on2 test 3\n"));
+						m->rm_refs++;
+						tt->rn_mklist = m;
+						return tt;
 				}
-			} else
-				mmask = m->rm_mask;
-			if (mmask == netmask) {
-				dprint(("-ptree_addroute: on2 test 3\n"));
-				m->rm_refs++;
-				tt->rn_mklist = m;
-				return tt;
-			}
-			if (ptree_refines(netmask, mmask)
-			    || ptree_lexobetter(netmask, mmask))
-				break;
+				if (ptree_refines(netmask, mmask)
+								|| ptree_lexobetter(netmask, mmask))
+						break;
 		}
-		
+
+
 		*mp = ptree_new_mask(tt, *mp);
 		debug_node_print(tt);
 		dprint(("-ptree_addroute End\n"));
@@ -998,21 +999,21 @@ ptree_walktree(h, f, w)
 #ifdef DEBUG
 		/* INET tree check */
 		{
-			printf("INET4 ptree_walktree\n");
-			register struct ptree *rnh;
+				printf("INET4 ptree_walktree\n");
+				register struct ptree *rnh;
 
-			rnh = rt_tables_get_rnh(0, AF_INET);
-			rn = rnh->rnh_treetop;
-			for (;;) {
-				debug_node_print(rn);
-				base = rn;
-				next = ptree_next(base);
-				if( !next ){
-						dprint(("-ptree_walktree End (next == NULL)\n"));
-						return (0);
+				rnh = rt_tables_get_rnh(0, AF_INET);
+				rn = rnh->rnh_treetop;
+				for (;;) {
+						debug_node_print(rn);
+						base = rn;
+						next = ptree_next(base);
+						if( !next ){
+								dprint(("-ptree_walktree End (next == NULL)\n"));
+								return (0);
+						}
+						rn = next;
 				}
-				rn = next;
-			}
 		}
 #endif
 		dprint(("-ptree_walktree End\n"));
