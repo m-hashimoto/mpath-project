@@ -16,7 +16,7 @@
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-//static int	head_zero = 8; /* head_off[byte] struct sockaddr_in */
+static int	head_zero = 8; /* head_off[byte] struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
@@ -33,7 +33,7 @@ debug_node_print(struct ptree_node *pn)
 		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-						pn->keylen);
+						pn->keylen-32);
 	}
 	printf("data[%p] ",pn->data);
 	if( pn->data ){
