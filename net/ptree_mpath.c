@@ -27,7 +27,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 
 	if(pn->key){
-	printf("[%3d.%3d.%3d.%3d/%d] ",
+	printf("[%3d.%3d.%3d.%3d/%3d] ",
 					//(unsigned char)pn->key[0],(unsigned char)pn->key[1],
 					//(unsigned char)pn->key[2],(unsigned char)pn->key[3],
 					(unsigned char)pn->key[4],(unsigned char)pn->key[5],
@@ -58,7 +58,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			    return (0);
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
-		printf("dst				gateway			flags\n");
+		printf("dst		gateway		flags\n");
 		if(!pn)
 			return (0);
 		for (;;) {
