@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 13:05:34.000000000 +0900
++++ route.c	2005-01-27 13:11:06.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1865,10 +1865,10 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				dprint(("rtreq_ADD: rt->rt_mtx = %p\n",rt->rt_mtx));
++				dprint(("rtreq_ADD: rt->rt_mtx = %p\n",&(rt)->rt_mtx));
 +				RT_LOCK_INIT(rt);
 +				dprint(("rtreq_ADD: RT_LOCK_INIT > rt->rt_mtx = %p\n",
-+										rt->rt_mtx));
++										&(rt)->rt_mtx));
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
 +			/*
@@ -1877,7 +1877,7 @@
 +			 */
 +				RT_LOCK(rt);
 +				dprint(("rtreq_ADD: RT_LOCK > rt->rt_mtx = %p\n",
-+										rt->rt_mtx));
++										&(rt)->rt_mtx));
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
 +						RT_LOCK_DESTROY(rt);
@@ -2109,12 +2109,12 @@
 +					*ret_nrt = rt;
 +					RT_ADDREF(rt);
 +					dprint(("rtreq_ADD: RT_ADDREF > rt->rt_mtx = %p\n",
-+											rt->rt_mtx));
++											&(rt)->rt_mtx));
 +				}
-+				dprint(("rtreq_ADD: rt->rt_mtx = %p\n",rt->rt_mtx));
++				dprint(("rtreq_ADD: rt->rt_mtx = %p\n",&(rt)->rt_mtx));
 +				RT_UNLOCK(rt);
 +				dprint(("rtreq_ADD: RT_UNLOCK > rt->rt_mtx = %p\n",
-+										rt->rt_mtx));
++										&(rt)->rt_mtx));
 +				dprint(("rtreq_ADD: set member into the rt(3).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				break;
 +		default:
