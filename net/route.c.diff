@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-20 20:23:10.000000000 +0900
++++ route.c	2005-02-20 20:46:54.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -471,6 +471,12 @@
 +		rn = rnh->rnh_matchaddr(dst, rnh);
 +		dprint(("rtalloc1_fib: rn = %p\n",rn));
 +		if (rn/* && ((rn->rn_flags & RNF_ROOT) == 0)*/) {
++				c_dst = (unsigned char *)rn;
++				dprint(("rtalloc1_fib: rn[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++								c_dst[0],c_dst[1],c_dst[2],c_dst[3],
++								c_dst[4],c_dst[5],c_dst[6],c_dst[7],
++								c_dst[8],c_dst[9],c_dst[10],c_dst[11],
++								c_dst[12],c_dst[13],c_dst[14],c_dst[15]));
 +				newrt = rt = RNTORT(rn);
 +				RT_LOCK(newrt);
 +				RT_ADDREF(newrt);
@@ -480,12 +486,6 @@
 +		} else if (needlock)
 +				RADIX_NODE_HEAD_RUNLOCK(rnh);
 +
-+		c_dst = (unsigned char *)rn;
-+		dprint(("rtalloc1_fib: rn[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
-+								c_dst[0],c_dst[1],c_dst[2],c_dst[3],
-+								c_dst[4],c_dst[5],c_dst[6],c_dst[7],
-+								c_dst[8],c_dst[9],c_dst[10],c_dst[11],
-+								c_dst[12],c_dst[13],c_dst[14],c_dst[15]));
 +		/*
 +		 * Either we hit the root or couldn't find any match,
 +		 * Which basically means
