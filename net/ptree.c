@@ -204,6 +204,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
 key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
 	dprint(("+-ptree_common_len Start\n"));
+	dprint(("+-ptree_common_len keyi = %p keyj = %p\n",keyi,keyj));
 	int i;
 	int nmatch = 0;
 	int minkeylen = MIN (keyilen, keyjlen);
@@ -211,6 +212,7 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
 	unsigned char bitmask;
 	unsigned char diff;
 
+	dprint(("+-ptree_common_len minkeylen = %d\n",minkeylen));
 	for (i = 0; i < minkeylen / 8; i++)
 	{
 		if (keyi[i] == keyj[i])
