@@ -537,6 +537,10 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		tt->rn_flags = RNF_ACTIVE;
 	}
 	t = saved_tt->rn_parent;
+	if(!t){
+		dprint(("ptree_addroute: goto on2 if(!tt->parent)\n"));
+		goto on2;
+	}
 	dprint(("ptree_addroute: saved_tt->rn_parent = %p\n",t));
 	if (keyduplicated){
 		dprint(("ptree_addroute: goto on2 if(keyduplicated)\n"));
@@ -573,7 +577,8 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	}
 on2:
 	/* Add new route to highest possible ancestor's list */
-	if ((netmask == 0)/* || (b > t->rn_bit )*/)
+	dprint(("ptree_addroute: add new route to highest list\n"));
+	if ((netmask == 0) || (b > t->rn_bit ))
 		return tt; /* can't lift at all */
 	b_leaf = tt->rn_bit;
 	do {
