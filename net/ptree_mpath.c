@@ -36,6 +36,15 @@ debug_node_print(struct ptree_node *pn)
 						pn->keylen-8*head_off);
 	}
 	printf("data[%p] ",pn->data);
+	if( pn->data ){
+		rtentry *rt = pn->data;
+		unsigned char *gate = rt->rt_gateway;
+		printf("gateway[%d.%d.%d.%d|%d.%d.%d.%d]\n",
+						(unsigned char)gate[0],(unsigned char)gate[1],
+						(unsigned char)gate[2],(unsigned char)gate[3],
+						(unsigned char)gate[4],(unsigned char)gate[5],
+						(unsigned char)gate[6],(unsigned char)gate[7]);
+	}
 	printf("p[%p] l[%p] r[%p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
 }
