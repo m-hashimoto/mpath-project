@@ -31,9 +31,10 @@ static struct ptree *mask_rnhead;
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
 #define LEN(x) (*(const u_char *)(x))
 #define rn_masktop (mask_rnhead->rnh_treetop)
-
+#if 0
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
+#endif
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
 		int *dupentry, struct ptree_node nodes[2]);
 static int ptree_lexobetter(void *m_arg, void *n_arg);
@@ -386,21 +387,11 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
-	/*
-	 * See if we match exactly as a host destination
-	 * or at least learn how many bits match, for normal mask finesse.
-	 *
-	 * It doesn't hurt us to limit how many bytes to check
-	 * to the length of the mask, since if it matches we had a genuine
-	 * match and the leaf we have is the most specific one anyway;
-	 * if it didn't match with a shorter length it would fail
-	 * with a long one.  This wins big for class B&C netmasks which
-	 * are probably the most common case...
-	 */
 	if (t->rn_mask){
 		vlen = *(u_char *)t->rn_mask;
 		dprint(("ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
+
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
@@ -410,20 +401,17 @@ ptree_matchaddr(v_arg, head)
 			goto on1;
 		}
 	}
-	dprint(("return t = %p\n",t));
 	/*
-	 * This extra grot is in case we are explicitly asked
-	 * to look up the default.  Ugh!
-	 *
-	 * Never return the root node itself, it seems to cause a
-	 * lot of confusion.
+	 * match exactly as a host.
 	 */
-#if 0
-	if (t->rn_flags & RNF_ROOT)
-		t = t->rn_dupedkey;
-#endif
+	dprint(("return t = %p\n",t));
 	return t;
 on1:
+	/*
+	 * Even if we don't match exactly as a host,
+	 * we may match if the leaf we wound up at is
+	 * a route to a net.
+	 */
 	dprint(("-ptree_matchaddr: on1\n"));
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
 	for (b = 7; (test >>= 1) > 0;)
@@ -431,248 +419,231 @@ on1:
 	matched_off = cp - v;
 	b += matched_off << 3;
 	rn_bit = -1 - b;
-	/*
-	 * If there is a host route in a duped-key chain, it will be first.
-	 */
-#if 0
-	if ((saved_t = t)->rn_mask == 0)
-		t = t->rn_dupedkey;
-#endif
-	for (; t; t = t->rn_dupedkey)
-		/*
-		 * Even if we don't match exactly as a host,
-		 * we may match if the leaf we wound up at is
-		 * a route to a net.
-		 */
-		if (t->rn_flags & RNF_NORMAL) {
+	dprint(("ptree_matchaddr: rn_bit = %d\n",rn_bit));
+	
+	if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
-				dprint(("-ptree_matchaddr End 2\n"));
-				return t;
+					dprint(("-ptree_matchaddr End 2\n"));
+					return t;
 			}
-		} else if (ptree_satisfies_leaf(v, t, matched_off)){
+	} else if (ptree_satisfies_leaf(v, t, matched_off)){
 			dprint(("-ptree_matchaddr End 3\n"));
 			return t;
-		}	
+	}
+		
+#if 0	
 	t = saved_t;
-	
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
 	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p",m));
-	/*
-	 * If non-contiguous masks ever become important
-	 * we can restore the masking and open coding of
-	 * the search and satisfaction test and put the
-	 * calculation of "off" back before the "do".
-	 */
 	while (m) {
-		if (m->rm_flags & RNF_NORMAL) {
-			if (rn_bit <= m->rm_bit)
-				return (m->rm_leaf);
-		}
-#if 0	
-		else {
-			off = min(t->rn_offset, matched_off);
-			x = ptree_search_m(v, t, m->rm_mask);
-			while (x && x->rn_mask != m->rm_mask)
-				x = x->rn_dupedkey;
-			if (x && ptree_satisfies_leaf(v, x, off)){
-				dprint(("-ptree_matchaddr End: return x\n"));
-				return x;
+			if (m->rm_flags & RNF_NORMAL) {
+					if (rn_bit <= m->rm_bit)
+							return (m->rm_leaf);
 			}
-		}
-#endif
-		m = m->rm_mklist;
+			else {
+					off = min(t->rn_offset, matched_off);
+					x = ptree_search_m(v, t, m->rm_mask);
+					while (x && x->rn_mask != m->rm_mask)
+							x = x->rn_dupedkey;
+					if (x && ptree_satisfies_leaf(v, x, off)){
+							dprint(("-ptree_matchaddr End: return x\n"));
+							return x;
+					}
+			}
+			m = m->rm_mklist;
 	}
+#endif
 miss:
 	dprint(("-ptree_matchaddr End: miss\n"));
 	return 0;
 }
 
-	struct ptree_node *
+		struct ptree_node *
 ptree_addroute(v_arg, n_arg, head, treenodes)
-	void *v_arg, *n_arg;
-	struct ptree *head;
-	struct ptree_node treenodes[2];
+		void *v_arg, *n_arg;
+		struct ptree *head;
+		struct ptree_node treenodes[2];
 {
-	dprint(("-ptree_addroute Start\n"));
-	caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
-	register struct ptree_node *t, *x = 0, *tt;
-	struct ptree_node *saved_tt, *top = head->rnh_treetop;
-	short b = 0, b_leaf = 0;
-	int keyduplicated;
-	//caddr_t mmask;
-	struct ptree_mask *m, **mp = 0;
-	dprint(("-ptree_addroute: key = %p\n",v));
+		dprint(("-ptree_addroute Start\n"));
+		caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
+		register struct ptree_node *t, *x = 0, *tt;
+		struct ptree_node *saved_tt, *top = head->rnh_treetop;
+		short b = 0, b_leaf = 0;
+		int keyduplicated;
+		//caddr_t mmask;
+		struct ptree_mask *m, **mp = 0;
+		dprint(("-ptree_addroute: key = %p\n",v));
 
-	if (netmask)  {
-		if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
-			dprint(("-ptree_addroute End 1\n"));
-			return (0);
+		if (netmask)  {
+				if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0){
+						dprint(("-ptree_addroute End 1\n"));
+						return (0);
+				}
+				b_leaf = x->rn_bit;
+				b = -1 - x->rn_bit;
+				netmask = x->rn_key;
 		}
-		b_leaf = x->rn_bit;
-		b = -1 - x->rn_bit;
-		netmask = x->rn_key;
-	}
-	/*
-	 * Deal with duplicated keys: attach node to previous instance
-	 */
-	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
-	dprint(("-ptree_addroute: keyduplicated = %d\n",keyduplicated));
-	if (keyduplicated) {
-		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
-			if (tt->rn_mask == netmask){
-				dprint(("-ptree_addroute End(keyduplicated)\n"));
-				return (0);
-			}
-			if (netmask == 0 ||
-					(tt->rn_mask &&
-					 ((b_leaf < tt->rn_bit) /* index(netmask) > node */
-					  || ptree_refines(netmask, tt->rn_mask)
-					  || ptree_lexobetter(netmask, tt->rn_mask))))
-			break;
-		}
+		/*
+		 * Deal with duplicated keys: attach node to previous instance
+		 */
+		saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
+		dprint(("-ptree_addroute: keyduplicated = %d\n",keyduplicated));
+		if (keyduplicated) {
+				for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
+						if (tt->rn_mask == netmask){
+								dprint(("-ptree_addroute End(keyduplicated)\n"));
+								return (0);
+						}
+						if (netmask == 0 ||
+										(tt->rn_mask &&
+										 ((b_leaf < tt->rn_bit) /* index(netmask) > node */
+										  || ptree_refines(netmask, tt->rn_mask)
+										  || ptree_lexobetter(netmask, tt->rn_mask))))
+								break;
+				}
 #if 0 /* 10/29 22:00 */
-		if (tt == saved_tt) {
-			struct	ptree_node *xx = x;
-			/* link in at head of list */
-			(tt = treenodes)->rn_dupedkey = t;
-			tt->rn_flags = t->rn_flags;
-			tt->rn_parent = x = t->rn_parent;
-			t->rn_parent = tt;	 		/* parent */
-			if (x->rn_left == t)
-				x->rn_left = tt;
-			else
-				x->rn_right = tt;
-			saved_tt = tt; x = xx;
-		} else {
-			(tt = treenodes)->rn_dupedkey = t->rn_dupedkey;
-			t->rn_dupedkey = tt;
-			tt->rn_parent = t;			/* parent */
-			if (tt->rn_dupedkey)			/* parent */
-				tt->rn_dupedkey->rn_parent = tt; /* parent */
-		}
+				if (tt == saved_tt) {
+						struct	ptree_node *xx = x;
+						/* link in at head of list */
+						(tt = treenodes)->rn_dupedkey = t;
+						tt->rn_flags = t->rn_flags;
+						tt->rn_parent = x = t->rn_parent;
+						t->rn_parent = tt;	 		/* parent */
+						if (x->rn_left == t)
+								x->rn_left = tt;
+						else
+								x->rn_right = tt;
+						saved_tt = tt; x = xx;
+				} else {
+						(tt = treenodes)->rn_dupedkey = t->rn_dupedkey;
+						t->rn_dupedkey = tt;
+						tt->rn_parent = t;			/* parent */
+						if (tt->rn_dupedkey)			/* parent */
+								tt->rn_dupedkey->rn_parent = tt; /* parent */
+				}
 #endif
 #ifdef RN_DEBUG
-		t=tt+1; tt->rn_info = rn_nodenum++; t->rn_info = rn_nodenum++;
-		tt->rn_twin = t; tt->rn_ybro = rn_clist; rn_clist = tt;
+				t=tt+1; tt->rn_info = rn_nodenum++; t->rn_info = rn_nodenum++;
+				tt->rn_twin = t; tt->rn_ybro = rn_clist; rn_clist = tt;
 #endif
-		tt->key = (caddr_t) v;
-		tt->rn_bit = -1;
-		tt->rn_flags = RNF_ACTIVE;
-	}
-	/*
-	 * Put mask in tree.
-	 */
-	if (netmask) {
-		dprint(("-ptree_addroute: put netmask in %p\n",tt));
-		tt->rn_mask = netmask;
-		tt->rn_bit = x->rn_bit;
-		tt->rn_flags = RNF_ACTIVE;
-	}
+				tt->key = (caddr_t) v;
+				tt->rn_bit = -1;
+				tt->rn_flags = RNF_ACTIVE;
+		}
+		/*
+		 * Put mask in tree.
+		 */
+		if (netmask) {
+				dprint(("-ptree_addroute: put netmask in %p\n",tt));
+				tt->rn_mask = netmask;
+				tt->rn_bit = x->rn_bit;
+				tt->rn_flags = RNF_ACTIVE;
+		}
 #if 0 /* 10/29 19:32 test */
-	t = saved_tt->rn_parent;
-	if(!t){
-		dprint(("-ptree_addroute: goto on2 if(!tt->parent)\n"));
-		goto on2;
-	}
+		t = saved_tt->rn_parent;
+		if(!t){
+				dprint(("-ptree_addroute: goto on2 if(!tt->parent)\n"));
+				goto on2;
+		}
 #endif
-	t = saved_tt;
-	if (keyduplicated){
-		dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
-		goto on2;
-	}
-	//b_leaf = -1 - t->rn_bit;
-	b_leaf = tt->rn_bit;
-	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-	for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
-			if(tt->rn_mask && tt->rn_mklist == 0){
-					*mp = m = ptree_new_mask(tt,0);
-					if (m)
-							mp = &m->rm_mklist;
-			}
-			else if(tt->rn_mklist){
-					for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
-							if(m->rm_bit >= b_leaf)
-									break;
-					t->rn_mklist = m;
-					*mp = 0;
-			}
+		t = saved_tt;
+		if (keyduplicated){
+				dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
+				goto on2;
+		}
+		//b_leaf = -1 - t->rn_bit;
+		b_leaf = tt->rn_bit;
+		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
+		for(mp = &saved_tt->rn_mklist;t;t=t->rn_dupedkey)
+				if(tt->rn_mask && tt->rn_mklist == 0){
+						*mp = m = ptree_new_mask(tt,0);
+						if (m)
+								mp = &m->rm_mklist;
+				}
+				else if(tt->rn_mklist){
+						for(mp = &tt->rn_mklist;(m = *mp);mp = &m->rm_mklist)
+								if(m->rm_bit >= b_leaf)
+										break;
+						t->rn_mklist = m;
+						*mp = 0;
+				}
 #if 0 /* 10/29 19:32 test */
-	if (t->rn_right == saved_tt)
-			x = t->rn_left;
-	else
-			x = t->rn_right;
-	if(!x){
-			dprint(("-ptree_addroute: goto on2 if(!x)\n"));
-			goto on2;
-	}
-	/* Promote general routes from below */
-	if (x->rn_bit < 0) {
-			dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
-			for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
-					if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
-							*mp = m = ptree_new_mask(x, 0);
-							if (m)
-									mp = &m->rm_mklist;
-					}
-	} else if (x->rn_mklist) {
-			/*
-			 * Skip over masks whose index is > that of new node
-			 */
-			for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
-					if (m->rm_bit >= b_leaf)
-							break;
-			t->rn_mklist = m; *mp = 0;
-	}
+		if (t->rn_right == saved_tt)
+				x = t->rn_left;
+		else
+				x = t->rn_right;
+		if(!x){
+				dprint(("-ptree_addroute: goto on2 if(!x)\n"));
+				goto on2;
+		}
+		/* Promote general routes from below */
+		if (x->rn_bit < 0) {
+				dprint(("-ptree_addroute: x->rn_bit = %d\n",x->rn_bit));
+				for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
+						if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
+								*mp = m = ptree_new_mask(x, 0);
+								if (m)
+										mp = &m->rm_mklist;
+						}
+		} else if (x->rn_mklist) {
+				/*
+				 * Skip over masks whose index is > that of new node
+				 */
+				for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
+						if (m->rm_bit >= b_leaf)
+								break;
+				t->rn_mklist = m; *mp = 0;
+		}
 #endif
 on2:
-	/* Add new route to highest possible ancestor's list */
+		/* Add new route to highest possible ancestor's list */
 #if 0 /* 10/29 19:32 test */
-	dprint(("-ptree_addroute: add new route to highest list\n"));
-	if ((netmask == 0) || (b > t->rn_bit )){
-			dprint(("-ptree_addroute End (can't lift at all)\n"));
-			return tt; /* can't lift at all */
-	}
-	b_leaf = tt->rn_bit;
-	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
-	do {
-			x = t;
-			t = t->rn_parent;
-			if(!t)
-					break;
-	} while (x != top && b <= t->rn_bit);
-	dprint(("-ptree_addroute: x = %p\n",x));
-	
-	x = saved_tt;
-	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
-			if (m->rm_bit < b_leaf)
-					continue;
-			if (m->rm_bit > b_leaf)
-					break;
-			if (m->rm_flags & RNF_NORMAL) {
-					mmask = m->rm_leaf->rn_mask;
-					if (tt->rn_flags & RNF_NORMAL) {
-							log(LOG_ERR, 
-											"Non-unique normal route, mask not entered\n");
-							dprint(("-ptree_addroute: rn_flags = RNF_NORMAL\n"));
-							return tt;
-					}
-			} else
-					mmask = m->rm_mask;
-			if (mmask == netmask) {
-					m->rm_refs++;
-					tt->rn_mklist = m;
-					dprint(("-ptree_addroute: if(mmask == netmask)\n"));
-					return tt;
-			}
-			if (ptree_refines(netmask, mmask)
-							|| ptree_lexobetter(netmask, mmask))
-					break;
-	}
+		dprint(("-ptree_addroute: add new route to highest list\n"));
+		if ((netmask == 0) || (b > t->rn_bit )){
+				dprint(("-ptree_addroute End (can't lift at all)\n"));
+				return tt; /* can't lift at all */
+		}
+		b_leaf = tt->rn_bit;
+		dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
+		do {
+				x = t;
+				t = t->rn_parent;
+				if(!t)
+						break;
+		} while (x != top && b <= t->rn_bit);
+		dprint(("-ptree_addroute: x = %p\n",x));
+
+		x = saved_tt;
+		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
+				if (m->rm_bit < b_leaf)
+						continue;
+				if (m->rm_bit > b_leaf)
+						break;
+				if (m->rm_flags & RNF_NORMAL) {
+						mmask = m->rm_leaf->rn_mask;
+						if (tt->rn_flags & RNF_NORMAL) {
+								log(LOG_ERR, 
+												"Non-unique normal route, mask not entered\n");
+								dprint(("-ptree_addroute: rn_flags = RNF_NORMAL\n"));
+								return tt;
+						}
+				} else
+						mmask = m->rm_mask;
+				if (mmask == netmask) {
+						m->rm_refs++;
+						tt->rn_mklist = m;
+						dprint(("-ptree_addroute: if(mmask == netmask)\n"));
+						return tt;
+				}
+				if (ptree_refines(netmask, mmask)
+								|| ptree_lexobetter(netmask, mmask))
+						break;
+		}
 #endif
-	*mp = ptree_new_mask(tt, *mp);
-	dprint(("-ptree_addroute End\n"));
-	return tt;
+		*mp = ptree_new_mask(tt, *mp);
+		dprint(("-ptree_addroute End\n"));
+		return tt;
 }
 
 
