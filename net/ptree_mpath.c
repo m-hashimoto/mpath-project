@@ -122,7 +122,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
-#if 0
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v + len;
 		
@@ -134,7 +133,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 				goto on1;
 			}
 		}
-#endif
+#if 0
 		register caddr_t cp = t->key;
 		caddr_t cplim = v;
 		if ( !memcmp(cp,cplim,len) ){
@@ -142,6 +141,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			*dupentry = 1;  
 			return t;
 		}
+#endif
 	}
 on1:
 	*dupentry = 0;
