@@ -14,6 +14,7 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
+#ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
 //const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
@@ -22,8 +23,6 @@
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
-static char *pn_zeros, *pn_ones;
-static int  max_keylen;
 
 	int
 debug_node_print(struct ptree_node *pn, int offset)
@@ -102,9 +101,11 @@ debug_tree_print(struct ptree_node_head *pnh)
 		printf("----------------------------------------------------------\n\n");
 		return (0);
 }
+#endif
 
+static int  max_keylen;
+static char *pn_zeros, *pn_ones;
 #define LEN(x) (*(const u_char *)(x))
-
 
 static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 			   	struct ptree_node_head *head, int *dupentry);

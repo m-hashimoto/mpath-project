@@ -5,6 +5,10 @@
 #ifndef _PTREE_MPATH_H_
 #define _PTREE_MPATH_H_
 
+/* debug print */
+#define DEBUG 1
+#define dprint(x) { if(DEBUG) printf x; }
+
 #ifdef _KERNEL
 #include <sys/_lock.h>
 #include <sys/_mutex.h>
