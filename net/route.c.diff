@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-06 23:20:44.000000000 +0900
++++ route.c	2005-02-06 23:27:29.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,526 @@
+@@ -768,495 +780,527 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1885,6 +1885,7 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
++				rn = rnh->rnh_addaddr(dst, netmask, rnh);
 +				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
@@ -2004,7 +2005,7 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh);
++				//rn = rnh->rnh_addaddr(ndst, netmask, rnh);
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
@@ -2112,7 +2113,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1310,70 @@
+@@ -1267,71 +1311,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2237,7 +2238,7 @@
  }
  
  /*
-@@ -1339,228 +1381,232 @@
+@@ -1339,228 +1382,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
