@@ -91,7 +91,7 @@ struct ptree_node
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
 #ifdef DEBUG
-char *sprint_inet_ntoa(int af, void *sa);
+void sprint_inet_ntoa(int af, void *sa);
 int debug_node_print(struct ptree_node *, int );
 int debug_tree_print(struct ptree_node_head *);
 #endif
