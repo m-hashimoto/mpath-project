@@ -466,7 +466,7 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
 #endif
-	cp += off; cp2 = t->key + off; cplim = v + vlen;
+	/*cp += off; */cp2 = t->key;/* + off*/ cplim = v + vlen;
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
 		dprint((" + "));	
@@ -1041,9 +1041,7 @@ ptree_walktree(h, f, w)
 }
 
 		int
-ptree_inithead(head, off)
-		void **head;
-		int off;
+ptree_inithead(void **head, int off)
 {
 		dprint(("-ptree_inithead Start\n"));
 		register struct ptree_node_head *pnh;
