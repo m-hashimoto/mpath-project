@@ -358,7 +358,6 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree *head;
 {
-	dprint(("ptree_matchaddr Start\n"));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top, *x;
 	register caddr_t cp = v, cp2;
@@ -366,6 +365,9 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
+	dprint(("ptree_matchaddr Start\n"));
+	dprint(("ptree_matchaddr: v = %d:%d:%d:%d head = %p top = %p\n",
+				v[0],v[1],v[2],v[3],head,t));
 
 	t = saved_t = ptree_search(v, vlen, head);
 	if( !saved_t ){
