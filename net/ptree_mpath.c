@@ -950,9 +950,11 @@ ptree_walktree(h, f, w)
 				rn_dst = (struct sockaddr_in *)rt_key(rt);
 				gate = &rt_gate->sin_addr;
 				dst = &rn_dst->sin_addr;
+				ip = (unsigned char *)dst;
+				printf("pn_key: %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
+				printf("pn_flags: 0x%x | ",rn->rn_flags);
 				ip = (unsigned char *)gate;
-				printf("address: %x.%x.%x.%x\n",*ip,*ip+1,*ip+2,*ip+3);
-				printf("address: %d.%d.%d.%d\n",*ip,*ip+1,*ip+2,*ip+3);
+				printf("gateway: %d.%d.%d.%d\n",*ip,*ip+1,*ip+2,*ip+3);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
