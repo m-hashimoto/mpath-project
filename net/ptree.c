@@ -466,6 +466,8 @@ ptree_next (struct ptree_node *v)
 	}
 
 	u = v->parent;
+	if(!u)
+			return u;
 
 	if (u->child[0] == v)
 	{
