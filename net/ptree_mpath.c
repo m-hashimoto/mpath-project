@@ -1078,7 +1078,7 @@ ptree_mpath_count(struct ptree_node *rn)
 	dprint(("ptree_mpath_count Start\n"));
 	struct ptree_node *rn1;
 	uint32_t i = 0;
-	rn1 = rn->mpath_array[i];
+	rn1 = &rn->mpath_array[i];
 	/* count mpath_array */
 	while (rn1 != NULL) {
 		rn1++;
@@ -1098,7 +1098,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 	if (!rn->mpath_array)
 		return rt;
 	else
-		match = rn->mpath_array[i];
+		match = &rn->mpath_array[i];
 
 	if (!gate)
 		return NULL;
@@ -1144,7 +1144,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		return (0);
 
 	n = ptree_mpath_count(t);
-	t1 = t->mpath_array[i];
+	t1 = &t->mpath_array[i];
 	while (t1) {
 		if ((struct rtentry *)t1 == rt) {
 			t->mpath_array[i] = t->mpath_array[n-1];
@@ -1262,7 +1262,8 @@ different:
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 	u_int32_t n;
-	struct rtentry *rt, *rt0;
+	struct rtentry *rt;
+	struct ptree_node *rn;
 
 	/*
 	 * XXX we don't attempt to lookup cached route again; what should
@@ -1271,24 +1272,24 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 	if (ro->ro_rt && ro->ro_rt->rt_ifp && (ro->ro_rt->rt_flags & RTF_UP))
 		return;				 
 	ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, 0, fibnum);
-
+	rn = (struct ptree_node *)ro->ro_rt;
 	/* if the route does not exist or it is not multipath, don't care */
 	if (ro->ro_rt == NULL)
 		return;
-	if (ro->ro_rt->mlist == NULL) {
+	if (rn->mpath_array == NULL) {
 		RT_UNLOCK(ro->ro_rt);
 		return;
 	}
 
 	/* beyond here, we use rn as the master copy */
 	rt0 = ro->ro_rt;
-	n = ptree_mpath_count((struct ptree_node *)rt0);
+	n = ptree_mpath_count(rn);
 
 	/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 	hash += hashjitter;
 	hash %= n;
-	rt = rt0->mlist[n];
-
+	rn = rn->mpath_array[n];
+	rt = (struct rtentry *)rn;
 	/* XXX try filling rt_gwroute and avoid unreachable gw  */
 
 	/* gw selection has failed - there must be only zero weight routes */
