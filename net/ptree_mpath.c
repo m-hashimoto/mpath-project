@@ -125,7 +125,7 @@ static int ptree_satisfies_leaf(char *trial,
 	caddr_t v = v_arg;
 	register caddr_t cp;
 	int vlen = (int)LEN(v);
-	register int b;
+	register int b = vlen;
 	dprint(("-ptree_insert Start\n"));
 	dprint(("-ptree_insert: v = %p head = %p\n",v,head));
 	struct ptree_node *top = head->rnh_treetop, *tt;
