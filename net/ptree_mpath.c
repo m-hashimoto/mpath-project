@@ -235,12 +235,16 @@ ptree_matchaddr(v_arg, head)
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
-	unsigned int vlen;
+	int vlen;
 	
-	vlen = (unsigned int)8*(LEN(v) - head_off - head_zero);
+	vlen = (int)8*(LEN(v) - head_off - head_zero);
 	v = v + head_off;
-	dprint(("-ptree_matchaddr: vlen = %d head = %p top = %p\n",
-							vlen,head,t));
+	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d.%d.%d.%d.%d/%d] pnh[%p]\n",
+							(unsigned char)v[0],(unsigned char)v[1],
+							(unsigned char)v[2],(unsigned char)v[3],
+							(unsigned char)v[4],(unsigned char)v[5],
+							(unsigned char)v[6],(unsigned char)v[7],
+							vlen,head));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
@@ -252,7 +256,7 @@ ptree_matchaddr(v_arg, head)
 		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
 	}
 #endif
-	/*cp += off; */cp2 = t->key;/* + off*/ cplim = v + vlen;
+	cp2 = t->key; cplim = v;
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
 		dprint((" + "));	
