@@ -336,10 +336,9 @@ ptree_get (key, keylen, t, nodes)
 		/* set upper link */
 		if (u)
 			ptree_link (u, x);
-		else{
+		else
 			t->top = x;
-			x->rn_flags = RNF_ACTIVE | RNF_ROOT;
-		}
+		
 
 		/* if the branching node is not the corresponding node,
 		   create the corresponding node to add */
@@ -348,7 +347,7 @@ ptree_get (key, keylen, t, nodes)
 		else
 		{
 			/* locks the branching node x for the tree holding */
-			ptree_node_lock (x);
+			//ptree_node_lock (x);
 
 			v = ptree_node_create (key, keylen, nodes);
 			if (! v)
