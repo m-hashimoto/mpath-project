@@ -314,12 +314,13 @@ ptree_new_mask(tt, next)
 	register struct ptree_mask *next;
 {
 	dprint(("-ptree_new_mask Start\n"));
+	dprint(("-ptree_new_mask: tt = %p next = %p\n",tt,next));
 	register struct ptree_mask *m;
 
 	MKGet(m);
 	if (m == 0) {
 		log(LOG_ERR, "Mask for route not entered\n");
-		dprint(("-ptree_new_mask End: return 0\n"));
+		dprint(("-ptree_new_mask End: if(m == 0)\n"));
 		return (0);
 	}
 	bzero(m, sizeof *m);
@@ -353,10 +354,10 @@ ptree_satisfies_leaf(trial, leaf, skip)
 	cplim = cp + length; cp3 += skip; cp2 += skip;
 	for (cp += skip; cp < cplim; cp++, cp2++, cp3++)
 		if ((*cp ^ *cp2) & *cp3){
-			dprint(("-ptree_satisfines_leaf End: return 0\n"));
+			dprint(("-ptree_satisfines_leaf End: cp and cp2 is diff\n"));
 			return 0;
 		}
-	dprint(("-ptree_satisfines_leaf End: retrun 1\n"));
+	dprint(("-ptree_satisfines_leaf End\n"));
 	return 1;
 }
 
@@ -399,9 +400,15 @@ ptree_matchaddr(v_arg, head)
 	if (t->rn_mask)
 		vlen = *(u_char *)t->rn_mask;
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
-	for (; cp < cplim; cp++, cp2++)
-		if (*cp != *cp2)
+	dprint(("-ptree_matchaddr:"));
+	for (; cp < cplim; cp++, cp2++){
+		dprint((" +"));	
+		if (*cp != *cp2){
+			dprint(("goto on1\n"));
 			goto on1;
+		}
+	}
+	dprint(("return t = %p\n",t));
 	/*
 	 * This extra grot is in case we are explicitly asked
 	 * to look up the default.  Ugh!
@@ -413,7 +420,6 @@ ptree_matchaddr(v_arg, head)
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
 #endif
-	dprint(("-ptree_matchaddr End: return saved_t = %p\n",saved_t));
 	return t;
 on1:
 	dprint(("-ptree_matchaddr: on1\n"));
@@ -426,8 +432,10 @@ on1:
 	/*
 	 * If there is a host route in a duped-key chain, it will be first.
 	 */
+#if 0
 	if ((saved_t = t)->rn_mask == 0)
 		t = t->rn_dupedkey;
+#endif
 	for (; t; t = t->rn_dupedkey)
 		/*
 		 * Even if we don't match exactly as a host,
@@ -447,6 +455,7 @@ on1:
 	
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
+	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p",m));
 	/*
 	 * If non-contiguous masks ever become important
 	 * we can restore the masking and open coding of
@@ -482,7 +491,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 {
 	dprint(("-ptree_addroute Start\n"));
 	caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
-	register struct ptree_node *t, *x = 0, *tt;
+	register struct ptree_node *x = 0, *tt;
 	struct ptree_node *saved_tt, *top = head->rnh_treetop;
 	short b = 0, b_leaf = 0;
 	int keyduplicated;
@@ -573,7 +582,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		tt->rn_bit = x->rn_bit;
 		tt->rn_flags = RNF_ACTIVE;
 	}
-	t = saved_tt;
 #if 0 /* 10/29 19:32 test */
 	t = saved_tt->rn_parent;
 	if(!t){
@@ -581,13 +589,12 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		goto on2;
 	}
 #endif
-	dprint(("-ptree_addroute: saved_tt->rn_parent = %p\n",t));
 	if (keyduplicated){
 		dprint(("-ptree_addroute: goto on2 if(keyduplicated)\n"));
 		goto on2;
 	}
 	//b_leaf = -1 - t->rn_bit;
-	b_leaf = t->rn_bit;
+	b_leaf = tt->rn_bit;
 	dprint(("-ptree_addroute: b_leaf = %d\n",b_leaf));
 #if 0 /* 10/29 19:32 test */
 	if (t->rn_right == saved_tt)
