@@ -418,6 +418,41 @@ ptree_walktree(h, f, w)
 		walktree_f_t *f;
 		void *w;
 {
+	int error;
+	struct ptree_node *base, *next;
+	register struct ptree_node *pn = h->pnh_top;
+	/*
+	 * This gets complicated because we may delete the node
+	 * while applying the function f to it, so we need to calculate
+	 * the successor node in advance.
+	 */
+
+	/* First time through node, go left */
+	while (pn->child[0])
+		pn = pn->child[0];
+	for (;;) {
+		base = pn;
+		/* If at right child go back up, otherwise, go right */
+		while (pn->parent && pn->parent->child[1] == pn)
+			pn = pn->parent;
+		/* Find the next *leaf* since next node might vanish, too */
+		for (pn = pn->parent->child[1]; !pn->child[0];)
+			pn = pn->child[0];
+		next = pn;
+#if 0
+		/* Process leaves */
+		while ((pn = base)) {
+			base = rn->rn_dupedkey;
+			if (!(rn->rn_flags & RNF_ROOT)
+			    && (error = (*f)(rn, w)))
+				return (error);
+		}
+#endif
+		pn = next;
+		if (!pn->parent)
+			return (0);
+	}
+#if 0
 		struct ptree_node *base, *next;
 		register struct ptree_node *rn = h->pnh_top;
 		if (!rn)
@@ -430,6 +465,7 @@ ptree_walktree(h, f, w)
 						return (0);
 				rn = next;
 		}
+#endif
 		/* NOTREACHED */
 }
 
