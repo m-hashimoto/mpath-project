@@ -36,7 +36,7 @@ patch -N < options.i386.diff
 
 cd /usr/src/sys/net
 patch -N < if.c.diff
-patch -N< if_clone.c.diff
+patch -N < if_clone.c.diff
 patch -N < rtsock.c.diff
 patch -N < route.c.diff
 patch -N < route.h.diff
