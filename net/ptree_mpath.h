@@ -25,7 +25,7 @@ struct ptree_node_head {
 		struct ptree *pnh_treetop;
 //		int     pnh_addsize;    /* permit, but not require fixed keys */
 //		int     pnh_pktsize;    /* permit, but not require fixed keys */
-		int		head_offset;	/* IPv4:32 IPv6:64 */
+		int		pnh_offset;		/* IPv4:32 IPv6:64 */
 #ifdef PTREE_MPATH
 		int		pnh_multipath;
 #endif /* PTREE_MPATH */
@@ -93,7 +93,7 @@ struct ptree_node
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
-int debug_node_print(struct ptree_node *);
+int debug_node_print(struct ptree_node *, int);
 int debug_tree_print(struct ptree_node_head *);
 
 #ifdef PTREE_MPATH
