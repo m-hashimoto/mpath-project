@@ -1087,7 +1087,7 @@ ptree_inithead(void **head, int off)
 		pnh->rnh_lookup = ptree_lookup;
 		pnh->rnh_walktree = ptree_walktree;
 		//rnh->rnh_walktree_from = ptree_walktree_from;
-		pnh->pnh_treetop = pnh_top;
+		pnh->pnh_treetop = top;
 		dprint(("-ptree_inithead End (success)\n"));
 		return (1);
 }
