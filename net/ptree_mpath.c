@@ -16,7 +16,7 @@
 
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
-static int	head_off = 4; /* head_off struct sockaddr_in */
+static int	head_off = 4, head_zero = 8; /* head_off struct sockaddr_in */
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
@@ -90,9 +90,9 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	if (m_arg)
-			len = (int)LEN(m);
+			len = (int)8*(LEN(m) - head_off);
 	else
-			len = (int)LEN(v);
+			len = (int)8*(LEN(v) - head_off - head_zero);
 	v = v + head_off; m = m + head_off;
 	dprint(("-ptree_insert: len = %d\n",len));
 	
@@ -227,8 +227,9 @@ ptree_matchaddr(v_arg, head)
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
-	int /*off = t->rn_offset, */vlen = LEN(cp);//, matched_off;
-	//register int test, b, rn_bit;
+	int vlen;
+	
+	vlen = (int)8*(LEN(v) - head_off - head_zero);
 
 	dprint(("-ptree_matchaddr: v = %p vlen = %d head = %p top = %p\n",
 							v,vlen,head,t));

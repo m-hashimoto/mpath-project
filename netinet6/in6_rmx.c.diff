@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-02-11 09:19:30.000000000 +0900
++++ in6_rmx.c	2005-02-12 00:04:39.000000000 +0900
 @@ -113,21 +113,25 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -137,45 +137,25 @@
  	time_t nextstop;
  };
  
-@@ -351,8 +363,9 @@
+@@ -351,7 +363,7 @@
  #define	V_rtq_mtutimer			VNET(rtq_mtutimer)
  
  static int
 -in6_mtuexpire(struct radix_node *rn, void *rock)
 +in6_mtuexpire(struct ptree_node *rn, void *rock)
  {
-+	dprint(("in6_mtuexpire Start\n"));
  	struct rtentry *rt = (struct rtentry *)rn;
  	struct mtuex_arg *ap = rock;
- 
-@@ -369,6 +382,7 @@
- 		}
- 	}
- 
-+	dprint(("in6_mtuexpire End\n"));
- 	return 0;
- }
- 
-@@ -377,8 +391,9 @@
- static void
+@@ -378,7 +390,7 @@
  in6_mtutimo(void *rock)
  {
-+	dprint(("in6_mtutimo Start\n"));
  	CURVNET_SET_QUIET((struct vnet *) rock);
 -	struct radix_node_head *rnh;
 +	struct ptree_node_head *rnh;
  	struct mtuex_arg arg;
  	struct timeval atv;
  
-@@ -402,6 +417,7 @@
- 	}
- 	callout_reset(&V_rtq_mtutimer, tvtohz(&atv), in6_mtutimo, rock);
- 	CURVNET_RESTORE();
-+	dprint(("in6_mtutimo End\n"));
- }
- 
- /*
-@@ -414,9 +430,10 @@
+@@ -414,9 +426,10 @@
  int
  in6_inithead(void **head, int off)
  {
@@ -188,7 +168,7 @@
  		return 0;		/* See above */
  
  	if (off == 0)		/* See above */
-@@ -435,6 +452,7 @@
+@@ -435,6 +448,7 @@
  	callout_init(&V_rtq_mtutimer, CALLOUT_MPSAFE);
  	in6_rtqtimo(curvnet);	/* kick off timeout first time */
  	in6_mtutimo(curvnet);	/* kick off timeout first time */
@@ -196,7 +176,7 @@
  	return 1;
  }
  
-@@ -448,3 +466,5 @@
+@@ -448,3 +462,5 @@
  	return (1);
  }
  #endif
