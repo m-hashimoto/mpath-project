@@ -398,7 +398,6 @@ ptree_next (struct ptree_node *v)
 	struct ptree_node *u;
 	struct ptree_node *w;
 
-	ptree_node_lock (v);
 	/* if the left child exists, go left */
 	if (v->child[0])
 	{
@@ -424,7 +423,10 @@ ptree_next (struct ptree_node *v)
 
 	if(v->parent){
 		u = v->parent;
-		dprint(("ptree_next: v->parent = %p\n",u));
+		if( !(u->rn_flags & RNF_ACTIVE) ){
+			dprint(("ptree_next End (parent is not ACTIVE)\n"));
+			return NULL;
+		}
 	}
 	else{
 		dprint(("ptree_next End (this node is top)\n"));
