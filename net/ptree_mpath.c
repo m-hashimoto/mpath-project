@@ -630,32 +630,29 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 			t->rn_mklist = m; *mp = 0;
 		}
 on2:
-	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
-		if (m->rm_bit < b_leaf)
-			continue;
-		if (m->rm_bit > b_leaf)
-			break;
-		if (m->rm_flags & RNF_NORMAL) {
-			mmask = m->rm_leaf->rn_mask;
-			if (tt->rn_flags & RNF_NORMAL) {
-			    log(LOG_ERR,
-			        "Non-unique normal route, mask not entered\n");
+		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
+			if (m->rm_bit < b_leaf)
+				continue;
+			if (m->rm_bit > b_leaf)
+				break;
+			if (m->rm_flags & RNF_NORMAL) {
+				mmask = m->rm_leaf->rn_mask;
+				if (tt->rn_flags & RNF_NORMAL) {
+				    log(LOG_ERR,
+			    	    "Non-unique normal route, mask not entered\n");
+					return tt;
+				}
+			} else
+				mmask = m->rm_mask;
+			if (mmask == netmask) {
+				m->rm_refs++;
+				tt->rn_mklist = m;
 				return tt;
 			}
-		} else
-			mmask = m->rm_mask;
-		if (mmask == netmask) {
-			m->rm_refs++;
-			tt->rn_mklist = m;
-			return tt;
+			if (ptree_refines(netmask, mmask)
+			    || ptree_lexobetter(netmask, mmask))
+				break;
 		}
-		if (ptree_refines(netmask, mmask)
-		    || ptree_lexobetter(netmask, mmask))
-			break;
-	}
-	*mp = rn_new_radix_mask(tt, *mp);
-	return tt;
-}
 		dprint(("-ptree_addroute: on2\n"));
 		*mp = ptree_new_mask(tt, *mp);
 		debug_node_print(tt);
