@@ -187,6 +187,7 @@ ptree_addmask(n_arg, search, skip)
 			isnormal = 0;
 	}
 	b += (cp - netmask) << 3;
+	dprint(("ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
 	x->rn_bit = -1 - b;
 	if (isnormal)
 		x->rn_flags |= RNF_NORMAL;
@@ -970,6 +971,8 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	t = ptree_add(rn_zeros,off,data,rnh);
+	t->keylen = (int)LEN(rn_zeros);
+	dprint(("ptree_inithead: head_node_len = %d\n",t->keylen));
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
