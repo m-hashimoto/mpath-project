@@ -418,7 +418,7 @@ ptree_walktree(h, f, w)
 		walktree_f_t *f;
 		void *w;
 {
-	int error;
+	//int error;
 	struct ptree_node *base, *next;
 	register struct ptree_node *pn = h->pnh_top;
 	/*
