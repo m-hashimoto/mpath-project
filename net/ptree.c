@@ -19,8 +19,6 @@
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
-//#define DEBUG 1
-//#define dprint(x) { if(DEBUG) printf x; }
 
 static struct ptree_node *
 ptree_node_create (char *key, int keylen)
@@ -164,7 +162,6 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
     }
 
   keylen = nmatch * 8;
-  dprint(("--key_common_len: keylen[%d]\n",keylen));
   bitmask = 0x80;
   diff = keyi[nmatch] ^ keyj[nmatch];
   while (keylen < minkeylen && ! (bitmask & diff))
@@ -186,6 +183,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
   x = ptree_node_create (keyi, keylen);
+  dprint(("--key_common: x[%p] keylen[%d]\n",x,keylen));
   if (! x)
     return NULL;
 
@@ -351,7 +349,8 @@ ptree_next (struct ptree_node *v)
   if (v->child[0])
     {
       w = v->child[0];
-      ptree_node_lock (w);
+	  if(w)
+        ptree_node_lock (w);
       ptree_node_unlock (v);
       return w;
     }
@@ -359,7 +358,8 @@ ptree_next (struct ptree_node *v)
   if (v->child[1])
     {
       w = v->child[1];
-      ptree_node_lock (w);
+	  if(w)
+        ptree_node_lock (w);
       ptree_node_unlock (v);
       return w;
     }
@@ -389,7 +389,8 @@ ptree_next (struct ptree_node *v)
       w = t->child[1];
       XRTASSERT (w, ("xrt: an impossible end of traverse"));
 
-      ptree_node_lock (w);
+	  if (w)
+        ptree_node_lock (w);
       ptree_node_unlock (v);
 
       return w;
@@ -426,6 +427,3 @@ ptree_delete (struct ptree *t)
 
   XRTFREE (t);
 }
-
-//#undef dprint
-//#undef DEBUG
