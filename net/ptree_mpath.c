@@ -53,7 +53,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	} else { /* IPv4 */
 		printf("[%p] ",pn);
 		sprint_inet_ntoa(AF_INET,pn->key);
-		printf("/%3d ",pn->keylen % 32);
+		printf("/%3d ",pn->keylen-8*offset);
 	}
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 #ifdef PTREE_MPATH
