@@ -1,6 +1,6 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-22 12:57:02.000000000 +0900
-@@ -67,15 +67,30 @@
++++ in_rmx.c	2005-02-22 14:00:26.000000000 +0900
+@@ -67,16 +67,21 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
  
@@ -15,29 +15,21 @@
 -{
 -	struct rtentry *rt = (struct rtentry *)treenodes;
 -	struct sockaddr_in *sin = (struct sockaddr_in *)rt_key(rt);
+-
 +static struct ptree_node *
 +in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 +				struct ptree_node *rt_node)
 +{
 +	dprint(("in_addroute Start\n"));
 +	struct rtentry *rt = (struct rtentry *)(&rt_node);
-+	dprint(("in_addroute: rt = %p\n",rt));
++	dprint(("in_addroute: rt[%p]\n",rt));
 +	//struct sockaddr_in *sin = (struct sockaddr_in *)rt_key(rt);
 +	struct sockaddr_in *sin = (struct sockaddr_in *)v_arg;
-+	char *c_sin = (unsigned char *)sin;
-+	dprint(("in_addroute: sin[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
-+					(unsigned char)c_sin[0],(unsigned char)c_sin[1],
-+					(unsigned char)c_sin[2],(unsigned char)c_sin[3],
-+					(unsigned char)c_sin[4],(unsigned char)c_sin[5],
-+					(unsigned char)c_sin[6],(unsigned char)c_sin[7],
-+					(unsigned char)c_sin[8],(unsigned char)c_sin[9],
-+					(unsigned char)c_sin[10],(unsigned char)c_sin[11],
-+					(unsigned char)c_sin[12],(unsigned char)c_sin[13],
-+					(unsigned char)c_sin[14],(unsigned char)c_sin[15]));
- 
++	
  	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
  	/*
-@@ -103,11 +118,14 @@
+ 	 * A little bit of help for both IP output and input:
+@@ -103,11 +108,14 @@
  	}
  	if (IN_MULTICAST(ntohl(sin->sin_addr.s_addr)))
  		rt->rt_flags |= RTF_MULTICAST;
@@ -56,7 +48,7 @@
  }
  
  /*
-@@ -115,10 +133,10 @@
+@@ -115,10 +123,10 @@
   * were managing the route, stop doing so and set the expiration timer
   * back off again.
   */
@@ -70,7 +62,7 @@
  	struct rtentry *rt = (struct rtentry *)rn;
  
  	/*XXX locking? */
-@@ -156,7 +174,7 @@
+@@ -156,7 +164,7 @@
   * timed out.
   */
  static void
@@ -79,7 +71,7 @@
  {
  	struct rtentry *rt = (struct rtentry *)rn;
  
-@@ -184,7 +202,7 @@
+@@ -184,7 +192,7 @@
  }
  
  struct rtqk_arg {
@@ -88,7 +80,7 @@
  	int draining;
  	int killed;
  	int found;
-@@ -198,7 +216,7 @@
+@@ -198,7 +206,7 @@
   * nothing has a timeout longer than the current value of rtq_reallyold.
   */
  static int
@@ -97,7 +89,7 @@
  {
  	struct rtqk_arg *ap = rock;
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -269,7 +287,7 @@
+@@ -269,7 +277,7 @@
  static void
  in_rtqtimo_one(void *rock)
  {
@@ -106,7 +98,7 @@
  	struct rtqk_arg arg;
  	static time_t last_adjusted_timeout = 0;
  
-@@ -315,7 +333,7 @@
+@@ -315,7 +323,7 @@
  in_rtqdrain(void)
  {
  	VNET_ITERATOR_DECL(vnet_iter);
@@ -115,7 +107,7 @@
  	struct rtqk_arg arg;
  	int 	fibnum;
  
-@@ -346,7 +364,7 @@
+@@ -346,7 +354,7 @@
  int
  in_inithead(void **head, int off)
  {
@@ -124,7 +116,7 @@
  
  	/* XXX MRT
  	 * This can be called from vfs_export.c too in which case 'off'
-@@ -356,7 +374,7 @@
+@@ -356,7 +364,7 @@
  	 * on a bad design. After RELENG_7 this should be fixed but that
  	 * will change the ABI, so for now do it this way.
  	 */
@@ -133,7 +125,7 @@
  		return 0;
  
  	if (off == 0)		/* XXX MRT  see above */
-@@ -404,7 +422,7 @@
+@@ -404,7 +412,7 @@
  };
  
  static int
@@ -142,7 +134,7 @@
  {
  	struct in_ifadown_arg *ap = xap;
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -430,7 +448,7 @@
+@@ -430,7 +438,7 @@
  in_ifadown(struct ifaddr *ifa, int delete)
  {
  	struct in_ifadown_arg arg;
@@ -151,7 +143,7 @@
  	int	fibnum;
  
  	if (ifa->ifa_addr->sa_family != AF_INET)
-@@ -501,4 +519,5 @@
+@@ -501,4 +509,5 @@
  int	 in_rtrequest1(int, struct rt_addrinfo *, struct rtentry **, u_int);
  #endif
  
