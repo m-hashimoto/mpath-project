@@ -229,6 +229,7 @@ on1:
  * Same as above, but with an additional mask.
  * XXX note this function is used only once.
  */
+#if 0
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
@@ -252,6 +253,7 @@ ptree_search_m(v_arg, head, m_arg)
 	dprint(("-ptree_seach_m End\n"));
 	return x;
 }
+#endif
 
 	int
 ptree_refines(m_arg, n_arg)
@@ -327,13 +329,11 @@ ptree_new_mask(tt, next)
 	}
 	bzero(m, sizeof *m);
 	m->rm_bit = tt->rn_bit;
-	m->rm_flags = tt->rn_flags;
+	m->rm_flags = tt->rn_flags | RNF_NORMAL;
 	dprint(("-ptree_new_mask: m->rm_bit = %d m->rm_flags = 0x%x\n",
 							m->rm_bit,m->rm_flags));
-	//if (tt->rn_flags & RNF_NORMAL)
-		m->rm_leaf = tt;
-	//else
-		m->rm_mask = tt->rn_mask;
+	m->rm_leaf = tt;
+	m->rm_mask = tt->rn_mask;
 	dprint(("-ptree_new_mask: m->rm_leaf = %p m->rm_mask = %p\n",
 							m->rm_leaf,m->rm_mask));
 	m->rm_mklist = next;
@@ -447,7 +447,7 @@ on1:
 	t = saved_t;
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
-	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p rm_leaf = %p\n",m,m->rm_mask,m->rm_leaf));
+	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p rm_leaf = %p flag = 0x%x\n",m,m->rm_mask,m->rm_leaf,m->rm_flags));
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
 					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",
@@ -455,6 +455,7 @@ on1:
 					if (rn_bit <= m->rm_bit)
 							return (m->rm_leaf);
 			}
+#if 0
 			else {
 					off = min(t->rn_offset, matched_off);
 					dprint(("-ptree_matchaddr: off = %d\n",off));
@@ -466,6 +467,7 @@ on1:
 							return x;
 					}
 			}
+#endif
 			m = m->rm_mklist;
 			dprint(("-ptree_matchaddr: next rm_mklist = %p\n",m));
 	}
@@ -1016,8 +1018,6 @@ ptree_inithead(head, off)
 		RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 		*head = rnh;
-		//t = ptree_add(rn_zeros,off,data,rnh);
-		//t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 		t = NULL;
 #ifdef PTREE_MPATH
 		rnh->rnh_multipath = 1;
