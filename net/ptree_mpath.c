@@ -30,8 +30,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 				(unsigned char)pn->key[14],(unsigned char)pn->key[15],
 				pn->keylen - 8*offset);
 		}
-		printf("[%p] parent[%p] child[%p, %p]\n",
-						pn,pn->parent,pn->child[0],pn->child[1]);
 #if 0
 		struct rtentry *rt = pn->data;
 		unsigned char *gateway = (unsigned char *)rt->rt_gateway;
@@ -58,7 +56,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x] ",rt->rt_flags);
 #endif
 	}
-	printf("[%p][%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
+	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	return 0;
 }
 
