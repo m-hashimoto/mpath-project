@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 17:33:37.000000000 +0900
++++ route.c	2005-01-27 17:53:51.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2141,7 +2141,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1355,78 @@
+@@ -1267,71 +1355,81 @@
  #undef ifpaddr
  #undef flags
  
@@ -2162,6 +2162,10 @@
 -	rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
 +		rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
  #endif
++		dprint(("rt_setgate: test print 1\n"));
++		RT_LOCK_ASSERT(rt);
++		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
++		dprint(("rt_setgate: test print 2\n"));
  
 -	RT_LOCK_ASSERT(rt);
 -	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
@@ -2196,9 +2200,6 @@
 -	 * Copy the new gateway value into the memory chunk.
 -	 */
 -	bcopy(gate, rt->rt_gateway, glen);
-+		RT_LOCK_ASSERT(rt);
-+		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
-+
 +		/*
 +		 * Prepare to store the gateway in rt->rt_gateway.
 +		 * Both dst and gateway are stored one after the other in the same
@@ -2221,10 +2222,12 @@
 +				 * (and also rt->rt_gateway == NULL).
 +				 * Free()/free() handle a NULL argument just fine.
 +				 */
++				dprint(("rt_setgate: test print 3\n"));
 +				bcopy(dst, new, dlen);
 +				Free(rt_key(rt));	/* free old block, if any */
 +				rt_key(rt) = (struct sockaddr *)new;
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
++				dprint(("rt_setgate: test print 4\n"));
 +		}
  
 -	return (0);
@@ -2274,7 +2277,7 @@
  }
  
  /*
-@@ -1339,228 +1434,235 @@
+@@ -1339,228 +1437,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
