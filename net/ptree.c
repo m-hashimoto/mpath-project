@@ -292,17 +292,14 @@ void
 ptree_remove (struct ptree_node *v)
 {
   struct ptree_node *w;
-  printf("--ptree_remove Start\n");
 
   XRTASSERT (! v->data, ("ptree: attempt to remove a node with data"));
 
   /* do not remove if the node is the branching node */
-  printf("--ptree_remove: testprint 1\n");
   if (v->child[0] && v->child[1])
     return;
 
   /* if a stub node */
-  printf("--ptree_remove: testprint 2\n");
   if (! v->child[0] && ! v->child[1] && v->parent)
     {
 	  if (v->parent->child[0] == v)
@@ -314,9 +311,9 @@ ptree_remove (struct ptree_node *v)
     }
 
   w = (v->child[0] ? v->child[0] : v->child[1]);
-  ptree_link (v->parent, w);
+  if (v->parent) 
+    ptree_link (v->parent, w);
   ptree_node_delete (v);
-  printf("--ptree_remove End\n");
 }
 
 struct ptree_node *
