@@ -1078,7 +1078,7 @@ ptree_mpath_count(struct ptree_node *rn)
 	dprint(("ptree_mpath_count Start\n"));
 	struct ptree_node *rn1;
 	uint32_t i = 0;
-	rn1 = &rn->mpath_array[i];
+	rn1 = &rn->mpath_array;
 	/* count mpath_array */
 	while (rn1 != NULL) {
 		rn1++;
@@ -1252,7 +1252,7 @@ maskmatched:
 
 		/* all key/mask/gateway are the same.  conflicting entry. */
 		return EEXIST;
-	} while (rn1++ != NULL);
+	} while ((rn1 = rn->mpath_array[i++]) != NULL);
 
 different:
 	return 0;
@@ -1262,7 +1262,7 @@ different:
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 	u_int32_t n;
-	struct rtentry *rt;
+	struct rtentry *rt, *rt0;
 	struct ptree_node *rn;
 
 	/*
