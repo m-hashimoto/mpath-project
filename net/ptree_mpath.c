@@ -936,7 +936,7 @@ ptree_inithead(head, off)
 {
 	dprint(("ptree_inithead Start\n"));
 	register struct ptree *rnh;
-	struct ptree_node *t, nodes[3];
+	struct ptree_node *t;
 	int *data = NULL;
 	*data = 1;
 	
@@ -957,11 +957,9 @@ ptree_inithead(head, off)
 	rnh = ptree_create();
 	t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
-	nodes = *t;
 #ifdef PTREE_MPATH
 	rnh->rnh_multipath = 1;
 #endif
-	rnh->rnh_nodes = nodes;
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
 	rnh->rnh_matchaddr = ptree_matchaddr;
