@@ -944,8 +944,8 @@ ptree_walktree(h, f, w)
 			rn = rnh->rnh_treetop;
 			for (;;) {
 				rt = (struct rtentry *)rn;
-				gateway = rt->rt_gateway->sin_addr;
-				printf("address: %s\n",inet_ntoa(*gateway));
+				gateway = (struct sockaddr_in *)rt->rt_gateway;
+				printf("address: %s\n",inet_ntoa(gateway->s_addr));
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
