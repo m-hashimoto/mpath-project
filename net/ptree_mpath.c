@@ -169,7 +169,7 @@ ptree_addmask(n_arg, search, skip)
 		dprint(("ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
-	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
+	if (/*bcmp*/memcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
 		dprint(("ptree_addmask End if(x||search)\n"));
