@@ -62,7 +62,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			    return (0);
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
-		printf("%21s %21s %7s\n","dst","gateway","flags");
+		printf("%21s %17s %7s\n","dst","gateway","flags");
 		if(!pn)
 			return (0);
 		for (;;) {

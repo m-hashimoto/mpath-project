@@ -1,5 +1,5 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2005-02-25 14:43:07.000000000 +0900
++++ ip_output.c	2005-02-25 23:36:15.000000000 +0900
 @@ -306,12 +306,17 @@
  		 * them, there is no way for one to update all its
  		 * routes when the MTU is changed.
@@ -18,18 +18,20 @@
  	if (IN_MULTICAST(ntohl(ip->ip_dst.s_addr))) {
  		m->m_flags |= M_MCAST;
  		/*
-@@ -425,6 +430,10 @@
+@@ -425,6 +430,12 @@
  	 * packet or packet fragments, unless ALTQ is enabled on the given
  	 * interface in which case packetdrop should be done by queueing.
  	 */
 +	printf("ip_output: ifp[%p] ip[%p]\n",ifp,ip);
 +	printf("ip_output: ifq_maxlen[%d]\n",(int)ifp->if_snd.ifq_maxlen);
-+	printf("ip_output: ifq_len[%d] ip_len[%d]\n",
++	printf("ip_output: if_snd.ifq_len[%d] ip_len[%d]\n",
 +					(int)ifp->if_snd.ifq_len,(int)ip->ip_len);
++	print(("ip_output: if(%d >= %d)\n",ifp->if_snd.ifq_len + ip->ip_len / mtu + 1,
++							          ifp->if_snd.ifq_maxlen));
  #ifdef ALTQ
  	if ((!ALTQ_IS_ENABLED(&ifp->if_snd)) &&
  	    ((ifp->if_snd.ifq_len + ip->ip_len / mtu + 1) >=
-@@ -557,6 +566,7 @@
+@@ -557,6 +568,7 @@
  #endif /* IPFIREWALL_FORWARD */
  
  passout:
@@ -37,7 +39,7 @@
  	/* 127/8 must not appear on wire - RFC1122. */
  	if ((ntohl(ip->ip_dst.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET ||
  	    (ntohl(ip->ip_src.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET) {
-@@ -661,6 +671,7 @@
+@@ -661,6 +673,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -45,7 +47,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +679,7 @@
+@@ -668,6 +681,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
