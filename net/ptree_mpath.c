@@ -192,8 +192,7 @@ on2:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		//tt = ptree_add(v_arg, b, data, head, nodes);
-		tt = ptree_add(v_arg, vlen, data, head, nodes);
+		tt = ptree_add(v_arg, b, data, head, nodes);
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
