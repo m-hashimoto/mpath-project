@@ -953,7 +953,7 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	rnh = ptree_create();
+	//rnh = ptree_create();
 	t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #ifdef PTREE_MPATH
