@@ -307,6 +307,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
         {
           /* locks the branching node x for the tree holding */
           ptree_node_lock (x);
+					debug_tree_print(pnh);
 
           v = ptree_node_create (key, keylen);
           if (! v)
