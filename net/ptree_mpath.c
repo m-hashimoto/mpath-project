@@ -17,9 +17,6 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-//#define DEBUG 1
-//#define dprint(x) { if(DEBUG) printf x; }
-
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
@@ -35,10 +32,13 @@ debug_node_print(struct ptree_node *pn, int offset)
 				(unsigned char)pn->key[16],(unsigned char)pn->key[17],
 				(unsigned char)pn->key[18],(unsigned char)pn->key[19],
 				pn->keylen - 8*offset);
+		printf("[%p] parent[%p] child[%p, %p]\n",
+						pn,pn->parent,pn->child[0],pn->child[1]);
+#if 0
 		printf("[%X.%X.%X.%X.%X.%X.%X.%X] ",
 				gateway[8],gateway[9],gateway[10],gateway[11],
 				gateway[12],gateway[13],gateway[14],gateway[15]);
-		
+#endif	
 		printf("[0x%x]\n",rt->rt_flags);
 	} else { /* IPv4 */
 		if(pn->mask){
@@ -69,7 +69,8 @@ debug_tree_print(struct ptree_node_head *pnh)
 			    return (0);
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
-		printf("%21s %17s %7s\n","dst","gateway","flags");
+		printf("----------------------------------------------------------\n");
+		//printf("%21s %17s %7s\n","dst","gateway","flags");
 		if(!pn)
 			return (0);
 		for (;;) {
