@@ -17,7 +17,7 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 	int
@@ -106,7 +106,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
 		goto on1;
-	cp = v;
+	cp = v; len = t->keylen;
+#if 0
 	if(m/* && (LEN(m) > head->pnh_offset)*/){
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
@@ -124,6 +125,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 	else
 		len = t->keylen;
+#endif
 	{
 		register caddr_t cp2 = t->key;
 		caddr_t cplim = v;
@@ -203,8 +205,10 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)v[10],(unsigned char)v[11],
 							vlen-8*head->pnh_offset));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
-	if( !saved_t )
+	if( !saved_t ){
+		dprint(("-ptree_matchaddr: not match\n"));
 		return 0;
+	}
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
