@@ -2,8 +2,8 @@
  * ptree-mpath header
  */
 
-#ifndef _NET_PTREE_MPATH_H_
-#define _NET_PTREE_MPATH_H_ 1
+#ifndef _PTREE_MPATH_H_
+#define _PTREE_MPATH_H_
 
 #ifdef _KERNEL
 #include <sys/_lock.h>
@@ -76,7 +76,6 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-#if 0
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
 		 ptree_refines(void *, void *);
@@ -84,7 +83,6 @@ struct ptree_node
 				*ptree_addroute (void *, void *, struct ptree_node_head *),
 				*ptree_deladdr(void *, void *, struct ptree_node_head *),
 				*ptree_matchaddr(void *, struct ptree_node_head *);
-#endif
 
 #if 0
 #ifdef _KERNEL
@@ -108,4 +106,4 @@ int     ptree6_mpath_inithead(void **, int);
 #endif /* _KERNEL */
 #endif /* PTREE_MPATH */
 
-#endif /*_NET_PTREE_MPATH_H_*/
+#endif /*_PTREE_MPATH_H_*/

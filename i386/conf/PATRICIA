@@ -82,7 +82,7 @@ options 	MAC			# TrustedBSD MAC Framework
 #options 	HZ=1000
 
 # patricia-trie for multi path routing
-options		PATRICIA
+#options		PATRICIA
 #options		PTREE_MPATH
 
 # for kernel debug
