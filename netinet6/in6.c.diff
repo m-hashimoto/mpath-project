@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 02:55:32.000000000 +0900
++++ in6.c	2005-03-07 03:04:57.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -115,7 +115,7 @@
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
  
-@@ -1791,17 +1809,29 @@
+@@ -1791,17 +1809,30 @@
  			/* */
  			LLE_WUNLOCK(ln);
  		}
@@ -131,6 +131,7 @@
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
 +		dprint(("in6_ifinit: testprint 4\n"));
 +		dprint(("in6_ifinit: rt[%p] rt->rt_nodes[%p]\n",&rt,&rt.rt_nodes));
++		dprint(("in6_ifinit: rt->rt_nodes->mask[%p]\n",&(rt)->rt_nodes->mask));
 +		dprint(("in6_ifinit: rt_mask[%p]\n",rt_mask(&rt)));
  		rt_mask(&rt) = (struct sockaddr *)&mask;
 +		dprint(("in6_ifinit: testprint 5\n"));
