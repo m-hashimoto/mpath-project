@@ -51,7 +51,7 @@ debug_node_print(struct ptree_node *pn)
 	//}
 	//printf("rn_bit %d ",rn->rn_bit);
 	//if( rn->rn_bmask ) printf("rn_bmask 0x%x\n",rn->rn_bmask);
-	printf("data[%p]\n",pn->data);
+	printf("data[%p] ",pn->data);
 	printf("parent[%p] ",pn->parent);
 	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	//printf("rn_dupedkey = %p\n",rn->rn_dupedkey);

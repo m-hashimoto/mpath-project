@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-08 08:57:28.000000000 +0900
++++ route.c	2005-02-08 17:48:31.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,551 @@
+@@ -768,495 +780,552 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2029,7 +2029,8 @@
 -			uma_zfree(V_rtzone, rt);
 +				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",rt,rt->rt_nodes));
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				rt_key(rt) = (struct sockaddr *)new;
++				rt->rt_nodes = rn;
++				//rt_key(rt) = (struct sockaddr *)new;
 +				dprint(("rtreq_ADD: rt = %p rn = %p rn_key = %p rn_keylen = %d\n",rt,rn,rn->key,rn->keylen));
 +#if 0
 +				/* gateway Re-set */
@@ -2137,7 +2138,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1335,70 @@
+@@ -1267,71 +1336,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2262,7 +2263,7 @@
  }
  
  /*
-@@ -1339,228 +1406,232 @@
+@@ -1339,228 +1407,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
