@@ -458,7 +458,6 @@ ptree_create ()
 	}
 
 	t->top = NULL;
-#endif
 	dprint(("ptree_create End\n"));
 	return t;
 }
