@@ -81,7 +81,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			pn = next;
 		}
 		/* NOTREACHED */
-		printf("------------------------------------------\n");
+		printf("----------------------------------------------------------\n\n");
 		return (0);
 }
 
