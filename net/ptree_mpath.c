@@ -98,8 +98,8 @@ debug_tree_print(struct ptree *rnh)
 	R_Malloc(m, struct ptree_mask *, sizeof (struct ptree_mask)); }
 
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
-//#define LEN(x) (*(const u_char *)(x))
-#define LEN(x) ( 8*sizeof(x) )
+#define LEN(x) (*(const u_char *)(x))
+//#define LEN(x) ( 8*sizeof(x) )
 #define rn_masktop (mask_rnhead->rnh_treetop)
 
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
@@ -127,7 +127,7 @@ static int ptree_satisfies_leaf(char *trial,
 	int vlen = (int)LEN(v);
 	register int b;
 	dprint(("-ptree_insert Start\n"));
-	dprint(("-ptree_insert: v = %p vlen = %d head = %p\n",v,vlen,head));
+	dprint(("-ptree_insert: v = %p head = %p\n",v,head));
 	struct ptree_node *top = head->rnh_treetop, *tt;
 	
 	if (!top){
