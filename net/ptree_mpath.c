@@ -641,8 +641,8 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 		dprint(("-ptree_addroute: on2\n"));
 		if( netmask == 0 ){
-			debug_node_print(tt);
 			dprint(("-ptree_addroute End 1\n"));	
+			debug_tree_print(tt);
 			return tt;
 		}
 		b_leaf = tt->rn_bit;
@@ -671,7 +671,6 @@ on2:
 				if (mmask == netmask) {
 						m->rm_refs++;
 						tt->rn_mklist = m;
-						debug_node_print(tt);
 						dprint(("-ptree_addroute End 2\n"));
 						debug_tree_print(head);
 						return tt;
@@ -682,7 +681,6 @@ on2:
 		}
 
 		*mp = ptree_new_mask(tt, *mp);
-		debug_node_print(tt);
 		dprint(("-ptree_addroute End 3\n"));
 		debug_tree_print(head);
 		return tt;
