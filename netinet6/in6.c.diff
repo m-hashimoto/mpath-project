@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 08:57:07.000000000 +0900
++++ in6.c	2005-03-07 09:07:52.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -9,57 +9,15 @@
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -861,6 +861,7 @@
- 	 * install the new destination.  Note that the interface must be
- 	 * p2p or loopback (see the check above.)
- 	 */
-+	dprint(("in6_update_ifa: testprint 1\n"));
- 	if (dst6.sin6_family == AF_INET6 &&
- 	    !IN6_ARE_ADDR_EQUAL(&dst6.sin6_addr, &ia->ia_dstaddr.sin6_addr)) {
- 		int e;
-@@ -881,6 +882,7 @@
- 	 * to see if the address is deprecated or invalidated, but initialize
- 	 * these members for applications.
- 	 */
-+	dprint(("in6_update_ifa: testprint 2\n"));
- 	ia->ia6_lifetime = ifra->ifra_lifetime;
- 	if (ia->ia6_lifetime.ia6t_vltime != ND6_INFINITE_LIFETIME) {
- 		ia->ia6_lifetime.ia6t_expire =
-@@ -894,17 +896,24 @@
- 		ia->ia6_lifetime.ia6t_preferred = 0;
- 
+@@ -896,6 +896,7 @@
  	/* reset the interface and routing table appropriately. */
--	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
-+	dprint(("in6_update_ifa: testprint 3\n"));
-+	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0){
-+		dprint(("in6_update_ifa: goto unlink\n"));
+ 	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
  		goto unlink;
-+	}
++	
  
  	/*
  	 * configure address flags.
- 	 */
-+	dprint(("in6_update_ifa: testprint 4\n"));
-+	dprint(("in6_update_ifa: ifra[%p]\n",ifra));
-+	dprint(("in6_update_ifa: ifra->ifra_flags[%d]\n",ifra->ifra_flags));
- 	ia->ia6_flags = ifra->ifra_flags;
- 	/*
- 	 * backward compatibility - if IN6_IFF_DEPRECATED is set from the
- 	 * userland, make it deprecated.
- 	 */
-+	dprint(("in6_update_ifa: testprint 5\n"));
- 	if ((ifra->ifra_flags & IN6_IFF_DEPRECATED) != 0) {
- 		ia->ia6_lifetime.ia6t_pltime = 0;
- 		ia->ia6_lifetime.ia6t_preferred = time_second;
-@@ -914,6 +923,7 @@
- 	 * so that corresponding MLD responses would not have a tentative
- 	 * source address.
- 	 */
-+	dprint(("in6_update_ifa: testprint 6\n"));
- 	ia->ia6_flags &= ~IN6_IFF_DUPLICATED;	/* safety */
- 	if (hostIsNew && in6if_do_dad(ifp))
- 		ia->ia6_flags |= IN6_IFF_TENTATIVE;
-@@ -1138,6 +1148,7 @@
+@@ -1138,6 +1139,7 @@
  
  	KASSERT(hostIsNew, ("in6_update_ifa: !hostIsNew"));
  	ifa_free(&ia->ia_ifa);
@@ -67,7 +25,7 @@
  	return (error);
  
    unlink:
-@@ -1149,12 +1160,14 @@
+@@ -1149,12 +1151,14 @@
  		in6_unlink_ifa(ia, ifp);
  		ifa_free(&ia->ia_ifa);
  	}
@@ -82,24 +40,7 @@
  	return error;
  }
  
-@@ -1166,6 +1179,7 @@
- 	struct in6_multi_mship *imm;
- 	struct sockaddr_in6 mltaddr, mltmask;
- 	struct rtentry rt0;
-+	//struct ptree_node rn0;
- 	struct sockaddr_dl gateway;
- 	struct sockaddr_in6 mask, addr;
- 	int plen, error;
-@@ -1217,6 +1231,8 @@
- 	gateway.sdl_alen = ifp->if_addrlen;
- 	/* */
- 	bzero(&rt0, sizeof(rt0));
-+	//bzero(&rn0, sizeof(rn0));
-+	//rt0.rt_nodes = &rn0;
- 	rt0.rt_gateway = (struct sockaddr *)&gateway;
- 	memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
- 	memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
-@@ -1698,6 +1714,7 @@
+@@ -1698,6 +1702,7 @@
  	int	error = 0, plen, ifacount = 0;
  	int	s = splimp();
  	struct ifaddr *ifa;
@@ -107,7 +48,7 @@
  
  	/*
  	 * Give the interface a chance to initialize
-@@ -1796,12 +1813,22 @@
+@@ -1796,12 +1801,22 @@
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
