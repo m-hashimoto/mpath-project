@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-06 11:06:00.000000000 +0900
++++ in6.c	2005-03-06 11:10:44.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -41,7 +41,7 @@
  	 */
 +	dprint(("in6_update_ifa: testprint 4\n"));
 +	dprint(("in6_update_ifa: ifra[%p]\n",ifra));
-+	dprint(("in6_update_ifa: ifra->ifra_flags[%p]\n",ifra->ifra_flags));
++	dprint(("in6_update_ifa: ifra->ifra_flags[%d]\n",ifra->ifra_flags));
  	ia->ia6_flags = ifra->ifra_flags;
  	/*
  	 * backward compatibility - if IN6_IFF_DEPRECATED is set from the
