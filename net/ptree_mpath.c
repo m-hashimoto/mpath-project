@@ -26,6 +26,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	struct rtentry *rt = pn->data;
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 
+	if(pn->key){
 	printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] ",
 					(unsigned char)pn->key[0],(unsigned char)pn->key[1],
 					(unsigned char)pn->key[2],(unsigned char)pn->key[3],
@@ -34,6 +35,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 					(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 					(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 					pn->keylen - 8*offset);
+	}
+	if(gateway){
 	printf("[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d] ",
 					(unsigned char)gateway[0],(unsigned char)gateway[1],
 					(unsigned char)gateway[2],(unsigned char)gateway[3],
@@ -41,6 +44,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 					(unsigned char)gateway[6],(unsigned char)gateway[7],
 					(unsigned char)gateway[8],(unsigned char)gateway[9],
 					(unsigned char)gateway[10],(unsigned char)gateway[11]);
+	}
 	printf("[0x%x]\n",rt->rt_flags);
 #if 0
 	printf("node[%p] ",pn);
@@ -80,7 +84,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			    goto done;
 		pn = pnh->pnh_top;
 		printf("pnh[%p] phn_top[%p] offseet[%d]\n",pnh,pn,pnh->pnh_offset);
-		printf("dst[len.fum|addr/keylen]		gateway			flags\n");
+		printf("dst[ len.fum | addr/keylen ]		gateway			flags\n");
 		if(!pn)
 			goto done;
 		for (;;) {
