@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 09:01:01.000000000 +0900
++++ route.c	2005-01-27 09:23:56.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,506 @@
+@@ -768,495 +814,511 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1739,7 +1739,7 @@
 +#ifdef FLOWTABLE
 +		register struct rtentry *rt0;
 +#endif
-+		register struct ptree_node *rn;
++		register struct ptree_node *rn = 0;
 +		register struct ptree *rnh;
 +		struct ifaddr *ifa;
 +		struct sockaddr *ndst;
@@ -1885,6 +1885,7 @@
 +			 * point to the (possibly newly malloc'd) dest address.
 +			 */
 +				ndst = (struct sockaddr *)rt_key(rt);
++				dprint(("rtreq_ADD: point to dest address = %p\n",ndst));
 +			/*
 +			 * make sure it contains the value we want (masked if needed).
 +			 */
@@ -1893,7 +1894,9 @@
 +				} else
 +						bcopy(dst, ndst, dst->sa_len);
 +				/* ? */
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				//dprint(("rtreq_ADD: masked if needed\n"));
++				//rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				//dprint(("rtreq_ADD: add node into the rnh = %p\n",rnh));
 +			/*
 +			 * We use the ifa reference returned by rt_getifa_fib().
 +			 * This moved from below so that rnh->rnh_addaddr() can
@@ -1904,6 +1907,7 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
++				dprint(("rtreq_ADD: set member into the rt.\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +#ifdef RADIX_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (rn_mpath_capable(rnh) &&
@@ -2023,7 +2027,8 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				//rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2092,7 +2097,7 @@
 +						RT_ADDREF(rt);
 +				}
 +				dprint(("rtreq_ADD: rt = %p rt_ifa = %p rt_ifp = %p\n rt_flags = 0x%x rt_fibnum = %d\n",rt,rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
-+				dprint(("rtreq_ADD: rn = %p rn_keylen = %d rt_flags = 0x%x\n",rn,rn->keylen,rn->rn_flags));
++				dprint(("rtreq_ADD: rn = %p rn_keylen = %d rn_flags = 0x%x\n",rn,rn->keylen,rn->rn_flags));
 +				RT_UNLOCK(rt);
 +				break;
 +		default:
@@ -2109,7 +2114,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1324,78 @@
+@@ -1267,71 +1329,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2122,7 +2127,7 @@
 +		dprint(("rt_setgate Start\n"));
 +		/* XXX dst may be overwritten, can we move this to below */
 +		int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
-+		dprint(("rt_setgate: dst_len = %d gate_len  %d\n",dlen,glen));
++		dprint(("rt_setgate: dst_len = %d gate_len = %d\n",dlen,glen));
  #ifdef INVARIANTS
 -	struct radix_node_head *rnh;
 +		struct ptree *rnh;
@@ -2242,7 +2247,7 @@
  }
  
  /*
-@@ -1339,228 +1403,235 @@
+@@ -1339,228 +1408,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
