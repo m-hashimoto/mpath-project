@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-03-10 12:59:57.000000000 +0900
++++ route.c	2005-03-10 13:36:42.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1143,7 +1143,7 @@
  }
  
  /*
-@@ -768,495 +758,525 @@
+@@ -768,495 +758,527 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1944,6 +1944,8 @@
 +						uma_zfree(V_rtzone, rt);
 +						senderr(EEXIST);
 +				}
++				/* init mpath_array */
++				rt->mpath_array = 0;
 +#endif
 +#ifdef FLOWTABLE
 +				rt0 = NULL;
@@ -2092,7 +2094,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1287,69 @@
+@@ -1267,71 +1289,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2216,7 +2218,7 @@
  }
  
  /*
-@@ -1339,228 +1357,230 @@
+@@ -1339,228 +1359,230 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
