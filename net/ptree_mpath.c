@@ -134,11 +134,12 @@ on1:
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
 		if(m && (LEN(m) > head->pnh_offset))
-			tt->mask = m;
+			tt->mask = m_arg;
 		else
 			tt->mask = NULL;
 	}
-	dprint(("-ptree_insert End: insert tt = %p\n",tt));
+	dprint(("-ptree_insert End: insert tt[%p] key[%p] mask[%p]\n",
+													tt,tt->key,tt->mask));
 	return (tt);
 }
 
