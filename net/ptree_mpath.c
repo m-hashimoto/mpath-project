@@ -62,7 +62,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
-		dprint(("-debug_node_print: mrt[%p]\n",mrt));
+
 		while(mrt){
 			printf("mrt[%p]\n",mrt);
 			rt = *mrt;	
