@@ -298,7 +298,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			rt_array[n] = rt;
 		} else {
 			struct rtentry *rt = tt->data;
-			rt->mpath_array = NULL;
+			rt->mpath_array[0] = NULL;
 			dprint(("-ptree_addroute: rt->mpath_array=%p\n",rt->mpath_array));
 			dprint(("-ptree_addroute: rt.mpath_array[0]=%p\n",rt->mpath_array[0]));
 		}
