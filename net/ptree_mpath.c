@@ -366,20 +366,22 @@ ptree_matchaddr(v_arg, head)
 	register struct ptree_node *t = head->top, *x;
 	dprint(("ptree_matchaddr: v = %d:%d:%d:%d head = %p top = %p\n",
 				v[0],v[1],v[2],v[3],head,t));
+	if(!top){
+		dprint(("ptree_matchaddr: top = NULL\n"));
+		goto miss;
+	}
+	
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t;
-	dprint(("ptree_matchaddr: test 1\n"));
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
-	dprint(("ptree_matchaddr: test 2\n"));
 
 	t = saved_t = ptree_search(v, vlen, head);
 	if( !saved_t ){
 		dprint(("ptree_matchaddr: search result is NULL\n"));
 		goto miss;
 	}
-	dprint(("t->rn_key = %p\n",t->rn_key));
 	/*
 	 * See if we match exactly as a host destination
 	 * or at least learn how many bits match, for normal mask finesse.
