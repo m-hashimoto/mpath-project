@@ -1,5 +1,5 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-26 07:16:38.000000000 +0900
++++ in_rmx.c	2005-02-26 07:41:53.000000000 +0900
 @@ -67,16 +67,19 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -20,7 +20,7 @@
 +in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 +				struct ptree_node *rt_node)
 +{
-+	struct rtentry *rt = (struct rtentry *)(&rt_node);
++	struct rtentry *rt = (struct rtentry *)(rt_node);
 +	dprint(("in_addroute: rt[%p]\n",rt));
 +	struct sockaddr_in *sin = (struct sockaddr_in *)v_arg;
 +	
