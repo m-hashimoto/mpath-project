@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 07:34:56.000000000 +0900
++++ route.c	2005-02-11 07:47:44.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1171,7 +1171,7 @@
  }
  
  /*
-@@ -768,495 +780,558 @@
+@@ -768,495 +780,561 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1849,6 +1849,7 @@
 +				/*
 +				 * give the protocol a chance to keep things in sync.
 +				 */
++				dprint(("rtreq_DELETE: test1\n"));
 +				if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(RTM_DELETE, rt, info);
 +				/*
@@ -1856,12 +1857,14 @@
 +				 * linked to the routing table. rttrash will be decremented
 +				 * when RTFREE(rt) is eventually called.
 +				 */
++				dprint(("rtreq_DELETE: test2\n"));
 +				V_rttrash++;
 +				/*
 +				 * If the caller wants it, then it can have it,
 +				 * but it's up to it to free the rtentry as we won't be
 +				 * doing it.
 +				 */
++				dprint(("rtreq_DELETE: test3\n"));
 +				if (ret_nrt) {
 +						*ret_nrt = rt;
 +						RT_UNLOCK(rt);
@@ -2152,7 +2155,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1342,70 @@
+@@ -1267,71 +1345,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2277,7 +2280,7 @@
  }
  
  /*
-@@ -1339,228 +1413,232 @@
+@@ -1339,228 +1416,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
