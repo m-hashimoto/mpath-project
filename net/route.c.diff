@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 17:53:51.000000000 +0900
++++ route.c	2005-01-27 18:06:22.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -2141,7 +2141,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1355,81 @@
+@@ -1267,71 +1355,84 @@
  #undef ifpaddr
  #undef flags
  
@@ -2207,9 +2207,12 @@
 +		 * rt_gateway already points to the right place.
 +		 * Otherwise, malloc a new block and update the 'dst' address.
 +		 */
++		dprint(("rt_setgate: rt = %p\n",rt));
++		dprint(("rt_setgate: rt_gateway = %p\n",rt->rt_gateway));
 +		if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
++				dprint(("rt_setgate: rt_gateway == NULL\n"));
 +				caddr_t new;
-+
++				
 +				R_Malloc(new, caddr_t, dlen + glen);
 +				if (new == NULL){
 +						dprint(("rt_setgate End (new gateway is NULL)\n"));
@@ -2277,7 +2280,7 @@
  }
  
  /*
-@@ -1339,228 +1437,235 @@
+@@ -1339,228 +1440,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
