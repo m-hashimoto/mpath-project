@@ -1060,6 +1060,7 @@ ptree_inithead(void **head, int off)
 {
 		dprint(("-ptree_inithead Start\n"));
 		register struct ptree_node_head *pnh;
+		register struct ptree *pnh_top;
 		register struct ptree_node *t;
 
 		if (*head){
@@ -1067,15 +1068,16 @@ ptree_inithead(void **head, int off)
 				return (1);
 		}
 		R_Zalloc(pnh, struct ptree_node_head *, sizeof (*pnh));
-		if (pnh == 0){
-				dprint(("-ptree_inithead End2\n"));
+		R_Zalloc(pnh_top, struct ptree *, sizeof (*pnh_top));
+		if ( !pnh || !pnh_top ){
+				dprint(("-ptree_inithead: R_Zalloc fault\n"));
 				return (0);
 		}
 #ifdef _KERNEL
 		RADIX_NODE_HEAD_LOCK_INIT(pnh);
 #endif
 		*head = pnh;
-		t = NULL;
+		pnh_top->top = t = NULL;
 #ifdef PTREE_MPATH
 		pnh->pnh_multipath = 1;
 #endif
@@ -1085,7 +1087,7 @@ ptree_inithead(void **head, int off)
 		pnh->rnh_lookup = ptree_lookup;
 		pnh->rnh_walktree = ptree_walktree;
 		//rnh->rnh_walktree_from = ptree_walktree_from;
-		pnh->pnh_top = t;
+		pnh->pnh_treetop = pnh_top;
 		dprint(("-ptree_inithead End (success)\n"));
 		return (1);
 }
