@@ -16,7 +16,7 @@
 #include <assert.h>
 #endif /*_KERNEL*/
 
-#define DEBUG 1
+#define DEBUG 0
 #define dprint(x) { if(DEBUG) printf x;}
 
 static struct ptree_node 
@@ -173,8 +173,8 @@ ptree_search (char *key, int keylen, struct ptree *t)
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
-		/* if(x->data) */
-		if (x->rn_flags & RNF_ACTIVE)
+		if(x->data)
+		//if (x->rn_flags & RNF_ACTIVE)
 			match = x;
 		x = x->child[check_bit (key, x->keylen)];
 		dprint(("+-ptree_search: x = %p x->child = %p\n",match,x));
