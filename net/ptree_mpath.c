@@ -910,10 +910,18 @@ ptree_walktree(h, f, w)
 
 	for (;;) {  
 		base = rn;
-		next = ptree_next(rn);
-		dprint(("ptree_walktree: base %p next %p\n",base,next));
-		if( !next )
+		rn = ptree_next(base);
+		dprint(("ptree_walktree: base %p next %p\n",base,rn));
+		if( !rn )
 			return (0);
+		next = rn;
+		/* Process leaves */
+		while ((rn = base)) {
+			base = rn->rn_dupedkey;
+			if (!(rn->rn_flags & RNF_ROOT)
+			    && (error = (*f)(rn, w)))
+				return (error);
+		}
 		rn = next;
 	}
 	/* NOTREACHED */
