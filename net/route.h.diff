@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-05 04:24:44.000000000 +0900
++++ route.h	2005-02-05 04:29:23.000000000 +0900
 @@ -124,20 +124,22 @@
   * gateway rather than the ultimate destination.
   */
@@ -27,3 +27,12 @@
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
+@@ -373,7 +375,7 @@
+ 	}							\
+ } while (0)
+ 
+-struct radix_node_head *rt_tables_get_rnh(int, int);
++struct ptree_node_head *rt_tables_get_rnh(int, int);
+ 
+ struct ifmultiaddr;
+ 
