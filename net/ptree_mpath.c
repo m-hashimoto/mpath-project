@@ -84,6 +84,7 @@ on1:
 	{
 		//register struct ptree_node *p, *x = top;
 		int *data;
+		data = (int *)malloc(sizeof(int));
 		*data = vlen;
 		dprint(("ptree_insert: data = %d\n",*data));
 		cp = v;
@@ -110,6 +111,7 @@ on1:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
+	free(data);
 	dprint(("ptree_insert End\n"));
 	return (t);
 }
