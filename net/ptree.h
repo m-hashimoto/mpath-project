@@ -36,7 +36,6 @@ struct ptree_node {
   int	lock;
 
 #ifdef PTREE_MPATH
-  int mpath_select;
   struct ptree_node *mpath_array[MAX_MPATH];
 #endif
 
