@@ -1,5 +1,5 @@
 --- pf_table.c.orig	2005-02-06 21:49:47.000000000 +0900
-+++ pf_table.c	2005-02-06 22:11:47.000000000 +0900
++++ pf_table.c	2005-02-06 22:18:39.000000000 +0900
 @@ -143,7 +143,7 @@
  #define	ADDR_NETWORK(ad)	((ad)->pfra_net < AF_BITS((ad)->pfra_af))
  #define	KENTRY_NETWORK(ke)	((ke)->pfrke_net < AF_BITS((ke)->pfrke_af))
@@ -101,11 +101,11 @@
  #endif
 -		ke = (struct pfr_kentry *)rn_lookup(&sa, &mask, head);
 +		if (ad->pfra_af == AF_INET) {
-+			ke = (struct pfr_kentry *)ptree_lookup((char *)sa.sin.sin_addr,
++			ke = (struct pfr_kentry *)ptree_lookup((char *)sa.sin.sin_addr.s_addr,
 +				(int)mask.sin.sin_len, head->pnh_treetop);
 +		} else if (ad->pfra_af == AF_INET6) {
-+			ke = (struct pfr_kentry *)ptree_lookup((char *)sa.sin6.sin_addr,
-+				(int)mask.sin6.sin_len, head->pnh_treetop);
++			ke = (struct pfr_kentry *)ptree_lookup((char *)sa.sin6.sin6_addr,
++				(int)mask.sin6.sin6_len, head->pnh_treetop);
 +		}
  		splx(s);
 -		if (ke && KENTRY_RNF_ROOT(ke))
