@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-07 04:47:40.000000000 +0900
++++ in6.c	2005-03-07 05:03:33.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -111,7 +111,7 @@
  	if (newhost) {
  		struct llentry *ln;
  		struct rtentry rt;
-+		//struct ptree_node rn;
++		struct ptree_node rn;
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
  
@@ -119,8 +119,8 @@
  		}
  
  		bzero(&rt, sizeof(rt));
-+		//bzero(&rn, sizeof(rn));
-+		//rt.rt_nodes = &rn;
++		bzero(&rn, sizeof(rn));
++		rt.rt_nodes = &rn;
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
