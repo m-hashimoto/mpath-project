@@ -430,6 +430,7 @@ ptree_walktree(h, f, w)
 		for (pn = pn->parent->child[1]; !pn->child[0];)
 			pn = pn->child[0];
 		next = pn;
+		dprint(("-ptree_walktree: base[%p] next[%p]\n",base,next));
 		if (!pn->parent)
 			return (0);
 	}

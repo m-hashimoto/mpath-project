@@ -81,7 +81,7 @@ check_bit (char *key, int keylen)
   int offset;
   int shift;
   //dprint(("--check_bit Start\n"));
-  dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
+  //dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
@@ -100,7 +100,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
   //dprint(("--ptree_match Start\n"));
   bytes = keylen / 8;
   bits = keylen % 8;
-  dprint(("--ptree_match: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
+  //dprint(("--ptree_match: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
   if (! memcmp (keyi, keyj, bytes) &&
       ! ((keyi[bytes] ^ keyj[bytes]) & mask[bits]))
     return 1;
