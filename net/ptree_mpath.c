@@ -564,8 +564,8 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		rt0 = rn->data;
 
 		/* compare key. */
-		if (rt_key(rt0)->sa_len != rt_key(rt)->sa_len ||
-						bcmp(rt_key(rt0), rt_key(rt), rt_key(rt0)->sa_len))
+		if (*rt_key(rt0)->sa_len != *rt_key(rt)->sa_len ||
+						bcmp(rt_key(rt0), rt_key(rt), *rt_key(rt0)->sa_len))
 				goto different;
 
 		rt1 = rt0->mpath_array;
