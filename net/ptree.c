@@ -283,7 +283,7 @@ ptree_get (key, keylen, t, nodes)
 		struct ptree_node *nodes;
 {
 	dprint(("+-ptree_get Start\n"));
-	dprint(("+-ptree_get: keylen = %d\n",x->keylen));
+	dprint(("+-ptree_get: keylen = %d\n",keylen));
 	struct ptree_node *x;
 	struct ptree_node *u, *v, *w; /* u->v->w or u->x->{v, w}*/
 
