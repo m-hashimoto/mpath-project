@@ -18,7 +18,7 @@ static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 #define MKGet(m) {                                              \
@@ -930,13 +930,15 @@ ptree_walktree(h, f, w)
 		/* INET tree check */
 		printf("INET ptree\n");
 		struct ptree *rnh;
+		struct in_addr *rnkey;
 
 		rnh = rt_tables_get_rnh(0, INET);
 		rn = rnh->rnh_treetop;
 		for (;;) {
-				while(*(rn)->rn_key != NULL)
+				rnkey = rn->rn_key;
+				while(rnkey != NULL)
 					pritnf("address: %s\n",
-							inet_ntoa(*(struct in_addr *)*(rn)->rn_key++));
+							inet_ntoa(*(struct in_addr *)rnkey++));
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
