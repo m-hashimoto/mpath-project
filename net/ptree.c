@@ -130,7 +130,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
     }
   if (match)
     ptree_node_lock (match);
-  dprint(("--ptree_search End: match[%p]\n",match));
+  dprint(("--ptree_search End: match_node[%p]\n",match));
   return match;
 }
 

@@ -93,7 +93,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	int len;
 	
 	len = (int)8*LEN(v);
-#if 0
 	if(m && (LEN(m) > head->pnh_offset)){
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
@@ -101,11 +100,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			len++;
 		len = 8*len;
 	}
-#endif
-	
 	if (!top)
 		goto on1;
-	
 	dprint(("-ptree_insert: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
