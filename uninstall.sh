@@ -17,6 +17,9 @@ patch -R < if_clone.c.diff
 patch -R < rtsock.c.diff
 patch -R < route.c.diff
 patch -R < route.h.diff
+
+patch -R < ip_output.c.diff
+
 rm ptree.c ptree_mpath.c ptree.h
 rm *.diff
 

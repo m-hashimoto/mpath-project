@@ -291,7 +291,6 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		void *v_arg, *netmask_arg;
 		struct ptree_node_head *head;
 {
-		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
@@ -302,6 +301,24 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
+		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
+		dprint(("-ptree_deladdr: key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
+								(unsigned char)v[0],(unsigned char)v[1],
+								(unsigned char)v[2],(unsigned char)v[3],
+								(unsigned char)v[4],(unsigned char)v[5],
+								(unsigned char)v[6],(unsigned char)v[7],
+								(unsigned char)v[8],(unsigned char)v[9],
+								(unsigned char)v[10],(unsigned char)v[11],
+								len));
+		
+		tt = saved_tt = ptree_search(v, len, head->pnh_treetop);
+
+		if (!saved_tt){
+				dprint(("-ptree_deladdr End: ptree_node nothing\n"));
+				return (0);
+		}
+		register caddr_t cp, cplim;
+		cp = tt->key; cplim = v;
 		if(netmask && (LEN(netmask) > head->pnh_offset)){
 			unsigned char bitmask = 0xff;
 			len = head->pnh_offset;
@@ -309,23 +326,6 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				len++;
 			len = 8*len;
 		}
-
-		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-								(unsigned char)v[0],(unsigned char)v[1],
-								(unsigned char)v[2],(unsigned char)v[3],
-								(unsigned char)v[4],(unsigned char)v[5],
-								(unsigned char)v[6],(unsigned char)v[7],
-								(unsigned char)v[8],(unsigned char)v[9],
-								(unsigned char)v[10],(unsigned char)v[11],
-								len-8*head->pnh_offset));
-		saved_tt = tt = ptree_search(v, len, head->pnh_treetop);
-
-		if (!tt){
-				dprint(("-ptree_deladdr End: ptree_node nothing\n"));
-				return (0);
-		}
-		register caddr_t cp, cplim;
-		cp = tt->key; cplim = v;
 		unsigned char *d = (unsigned char *)cp;
 		dprint(("-ptree_deladdr: searched-key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
 								(unsigned char)d[0],(unsigned char)d[1],
