@@ -52,7 +52,7 @@ ptree_node_create (char *key, int keylen)
 #ifdef PTREE_MPATH
 	x->mpath_array = 0;
 #endif
-
+	dprint(("ptree_node_create: new node = %p len = %d\n",x,len));
 	dprint(("ptree_node_create End\n"));
 	return x;
 }
@@ -315,6 +315,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 			ptree_link (x, v);
 		}
 	}
+	dprint(("ptree_get: t->top = %p get node = %p\n",t->top,v));
 	/* locks for the tree holding */
 	ptree_node_lock (v);
 	dprint(("ptree_get End\n"));
