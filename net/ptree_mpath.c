@@ -113,8 +113,11 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	if(m){
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
-		while(m[len] == bitmask)
+		printf("m[%d] = %d\n",len,(unsigned char)m[len]);
+		while(m[len] == bitmask){
 			len++;
+			printf("m[%d] = %d\n",len,(unsigned char)m[len]);
+		}
 		len = 8*len;
 	}
 
