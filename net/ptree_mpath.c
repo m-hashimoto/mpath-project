@@ -142,7 +142,13 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	dprint(("-ptree_insert Start\n"));
 	caddr_t v = v_arg, m = m_arg;
 	register caddr_t cp;
-	int mlen = (int)LEN(m);
+	dprint(("-ptree_insert: test print 1\n"));
+	int len;
+	if (m)
+			len = (int)LEN(m);
+	else
+			len = (int)LEN(v);
+	dprint(("-ptree_insert: test print 2 len = %d\n",len));
 	//register int b;
 	struct ptree_node *top, *tt;
 	
@@ -152,15 +158,15 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 	top = head->pnh_top;
 	//int head_off = top->rn_offset;
-	register struct ptree_node *t = ptree_search(v, mlen, head->pnh_treetop);
+	register struct ptree_node *t = ptree_search(v, len, head->pnh_treetop);
 	cp = v;// + head_off;
-	dprint(("-ptree_insert: t = %p mask_len = %d\n",t,mlen));
+	dprint(("-ptree_insert: t = %p mask_len = %d\n",t,len));
 	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
 		register caddr_t cp2 = t->key;// + head_off;
 		//register int cmp_res;
-		caddr_t cplim = v + mlen;
+		caddr_t cplim = v + len;
 		
 		dprint(("-ptree_insert: "));
 		while (cp < cplim){
@@ -187,7 +193,7 @@ on1:
 	{
 		//register struct ptree_node *p, *x = top;
 		int *data;
-		data = &mlen;
+		data = &len;
 		dprint(("-ptree_insert: data = %d\n",*data));
 #if 0
 		cp = v;
@@ -207,7 +213,7 @@ on1:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
-		tt = ptree_add(v, mlen, data, head->pnh_treetop);
+		tt = ptree_add(v, len, data, head->pnh_treetop);
 		tt->mask = m;
 #ifdef RN_DEBUG
 		if (rn_debug)
