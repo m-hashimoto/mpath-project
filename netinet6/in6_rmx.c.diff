@@ -1,5 +1,5 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2005-02-06 18:50:07.000000000 +0900
++++ in6_rmx.c	2005-02-06 18:54:00.000000000 +0900
 @@ -113,16 +113,19 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
@@ -30,7 +30,7 @@
  		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
  
 -	ret = rn_addroute(v_arg, n_arg, head, treenodes);
-+	ret = ptree_addroute(v_arg, n_arg, head, treenodes);
++	ret = ptree_addroute(v_arg, n_arg, head);
  	if (ret == NULL) {
  		struct rtentry *rt2;
  		/*
