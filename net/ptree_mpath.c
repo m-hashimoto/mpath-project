@@ -20,10 +20,11 @@ static int  max_keylen;
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	struct rtentry *rt = pn->data;
-	
 	if(offset == 8){ /* IPv6 */
-		if(pn->key){
+		struct sockaddr_in6 key6;
+		key6 = pn->key;
+		pritnf("[%p] %s ",pn,inet_ntoa(key.sin6_addr));
+#if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
@@ -31,7 +32,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 				(unsigned char)pn->key[14],(unsigned char)pn->key[15],
 				pn->keylen - 8*offset);
 		}
-#if 0
+		struct rtentry *rt = pn->data;
 		unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 		printf("[%X.%X.%X.%X.%X.%X.%X.%X] ",
 				gateway[8],gateway[9],gateway[10],gateway[11],
@@ -39,6 +40,10 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x]\n",rt->rt_flags);
 #endif	
 	} else { /* IPv4 */
+		struct sockaddr_in key;
+		key = pn->key;
+		pritnf("[%p] %s ",pn,inet_ntoa(key.sin_addr));
+#if 0
 		if(pn->mask){
 			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
@@ -50,13 +55,12 @@ debug_node_print(struct ptree_node *pn, int offset)
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*(offset + 8) );
 		}
-#if 0
 		printf("[%3d.%3d.%3d.%3d] ",
 				gateway[4],gateway[5],gateway[6],gateway[7]);
 #endif
-		printf("[0x%x]\n",rt->rt_flags);
 	}
-	//printf("[%p, %p]\n",pn->child[0],pn->child[1]);
+	//printf("[0x%x]",rt->rt_flags);
+	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
 	return 0;
 }
 
