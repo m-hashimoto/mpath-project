@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-25 05:09:36.000000000 +0900
++++ route.c	2005-01-25 05:52:14.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -325,12 +325,12 @@
 +	if (rn/* && ((rn->rn_flags & RNF_ROOT) == 0)*/) {
 +		dprint(("rtalloc1_fib: rn_flags = 0x%x\n",rn->rn_flags ));
  		newrt = rt = RNTORT(rn);
-+		//RT_LOCK_INIT(newrt); /* ? */
++		RT_LOCK_INIT(newrt); /* ? */
  		RT_LOCK(newrt);
  		RT_ADDREF(newrt);
  		if (needlock)
  			RADIX_NODE_HEAD_RUNLOCK(rnh);
-+		dprint(("rtalloc1_fib: newrt_flag = 0x%x\n",newrt->rt_flags));
++		dprint(("rtalloc1_fib: newrt = %p newrt_flag = 0x%x\n",newrt,newrt->rt_flags));
  		goto done;
 -
  	} else if (needlock)
