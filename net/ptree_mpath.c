@@ -132,7 +132,6 @@ static int ptree_satisfies_leaf(char *trial,
 	
 	if (!top){
 		dprint(("-ptree_insert: top = NULL\n"));
-		//b = 0;
 		goto on2;
 	}
 	
