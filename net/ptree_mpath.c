@@ -165,6 +165,10 @@ ptree_addmask(n_arg, search, skip)
 		bzero(addmask_key + m0, last_zeroed - m0); 
 	*addmask_key = last_zeroed = mlen;
 	x = ptree_search(addmask_key, mlen, mask_rnhead);
+	if(!x){
+		dprint(("ptree_addmask: search result is NULL\n"));
+		goto on1;
+	}
 	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
@@ -176,6 +180,7 @@ ptree_addmask(n_arg, search, skip)
 		dprint(("ptree_addmask End if(saved_x==0)\n"));
 		return (0);
 	}
+on1:
 	netmask = cp = (caddr_t)(x + 2);
 	bcopy(addmask_key, cp, mlen);
 	x = ptree_insert(cp, mask_rnhead, &maskduplicated, x);
