@@ -34,11 +34,15 @@ debug_node_print(struct ptree_node *pn)
 	printf("node = %p\n",pn);
 	if( pn->key ){
 		//ip = (unsigned char *)rn->rn_key;
-		printf("key %d.%d.%d.%d: ",
+		printf("key %d.%d.%d.%d.%d.%d.%d.%d: ",
 						(unsigned char)pn->key[0],
 						(unsigned char)pn->key[1],
 						(unsigned char)pn->key[2],
-						(unsigned char)pn->key[3])
+						(unsigned char)pn->key[3],
+						(unsigned char)pn->key[4],
+						(unsigned char)pn->key[5],
+						(unsigned char)pn->key[6],
+						(unsigned char)pn->key[7])
 	}
 	//if( rn->rn_mask ){
 	//	ip = (unsigned char *)rn->rn_mask;

@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-04 05:49:31.000000000 +0900
++++ route.h	2005-02-04 12:52:25.000000000 +0900
 @@ -88,31 +88,33 @@
  
  /* MRT compile-time constants */
@@ -51,7 +51,7 @@
  struct mbuf;
  
  /*
-@@ -124,13 +126,13 @@
+@@ -124,20 +126,19 @@
   * gateway rather than the ultimate destination.
   */
  #ifndef RNF_NORMAL
@@ -66,20 +66,20 @@
 +
  struct rtentry {
 -	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
-+#if 0
-+	struct	ptree_node rt_nodes[2];	/* tree glue, and other values */
++	struct	ptree_node *rt_nodes;	/* tree glue */
  	/*
  	 * XXX struct rtentry must begin with a struct radix_node (or two!)
  	 * because the code does some casts of a 'struct radix_node *'
-@@ -138,6 +140,7 @@
+ 	 * to a 'struct rtentry *'
  	 */
- #define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
- #define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
-+#endif
+-#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
+-#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
++#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->key)))
++#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->mask)))
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
-@@ -145,6 +148,9 @@
+@@ -145,6 +146,9 @@
  	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
  	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
  	u_int	rt_fibnum;		/* which FIB */
@@ -89,7 +89,7 @@
  #ifdef _KERNEL
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
-@@ -197,7 +203,7 @@
+@@ -197,7 +201,7 @@
  #define	RTF_LOCAL	0x200000 	/* route represents a local address */
  #define	RTF_BROADCAST	0x400000	/* route represents a bcast address */
  #define	RTF_MULTICAST	0x800000	/* route represents a mcast address */
@@ -98,7 +98,7 @@
  #define	RTF_STICKY	 0x10000000	/* always route dst->src */
  
  #define	RTF_RNH_LOCKED	 0x40000000	/* radix node head is locked */
-@@ -313,9 +319,9 @@
+@@ -313,9 +317,9 @@
   * The case sa_len == 0 should only apply to empty structures.
   */
  #define SA_SIZE(sa)						\
@@ -111,7 +111,7 @@
  
  #ifdef _KERNEL
  
-@@ -330,20 +336,20 @@
+@@ -330,20 +334,20 @@
  #define	RT_ADDREF(_rt)	do {					\
  	RT_LOCK_ASSERT(_rt);					\
  	KASSERT((_rt)->rt_refcnt >= 0,				\
@@ -135,7 +135,7 @@
  	else {							\
  		RT_REMREF(_rt);					\
  		RT_UNLOCK(_rt);					\
-@@ -373,7 +379,7 @@
+@@ -373,7 +377,7 @@
  	}							\
  } while (0)
  
@@ -144,7 +144,7 @@
  
  struct ifmultiaddr;
  
-@@ -410,9 +416,9 @@
+@@ -410,9 +414,9 @@
  int	 rtinit(struct ifaddr *, int, int);
  int	 rtioctl(u_long, caddr_t);
  void	 rtredirect(struct sockaddr *, struct sockaddr *,
@@ -156,7 +156,7 @@
  
  /* defaults to "all" FIBs */
  int	 rtinit_fib(struct ifaddr *, int, int);
-@@ -427,9 +433,9 @@
+@@ -427,9 +431,9 @@
  struct rtentry *rtalloc1_fib(struct sockaddr *, int, u_long, u_int);
  int	 rtioctl_fib(u_long, caddr_t, u_int);
  void	 rtredirect_fib(struct sockaddr *, struct sockaddr *,
