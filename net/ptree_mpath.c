@@ -187,8 +187,8 @@ ptree_addmask(n_arg, search, skip)
 	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = %d\n",addmask_key,x,mlen));
 	if(x) dprint(("x->rn_key = %p\n",x->key));
 	
-	if (!x->rn_key | memcmp(addmask_key, x->rn_key, mlen) != 0)  
-		x = 0;  
+	if (!x->rn_key || memcmp(addmask_key, x->rn_key, mlen))  
+		x = 0;
 	if (x || search){
 		dprint(("-ptree_addmask End if(x||search)\n"));
 		return (x);
