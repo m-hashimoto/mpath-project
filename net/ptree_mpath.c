@@ -49,7 +49,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("/%3d ",pn->keylen-8*offset);
 	}
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
-#ifdef PTREE_MPTH
+#ifdef PTREE_MPATH
 	if(pn->data){
 		struct rtentry *rt0 = pn->data;
 		struct rtentry **rt = rt0->mpath_array;
@@ -320,14 +320,17 @@ ptree_deladdr(v_arg, gate_arg, head)
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
-		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-								(unsigned char)v[0],(unsigned char)v[1],
-								(unsigned char)v[2],(unsigned char)v[3],
-								(unsigned char)v[4],(unsigned char)v[5],
-								(unsigned char)v[6],(unsigned char)v[7],
-								(unsigned char)v[8],(unsigned char)v[9],
-								(unsigned char)v[10],(unsigned char)v[11],
-								len));
+#ifdef DEBUG
+		if(head->pnh_offset == 4){
+			printf("-ptree_deladdr: addr ");
+			sprint_inet_ntoa(AF_INET, v);
+			printf("/%d\n",len);
+		} else {
+			printf("-ptree_deladdr: addr ");
+			sprint_inet_ntoa(AF_INET6, v);
+			printf("/%d\n",len);
+		}
+#endif
 		
 		tt = saved_tt = ptree_search(v, len, head->pnh_treetop);
 
@@ -346,14 +349,17 @@ ptree_deladdr(v_arg, gate_arg, head)
 			len = 8*len;
 		}
 #endif
-		dprint(("-ptree_deladdr: searched-key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
-								(unsigned char)cp[0],(unsigned char)cp[1],
-								(unsigned char)cp[2],(unsigned char)cp[3],
-								(unsigned char)cp[4],(unsigned char)cp[5],
-								(unsigned char)cp[6],(unsigned char)cp[7],
-								(unsigned char)cp[8],(unsigned char)cp[9],
-								(unsigned char)cp[10],(unsigned char)cp[11],
-								len));
+#ifdef DEBUG
+		if(head->pnh_offset == 4){
+			printf("-ptree_deladdr: match ");
+			sprint_inet_ntoa(AF_INET, cp);
+			printf("/%d\n",len);
+		} else {
+			printf("-ptree_deladdr: match ");
+			sprint_inet_ntoa(AF_INET6, cp);
+			printf("/%d\n",len);
+		}
+#endif
 		dprint(("-ptree_deladdr: memcmp(%p,%p,%d)[%d]\n",
 								cp,v,len/8,memcmp(cp,v,len/8)));
 		if ( memcmp(cp, v, len/8) != 0 ){
@@ -363,6 +369,17 @@ ptree_deladdr(v_arg, gate_arg, head)
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
 		headrt = tt->data;
+#ifdef DEBUG
+		if(head->pnh_offset == 4){
+			printf("-ptree_deladdr: gate ");
+			sprint_inet_ntoa(AF_INET, gate);
+			printf("/%d\n",len);
+		} else {
+			printf("-ptree_deladdr: gate ");
+			sprint_inet_ntoa(AF_INET6, gate);
+			printf("/%d\n",len);
+		}
+#endif
 		rt = rt_mpath_matchgate(headrt,gate);
 		if( ! rt_mpath_delete(headrt,rt) )
 			return (0);
@@ -489,7 +506,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 		uint32_t	i = 0;
 		//struct ptree_node *rn, **match;
 		struct rtentry **match;
-		dprint(("-rt_mpath_matchgate Start\n"));
+		dprint(("-rt_mpath_matchgate Start: rt[%p]\n",rt));
 
 		//rn = (struct ptree_node *)rt;
 		if (!rt->mpath_array){
