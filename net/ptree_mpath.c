@@ -33,9 +33,10 @@ debug_node_print(struct ptree_node *pn)
 		printf("key[%d.%d.%d.%d/%d] ",
 						(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 						(unsigned char)pn->key[6],(unsigned char)pn->key[7],
-						pn->keylen-32);
+						pn->keylen);
 	}
 	printf("data[%p] ",pn->data);
+#if 0
 	if( pn->data ){
 		struct rtentry *rt = pn->data;
 		unsigned char *gate = (unsigned char *)rt->rt_gateway;
@@ -45,6 +46,7 @@ debug_node_print(struct ptree_node *pn)
 						(unsigned char)gate[4],(unsigned char)gate[5],
 						(unsigned char)gate[6],(unsigned char)gate[7]);
 	}
+#endif
 	printf("p[%p] l[%p] r[%p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
 }
@@ -211,7 +213,7 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree_node_head *head;
 {
-	dprint(("-ptree_matchaddr Start\n"));
+	dprint(("-ptree_matchaddr Start: pnh[%p]\n",head));
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 	if(!t){
@@ -225,12 +227,12 @@ ptree_matchaddr(v_arg, head)
 	int vlen;
 	
 	vlen = (int)8*(LEN(v) - head_zero);
-	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
+	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
-							vlen,head));
+							vlen));
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: search result is NULL\n"));
