@@ -122,11 +122,11 @@ ptree_search (char *key, int keylen, struct ptree *t)
   while (x && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
     {
+	  dprint(("--ptree_search: x->key[%p]\n",x->key));
       if (x->data)
         match = x;
       x = x->child[check_bit (key, x->keylen)];
 	  dprint(("--ptree_search: x[%p]\n",x));
-	  dprint(("--ptree_search: x->key[%p]\n",x->key));
     }
   if (match)
     ptree_node_lock (match);
