@@ -35,19 +35,22 @@ debug_node_print(struct ptree_node *rn)
 	register unsigned char *ip;
 			
 	rt = (struct rtentry *)rn;
-	rt_gate = (struct sockaddr_in *)rt->rt_gateway;
 	rn_dst = (struct sockaddr_in *)rt_key(rt);
 	rn_mask = (struct sockaddr_in *)rt_mask(rt);
+	rt_gate = (struct sockaddr_in *)rt->rt_gateway;
 	
-	if( (dst = &rn_dst->sin_addr) != 0 ){
+	if( rn_dst ){
+		dst = &rn_dst->sin_addr;
 		ip = (unsigned char *)dst;
 		printf("host %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( (mask = &rn_mask->sin_addr) != 0 ){
+	if( rn_mask ){
+		mask = &rn_mask->sin_addr;
 		ip = (unsigned char *)mask;
 		printf("mask %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( (gate = &rt_gate->sin_addr) != 0 ){
+	if( rt_gate ){
+		gate = &rt_gate->sin_addr;
 		ip = (unsigned char *)gate;
 		printf("gateway %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
