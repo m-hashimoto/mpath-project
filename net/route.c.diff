@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-10 21:42:48.000000000 +0900
++++ route.c	2005-02-11 00:11:29.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -795,15 +795,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1162,7 +1162,7 @@
  }
  
  /*
-@@ -768,495 +780,548 @@
+@@ -768,495 +780,555 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1186,21 +1186,6 @@
 -	int error = 0;
 +		struct ifaddr *ifa;
 +		int error = 0;
-+
-+		/*
-+		 * ifp may be specified by sockaddr_dl
-+		 * when protocol address is ambiguous.
-+		 */
-+		if (info->rti_ifp == NULL && ifpaddr != NULL &&
-+						ifpaddr->sa_family == AF_LINK &&
-+						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
-+				info->rti_ifp = ifa->ifa_ifp;
-+				ifa_free(ifa);
-+		}
-+		if (info->rti_ifa == NULL && ifaaddr != NULL)
-+				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
-+		if (info->rti_ifa == NULL) {
-+				struct sockaddr *sa;
  
 -	/*
 -	 * ifp may be specified by sockaddr_dl
@@ -1234,6 +1219,21 @@
 -	} else
 -		error = ENETUNREACH;
 -	return (error);
++		/*
++		 * ifp may be specified by sockaddr_dl
++		 * when protocol address is ambiguous.
++		 */
++		if (info->rti_ifp == NULL && ifpaddr != NULL &&
++						ifpaddr->sa_family == AF_LINK &&
++						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
++				info->rti_ifp = ifa->ifa_ifp;
++				ifa_free(ifa);
++		}
++		if (info->rti_ifa == NULL && ifaaddr != NULL)
++				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
++		if (info->rti_ifa == NULL) {
++				struct sockaddr *sa;
++
 +				sa = ifaaddr != NULL ? ifaaddr :
 +						(gateway != NULL ? gateway : dst);
 +				if (sa != NULL && info->rti_ifp != NULL)
@@ -1897,6 +1897,13 @@
 +			 */
 +				RT_LOCK(rt);
 +				int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
++#ifdef INVARIANTS
++				struct ptree_node_head *rnh;
++	
++				rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
++#endif
++				RT_LOCK_ASSERT(rt);
++				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
 +				caddr_t new;
 +				R_Malloc(new, caddr_t, dlen + glen);
 +				if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
@@ -2133,7 +2140,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1332,70 @@
+@@ -1267,71 +1339,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2258,7 +2265,7 @@
  }
  
  /*
-@@ -1339,228 +1403,232 @@
+@@ -1339,228 +1410,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2402,10 +2409,10 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
- 		}
++		}
 +		if (dst->sa_len == 0){
 +				return(EINVAL);
-+		}
+ 		}
 +
  		/*
 -		 * Do the actual request
