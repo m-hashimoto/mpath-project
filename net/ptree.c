@@ -333,9 +333,6 @@ ptree_next (struct ptree_node *v)
   struct ptree_node *w;
 
   /* if the left child exists, go left */
- printf("ptree_next: v[%p]\n",v);
-	 printf("ptree_next: v->left[%p]\n",v->child[0]);
-	 printf("ptree_next: v->right[%p]\n",v->child[1]);
   if (v->child[0])
     {
       w = v->child[0];
@@ -352,7 +349,8 @@ ptree_next (struct ptree_node *v)
       return w;
     }
 
-  u = v->parent;
+  if ((u = v->parent) == 0)
+	  return NULL;
 
   if (u->child[0] == v)
     {
