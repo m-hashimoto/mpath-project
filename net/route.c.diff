@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-24 03:58:26.000000000 +0900
++++ route.c	2005-01-24 05:08:39.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -268,7 +268,7 @@
 -	if (ro->ro_rt)
 +	if (ro->ro_rt){
  		RT_UNLOCK(ro->ro_rt);
-+		dprint(("rtalloc_ign_fib: rt_gateway sa_family = %d sa_data = %s\n",ro->ro_rt->rt_gateway->sa_family,ro->ro_rt->rt_gateway->sa_data));
++		//dprint(("rtalloc_ign_fib: rt_gateway sa_family = %d sa_data = %s\n",ro->ro_rt->rt_gateway->sa_family,ro->ro_rt->rt_gateway->sa_data));
 +	}
 +	dprint(("rtalloc_ign_fib End\n"));
  }
