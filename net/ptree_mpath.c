@@ -327,7 +327,8 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				return (0);
 		}
 		register caddr_t cp, cplim;
-		cp = tt->key; cplim = v;
+		cp = tt->key; cplim = v; len = tt->keylen;
+#if 0
 		if(netmask && (LEN(netmask) > head->pnh_offset)){
 			unsigned char bitmask = 0xff;
 			len = head->pnh_offset;
@@ -335,6 +336,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				len++;
 			len = 8*len;
 		}
+#endif
 		unsigned char *d = (unsigned char *)cp;
 		dprint(("-ptree_deladdr: searched-key[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
 								(unsigned char)d[0],(unsigned char)d[1],
