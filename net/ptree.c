@@ -303,9 +303,9 @@ ptree_remove (struct ptree_node *v)
 
   /* if a stub node */
   printf("--ptree_remove: testprint 2\n");
-  if (! v->child[0] && ! v->child[1])
+  if (! v->child[0] && ! v->child[1] && v->parent)
     {
-      if (v->parent->child[0] == v)
+	  if (v->parent->child[0] == v)
         v->parent->child[0] = NULL;
       else
         v->parent->child[1] = NULL;
@@ -313,7 +313,6 @@ ptree_remove (struct ptree_node *v)
       return;
     }
 
-  printf("--ptree_remove: testprint 3\n");
   w = (v->child[0] ? v->child[0] : v->child[1]);
   ptree_link (v->parent, w);
   ptree_node_delete (v);
