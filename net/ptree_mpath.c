@@ -79,12 +79,16 @@ static int ptree_satisfies_leaf(char *trial,
 		register caddr_t cp2 = t->rn_key + head_off;  
 		register int cmp_res;
 		caddr_t cplim = v + vlen;
-
-		while (cp < cplim) 
-			if (*cp2++ != *cp++)
-				goto on1;   
+		dprint(("ptree_insert: "));
+		while (cp < cplim){
+			dprint((" +"));
+			if (*cp2++ != *cp++){
+				dprint(("goto on1\n"));
+				goto on1;
+			}
+		}
+		dprint(("key dupentry\n"));
 		*dupentry = 1;  
-		dprint(("-ptree_insert End (key dupentry)\n"));
 		return t;
 on1:
 		dprint(("-ptree_insert: on1\n"));
@@ -170,8 +174,8 @@ ptree_addmask(n_arg, search, skip)
 		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_addmask: addmask_key = %p x->rn_key = %p mlen = %d\n",addmask_key,x->key,mlen));
-	if (/*bcmp*/memcmp(addmask_key, x->rn_key, mlen) != 0)  
+	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = %d\n",addmask_key,x,mlen));
+	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
 		dprint(("-ptree_addmask End if(x||search)\n"));
@@ -206,8 +210,8 @@ on1:
 			isnormal = 0;
 	}
 	b += (cp - netmask) << 3;
-	dprint(("-ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
 	x->rn_bit = -1 - b;
+	dprint(("-ptree_addmask: x->rn_bit = %d\n",x->rn_bit));
 	if (isnormal)
 		x->rn_flags |= RNF_NORMAL;
 	
