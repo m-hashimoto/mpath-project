@@ -1,5 +1,5 @@
 --- if.c.orig	2005-02-04 12:42:10.000000000 +0900
-+++ if.c	2005-02-10 19:44:46.000000000 +0900
++++ if.c	2005-02-10 19:56:13.000000000 +0900
 @@ -34,6 +34,7 @@
  #include "opt_inet6.h"
  #include "opt_inet.h"
@@ -2641,7 +2641,7 @@
  }
  
  #include <net/if_llatbl.h>
-@@ -1773,26 +1775,27 @@
+@@ -1773,26 +1775,31 @@
   * Lookup an appropriate real ifa to point to.
   * This should be moved to /sys/net/link.c eventually.
   */
@@ -2671,11 +2671,15 @@
 +		struct ifnet *ifp;
 +
 +		RT_LOCK_ASSERT(rt);
++		printf("link_rtrequest: test print\n");
++		printf("link_rtrequest: rt = %p\n",rt);
++		printf("link_rtrequest: ifa = %p\n",rt->rt_ifa);
++		printf("link_rtrequest: ifp = %p\n",rt->rt_ifa->ifa_ifp);
++		printf("link_rtrequest: dst = %p\n",rt_key(rt));
 +
 +		if (cmd != RTM_ADD || ((ifa = rt->rt_ifa) == 0) ||
 +						((ifp = ifa->ifa_ifp) == 0) || ((dst = rt_key(rt)) == 0))
 +				return;
-+		printf("link_rtrequest: test print1\n");
 +		ifa = ifaof_ifpforaddr(dst, ifp);
 +		if (ifa) {
 +				oifa = rt->rt_ifa;
@@ -2687,7 +2691,7 @@
  }
  
  /*
-@@ -1800,27 +1803,27 @@
+@@ -1800,27 +1807,27 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2727,7 +2731,7 @@
  }
  
  /*
-@@ -1828,27 +1831,27 @@
+@@ -1828,27 +1835,27 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2767,7 +2771,7 @@
  #endif
  }
  
-@@ -1861,65 +1864,65 @@
+@@ -1861,65 +1868,65 @@
   * recursions, we post event to taskqueue, and all job
   * is done in static do_link_state_change().
   */
@@ -2880,7 +2884,7 @@
  }
  
  /*
-@@ -1927,11 +1930,11 @@
+@@ -1927,11 +1934,11 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2894,7 +2898,7 @@
  }
  
  /*
-@@ -1939,37 +1942,37 @@
+@@ -1939,37 +1946,37 @@
   * the transition.
   * NOTE: must be called at splnet or eqivalent.
   */
@@ -2951,7 +2955,7 @@
  }
  
  /*
-@@ -1980,531 +1983,531 @@
+@@ -1980,531 +1987,531 @@
   * XXXRW: Note that because timeouts run with Giant, if_watchdog() is called
   * holding Giant.
   */
@@ -3948,7 +3952,7 @@
  }
  
  /*
-@@ -2515,69 +2518,69 @@
+@@ -2515,69 +2522,69 @@
   *
   * Only to be used on stack-owned flags, not driver-owned flags.
   */
@@ -4075,7 +4079,7 @@
  }
  
  /*
-@@ -2586,20 +2589,20 @@
+@@ -2586,20 +2593,20 @@
   * "on" request actually has an effect, as does the final "off" request.
   * Results are undefined if the "off" and "on" requests are not matched.
   */
@@ -4107,7 +4111,7 @@
  }
  
  /*
-@@ -2609,154 +2612,154 @@
+@@ -2609,154 +2616,154 @@
   * other information.
   */
  /*ARGSUSED*/
@@ -4376,7 +4380,7 @@
  }
  
  /*
-@@ -2766,45 +2769,45 @@
+@@ -2766,45 +2773,45 @@
   * other setup work (such as notifying the device driver).  The reference
   * count is initialized to 1.
   */
@@ -4454,7 +4458,7 @@
  }
  
  /*
-@@ -2813,19 +2816,19 @@
+@@ -2813,19 +2820,19 @@
   * counting, notifying the driver, handling routing messages, and releasing
   * any dependent link layer state.
   */
@@ -4484,7 +4488,7 @@
  }
  
  /*
-@@ -2846,112 +2849,112 @@
+@@ -2846,112 +2853,112 @@
   * 'retifma' will be used to return a pointer to the resulting multicast
   * address reference, if desired.
   */
@@ -4691,7 +4695,7 @@
  }
  
  /*
-@@ -2963,42 +2966,42 @@
+@@ -2963,42 +2970,42 @@
   * duration of the call.
   * Network-layer protocol domains must use if_delmulti_ifma().
   */
@@ -4763,7 +4767,7 @@
  }
  
  /*
-@@ -3007,49 +3010,49 @@
+@@ -3007,49 +3014,49 @@
   *
   * It is safe to call this routine if the ifp disappeared.
   */
@@ -4846,7 +4850,7 @@
  }
  
  /*
-@@ -3059,72 +3062,72 @@
+@@ -3059,72 +3066,72 @@
   * Return 1 if the final reference was released, indicating that the
   * hardware hash filter should be reprogrammed.
   */
@@ -4973,7 +4977,7 @@
  }
  
  /*
-@@ -3133,76 +3136,76 @@
+@@ -3133,76 +3140,76 @@
   * At this time we only support certain types of interfaces,
   * and we don't allow the length of the address to change.
   */
@@ -5113,7 +5117,7 @@
  }
  
  /*
-@@ -3211,97 +3214,97 @@
+@@ -3211,97 +3218,97 @@
   * device_get_name(dev) is a good choice and for pseudo-devices a
   * static string works well.
   */
