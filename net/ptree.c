@@ -19,6 +19,9 @@
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
+#define DEBUG 1
+#define dprint(x) { if(DEBUG) printf x; }
+
 static struct ptree_node *
 ptree_node_create (char *key, int keylen)
 {
@@ -57,12 +60,14 @@ ptree_node_delete (struct ptree_node *x)
 static int
 check_bit (char *key, int keylen)
 {
+	dprint(("--check_bit Start: key[%p] keylen[%d]\n",key,keylen));
   int offset;
   int shift;
 
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
+	dprint(("--check_bit End: return %d\n",key[offset] >> shift & 1));
   return (key[offset] >> shift & 1);
 }
 
@@ -71,6 +76,7 @@ check_bit (char *key, int keylen)
 static int
 ptree_match (char *keyi, char *keyj, int keylen)
 {
+	dprint(("--ptree_match Start\n"));
   int bytes;
   int bits;
   bytes = keylen / 8;
@@ -78,6 +84,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
   if (! memcmp (keyi, keyj, bytes) &&
       ! ((keyi[bytes] ^ keyj[bytes]) & mask[bits]))
     return 1;
+	dprint(("--ptree_match End: return 0\n"));
   return 0;
 }
 
@@ -105,6 +112,7 @@ ptree_lookup (char *key, int keylen, struct ptree *t)
 struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
+	dprint(("--ptree_search Start: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
   struct ptree_node *x, *match;
 
   match = NULL;
@@ -118,6 +126,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
     }
   if (match)
     ptree_node_lock (match);
+	dprint(("--ptree_search End: match[%p]\n",match));
   return match;
 }
 
@@ -414,3 +423,5 @@ ptree_delete (struct ptree *t)
 }
 
 
+#undef dprint
+#undef DEBUG
