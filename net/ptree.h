@@ -8,11 +8,11 @@
 #include <sys/_rwlock.h>
 #endif
 
-#if 0
+//#if 0
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);
 #endif
-#endif /*0*/
+//#endif /*0*/
 
 struct ptree_node {
   char *key;
