@@ -167,8 +167,7 @@ on1:
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
 	}
-	dprint(("-ptree_insert End: insert tt[%p] key[%p] keylen[%d]\n",
-													tt,tt->key,tt->keylen));
+	dprint(("-ptree_insert End: insert tt[%p]\n",tt));
 	return (tt);
 }
 

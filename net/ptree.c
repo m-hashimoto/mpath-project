@@ -201,7 +201,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
   //dprint(("--key_common: keylen[%d]\n",keylen));
   x = ptree_node_create (keyi, keylen);
-  //dprint(("--key_common: x[%p]\n",x));
+  dprint(("--key_common: x[%p] x->key[%p]\n",x,x->key));
   if (! x)
     return NULL;
 
