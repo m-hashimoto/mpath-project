@@ -926,6 +926,27 @@ ptree_walktree(h, f, w)
 				dprint(("-ptree_walktree: next = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		}
 		/* NOTREACHED */
+#ifdef DEBUG
+		/* INET tree check */
+		printf("INET ptree\n");
+		struct ptree *rnh;
+
+		rnh = rt_tables_get_rnh(0, INET);
+		rn = rnh->rnh_treetop;
+		for (;;) {
+				while(*(rn)->rn_key != NULL)
+					pritnf("address: %s\n",
+							inet_ntoa(*(struct in_addr *)*(rn)->rn_key++));
+				base = rn;
+				next = ptree_next(base);
+				if( !next ){
+						dprint(("-ptree_walktree End (next == NULL)\n"));
+						return (0);
+				}
+				rn = next;
+		}
+
+#endif
 		dprint(("-ptree_walktree End\n"));
 }
 
