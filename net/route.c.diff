@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 09:44:03.000000000 +0900
++++ route.c	2005-02-11 10:09:34.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -804,15 +804,15 @@
 +		if (rnh == NULL) {
 +				error = EAFNOSUPPORT;
 +				goto out;
-+		}
+ 		}
+-	} else
+-		error = EHOSTUNREACH;
 +
 +		/* verify the gateway is directly reachable */
 +		if ((ifa = ifa_ifwithnet(gateway)) == NULL) {
 +				error = ENETUNREACH;
 +				goto out;
- 		}
--	} else
--		error = EHOSTUNREACH;
++		}
 +		rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
 +		/*
 +		 * If the redirect isn't from our current router for this dst,
@@ -1171,7 +1171,7 @@
  }
  
  /*
-@@ -768,495 +780,564 @@
+@@ -768,495 +780,541 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1195,6 +1195,21 @@
 -	int error = 0;
 +		struct ifaddr *ifa;
 +		int error = 0;
++
++		/*
++		 * ifp may be specified by sockaddr_dl
++		 * when protocol address is ambiguous.
++		 */
++		if (info->rti_ifp == NULL && ifpaddr != NULL &&
++						ifpaddr->sa_family == AF_LINK &&
++						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
++				info->rti_ifp = ifa->ifa_ifp;
++				ifa_free(ifa);
++		}
++		if (info->rti_ifa == NULL && ifaaddr != NULL)
++				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
++		if (info->rti_ifa == NULL) {
++				struct sockaddr *sa;
  
 -	/*
 -	 * ifp may be specified by sockaddr_dl
@@ -1228,21 +1243,6 @@
 -	} else
 -		error = ENETUNREACH;
 -	return (error);
-+		/*
-+		 * ifp may be specified by sockaddr_dl
-+		 * when protocol address is ambiguous.
-+		 */
-+		if (info->rti_ifp == NULL && ifpaddr != NULL &&
-+						ifpaddr->sa_family == AF_LINK &&
-+						(ifa = ifa_ifwithnet(ifpaddr)) != NULL) {
-+				info->rti_ifp = ifa->ifa_ifp;
-+				ifa_free(ifa);
-+		}
-+		if (info->rti_ifa == NULL && ifaaddr != NULL)
-+				info->rti_ifa = ifa_ifwithaddr(ifaaddr);
-+		if (info->rti_ifa == NULL) {
-+				struct sockaddr *sa;
-+
 +				sa = ifaaddr != NULL ? ifaaddr :
 +						(gateway != NULL ? gateway : dst);
 +				if (sa != NULL && info->rti_ifp != NULL)
@@ -1763,6 +1763,7 @@
 +		switch (req) {
 +			case RTM_DELETE:
 +				dprint(("case RTM_DELETE:\n"));
++				debug_tree_print(rnh);
  #ifdef RADIX_MPATH
 -		/* do not permit exactly the same dst/mask/gw pair */
 -		if (rn_mpath_capable(rnh) &&
@@ -1843,13 +1844,10 @@
 +				dprint(("rtreq_DELETE: rt = %p rn = %p &rn = %p\n",rt,rn,&rn));
 +				RT_LOCK(rt);
 +				RT_ADDREF(rt);
-+				dprint(("rtreq_DELETE: rt_flags = 0x%x\n",rt->rt_flags));
-+				dprint(("rtreq_DELETE: rt_ifa = %p\n",rt->rt_ifa));
 +				rt->rt_flags &= ~RTF_UP;
 +				/*
 +				 * give the protocol a chance to keep things in sync.
 +				 */
-+				dprint(("rtreq_DELETE: test1\n"));
 +				if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(RTM_DELETE, rt, info);
 +				/*
@@ -1857,21 +1855,19 @@
 +				 * linked to the routing table. rttrash will be decremented
 +				 * when RTFREE(rt) is eventually called.
 +				 */
-+				dprint(("rtreq_DELETE: test2\n"));
 +				V_rttrash++;
 +				/*
 +				 * If the caller wants it, then it can have it,
 +				 * but it's up to it to free the rtentry as we won't be
 +				 * doing it.
 +				 */
-+				dprint(("rtreq_DELETE: test3\n"));
 +				if (ret_nrt) {
-+						dprint(("rtreq_DELETE: if(ret_nrt)\n"));
 +						*ret_nrt = rt;
 +						RT_UNLOCK(rt);
 +				} else
 +						RTFREE_LOCKED(rt);
-+				dprint(("rtreq_DELETE: test4\n"));
++				dprint(("rtreq_DELETE End\n"));
++				debug_tree_print(rnh);
 +				break;
 +		case RTM_RESOLVE:
 +				dprint(("case RTM_RESOLVE:\n"));
@@ -1881,7 +1877,8 @@
 +				 */
 +				break;
 +		case RTM_ADD:
-+				dprint(("case rtreq_ADD:\n"));
++				dprint(("case rtreq_ADD Start\n"));
++				debug_tree_print(rnh);
 +				if ((flags & RTF_GATEWAY) && !gateway)
 +						senderr(EINVAL);
 +				if (dst && gateway && 
@@ -1906,8 +1903,6 @@
 +RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
-+				dprint(("rtreq_ADD: rt_flags = 0x%x fibnum = %d\n",
-+										rt->rt_flags,rt->rt_fibnum));
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -1943,9 +1938,7 @@
 +								ifa_free(ifa);
 +						uma_zfree(V_rtzone, rt);
 +						senderr(error);
- 				}
--			}
--		}
++				}
 +#endif
 +			/*
 +			 * point to the (possibly newly malloc'd) dest address.
@@ -1969,7 +1962,6 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: rt_ifa = %p\n",rt->rt_ifa));
 +#ifdef RADIX_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (rn_mpath_capable(rnh) &&
@@ -1984,17 +1976,14 @@
 +				}
 +#endif
 +#ifdef FLOWTABLE
-+				dprint(("rtreq_ADD: ifdef FLOWTABLE Start\n"));
 +				rt0 = NULL;
 +			/* XXX
 +			 * "flow-table" only support IPv4 at the moment.
 +			 */
 +#ifdef INET
 +				if (dst->sa_family == AF_INET) {
-+						dprint(("FLOWTABLE: ?AF_INET\n"));
 +						rn = rnh->rnh_matchaddr(dst, rnh);
 +						if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
-+								dprint(("FLOWTABLE: ?RNF_ROOT\n"));
 +								struct sockaddr *mask;
 +								u_char *m, *n;
 +								int len;
@@ -2011,11 +2000,9 @@
 +								 * leave the flow-table entries as is.
 +								 */
 +								if (rt0->rt_flags & RTF_HOST) {
-+										dprint(("FLOWTABLE: ?RTF_HOST\n"));
 +										RTFREE(rt0);
 +										rt0 = NULL;
 +								} else if (!(flags & RTF_HOST) && netmask) {
-+										dprint(("FLOWTABLE: !RTF_HOST\n"));
 +										mask = rt_mask(rt0);
 +										len = mask->sa_len;
 +										m = (u_char *)mask;
@@ -2027,14 +2014,14 @@
 +												m++;
 +										}
 +										if (len == 0 || (*n < *m)) {
-+										dprint(("FLOWTABLE: len = 0\n"));
 +												RTFREE(rt0);
 +												rt0 = NULL;
 +										}
 +								}
 +						}
-+				}
-+				dprint(("rtreq_ADD: ifdef FLOWTABLE End\n"));
+ 				}
+-			}
+-		}
  #endif
  #endif
 -
@@ -2053,16 +2040,6 @@
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				rn->data = rt;
 +				rt->rt_nodes = rn;
-+				dprint(("rtreq_ADD: rt = %p rt_nodes = %p\n",
-+										rt,rt->rt_nodes));
-+#if 0
-+				/* rtentry's value re-added */
-+				rt->rt_flags = RTF_UP | flags;
-+				rt->rt_fibnum = fibnum;
-+				rt->rt_ifa = ifa;
-+				rt->rt_ifp = ifa->ifa_ifp;
-+				rt->rt_rmx.rmx_weight = 1;
-+#endif
 +				/*
 +				 * If it still failed to go into the tree,
 +				 * then un-make it (this should be a function)
@@ -2135,14 +2112,14 @@
 +					RT_UNLOCK(rt);
 +				}
 +				else{
-+					dprint(("mtx_lock_init error\n"));
 +					RT_LOCK_DESTROY(rt);
 +					RT_LOCK_INIT(rt);
 +					RT_LOCK(rt);
 +					RT_ADDREF(rt);
 +					RT_UNLOCK(rt);
-+					dprint(("mtx_lock Re init\n"));
 +				}
++				dprint(("rtreq_ADD End\n"));
++				debug_tree_print(rnh);
 +				break;
 +		default:
 +				error = EOPNOTSUPP;
@@ -2158,7 +2135,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1348,70 @@
+@@ -1267,71 +1325,70 @@
  #undef ifpaddr
  #undef flags
  
@@ -2283,7 +2260,7 @@
  }
  
  /*
-@@ -1339,228 +1419,232 @@
+@@ -1339,228 +1396,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
