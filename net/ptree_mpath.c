@@ -41,12 +41,13 @@ debug_node_print(struct ptree_node *rn)
 	dst = &rn_dst->sin_addr;
 	mask = &rn_mask->sin_addr;
 	
-	ip = (unsigned char *)dst;
-	printf("host %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
-	ip = (unsigned char *)mask;
-	printf("mask %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
-	ip = (unsigned char *)gate;
-	printf("gateway %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	if( ip = (unsigned char *)dst != 0 )
+		printf("host %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	if( ip = (unsigned char *)mask != 0 )
+		printf("mask %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	if( ip = (unsigned char *)gate != 0 )
+		printf("gateway %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	
 	printf("pn_flags 0x%x\n",rn->rn_flags);
 
 	return 0;
@@ -947,7 +948,7 @@ ptree_walktree(h, f, w)
 				return (0);
 		}
 
-		dprint(("-ptree_walktree:  top = %p keylen = 0x%x\n",rn->key,rn->keylen));
+		//dprint(("-ptree_walktree:  top = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		for (;;) {
 				base = rn;
 				next = ptree_next(base);
@@ -957,13 +958,13 @@ ptree_walktree(h, f, w)
 						break;
 				}
 				rn = next;
-				dprint(("-ptree_walktree: next = %p keylen = 0x%x\n",rn->key,rn->keylen));
+				//dprint(("-ptree_walktree: next = %p keylen = 0x%x\n",rn->key,rn->keylen));
 		}
 		/* NOTREACHED */
 #ifdef DEBUG
 		/* INET tree check */
 		{
-			printf("INET ptree\n");
+			printf("INET4 ptree_walktree\n");
 			register struct ptree *rnh;
 
 			rnh = rt_tables_get_rnh(0, AF_INET);
