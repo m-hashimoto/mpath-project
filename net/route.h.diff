@@ -1,6 +1,17 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-27 01:12:15.000000000 +0900
-@@ -124,20 +124,22 @@
++++ route.h	2005-02-27 03:22:48.000000000 +0900
+@@ -33,6 +33,10 @@
+ #ifndef _NET_ROUTE_H_
+ #define _NET_ROUTE_H_
+ 
++/* debug print */
++#define DEBUG 1
++#define dprint(x) { if(DEBUG) printf x; }
++
+ /*
+  * Kernel resident routing tables.
+  *
+@@ -124,20 +128,23 @@
   * gateway rather than the ultimate destination.
   */
  #ifndef RNF_NORMAL
@@ -22,12 +33,13 @@
  	 */
 -#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
 -#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
-+#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->key)))
-+#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->mask)))
++#define	rt_key(r)		(*((struct sockaddr **)(&(r)->rt_nodes->key)))
++#define	rt_keylen(r)	((int)(&(r)->rt_nodes->keylen))
++#define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_nodes->mask)))
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
-@@ -149,8 +151,12 @@
+@@ -149,8 +156,12 @@
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
  #endif
@@ -40,7 +52,7 @@
  /*
   * Following structure necessary for 4.3 compatibility;
   * We should eventually move it to a compat file.
-@@ -373,7 +379,7 @@
+@@ -373,7 +384,7 @@
  	}							\
  } while (0)
  

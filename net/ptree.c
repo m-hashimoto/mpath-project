@@ -19,8 +19,8 @@
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 
-#define DEBUG 1
-#define dprint(x) { if(DEBUG) printf x; }
+//#define DEBUG 1
+//#define dprint(x) { if(DEBUG) printf x; }
 
 static struct ptree_node *
 ptree_node_create (char *key, int keylen)
@@ -427,5 +427,5 @@ ptree_delete (struct ptree *t)
   XRTFREE (t);
 }
 
-#undef dprint
-#undef DEBUG
+//#undef dprint
+//#undef DEBUG

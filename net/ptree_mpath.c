@@ -17,8 +17,8 @@
 static char *pn_zeros, *pn_ones;
 static int  max_keylen;
 
-#define DEBUG 1
-#define dprint(x) { if(DEBUG) printf x; }
+//#define DEBUG 1
+//#define dprint(x) { if(DEBUG) printf x; }
 
 	int
 debug_node_print(struct ptree_node *pn, int offset)
@@ -720,5 +720,5 @@ ptree6_mpath_inithead(void **head, int off)
 #endif
 #endif /* PTREE_MPATH */
 
-#undef dprint
-#undef DEBUG
+//#undef dprint
+//#undef DEBUG
