@@ -649,8 +649,8 @@ on2:
 			tt->rn_mklist = m;
 			return tt;
 		}
-		if (rn_refines(netmask, mmask)
-		    || rn_lexobetter(netmask, mmask))
+		if (ptree_refines(netmask, mmask)
+		    || ptree_lexobetter(netmask, mmask))
 			break;
 	}
 	*mp = rn_new_radix_mask(tt, *mp);
