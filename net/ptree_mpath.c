@@ -30,7 +30,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		
 		sa6 = (struct sockaddr_in6 *)pn->key;
 		inet_ntop(AF_INET6, &(sa6->sin6_addr), str, INET6_ADDRSTRLEN);
-		pritnf("[%p] %s ",pn,str);
+		printf("[%p] %s ",pn,str);
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
@@ -52,7 +52,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		
 		sa = (struct sockaddr_in *)pn->key;
 		inet_ntop(AF_INET, &(sa->sin_addr), str, INET_ADDRSTRLEN);
-		pritnf("[%p] %s ",pn,str);
+		printf("[%p] %s ",pn,str);
 #if 0
 		if(pn->mask){
 			printf("[%p] [%3d.%3d.%3d.%3d/%3d] ",pn,
@@ -70,7 +70,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 #endif
 	}
 	//printf("[0x%x]",rt->rt_flags);
-	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
+	printf("<%p, %p>\n",pn->child[0],pn->child[1]);
 	return 0;
 }
 
@@ -87,7 +87,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if(!pn)
 			return (0);
 		for (;;) {
-			if(pn->data)
+			//if(pn->data)
 				debug_node_print(pn, pnh->pnh_offset);
 			next = ptree_next(pn);
 			if( !next )
