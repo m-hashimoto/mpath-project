@@ -119,7 +119,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
 
   match = NULL;
   x = t->top;
-  while (x && x->keylen <= keylen &&
+  while (x && x->keylen <= keylen && x->key &&
          ptree_match (x->key, key, x->keylen))
     {
 	  dprint(("--ptree_search: x->key[%p]\n",x->key));
