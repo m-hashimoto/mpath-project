@@ -157,7 +157,7 @@ static int ptree_satisfies_leaf(char *trial,
 		dprint(("key dupentry\n"));
 		*dupentry = 1;  
 		return t;
-on1:
+//on1:
 		dprint(("-ptree_insert: on1\n"));
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;
 		for (b = (cp - v) << 3; cmp_res; b--)
