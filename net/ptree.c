@@ -289,7 +289,6 @@ ptree_get (key, keylen, t, nodes)
 
 	u = w = NULL;
 	x = t->top;
-	dprint(("+-ptree_get: t->top = %p top->keylen = %d\n",x,x->keylen));
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{
