@@ -96,7 +96,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
-	len = (int)8*(LEN(v) - head_zero);
+	len = (int)8*(LEN(v)/* - head_zero*/);
 	if (m){ /* ?? */
 		dprint(("LEN(m) = %d\n",(int)LEN(m)));
 		if ((LEN(m) - head->pnh_offset) > 0)
@@ -226,7 +226,7 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int vlen;
 	
-	vlen = (int)8*(LEN(v) - head_zero);
+	vlen = (int)8*(LEN(v)/* - head_zero*/);
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
@@ -339,7 +339,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		v = v_arg;
 		netmask = netmask_arg;
 		top = head->pnh_top;
-		len = (int)8*(LEN(v) - head_zero);
+		len = (int)8*(LEN(v)/* - head_zero*/);
 		if (netmask){
 			dprint(("LEN(netmask) = %d\n",(int)LEN(netmask)));
 			if ((LEN(netmask) - head->pnh_offset) > 0)

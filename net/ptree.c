@@ -60,14 +60,12 @@ ptree_node_delete (struct ptree_node *x)
 static int
 check_bit (char *key, int keylen)
 {
-	dprint(("--check_bit Start: key[%p] keylen[%d]\n",key,keylen));
   int offset;
   int shift;
 
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
-	dprint(("--check_bit End: return %d\n",key[offset] >> shift & 1));
   return (key[offset] >> shift & 1);
 }
 
@@ -85,7 +83,6 @@ ptree_match (char *keyi, char *keyj, int keylen)
   if (! memcmp (keyi, keyj, bytes) &&
       ! ((keyi[bytes] ^ keyj[bytes]) & mask[bits]))
     return 1;
-	dprint(("--ptree_match End: return 0\n"));
   return 0;
 }
 
