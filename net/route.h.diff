@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-10 19:20:48.000000000 +0900
++++ route.h	2005-02-27 01:12:15.000000000 +0900
 @@ -124,20 +124,22 @@
   * gateway rather than the ultimate destination.
   */
@@ -27,13 +27,15 @@
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
-@@ -151,6 +153,10 @@
+@@ -149,8 +151,12 @@
+ 	/* XXX ugly, user apps use this definition but don't have a mtx def */
+ 	struct	mtx rt_mtx;		/* mutex for routing entry */
  #endif
++#ifdef PTREE_MPATH
++	struct rtentry *mpath_array[];
++#endif
  };
  
-+struct rtentry_array {
-+		struct rtentry **multi_entry;
-+};
 +
  /*
   * Following structure necessary for 4.3 compatibility;

@@ -27,7 +27,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	unsigned char *gateway = (unsigned char *)rt->rt_gateway;
 	
 	if(offset == 8){ /* IPv6 */
-		printf("[%p][%X.%X.%X.%X.%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
+		printf("[%X.%X.%X.%X.%X.%X.%X.%X.%X.%X.%X.%X/%d] ",
 				(unsigned char)pn->key[8],(unsigned char)pn->key[9],
 				(unsigned char)pn->key[10],(unsigned char)pn->key[11],
 				(unsigned char)pn->key[12],(unsigned char)pn->key[13],
@@ -42,7 +42,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x]\n",rt->rt_flags);
 	} else { /* IPv4 */
 		if(pn->mask){
-			printf("[%p][%3d.%3d.%3d.%3d/%3d] ",pn,
+			printf("[%3d.%3d.%3d.%3d/%3d] ",
 				(unsigned char)pn->key[4],(unsigned char)pn->key[5],
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*offset);
@@ -441,21 +441,22 @@ ptree_init()
  */
 #ifdef PTREE_MPATH
 		int
-ptree_mpath_capable(struct ptree *rnh)
+ptree_mpath_capable(struct ptree *pnh)
 {
-		return rnh->rnh_multipath;
+		return pnh->pnh_multipath;
 }
 
 		uint32_t
 ptree_mpath_count(struct ptree_node *rn)
 {
 		dprint(("ptree_mpath_count Start\n"));
-		struct ptree_node **rn1;
+		struct rtentry *rt, **rt1;
 		uint32_t i = 0;
-		rn1 = rn->mpath_array;
+		rt = rn->data;
+		rt1 = rt->mpath_array;
 		/* count mpath_array */
-		while (rn1 != NULL) {
-				rn1++;
+		while (rt1 != NULL) {
+				rt1++;
 				i++;
 		}
 		dprint(("ptree_mpath_count End: count = %d\n",i));
@@ -466,20 +467,23 @@ ptree_mpath_count(struct ptree_node *rn)
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
 		uint32_t	i = 0;
-		struct ptree_node *rn, **match;
+		//struct ptree_node *rn, **match;
+		struct rtentry **match;
 
-		rn = (struct ptree_node *)rt;
-		if (!rn->mpath_array)
+		//rn = (struct ptree_node *)rt;
+		if (!rt->mpath_array){
+				dprint(("-rt_mpath_matchgate: not have multipath\n"));
 				return rt;
+		}
 		else
-				match = rn->mpath_array;
+				match = rt->mpath_array;
 
 		if (!gate)
 				return NULL;
 
 		/* beyond here, we use rn as the master copy */
 		do {
-				rt = (struct rtentry *)match;
+				rt = match;
 				/*
 				 * we are removing an address alias that has 
 				 * the same prefix as another address
@@ -497,7 +501,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				i++;
 		} while ( (match++) != NULL);
 
-		return (struct rtentry *)rn;
+		return match;
 }
 
 /* 
@@ -509,7 +513,6 @@ static uint32_t hashjitter;
 		int
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
-		dprint(("rt_mpath_delete Start\n"));
 		uint32_t i = 0, n;
 		struct ptree_node *t, **t1;
 
@@ -527,7 +530,6 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				}
 				t1++;
 		}
-		dprint(("rt_mpath_delete End\n"));
 		return (0);
 }
 
