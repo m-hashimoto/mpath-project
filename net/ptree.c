@@ -239,7 +239,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
         return x;
       u = x;
       x = x->child[check_bit (key, x->keylen)];
-  	  dprint(("--ptree_get: x[%p]\n",x));
     }
 
   if (! x)
