@@ -143,7 +143,7 @@ static int ptree_satisfies_leaf(char *trial,
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
 		register caddr_t cp2 = t->rn_key + head_off;
-		//register int cmp_res;
+		register int cmp_res;
 		caddr_t cplim = v + vlen;
 		
 		dprint(("-ptree_insert: "));
@@ -151,20 +151,18 @@ static int ptree_satisfies_leaf(char *trial,
 			dprint((" + "));
 			if (*cp2++ != *cp++){
 				dprint(("goto on1\n"));
-				goto on2;
+				goto on1;
 			}
 		}
 		dprint(("key dupentry\n"));
 		*dupentry = 1;  
 		return t;
-#if 0
 on1:
 		dprint(("-ptree_insert: on1\n"));
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;
 		for (b = (cp - v) << 3; cmp_res; b--)
 			cmp_res >>= 1;
 		dprint(("-ptree_insert: first different bit = %d\n",b));
-#endif
 on2:
 		*dupentry = 0;
 	}
