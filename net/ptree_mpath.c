@@ -728,6 +728,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		struct ptree_node_head *head;
 {
 		dprint(("-ptree_deladdr Start\n"));
+		debug_tree_print(head);
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		caddr_t v, netmask;
@@ -741,10 +742,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		else
 			len =  LEN(v);
 
-		dprint(("-ptree_deladdr: len = %d\n",len));
 		tt = ptree_search(v, len, head->pnh_treetop);
-		dprint(("-ptree_deladdr: testprint tt = %p tt->key = %p\n",tt,tt->key));
-		dprint(("memcmp = %d\n",memcmp(v, tt->key, len) ));
 		//head_off = x->rn_offset;
 		saved_tt = tt;
 		if ((tt == 0) || (memcmp(v, tt->key, len) != 0)){
@@ -925,6 +923,7 @@ out:
 		tt[1].rn_flags &= ~RNF_ACTIVE;
 #endif
 		dprint(("-ptree_deladdr End\n"));
+		debug_tree_print(head);
 		return (tt);
 }
 
