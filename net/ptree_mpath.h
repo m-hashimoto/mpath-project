@@ -76,7 +76,7 @@ struct ptree_node_head {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-#ifdef DEBUG
+#if 0
 int debug_node_print(struct ptree_node *pn);
 int debug_tree_print(struct ptree_node_head *pnh);
 #endif
