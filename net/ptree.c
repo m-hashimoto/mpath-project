@@ -33,7 +33,6 @@ ptree_node_create (char *key, int keylen)
   if (! x)
     return NULL;
 	dprint(("--ptree_node_create: malloc x[%p] len[%d]\n",x,len));
-	dprint(("--ptree_node_create: malloc x[%p - %p]\n",x,x+len));
 
   x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
   x->keylen = keylen;
@@ -41,12 +40,11 @@ ptree_node_create (char *key, int keylen)
   x->child[0] = NULL;
   x->child[1] = NULL;
   x->data = NULL;
+  x->lock = NULL;
 
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
-  x->lock = 1;
-	dprint(("--ptree_node_create: x->lock[%p]\n",&x->lock));
 	dprint(("--ptree_node_create: x[%p] x->key[%p] x->keylen[%d]\n",
 													x,x->key,x->keylen));
   return x;

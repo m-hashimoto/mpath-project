@@ -40,6 +40,12 @@ sprint_inet_ntoa(int af, void *sa)
 debug_node_print(struct ptree_node *pn, int offset)
 {
 	dprint(("-debug_node_print: pn[%p] pn->key[%p]\n",pn,pn->key));
+	if(!pn->key){
+		dprint(("-debug_node_print: pn->parent[%p] pn->left[%p] pn->rigth[%p]\n",
+														pn->parent,pn->child[0],pn->child[1]));
+		dprint(("-debug_node_print: pn->data[%p] pn->lock[%p]\n",pn->data,&pn->lock));	
+		return 1;
+	}
 	if(offset == 8){ /* IPv6 */
 		printf("[%p] ",pn);
 		sprint_inet_ntoa(AF_INET6,pn->key);
@@ -95,7 +101,10 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if(!pn)
 			return (0);
 		for (;;) {
-			debug_node_print(pn, pnh->pnh_offset);
+			if(debug_node_print(pn, pnh->pnh_offset)){
+				printf("error: debug_node_print\n");
+				return (1);
+			}
 			next = ptree_next(pn);
 			if( !next )
 				break;
