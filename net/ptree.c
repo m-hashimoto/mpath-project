@@ -349,8 +349,7 @@ ptree_next (struct ptree_node *v)
   if (v->child[0])
     {
       w = v->child[0];
-	  if(w)
-        ptree_node_lock (w);
+      ptree_node_lock (w);
       ptree_node_unlock (v);
       return w;
     }
@@ -358,8 +357,7 @@ ptree_next (struct ptree_node *v)
   if (v->child[1])
     {
       w = v->child[1];
-	  if(w)
-        ptree_node_lock (w);
+      ptree_node_lock (w);
       ptree_node_unlock (v);
       return w;
     }
@@ -370,7 +368,7 @@ ptree_next (struct ptree_node *v)
   if (u->child[0] == v)
     {
       w = u->child[1];
-      if (w)
+	  if (w)
         ptree_node_lock (w);
       ptree_node_unlock (v);
       return w;
