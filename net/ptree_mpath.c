@@ -179,15 +179,15 @@ ptree_addmask(n_arg, search, skip)
 	*addmask_key = last_zeroed = mlen;
 	dprint(("-ptree_addmask: mask_rnhead = %p\n",mask_rnhead));
 	x = ptree_search(addmask_key, mlen, mask_rnhead);
-	if(x) dprint(("-ptree_addmask: x->rn_key = %p\n",x->key));
 	
 	if(!x){
 		dprint(("-ptree_addmask: search result is NULL\n"));
 		goto on1;
 	}
 	dprint(("-ptree_addmask: addmask_key = %p x = %p mlen = %d\n",addmask_key,x,mlen));
+	if(x) dprint(("x->rn_key = %p\n",x->key));
 	
-	if (memcmp(addmask_key, x->rn_key, mlen) != 0)  
+	if (!x->rn_key | memcmp(addmask_key, x->rn_key, mlen) != 0)  
 		x = 0;  
 	if (x || search){
 		dprint(("-ptree_addmask End if(x||search)\n"));
