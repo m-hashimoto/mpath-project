@@ -62,6 +62,7 @@ debug_node_print(struct ptree_node *rn)
 #define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
 #define LEN(x) (*(const u_char *)(x))
 #define rn_masktop (mask_rnhead->rnh_treetop)
+
 #if 0
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
@@ -270,12 +271,11 @@ on1:
 	return (x);
 }
 
-
+#if 0
 /*
  * Same as above, but with an additional mask.
  * XXX note this function is used only once.
  */
-#if 0
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
@@ -300,6 +300,7 @@ ptree_search_m(v_arg, head, m_arg)
 	return x;
 }
 #endif
+
 	int
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
@@ -446,7 +447,7 @@ ptree_matchaddr(v_arg, head)
 	cp += off; cp2 = t->rn_key + off; cplim = v + vlen;
 	dprint(("-ptree_matchaddr:"));
 	for (; cp < cplim; cp++, cp2++){
-		dprint((" +"));	
+		dprint((" + "));	
 		if (*cp != *cp2){
 			dprint(("goto on1\n"));
 			goto on1;
@@ -494,23 +495,21 @@ on1:
 	m = t->rn_mklist;
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
-					dprint(("-ptree_matchaddr: rn_bit = 0x%x rm_bit = 0x%x\n",rn_bit,m->rm_bit));
+					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",rn_bit,m->rm_bit));
 					if (rn_bit <= m->rm_bit)
 							return (m->rm_leaf);
 			}
-#if 0
 			else {
 					off = min(t->rn_offset, matched_off);
 					dprint(("-ptree_matchaddr: off = %d\n",off));
-					x = ptree_search_m(v, t, m->rm_mask);
-					while (x && x->rn_mask != m->rm_mask)
-							x = x->rn_dupedkey;
-					if (x && ptree_satisfies_leaf(v, x, off)){
-							dprint(("-ptree_matchaddr End: return x\n"));
-							return x;
+					//x = ptree_search_m(v, t, m->rm_mask);
+					while (t && t->rn_mask != m->rm_mask)
+							t = t->rn_dupedkey;
+					if (t && ptree_satisfies_leaf(v, t, off)){
+							dprint(("-ptree_matchaddr End: return %p\n",t));
+							return t;
 					}
 			}
-#endif
 			m = m->rm_mklist;
 			dprint(("-ptree_matchaddr: next rm_mklist = %p\n",m));
 	}
