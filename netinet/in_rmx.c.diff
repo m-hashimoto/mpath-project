@@ -1,5 +1,5 @@
 --- in_rmx.c.orig	2005-02-06 17:29:02.000000000 +0900
-+++ in_rmx.c	2005-02-08 19:58:23.000000000 +0900
++++ in_rmx.c	2005-02-10 18:52:58.000000000 +0900
 @@ -70,11 +70,11 @@
  /*
   * Do what we need to do when inserting a route.
@@ -22,7 +22,7 @@
  		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
 -
 -	return (rn_addroute(v_arg, n_arg, head, treenodes));
-+	return (ptree_addroute(v_arg, n_arg, head, rt_node/*, rt*/));
++	return (ptree_addroute(v_arg, n_arg, head, rt_node));
  }
  
  /*
