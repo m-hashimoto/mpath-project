@@ -1,33 +1,20 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2005-02-05 03:22:19.000000000 +0900
-@@ -110,9 +110,11 @@
- extern u_int rt_numfibs;	/* number fo usable routing tables */
- extern u_int tunnel_fib;	/* tunnels use these */
- extern u_int fwd_fib;		/* packets being forwarded use these routes */
-+
- /*
-  * XXX kernel function pointer `rt_output' is visible to applications.
-  */
-+
- struct mbuf;
- 
- /*
-@@ -124,20 +126,19 @@
++++ route.h	2005-02-05 03:41:52.000000000 +0900
+@@ -124,20 +124,22 @@
   * gateway rather than the ultimate destination.
   */
  #ifndef RNF_NORMAL
 -#include <net/radix.h>
--#ifdef RADIX_MPATH
--#include <net/radix_mpath.h>
--#endif
--#endif
++#include "opt_ptree.h"
 +#include <net/ptree.h>
-+//#include <net/ptree_mpath.h>
-+#endif /* RNF_NORMAL */
-+
++#include <net/ptree_mpath.h>
+ #ifdef RADIX_MPATH
+ #include <net/radix_mpath.h>
+ #endif
+ #endif
  struct rtentry {
 -	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
-+	struct	ptree_node *rt_nodes;	/* tree glue */
++	struct	ptree_node rt_nodes;	/* tree glue, and other values */
  	/*
  	 * XXX struct rtentry must begin with a struct radix_node (or two!)
  	 * because the code does some casts of a 'struct radix_node *'
@@ -40,92 +27,13 @@
  	struct	sockaddr *rt_gateway;	/* value */
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
-@@ -145,6 +146,9 @@
+@@ -145,6 +147,9 @@
  	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
  	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
  	u_int	rt_fibnum;		/* which FIB */
 +#ifdef PTREE_MPATH
-+	char *mpath_arrary;		/* array for mpath index */
++	int *mpath_array;
 +#endif
  #ifdef _KERNEL
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
-@@ -197,7 +201,7 @@
- #define	RTF_LOCAL	0x200000 	/* route represents a local address */
- #define	RTF_BROADCAST	0x400000	/* route represents a bcast address */
- #define	RTF_MULTICAST	0x800000	/* route represents a mcast address */
--					/* 0x8000000 and up unassigned */
-+/* 0x8000000 and up unassigned */
- #define	RTF_STICKY	 0x10000000	/* always route dst->src */
- 
- #define	RTF_RNH_LOCKED	 0x40000000	/* radix node head is locked */
-@@ -313,9 +317,9 @@
-  * The case sa_len == 0 should only apply to empty structures.
-  */
- #define SA_SIZE(sa)						\
--    (  (!(sa) || ((struct sockaddr *)(sa))->sa_len == 0) ?	\
--	sizeof(long)		:				\
--	1 + ( (((struct sockaddr *)(sa))->sa_len - 1) | (sizeof(long) - 1) ) )
-+	(  (!(sa) || ((struct sockaddr *)(sa))->sa_len == 0) ?	\
-+	   sizeof(long)		:				\
-+	   1 + ( (((struct sockaddr *)(sa))->sa_len - 1) | (sizeof(long) - 1) ) )
- 
- #ifdef _KERNEL
- 
-@@ -330,20 +334,20 @@
- #define	RT_ADDREF(_rt)	do {					\
- 	RT_LOCK_ASSERT(_rt);					\
- 	KASSERT((_rt)->rt_refcnt >= 0,				\
--		("negative refcnt %d", (_rt)->rt_refcnt));	\
-+			("negative refcnt %d", (_rt)->rt_refcnt));	\
- 	(_rt)->rt_refcnt++;					\
- } while (0)
- 
- #define	RT_REMREF(_rt)	do {					\
- 	RT_LOCK_ASSERT(_rt);					\
- 	KASSERT((_rt)->rt_refcnt > 0,				\
--		("bogus refcnt %d", (_rt)->rt_refcnt));	\
-+			("bogus refcnt %d", (_rt)->rt_refcnt));	\
- 	(_rt)->rt_refcnt--;					\
- } while (0)
- 
- #define	RTFREE_LOCKED(_rt) do {					\
- 	if ((_rt)->rt_refcnt <= 1)				\
--		rtfree(_rt);					\
-+	rtfree(_rt);					\
- 	else {							\
- 		RT_REMREF(_rt);					\
- 		RT_UNLOCK(_rt);					\
-@@ -373,7 +377,7 @@
- 	}							\
- } while (0)
- 
--struct radix_node_head *rt_tables_get_rnh(int, int);
-+struct ptree_node_head *rt_tables_get_rnh(int, int);
- 
- struct ifmultiaddr;
- 
-@@ -410,9 +414,9 @@
- int	 rtinit(struct ifaddr *, int, int);
- int	 rtioctl(u_long, caddr_t);
- void	 rtredirect(struct sockaddr *, struct sockaddr *,
--	    struct sockaddr *, int, struct sockaddr *);
-+		struct sockaddr *, int, struct sockaddr *);
- int	 rtrequest(int, struct sockaddr *,
--	    struct sockaddr *, struct sockaddr *, int, struct rtentry **);
-+		struct sockaddr *, struct sockaddr *, int, struct rtentry **);
- 
- /* defaults to "all" FIBs */
- int	 rtinit_fib(struct ifaddr *, int, int);
-@@ -427,9 +431,9 @@
- struct rtentry *rtalloc1_fib(struct sockaddr *, int, u_long, u_int);
- int	 rtioctl_fib(u_long, caddr_t, u_int);
- void	 rtredirect_fib(struct sockaddr *, struct sockaddr *,
--	    struct sockaddr *, int, struct sockaddr *, u_int);
-+		struct sockaddr *, int, struct sockaddr *, u_int);
- int	 rtrequest_fib(int, struct sockaddr *,
--	    struct sockaddr *, struct sockaddr *, int, struct rtentry **, u_int);
-+		struct sockaddr *, struct sockaddr *, int, struct rtentry **, u_int);
- int	 rtrequest1_fib(int, struct rt_addrinfo *, struct rtentry **, u_int);
- 
- #include <sys/eventhandler.h>
