@@ -158,7 +158,7 @@ on2:
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
 		tt = ptree_add(v_arg, vlen, data, head, nodes);
-		tt->rn_bit = b;
+		tt->rn_bit = - 1 - tt->keylen;
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);

@@ -18,28 +18,28 @@ MALLOC_DECLARE(M_RTABLE);
 #endif /* PTREE_MPATH */
 
 struct ptree_node {
-  struct  ptree_mask *rn_mklist;
-  caddr_t key;
-  caddr_t rn_mask;
-  short   keylen;
-
-  short	rn_bit;
-  char	rn_bmask;
-  u_char rn_flags;	/* enumerated next */
+  struct  ptree_mask *rn_mklist; /* list of masks contained in subtree */
+  struct ptree_node *parent;	 /* parent */
+  short	rn_bit;				 	 /* bit offset: -1-index(netmask) */
+  char	rn_bmask;				 /* node: mask for bit_test */
+  u_char rn_flags;				 /* enumerated next */
 #define RNF_NORMAL	1
 #define RNF_ROOT	2
 #define RNF_ACTIVE	4
-  struct ptree_node *parent;
+  
+  caddr_t key;				/* object of search */
+  caddr_t rn_mask;			/* netmask, if present */
+  short   keylen;			/* length of search object */
   struct ptree_node *child[2];
   struct ptree_node *rn_dupedkey;
   void *data;
-  int	lock;
+  //int	lock;
 
 #ifdef PTREE_MPATH
   struct ptree_node *mpath_array[MAX_MPATH];
 #endif
 
-  int rn_Off;
+  int rn_Off;				/* where to start compare */
 #ifdef RN_DEBUG
   int rn_info;
   struct ptree_node *rn_twin;
