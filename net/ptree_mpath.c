@@ -349,6 +349,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 								(unsigned char)cp[8],(unsigned char)cp[9],
 								(unsigned char)cp[10],(unsigned char)cp[11],
 								len));
+		dprint(("-ptree_deladdr: memcmp[%d]\n",memcmp(cp,v,len)));
 		if ( memcmp(cp, v, len) != 0 ){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
