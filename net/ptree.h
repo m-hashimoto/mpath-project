@@ -7,6 +7,8 @@
 #include <sys/_rwlock.h>
 #endif
 
+#define DEBUG 1
+
 //#if 0
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);
@@ -151,6 +153,9 @@ struct ptree {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
+#ifdef DEBUG
+int debug_node_print(struct ptree_node *rn);
+#endif
 void ptree_node_lock (struct ptree_node *x);
 void ptree_node_unlock (struct ptree_node *x);
 
@@ -198,3 +203,4 @@ int	ptree4_mpath_inithead(void **, int);
 int	ptree6_mpath_inithead(void **, int);
 #endif /* PTREE_MPATH */
 #endif /*_PTREE_H_*/
+#undef DEBUG

@@ -25,14 +25,14 @@ static struct ptree *mask_rnhead;
 #include <sys/types.h>
 #include <netinet/in.h>
 
-static int
+	int
 debug_node_print(struct ptree_node *rn)
 {
 	register unsigned char *ip;
+	register struct ptree_mask *rm;
 			
 	printf("/*-------------------------*/\n");
 	printf("node = %p\n",rn);
-	printf("mklist = %p\n",rn->rn_mklist);
 	if( rn->rn_key ){
 		ip = (unsigned char *)rn->rn_key;
 		printf("key %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
@@ -41,13 +41,30 @@ debug_node_print(struct ptree_node *rn)
 		ip = (unsigned char *)rn->rn_mask;
 		printf("mask %d.%d.%d.%d: ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rn->keylen ) printf("keylen %d\n",rn->keylen);
+	if( rn->rn_flags ) printf("flag 0x%x\n",rn->rn_flags);
+	if( rn->keylen ) printf("keylen %d ",rn->keylen);
 	if( rn->rn_bit ) printf("rn_bit %d ",rn->rn_bit);
 	if( rn->rn_bmask ) printf("rn_bmask 0x%x ",rn->rn_bmask);
-	if( rn->rn_flags ) printf("flag 0x%x\n",rn->rn_flags);
 	printf("parent = %p\n",rn->parent);
 	printf("left = %p, right = %p\n",rn->rn_left,rn->rn_right);
-	printf("/*-------------------------*/\n");
+	printf("rn_dupedkey = %p\n",rn->rn_dupedkey);
+	printf("rn_offset %d\n",rn->rn_Off);
+	rm = rn->rn_mklist;
+	while(rm){
+		printf("/*+++++++++++++++++++++++++*/");
+		printf("- mklist = %p\n",rm);
+		printf("- rm_bit %d rm_flags 0x%x\n",rm->rm_bit,rm->rm_flags);
+		printf("- rm_unsed 0x%x\n",rm->rm_unsed);
+		if(rm->rm_mask){
+			ip = (unsigned char *)rm->rm_mask;
+			printf("- rm_mask %d.%d.%d.%d\n",*ip,*ip+1,*ip+2,*ip+3);
+		}
+		printf("- rm_leaf = %p\n",rm->rm_leaf);
+		printf("- rm_refs = %d\n",rm->rm_refs);
+		printf("/*+++++++++++++++++++++++++*/");
+		rm = rm->rm_mklist;
+	}
+	printf("/*-------------------------*/\n\n");
 	return 0;
 }
 #endif /* DEBUG */
@@ -63,10 +80,6 @@ debug_node_print(struct ptree_node *rn)
 #define LEN(x) (*(const u_char *)(x))
 #define rn_masktop (mask_rnhead->rnh_treetop)
 
-#if 0
-static struct ptree_node *ptree_search_m(void *v_arg,
-	       	struct ptree_node *head, void *m_arg);
-#endif
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
 		int *dupentry, struct ptree_node nodes[2]);
 static int ptree_lexobetter(void *m_arg, void *n_arg);
@@ -270,35 +283,6 @@ on1:
 	return (x);
 }
 
-#if 0
-/*
- * Same as above, but with an additional mask.
- * XXX note this function is used only once.
- */
-	static struct ptree_node *
-ptree_search_m(v_arg, head, m_arg)
-	struct ptree_node *head;
-	void *v_arg, *m_arg;
-{
-	dprint(("-ptree_seach_m Start\n"));
-	dprint(("-ptree_search_m: v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg));
-	register struct ptree_node *x, *y;
-	register caddr_t v = v_arg, m = m_arg;
-
-	for (x = head; x->rn_bit >= 0;) {
-		y = x;
-		if ((y->rn_bmask & m[y->rn_offset]) &&
-				(y->rn_bmask & v[y->rn_offset]))
-			x = y->rn_right;
-		else
-			x = y->rn_left;
-		if ( !x || (x->rn_bit <= y->rn_bit) )
-			break;
-	}
-	dprint(("-ptree_seach_m End\n"));
-	return x;
-}
-#endif
 
 	int
 ptree_refines(m_arg, n_arg)
