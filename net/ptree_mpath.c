@@ -101,14 +101,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		dprint(("-ptree_insert: top = NULL\n"));
 		goto on1;
 	}
-	dprint(("-ptree_insert: v[%d.%d|%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
+	dprint(("-ptree_insert: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
 							(unsigned char)v[6],(unsigned char)v[7],
 							len,head->pnh_treetop));
 	if (m_arg)
-		dprint(("-ptree_insert: m[%d.%d|%d.%d|%d.%d.%d.%d/%d]\n",
+		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
 							(unsigned char)m[0],(unsigned char)m[1],
 							(unsigned char)m[2],(unsigned char)m[3],
 							(unsigned char)m[4],(unsigned char)m[5],
@@ -136,8 +136,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		}
 #endif
 
-		register caddr_t cp2 = t->key + head_off;
-		caddr_t cplim = v + head_off;
+		register caddr_t cp2 = t->key;
+		caddr_t cplim = v;
 		if ( !memcmp(cp2,cplim,len) ){
 			dprint(("key dupentry\n"));
 			*dupentry = 1;  
@@ -211,7 +211,7 @@ ptree_matchaddr(v_arg, head)
 	int vlen;
 	
 	vlen = (int)8*LEN(v);
-	dprint(("-ptree_matchaddr: v[%d.%d|%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
+	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] pnh[%p]\n",
 							(unsigned char)v[0],(unsigned char)v[1],
 							(unsigned char)v[2],(unsigned char)v[3],
 							(unsigned char)v[4],(unsigned char)v[5],
@@ -338,7 +338,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 				len = (int)8*LEN(netmask);
 		}
 
-		dprint(("-ptree_deladdr: v[%d.%d|%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
+		dprint(("-ptree_deladdr: v[%d.%d.%d.%d|%d.%d.%d.%d/%d] treetop[%p]\n",
 								(unsigned char)v[0],(unsigned char)v[1],
 								(unsigned char)v[2],(unsigned char)v[3],
 								(unsigned char)v[4],(unsigned char)v[5],
