@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-24 14:37:00.000000000 +0900
++++ route.c	2005-02-24 14:48:41.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1888,13 +1888,13 @@
 +				RT_LOCK(rt);
 +				int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
 +				caddr_t new;
-+#ifdef INVARIANTS
-+				struct ptree_node_head *rnh;
-+	
-+				rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
-+#endif
++//#ifdef INVARIANTS
++//				struct ptree_node_head *rnh;
++//	
++//				rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
++//#endif
 +				RT_LOCK_ASSERT(rt);
-+				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
++//				RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
 +				R_Malloc(new, caddr_t, dlen + glen);
 +				if (new == NULL){
 +					RT_LOCK_DESTROY(rt);
@@ -2366,25 +2366,25 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
- 		}
++		}
 +		if (dst->sa_len == 0){
 +				return(EINVAL);
-+		}
+ 		}
 +
  		/*
 -		 * Do the actual request
--		 */
++		 * If it's a delete, check that if it exists,
++		 * it's on the correct interface or we might scrub
++		 * a route to another ifa which would
++		 * be confusing at best and possibly worse.
+ 		 */
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_ifa = ifa;
 -		info.rti_flags = flags | ifa->ifa_flags;
 -		info.rti_info[RTAX_DST] = dst;
 -		/* 
 -		 * doing this for compatibility reasons
-+		 * If it's a delete, check that if it exists,
-+		 * it's on the correct interface or we might scrub
-+		 * a route to another ifa which would
-+		 * be confusing at best and possibly worse.
- 		 */
+-		 */
 -		if (cmd == RTM_ADD)
 -			info.rti_info[RTAX_GATEWAY] =
 -			    (struct sockaddr *)&null_sdl;
