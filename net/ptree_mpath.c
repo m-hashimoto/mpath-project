@@ -13,12 +13,6 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
-#ifdef DEBUG
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#endif
-
 static char *rn_zeros, *rn_ones, *addmask_key;
 static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
@@ -945,7 +939,7 @@ ptree_walktree(h, f, w)
 			for (;;) {
 				rt = (struct rtentry *)rn;
 				gateway = (struct sockaddr_in *)rt->rt_gateway;
-				printf("address: %x\n",inet_ntoa(gateway->sin_addr));
+				printf("address: %x\n",gateway->sin_addr);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
