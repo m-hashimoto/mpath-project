@@ -25,7 +25,7 @@ static int      max_keylen;
 #include <sys/types.h>
 #include <netinet/in.h>
 
-	int
+	static int
 debug_node_print(struct ptree_node *pn)
 {
 	//register unsigned char *ip;
@@ -77,7 +77,7 @@ debug_node_print(struct ptree_node *pn)
 	return 0;
 }
 
-	int
+	static int
 debug_tree_print(struct ptree_node_head *pnh)
 {
 		register struct ptree_node *pn, *next;
