@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 20:34:45.000000000 +0900
++++ route.c	2005-01-27 21:58:52.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -69,8 +69,8 @@
  rt_tables_get_rnh_ptr(int table, int fam)
  {
 -	struct radix_node_head **rnh;
-+		dprint(("rt_tables_get_rnh_ptr Start\n"));
-+		dprint(("rt_tables_get_rnh_ptr: table = %d family = %d\n",table,fam));
++		dprint(("rt_tables_get_rnh_ptr Start: table = %d family = %d\n",
++								table,fam));
 +		struct ptree **rnh;
  
 -	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.",

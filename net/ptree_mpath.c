@@ -18,7 +18,7 @@ static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
 
-#define DEBUG 0
+#define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
 
 #define MKGet(m) {                                              \
@@ -419,7 +419,7 @@ ptree_matchaddr(v_arg, head)
 			goto on1;
 		}
 	}
-	dprint(("match exactly as a host\n"));
+	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
 	 */
@@ -435,10 +435,8 @@ on1:
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
 	dprint(("-ptree_matchaddr: first bit that diff = %d\n",test));
 	for (b = 7; (test >>= 1) > 0;){
-		dprint((" %d ",b));	
 		b--;
 	}
-	dprint(("= first bytes that diff\n"));	
 	
 	matched_off = cp - v;
 	dprint(("-ptree_matchaddr: matched_off = %d\n",matched_off));
