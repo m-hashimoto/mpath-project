@@ -318,6 +318,10 @@ ptree_get (char *key, int keylen, struct ptree *t)
 															x,x->key,x->keylen));
 
           v = ptree_node_create (key, keylen);
+					dprint(("--ptree_get: add new node v[%p] key[%p] keylen[%d]\n",
+																	v,v->key,v->keylen));
+					dprint(("--ptree_get: branching node x[%p] key[%p] keylen[%d]\n",
+															x,x->key,x->keylen));
           if (! v)
             {
               XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
@@ -328,8 +332,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
           ptree_link (x, v);
 					dprint(("--ptree_get: link branching node x[%p] key[%p] keylen[%d]\n",
 															x,x->key,x->keylen));
-					dprint(("--ptree_get: add new node v[%p] key[%p] keylen[%d]\n",
-																	v,v->key,v->keylen));
 				//	debug_tree_print(pnh);
         }
     }
