@@ -905,6 +905,7 @@ ptree_walktree(h, f, w)
 	void *w;
 {
 	dprint(("ptree_walktree Start\n"));
+	int error;
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
 
