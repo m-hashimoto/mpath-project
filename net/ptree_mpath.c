@@ -937,7 +937,7 @@ ptree_inithead(head, off)
 	dprint(("ptree_inithead Start\n"));
 	register struct ptree *rnh;
 	struct ptree_node *t;
-	register int *data = NULL;
+	int *data = NULL;
 	*data = 1;
 	/*register struct ptree_node *t, *tt, *ttt;*/
 	if (*head){
