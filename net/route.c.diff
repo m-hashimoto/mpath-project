@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-11 08:02:25.000000000 +0900
++++ route.c	2005-02-11 08:14:13.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1840,7 +1840,7 @@
 +						panic ("rtrequest delete");
 +#endif
 +				rt = RNTORT(rn);
-+				dprint(("rtreq_DELETE: rt = %p rn = %p\n",rt,rn));
++				dprint(("rtreq_DELETE: rt = %p rn = %p &rn = %p\n",rt,rn,&rn));
 +				//RT_LOCK(rt);
 +				//RT_ADDREF(rt);
 +				dprint(("rtreq_DELETE: rt_flags = 0x%x\n",rt->rt_flags));
@@ -1849,7 +1849,7 @@
 +				/*
 +				 * give the protocol a chance to keep things in sync.
 +				 */
-+				dprint(("rtreq_DELETE: rtrequest = %p\n",rt->rt_ifa->ifa_rtrequest));
++				dprint(("rtreq_DELETE: test1\n"));
 +				if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest)
 +						ifa->ifa_rtrequest(RTM_DELETE, rt, info);
 +				/*

@@ -922,7 +922,7 @@ out:
 		tt->rn_flags &= ~RNF_ACTIVE;
 		tt[1].rn_flags &= ~RNF_ACTIVE;
 #endif
-		dprint(("-ptree_deladdr End\n"));
+		dprint(("-ptree_deladdr End: tt = %p &tt = %p\n",tt,&tt));
 		debug_tree_print(head);
 		return (tt);
 }
