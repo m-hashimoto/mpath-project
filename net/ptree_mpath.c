@@ -151,7 +151,10 @@ on1:
 	{
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
-		//tt->mask = m;
+		if (m)
+			tt->mask = m;
+		else
+			tt->mask = NULL;
 	}
 	dprint(("-ptree_insert End: insert tt = %p\n",tt));
 	return (tt);
