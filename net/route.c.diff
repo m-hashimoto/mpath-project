@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2005-02-27 03:44:17.000000000 +0900
++++ route.c	2005-02-27 05:26:02.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1142,7 +1142,7 @@
  }
  
  /*
-@@ -768,495 +757,510 @@
+@@ -768,495 +757,522 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1750,8 +1750,8 @@
 +					 * "bad" holds true for the success case
 +					 * as well
 +					 */
-+				if (error != ENOENT)
-+					goto bad;
++					if (error != ENOENT)
++						goto bad;
 +				}
  #endif
 -
@@ -1924,8 +1924,23 @@
 +						RT_LOCK_DESTROY(rt);
 +						uma_zfree(V_rtzone, rt);
 +						senderr(EEXIST);
+ 				}
+-			}
+-		}
+ #endif
++#ifdef PTREE_MPATH
++			/* do not permit exactly the same dst/mask/gw pair */
++				if (ptree_mpath_capable(rnh) &&
++					rt_mpath_conflict(rnh, rt, netmask)) {
++						if (rt->rt_ifa) {
++								ifa_free(rt->rt_ifa);
++						}
++						RT_LOCK_DESTROY(rt);
++						uma_zfree(V_rtzone, rt);
++						senderr(EEXIST);
 +				}
-+#endif
+ #endif
+-
 +#ifdef FLOWTABLE
 +				rt0 = NULL;
 +			/* XXX
@@ -1970,12 +1985,9 @@
 +										}
 +								}
 +						}
- 				}
--			}
--		}
- #endif
- #endif
--
++				}
++#endif /* INET */
++#endif /* FLOWTABLE */
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 -		/*
@@ -2070,13 +2082,13 @@
 -	return (error);
 +		if (needlock)
 +				RADIX_NODE_HEAD_UNLOCK(rnh);
-+		//if (DEBUG && !error)
-+		debug_tree_print(rnh);
++		if (DEBUG && !error)
++			debug_tree_print(rnh);
 +		return (error);
  #undef senderr
  }
  
-@@ -1267,71 +1271,69 @@
+@@ -1267,71 +1283,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2200,7 +2212,7 @@
  }
  
  /*
-@@ -1339,228 +1341,229 @@
+@@ -1339,228 +1353,229 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -2343,25 +2355,25 @@
 +				KASSERT((fibnum < rt_numfibs), ("rtinit1: bad fibnum"));
 +				startfib = fibnum;
 +				endfib = fibnum;
-+		}
+ 		}
 +		if (dst->sa_len == 0){
 +				return(EINVAL);
- 		}
++		}
 +
  		/*
 -		 * Do the actual request
-+		 * If it's a delete, check that if it exists,
-+		 * it's on the correct interface or we might scrub
-+		 * a route to another ifa which would
-+		 * be confusing at best and possibly worse.
- 		 */
+-		 */
 -		bzero((caddr_t)&info, sizeof(info));
 -		info.rti_ifa = ifa;
 -		info.rti_flags = flags | ifa->ifa_flags;
 -		info.rti_info[RTAX_DST] = dst;
 -		/* 
 -		 * doing this for compatibility reasons
--		 */
++		 * If it's a delete, check that if it exists,
++		 * it's on the correct interface or we might scrub
++		 * a route to another ifa which would
++		 * be confusing at best and possibly worse.
+ 		 */
 -		if (cmd == RTM_ADD)
 -			info.rti_info[RTAX_GATEWAY] =
 -			    (struct sockaddr *)&null_sdl;
