@@ -38,6 +38,7 @@ ptree_node_create (char *key, int keylen)
   x->child[0] = NULL;
   x->child[1] = NULL;
   x->data = NULL;
+  x->lock = 1;
 
   /* fill in the key */
   memcpy (x->key, key, keylen);
