@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-03-06 11:22:36.000000000 +0900
++++ in6.c	2005-03-06 11:33:53.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -107,27 +107,7 @@
  
  	/*
  	 * Give the interface a chance to initialize
-@@ -1735,6 +1752,7 @@
- 	 * XXX: the logic below rejects assigning multiple addresses on a p2p
- 	 * interface that share the same destination.
- 	 */
-+	dprint(("in6_ifinit: testprint 1\n"));
- 	plen = in6_mask2len(&ia->ia_prefixmask.sin6_addr, NULL); /* XXX */
- 	if (!(ia->ia_flags & IFA_ROUTE) && plen == 128 &&
- 	    ia->ia_dstaddr.sin6_family == AF_INET6) {
-@@ -1753,6 +1771,7 @@
- 	/*
- 	 * add a loopback route to self
- 	 */
-+	dprint(("in6_ifinit: testprint 2\n"));
- 	if (!(ia->ia_flags & IFA_ROUTE)
- 	    && (V_nd6_useloopback
- 		|| (ifp->if_flags & IFF_LOOPBACK))) {
-@@ -1761,9 +1780,11 @@
- 	}
- 
- 	/* Add ownaddr as loopback rtentry, if necessary (ex. on p2p link). */
-+	dprint(("in6_ifinit: testprint 3\n"));
+@@ -1764,6 +1781,7 @@
  	if (newhost) {
  		struct llentry *ln;
  		struct rtentry rt;
@@ -135,27 +115,27 @@
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
  
-@@ -1776,6 +1797,7 @@
- 		ln = lla_lookup(LLTABLE6(ifp), (LLE_CREATE | LLE_IFADDR | LLE_EXCLUSIVE),
- 		    (struct sockaddr *)&ia->ia_addr);
- 		IF_AFDATA_UNLOCK(ifp);
-+		dprint(("in6_ifinit: testprint 4\n"));
- 		if (ln != NULL) {
- 			ln->la_expire = 0;  /* for IPv6 this means permanent */
- 			ln->ln_state = ND6_LLINFO_REACHABLE;
-@@ -1791,8 +1813,11 @@
+@@ -1791,17 +1809,27 @@
  			/* */
  			LLE_WUNLOCK(ln);
  		}
-+		dprint(("in6_ifinit: testprint 5\n"));
++		dprint(("in6_ifinit: testprint 1\n"));
  
  		bzero(&rt, sizeof(rt));
++		dprint(("in6_ifinit: testprint 2\n"));
 +		//bzero(&rn, sizeof(rn));
 +		//rt.rt_nodes = &rn;
  		rt.rt_gateway = (struct sockaddr *)&gateway;
++		dprint(("in6_ifinit: testprint 3\n"));
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
-@@ -1802,6 +1827,7 @@
++		dprint(("in6_ifinit: testprint 4\n"));
+ 		rt_mask(&rt) = (struct sockaddr *)&mask;
++		dprint(("in6_ifinit: testprint 5\n"));
+ 		rt_key(&rt) = (struct sockaddr *)&addr;
++		dprint(("in6_ifinit: testprint 6\n"));
+ 		rt.rt_flags = RTF_UP | RTF_HOST | RTF_STATIC;
++		dprint(("in6_ifinit: testprint 7\n"));
  		rt_newaddrmsg(RTM_ADD, &ia->ia_ifa, 0, &rt);
  	}
  
