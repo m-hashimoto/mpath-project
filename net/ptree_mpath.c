@@ -51,12 +51,14 @@ debug_node_print(struct ptree_node *pn, int offset)
 				(unsigned char)pn->key[6],(unsigned char)pn->key[7],
 				pn->keylen - 8*(offset + 8) );
 		}
+#if 0
 		printf("[%3d.%3d.%3d.%3d] ",
 				gateway[4],gateway[5],gateway[6],gateway[7]);
 		
 		printf("[0x%x]\n",rt->rt_flags);
+#endif
 	}
-	//printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
+	printf("parent[%p] child[%p, %p]\n",pn->parent,pn->child[0],pn->child[1]);
 	return 0;
 }
 
