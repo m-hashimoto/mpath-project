@@ -936,11 +936,10 @@ ptree_inithead(head, off)
 {
 	dprint(("ptree_inithead Start\n"));
 	register struct ptree *rnh;
-	struct ptree_node *t;
+	register struct ptree_node *t;
 	int *data = NULL;
 	*data = 1;
 	
-	/*register struct ptree_node *t, *tt, *ttt;*/
 	if (*head){
 		dprint(("ptree_inithead End 1\n"));
 		return (1);
@@ -967,6 +966,7 @@ ptree_inithead(head, off)
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
+	dprint(("ptree_inithead: rnh->top->rn_falgs = %d\n",rnh->top->rn_flags));
 	dprint(("ptree_inithead End 3\n"));
 	return (1);
 }

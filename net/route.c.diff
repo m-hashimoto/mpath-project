@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-20 02:54:59.000000000 +0900
++++ route.c	2005-01-20 03:18:20.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -84,8 +84,8 @@
  	/* Get the offset to the requested table and fam. */
  	rnh += table * (AF_MAX+1) + fam;
  
-+	dprint(("rt_tables_get_rnh_ptr: rnh[fib=%d][fam=%d] = %p\n",table,fam,*rnh));
-+	dprint(("rt_tables_get_rnh_ptr: rnh_walktree = %p\n",(*rnh)->rnh_walktree));
++	dprint(("rt_tables_get_rnh_ptr: rnh[fib=%d][fam=%d] = %p\n",table,fam,rnh));
++	dprint(("rt_tables_get_rnh_ptr: rnh_walktree = %p\n",rnh->rnh_walktree));
 +	dprint(("rt_tables_get_rnh_ptr End\n"));
  	return (rnh);
  }
