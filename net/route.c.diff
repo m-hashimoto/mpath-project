@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-02-20 20:46:54.000000000 +0900
++++ route.c	2005-02-20 21:02:08.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -471,7 +471,7 @@
 +		rn = rnh->rnh_matchaddr(dst, rnh);
 +		dprint(("rtalloc1_fib: rn = %p\n",rn));
 +		if (rn/* && ((rn->rn_flags & RNF_ROOT) == 0)*/) {
-+				c_dst = (unsigned char *)rn;
++				c_dst = (unsigned char *)rn->key;
 +				dprint(("rtalloc1_fib: rn[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
 +								c_dst[0],c_dst[1],c_dst[2],c_dst[3],
 +								c_dst[4],c_dst[5],c_dst[6],c_dst[7],
@@ -1185,7 +1185,7 @@
  }
  
  /*
-@@ -768,495 +794,529 @@
+@@ -768,495 +794,535 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1945,6 +1945,12 @@
 +					rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +				}
 +				bcopy(gateway, rt->rt_gateway, glen);
++		unsigned char *g = (unsigned char *)gateway;
++		dprint(("rtreq_ADD: gateway[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d]\n",
++								g[0],g[1],g[2],g[3],
++								g[4],g[5],g[6],g[7],
++								g[8],g[9],g[10],g[11],
++								g[12],g[13],g[14],g[15]));
 +#if 0
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
 +						dprint(("rtreq_ADD: setgate error = %d\n",error));
@@ -2138,7 +2144,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1327,69 @@
+@@ -1267,71 +1333,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2262,7 +2268,7 @@
  }
  
  /*
-@@ -1339,228 +1397,232 @@
+@@ -1339,228 +1403,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
