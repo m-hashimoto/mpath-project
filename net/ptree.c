@@ -171,8 +171,10 @@ ptree_search (char *key, int keylen, struct ptree *t)
 		x = x->child[check_bit (key, x->keylen)];
 		dprint(("+-ptree_search: x = %p x->child = %p\n",match,x));
 	}
-	if(match)	
-		ptree_node_lock (match);
+/*
+ * 	if(match)	
+ *		ptree_node_lock (match);
+ */		
 	dprint(("+-ptree_search End match_node = %p\n",match));
 	return match;
 }
