@@ -554,10 +554,8 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		//int same, l, skip;
 		int l;
 		l = (int)LEN(dst);
-		dprint(("-rt_mpath_conflict: len[%d]\n",l));
 
 		rn = pnh->rnh_lookup((char *)dst, l, pnh->pnh_treetop);
-		dprint(("-rt_mpath_conflict: lookup[%p]\n",rn));
 		if (!rn)
 				return 0;
 
