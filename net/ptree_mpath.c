@@ -434,14 +434,17 @@ on1:
 	t = saved_t;
 	register struct ptree_mask *m;
 	m = t->rn_mklist;
-	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p",m));
+	dprint(("-ptree_matchaddr: saved_t->rn_mklist = %p mask = %p\n",m,m->rm_mask));
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
+					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",
+											rn_bit,m->rm_bit));
 					if (rn_bit <= m->rm_bit)
 							return (m->rm_leaf);
 			}
 			else {
 					off = min(t->rn_offset, matched_off);
+					print(("-ptree_matchaddr: off = %d\n",off));
 					x = ptree_search_m(v, t, m->rm_mask);
 					while (x && x->rn_mask != m->rm_mask)
 							x = x->rn_dupedkey;
@@ -451,6 +454,7 @@ on1:
 					}
 			}
 			m = m->rm_mklist;
+			dprint(("-ptree_matchaddr: next rm_mklist = %p\n",m));
 	}
 
 miss:
