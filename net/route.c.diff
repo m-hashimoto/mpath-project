@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 10:45:15.000000000 +0900
++++ route.c	2005-01-27 10:56:28.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1907,7 +1907,7 @@
 +								ifa_free(ifa);
 +						senderr(ENOBUFS);
 +				}
-+				//RT_LOCK_INIT(rt);
++				RT_LOCK_INIT(rt);
 +				rt->rt_flags = RTF_UP | flags;
 +				rt->rt_fibnum = fibnum;
 +			/*
@@ -1959,6 +1959,7 @@
 +				}
 +#endif
 +#ifdef FLOWTABLE
++				dprint(("rtreq_ADD: ifdef FLOWTABLn"));
 +				rt0 = NULL;
 +			/* XXX
 +			 * "flow-table" only support IPv4 at the moment.
@@ -2023,7 +2024,6 @@
 -			uma_zfree(V_rtzone, rt);
 +				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +				dprint(("rtreq_ADD: ndst into the rnh = %p\n",rnh));
-+				RT_LOCK_INIT(rt);
 +				RT_LOCK(rt);
 +				dprint(("rtreq_ADD: RT_LOCK\n"));
 +				
