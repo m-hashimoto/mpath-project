@@ -166,16 +166,14 @@ struct ptree_node
 struct ptree_node *ptree_lookup (void *key, void *mask, 
 		int keylen, struct ptree *t);
 struct ptree_node *ptree_search (char *key, int keylen, struct ptree *t);
-#if 0
 struct ptree_node 
  	*ptree_add (char *key, int keylen, void *data, struct ptree *t);
 void ptree_remove (struct ptree_node *v); 
 struct ptree_node *ptree_head (struct ptree *t);
-#endif
 struct ptree_node *ptree_next (struct ptree_node *v);
 
 struct ptree *ptree_create (void);
-/* void ptree_delete (struct ptree *t); */
+void ptree_delete (struct ptree *t);
 
 /*
  * Patricia trie API with multipath support

@@ -116,7 +116,6 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 /* ptree_search() returns the ptree_node with data
    that matches the key. If data is NULL, it is a branching node,
    and ptree_search() ignores it. no caller reference lock. */
-#if 0
 	struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
@@ -145,45 +144,6 @@ printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
 	}
 
 	return match;
-}
-#endif
-	struct ptree_node *
-ptree_search(key, keylen, t)
-	char *key;
-	int keylen;
-	struct ptree *t;
-{
-#ifdef DEBUG
-printf("ptree_search\n");
-printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
-#endif
-	register struct ptree_node *x;
-	register caddr_t v;
-
-	for (x = t->top, v = key; x->keylen <= keylen && x->rn_bit >= 0;) {
-#ifdef DEBUG
-printf("ptree_search: x->rn_bit = %d, x->rn_offset = %d\n",x->rn_bit,x->rn_offset);
-#endif
-		if (x->rn_bmask & v[x->rn_offset]){
-			x = x->rn_right;
-#ifdef DEBUG
-printf("go to right node\n");
-printf("ptree_search: x->rn_right = %p, keylen = %d\n",x->key,x->keylen);
-#endif
-		}
-		else{
-			x = x->rn_left;
-#ifdef DEBUG
-printf("go to left node\n");
-printf("ptree_search: x->rn_left = %p, keylen = %d\n",x->key,x->keylen);
-#endif
-		}
-	}
-#ifdef DEBUG
-printf("return node\n");
-printf("ptree_search: x = %p, keylen = %d\n",x->key,x->keylen);
-#endif
-	return (x);
 }
 
 	static void
@@ -244,7 +204,6 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 }
 
 /* locks the node */
-#if 0
    void
    ptree_node_lock (struct ptree_node *x)
    {
@@ -261,7 +220,6 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
    if (x->lock == 0)
    ptree_remove (x);
    }
-#endif
 
 /* locks for the tree holding
    but does not lock for the caller reference. */
