@@ -28,7 +28,6 @@ static struct ptree *mask_rnhead;
 static int
 debug_node_print(struct ptree_node *rn)
 {
-	printf("** debug_node_print Start **\n");
 	register struct rtentry *rt;
 	register struct sockaddr_in *rt_gate, *rn_dst, *rn_mask;
 	register struct in_addr *gate, *dst, *mask;
@@ -39,23 +38,22 @@ debug_node_print(struct ptree_node *rn)
 	rn_mask = (struct sockaddr_in *)rt_mask(rt);
 	rt_gate = (struct sockaddr_in *)rt->rt_gateway;
 	
-	if( rn_dst ){
+	if( rn_dst && rn_dst->sin_addr ){
 		dst = &rn_dst->sin_addr;
 		ip = (unsigned char *)dst;
-		printf("host %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("host %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rn_mask ){
+	if( rn_mask && rn_mask->sin_addr ){
 		mask = &rn_mask->sin_addr;
 		ip = (unsigned char *)mask;
-		printf("mask %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("mask %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
-	if( rt_gate ){
+	if( rt_gate && rt_gate->sin_addr ){
 		gate = &rt_gate->sin_addr;
 		ip = (unsigned char *)gate;
-		printf("gateway %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+		printf("gateway %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
 	}
 	printf("pn_flags 0x%x\n",rn->rn_flags);
-	printf("** debug_node_print End **\n");
 	return 0;
 }
 #endif /* DEBUG */
@@ -637,7 +635,6 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 		dprint(("-ptree_addroute: on2\n"));
 		*mp = ptree_new_mask(tt, *mp);
-		dprint(("**debug_node_print**\n"));
 		debug_node_print(tt);
 		dprint(("-ptree_addroute End\n"));
 		return tt;
@@ -975,7 +972,6 @@ ptree_walktree(h, f, w)
 
 			rnh = rt_tables_get_rnh(0, AF_INET);
 			rn = rnh->rnh_treetop;
-			dprint(("**debug_node_print**\n"));
 			for (;;) {
 				debug_node_print(rn);
 				base = rn;
