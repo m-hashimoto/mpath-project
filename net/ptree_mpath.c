@@ -56,7 +56,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("[0x%x] ",rt->rt_flags);
 #endif
 	}
-	printf("[%p, %p]\n",pn->child[0],pn->child[1]);
+	printf("[%p, %p]\n",PTREE_LEFT(pn),PTREE_RIGTH(pn));
 	return 0;
 }
 
@@ -230,7 +230,7 @@ ptree_matchaddr(v_arg, head)
 							(unsigned char)cp[8],(unsigned char)cp[9],
 							(unsigned char)cp[10],(unsigned char)cp[11],
 							vlen-8*head->pnh_offset));
-	if ( !memcmp(cp,cplim,vlen) )
+	if ( memcmp(cp,cplim,vlen) != 0 )
 		return 0;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
