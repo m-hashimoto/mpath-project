@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-30 05:13:21.000000000 +0900
++++ route.c	2005-01-31 02:46:37.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -350,7 +350,7 @@
  }
  
  /*
-@@ -320,156 +326,167 @@
+@@ -320,156 +326,165 @@
   *
   * The returned route, if any, is locked.
   */
@@ -416,7 +416,6 @@
 +				goto miss;
 +		}
 +		needlock = !(ignflags & RTF_RNH_LOCKED);
-+		dprint(("rtalloc1_fib: needlock = %d\n",needlock));
 +		if (needlock)
 +				RADIX_NODE_HEAD_RLOCK(rnh);
  #ifdef INVARIANTS	
@@ -452,9 +451,8 @@
 +		rn = rnh->rnh_matchaddr(dst, rnh);
 +		dprint(("rtalloc1_fib: rn = %p\n",rn));
 +		if (rn/* && ((rn->rn_flags & RNF_ROOT) == 0)*/) {
-+				dprint(("rtalloc1_fib: rn_flags = 0x%x\n",rn->rn_flags ));
 +				newrt = rt = RNTORT(rn);
-+				RT_LOCK_INIT(newrt); /* ? */
++				//RT_LOCK_INIT(newrt); /* ? */
 +				RT_LOCK(newrt);
 +				RT_ADDREF(newrt);
 +				if (needlock)
@@ -643,7 +641,7 @@
  }
  
  
-@@ -479,282 +496,283 @@
+@@ -479,282 +494,283 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -1153,7 +1151,7 @@
  }
  
  /*
-@@ -768,495 +786,523 @@
+@@ -768,495 +784,523 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -2100,7 +2098,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1313,69 @@
+@@ -1267,71 +1311,69 @@
  #undef ifpaddr
  #undef flags
  
@@ -2224,7 +2222,7 @@
  }
  
  /*
-@@ -1339,228 +1383,232 @@
+@@ -1339,228 +1381,232 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */

@@ -496,8 +496,11 @@ on1:
 	while (m) {
 			if (m->rm_flags & RNF_NORMAL) {
 					dprint(("-ptree_matchaddr: rn_bit = %d rm_bit = %d\n",rn_bit,m->rm_bit));
-					if (rn_bit <= m->rm_bit)
-							return (m->rm_leaf);
+					if (rn_bit <= m->rm_bit){
+						dprint(("-ptree_matchaddr: m->rm_leaf = %p\n",m->rm_leaf));
+						debug_node_print(m->rm_leaf);
+						return (m->rm_leaf);
+					}
 			}
 			else {
 					off = min(t->rn_offset, matched_off);
