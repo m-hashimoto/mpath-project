@@ -194,13 +194,11 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
-  if(!x->lock){
+  if(!x->lock)
     XRTLOG (LOG_ERR, "ptree_node_lock(%p): "
                   "ptree_node_lock() failed.\n", x);
-    return NULL;
-  }
-	
-  x->lock++;
+  else
+    x->lock++;
 }
 
 /* unlocks the node. if the lock(reference) becomes 0,
