@@ -249,12 +249,12 @@ ptree_matchaddr(v_arg, head)
 	}
 	debug_node_print(t);
 	if (t->mask){
-		vlen = (int)8*(LEN(t->mask) - head_off);
-		dprint(("-ptree_matchaddr: if(t->rn_mask) vlen = %d\n",vlen));
+		if ((LEN(t->mask)-head_off - head_zero) > 0 )
+			vlen = (int)8*(LEN(t->mask) - head_off - head_zero);
 	}
 
 	cp = t->key; cplim = v;
-	dprint(("-ptree_matchaddr:"));
+	dprint(("-ptree_matchaddr: vlen = %d\n",vlen));
 	if ( !memcmp(cp,cplim,vlen) )
 			goto miss;
 	dprint(("-ptree_matchaddr: match exactly as a host\n"));
