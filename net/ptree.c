@@ -299,6 +299,7 @@ ptree_add (char *key, int keylen, void *data, struct ptree *t)
   struct ptree_node *x;
   dprint(("--ptree_add: key[%p] keylen[%d] ptree[%p]\n",key,keylen,t));
   x = ptree_get (key, keylen, t);
+  dprint(("--ptree_add: x[%p]\n",x));
   if (! x)
     {
       XRTLOG (LOG_ERR, "ptree_add(%p,%d): "
