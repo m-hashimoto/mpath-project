@@ -972,8 +972,8 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	t = ptree_add(rn_zeros,off,data,rnh);
-	//t->keylen = (int)LEN(rn_zeros);
+	t = NULL;
+	//t = ptree_add(rn_zeros,off,data,rnh);
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 	dprint(("ptree_inithead: head = %p len = %d flag = %d\n",
 				t,t->keylen,t->rn_flags));
