@@ -76,7 +76,7 @@ check_bit (char *key, int keylen)
 static int
 ptree_match (char *keyi, char *keyj, int keylen)
 {
-	dprint(("--ptree_match Start: keylen[%d]\n",keylen));
+	dprint(("--ptree_match Start: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
   int bytes;
   int bits;
   bytes = keylen / 8;

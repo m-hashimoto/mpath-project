@@ -26,7 +26,7 @@ static int	head_zero = 8; /* head_off[byte] struct sockaddr_in */
 #include <netinet/in.h>
 		
 	int
-debug_node_print(struct ptree_node *pn, int off)
+debug_node_print(struct ptree_node *pn)
 {
 	printf("node[%p] ",pn);
 	if( pn->key ){
@@ -61,7 +61,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if(!pn)
 			goto done;
 		for (;;) {
-			debug_node_print(pn, pnh->pnh_offset);
+			debug_node_print(pn);
 			next = ptree_next(pn);
 			if( !next )
 				break;
