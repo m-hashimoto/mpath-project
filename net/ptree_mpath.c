@@ -16,7 +16,6 @@
 
 #include <sys/types.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 
 static char *pn_zeros, *pn_ones;
@@ -30,7 +29,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		char str[INET6_ADDRSTRLEN];
 		
 		sa6 = (struct sockaddr_in6 *)pn->key;
-		inet_ntop(AF_INET6, &(sa6->sin6_addr), str, INET6_ADDRSTRLEN);
+		__rpc_inet_ntop(AF_INET6, &(sa6->sin6_addr), str, INET6_ADDRSTRLEN);
 		printf("[%p] %s ",pn,str);
 #if 0
 			printf("[%p] [%X.%X.%X.%X.%X.%X.%X.%X/%d] ",pn,
@@ -52,7 +51,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		char str[INET_ADDRSTRLEN];
 		
 		sa = (struct sockaddr_in *)pn->key;
-		inet_ntop(AF_INET, &(sa->sin_addr), str, INET_ADDRSTRLEN);
+		__rpc_inet_ntop(AF_INET, &(sa->sin_addr), str, INET_ADDRSTRLEN);
 		printf("[%p] %s ",pn,str);
 #if 0
 		if(pn->mask){
