@@ -84,11 +84,12 @@ debug_tree_print(struct ptree_node_head *pnh)
 		printf("======= Debug tree print Start =======\n");
 		register struct ptree_node *pn, *next;
 		printf("ptree = %p\n",pnh);
-		if (!pnh) return (0);
-		pn = pnh->pnh_treetop->top;
+		if ( !pnh || !pnh->pnh_treetop )
+			    goto done;
+		pn = pnh->pnh_top;
 		printf("ptree = %p treetop = %p\n",pnh,pn);
 		if(!pn)
-			return (0);
+			goto done;
 		for (;;) {
 			debug_node_print(pn);
 			next = ptree_next(pn);
@@ -97,6 +98,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			pn = next;
 		}
 		/* NOTREACHED */
+done:
 		printf("======= Debug tree print End =======\n");
 		return (0);
 }
