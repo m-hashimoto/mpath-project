@@ -20,11 +20,39 @@ static struct ptree *mask_rnhead;
 
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) printf x; }
+
 #ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
-#endif
 
+static int
+debug_node_print(struct ptree_node *rn)
+{
+	register struct rtentry *rt;
+	register struct sockaddr_in *rt_gate, *rn_dst, *rn_mask;
+	register struct in_addr *gate, *dst, *mask;
+	register unsigned char *ip;
+			
+	rt = (struct rtentry *)rn;
+	rt_gate = (struct sockaddr_in *)rt->rt_gateway;
+	rn_dst = (struct sockaddr_in *)rt_key(rt);
+	rn_mask = (struct sockaddr_in *)rt_mask(rt);
+	gate = &rt_gate->sin_addr;
+	dst = &rn_dst->sin_addr;
+	mask = &rn_mask->sin_addr;
+	
+	ip = (unsigned char *)dst;
+	printf("host %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	ip = (unsigned char *)mask;
+	printf("mask %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	ip = (unsigned char *)gate;
+	printf("gateway %3d.%3d.%3d.%3d ",*ip,*ip+1,*ip+2,*ip+3);
+	printf("pn_flags 0x%x\n",rn->rn_flags);
+
+	return 0;
+}
+#endif /* DEBUG */
+	
 #define MKGet(m) {                                              \
 	if (rn_mkfreelist) {                                    \
 		m = rn_mkfreelist;                              \
@@ -601,8 +629,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		}
 on2:
 		dprint(("-ptree_addroute: on2\n"));
-		dprint(("-ptree_addroute: tt = %p nodes = %p tt->rn_bit = 0x%x tt->keylen = 0x%x tt->rn_flags = 0x%x\n",tt,treenodes,tt->rn_bit,tt->keylen,tt->rn_flags));
 		*mp = ptree_new_mask(tt, *mp);
+		dprint(("**debug_node_print**\n"));
+		debug_node_print(tt);
 		dprint(("-ptree_addroute End\n"));
 		return tt;
 }
@@ -936,25 +965,12 @@ ptree_walktree(h, f, w)
 		{
 			printf("INET ptree\n");
 			register struct ptree *rnh;
-			register struct rtentry *rt;
-			register struct sockaddr_in *rt_gate, *rn_dst;
-			register struct in_addr *gate, *dst;
-			register unsigned char *ip;
-			
 
 			rnh = rt_tables_get_rnh(0, AF_INET);
 			rn = rnh->rnh_treetop;
+			dprint(("**debug_node_print**\n"));
 			for (;;) {
-				rt = (struct rtentry *)rn;
-				rt_gate = (struct sockaddr_in *)rt->rt_gateway;
-				rn_dst = (struct sockaddr_in *)rt_key(rt);
-				gate = &rt_gate->sin_addr;
-				dst = &rn_dst->sin_addr;
-				ip = (unsigned char *)dst;
-				printf("pn_key: %d.%d.%d.%d ",*ip,*ip+1,*ip+2,*ip+3);
-				printf("pn_flags: 0x%x | ",rn->rn_flags);
-				ip = (unsigned char *)gate;
-				printf("gateway: %d.%d.%d.%d\n",*ip,*ip+1,*ip+2,*ip+3);
+				debug_node_print(rn);
 				base = rn;
 				next = ptree_next(base);
 				if( !next ){
