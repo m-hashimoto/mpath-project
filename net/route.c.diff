@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 09:46:14.000000000 +0900
++++ route.c	2005-01-27 09:58:37.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,510 @@
+@@ -768,495 +814,512 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1866,8 +1866,8 @@
 +						senderr(ENOBUFS);
 +				}
 +				RT_LOCK_INIT(rt);
-+				rt->rt_flags = RTF_UP | flags;
-+				rt->rt_fibnum = fibnum;
++				//rt->rt_flags = RTF_UP | flags;
++				//rt->rt_fibnum = fibnum;
 +			/*
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
@@ -1893,21 +1893,18 @@
 +						rt_maskedcopy(dst, ndst, netmask);
 +				} else
 +						bcopy(dst, ndst, dst->sa_len);
-+				/* ? */
 +				dprint(("rtreq_ADD: masked if needed\n"));
-+				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+				dprint(("rtreq_ADD: add node into the rnh = %p\n",rnh));
 +			/*
 +			 * We use the ifa reference returned by rt_getifa_fib().
 +			 * This moved from below so that rnh->rnh_addaddr() can
 +			 * examine the ifa and  ifa->ifa_ifp if it so desires.
 +			 */
-+				rt->rt_flags = RTF_UP | flags; /* ? */
-+				rt->rt_fibnum = fibnum; /* ? */
-+				rt->rt_ifa = ifa;
-+				rt->rt_ifp = ifa->ifa_ifp;
-+				rt->rt_rmx.rmx_weight = 1;
-+				dprint(("rtreq_ADD: set member into the rt.\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
++				//rt->rt_flags = RTF_UP | flags; /* ? */
++				//rt->rt_fibnum = fibnum; /* ? */
++				//rt->rt_ifa = ifa;
++				//rt->rt_ifp = ifa->ifa_ifp;
++				//rt->rt_rmx.rmx_weight = 1;
++				//dprint(("rtreq_ADD: set member into the rt.\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +#ifdef RADIX_MPATH
 +			/* do not permit exactly the same dst/mask/gw pair */
 +				if (rn_mpath_capable(rnh) &&
@@ -2027,7 +2024,12 @@
 -			Free(rt_key(rt));
 -			RT_LOCK_DESTROY(rt);
 -			uma_zfree(V_rtzone, rt);
-+				//rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
++				rt->rt_flags = RTF_UP | flags; /* ? */
++				rt->rt_fibnum = fibnum; /* ? */
++				rt->rt_ifa = ifa;
++				rt->rt_ifp = ifa->ifa_ifp;
++				rt->rt_rmx.rmx_weight = 1;
 +				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
@@ -2113,7 +2115,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1328,78 @@
+@@ -1267,71 +1330,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2246,7 +2248,7 @@
  }
  
  /*
-@@ -1339,228 +1407,235 @@
+@@ -1339,228 +1409,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
