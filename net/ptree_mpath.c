@@ -199,8 +199,10 @@ on1:
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
-	register caddr_t m = m_arg, n = n_arg;
-	register caddr_t lim, lim2 = lim = n + LEN(n);
+	//register caddr_t m = m_arg, n = n_arg;
+	//register caddr_t lim, lim2 = lim = n + LEN(n);
+	register char *m = m_arg, *n = n_arg;
+	register char *lim, *lim2 = lim = n + LEN(n);
 	int longer = LEN(n++) - (int)LEN(m++);
 	int masks_are_equal = 1;
 	dprint(("-ptree_refines Start\n"));
@@ -354,7 +356,8 @@ ptree_deladdr(v_arg, gate_arg, head)
 				dprint(("-ptree_deladdr End: ptree_node nothing\n"));
 				return (0);
 		}
-		register caddr_t cp, cplim;
+		//register caddr_t cp, cplim;
+		register char *cp, *cplim;
 		cp = tt->key; cplim = v; len = tt->keylen;
 #if 0
 		if(netmask && (LEN(netmask) > head->pnh_offset)){

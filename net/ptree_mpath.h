@@ -89,7 +89,6 @@ struct ptree_node
 					   	struct ptree_node *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
-
 #ifdef DEBUG
 void sprint_inet_ntoa(int af, void *sa);
 int debug_node_print(struct ptree_node *, int );
@@ -115,6 +114,8 @@ struct ptree_node *ptree_mpath_lookup(void *, void *, struct ptree *);
 int rt_mpath_delete(struct rtentry *, struct rtentry *);
 int     ptree4_mpath_inithead(void **, int);
 int     ptree6_mpath_inithead(void **, int);
+
+struct rtentry *multipath_nexthop(unsigned int seed, void *nexthops);
 #endif /* _KERNEL */
 #endif /* PTREE_MPATH */
 
