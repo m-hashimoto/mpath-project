@@ -35,7 +35,7 @@ struct ptree_node {
   void *data;
 
 #ifdef PTREE_MPATH
-  int rn_select;
+  int mpath_select;
   struct ptree_node *mpath_array[MAX_MPATH];
 #endif
 
@@ -151,8 +151,6 @@ struct ptree {
 #define	RADIX_NODE_HEAD_WLOCK_ASSERT(rnh) rw_assert(&(rnh)->rnh_lock, RA_WLOCKED)
 #endif /* _KERNEL */
 
-
-
 void     ptree_init(void);
 int      ptree_inithead(void **, int);
 int      ptree_refines(void *, void *);
@@ -169,6 +167,7 @@ struct ptree_node *ptree_search (char *key, int keylen, struct ptree *t);
 struct ptree_node 
  	*ptree_add (char *key, int keylen, void *data, struct ptree *t);
 void ptree_remove (struct ptree_node *v); 
+
 struct ptree_node *ptree_head (struct ptree *t);
 struct ptree_node *ptree_next (struct ptree_node *v);
 

@@ -40,6 +40,15 @@ ptree_node_create (char *key, int keylen)
   /* fill in the key */
   memcpy (x->key, key, keylen);
   x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+  
+  x->rn_bit = keylen;
+  x->rn_bmask = 0x80 >> (keylen & 7);
+  x->rn_offset = keylen >> 3;
+  x->rn_flags = RNF_ACTIVE;
+  x->rn_mklist = 0;
+#ifdef PTREE_MPATH
+  x->mpath_array = 0;
+#endif
 
   return x;
 }
