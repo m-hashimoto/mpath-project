@@ -49,6 +49,32 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("/%3d ",pn->keylen-8*offset);
 	}
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
+#ifdef PTREE_MPTH
+	struct rtentry *rt0 = pn->data;
+	struct rtentry **rt = rt0->mpath_array;
+	
+	printf("%12s ","gateway");
+	if(offset == 8){
+		printf("%13s","+");
+		sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
+		printf(" flags[0x%x]\n",rt->rt_flags);
+	} else {
+		printf("%13s","+");
+		sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
+		printf(" flags[0x%x]\n",rt->rt_flags);
+	}
+	
+	while(rt){
+		if(offset == 8){
+			sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
+			printf(" flags[0x%x]\n",rt->rt_flags);
+		} else {
+			sprint_inet_ntoa(AF_INET,rt->rt_gateway);
+			printf(" flags[0x%x]\n",rt->rt_flags);
+		}
+		rt++;
+	}
+#endif
 	return 0;
 }
 
