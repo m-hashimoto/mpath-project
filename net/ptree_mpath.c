@@ -429,7 +429,9 @@ ptree_walktree(h, f, w)
 
 	/* First time through node, go left */
 	printf("-ptree_walktree Start\n");
-	while (pn->child[0])
+	if(!pn)
+		return (0);
+	while (pn && pn->child[0])
 		pn = pn->child[0];
 	printf("-ptree_walktree: print 1\n");
 	for (;;) {
@@ -450,7 +452,7 @@ ptree_walktree(h, f, w)
 				return (error);
 		}
 #endif
-	printf("-ptree_walktree: print 1\n");
+	printf("-ptree_walktree: print 2\n");
 		pn = next;
 		if (!pn->parent)
 			return (0);
