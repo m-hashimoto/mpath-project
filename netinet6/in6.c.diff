@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-11 00:26:58.000000000 +0900
++++ in6.c	2005-02-11 02:15:39.000000000 +0900
 @@ -688,7 +688,7 @@
  	struct rtentry *rt;
  	int delay;
@@ -126,3 +126,11 @@
  	if (in6if_do_dad(ifp) && ((ifra->ifra_flags & IN6_IFF_NODAD) == 0) &&
  	    (ia->ia6_flags & IN6_IFF_TENTATIVE))
  	{
+@@ -1141,6 +1156,7 @@
+ 	return (error);
+ 
+   unlink:
++	printf("in6_update_ifa: unlink\n");
+ 	/*
+ 	 * XXX: if a change of an existing address failed, keep the entry
+ 	 * anyway.
