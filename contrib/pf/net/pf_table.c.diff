@@ -1,5 +1,5 @@
---- pf_table.c.org	2010-09-28 17:37:32.000000000 +0900
-+++ pf_table.c	2010-09-28 17:47:16.000000000 +0900
+--- pf_table.c.orig	2005-02-06 21:49:47.000000000 +0900
++++ pf_table.c	2005-02-06 21:51:16.000000000 +0900
 @@ -143,7 +143,7 @@
  #define	ADDR_NETWORK(ad)	((ad)->pfra_net < AF_BITS((ad)->pfra_af))
  #define	KENTRY_NETWORK(ke)	((ke)->pfrke_net < AF_BITS((ke)->pfrke_af))
@@ -91,7 +91,7 @@
  {
  	union sockaddr_union	 sa, mask;
 -	struct radix_node_head	*head = NULL;	/* make the compiler happy */
-+	struct ptree	*head = NULL;	/* make the compiler happy */
++	struct ptree_node_head	*head = NULL;	/* make the compiler happy */
  	struct pfr_kentry	*ke;
  	int			 s;
  
@@ -118,7 +118,7 @@
 -	struct radix_node	*rn;
 -	struct radix_node_head	*head = NULL;	/* make the compiler happy */
 +	struct ptree_node	*rn;
-+	struct ptree	*head = NULL;	/* make the compiler happy */
++	struct ptree_node_head	*head = NULL;	/* make the compiler happy */
  	int			 s;
  
  	bzero(ke->pfrke_node, sizeof(ke->pfrke_node));
@@ -141,7 +141,7 @@
 -	struct radix_node	*rn;
 -	struct radix_node_head	*head = NULL;	/* make the compiler happy */
 +	struct ptree_node	*rn;
-+	struct ptree	*head = NULL;	/* make the compiler happy */
++	struct ptree_node_head	*head = NULL;	/* make the compiler happy */
  	int			 s;
  
  	if (ke->pfrke_af == AF_INET)
@@ -179,10 +179,10 @@
  	} else {
  		/* kt cannot contain addresses */
 -		SWAP(struct radix_node_head *, kt->pfrkt_ip4,
-+		SWAP(struct ptree *, kt->pfrkt_ip4,
++		SWAP(struct ptree_node_head *, kt->pfrkt_ip4,
  		    shadow->pfrkt_ip4);
 -		SWAP(struct radix_node_head *, kt->pfrkt_ip6,
-+		SWAP(struct ptree *, kt->pfrkt_ip6,
++		SWAP(struct ptree_node_head *, kt->pfrkt_ip6,
  		    shadow->pfrkt_ip6);
  		SWAP(int, kt->pfrkt_cnt, shadow->pfrkt_cnt);
  		pfr_clstats_ktable(kt, tzero, 1);

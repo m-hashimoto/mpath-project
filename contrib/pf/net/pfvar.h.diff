@@ -1,5 +1,5 @@
---- pfvar.h.org	2010-09-28 17:37:46.000000000 +0900
-+++ pfvar.h	2010-09-28 17:38:51.000000000 +0900
+--- pfvar.h.orig	2005-02-06 21:49:41.000000000 +0900
++++ pfvar.h	2005-02-06 21:52:15.000000000 +0900
 @@ -45,7 +45,7 @@
  #include <sys/rwlock.h>
  #endif
@@ -24,8 +24,8 @@
  	SLIST_ENTRY(pfr_ktable)	 pfrkt_workq;
 -	struct radix_node_head	*pfrkt_ip4;
 -	struct radix_node_head	*pfrkt_ip6;
-+	struct ptree		*pfrkt_ip4;
-+	struct ptree		*pfrkt_ip6;
++	struct ptree_node_head	*pfrkt_ip4;
++	struct ptree_node_head	*pfrkt_ip6;
  	struct pfr_ktable	*pfrkt_shadow;
  	struct pfr_ktable	*pfrkt_root;
  	struct pf_ruleset	*pfrkt_rs;
