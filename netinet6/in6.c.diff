@@ -1,6 +1,14 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2005-02-10 22:09:19.000000000 +0900
-@@ -680,6 +680,7 @@
++++ in6.c	2005-02-10 23:05:26.000000000 +0900
+@@ -180,6 +180,7 @@
+ in6_control(struct socket *so, u_long cmd, caddr_t data,
+     struct ifnet *ifp, struct thread *td)
+ {
++		printf("in6_control Start\n");
+ 	struct	in6_ifreq *ifr = (struct in6_ifreq *)data;
+ 	struct	in6_ifaddr *ia = NULL;
+ 	struct	in6_aliasreq *ifra = (struct in6_aliasreq *)data;
+@@ -680,6 +681,7 @@
  in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
      struct in6_ifaddr *ia, int flags)
  {
@@ -8,7 +16,7 @@
  	int error = 0, hostIsNew = 0, plen = -1;
  	struct sockaddr_in6 dst6;
  	struct in6_addrlifetime *lt;
-@@ -688,7 +689,7 @@
+@@ -688,7 +690,7 @@
  	struct rtentry *rt;
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
@@ -17,7 +25,7 @@
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -697,6 +698,7 @@
+@@ -697,6 +699,7 @@
  	 * The destination address for a p2p link must have a family
  	 * of AF_UNSPEC or AF_INET6.
  	 */
@@ -25,7 +33,7 @@
  	if ((ifp->if_flags & IFF_POINTOPOINT) != 0 &&
  	    ifra->ifra_dstaddr.sin6_family != AF_INET6 &&
  	    ifra->ifra_dstaddr.sin6_family != AF_UNSPEC)
-@@ -705,6 +707,7 @@
+@@ -705,6 +708,7 @@
  	 * validate ifra_prefixmask.  don't check sin6_family, netmask
  	 * does not carry fields other than sin6_len.
  	 */
@@ -33,7 +41,7 @@
  	if (ifra->ifra_prefixmask.sin6_len > sizeof(struct sockaddr_in6))
  		return (EINVAL);
  	/*
-@@ -713,6 +716,7 @@
+@@ -713,6 +717,7 @@
  	 * We also require the prefix (when specified) mask is valid, and thus
  	 * reject a non-consecutive mask.
  	 */
@@ -41,7 +49,7 @@
  	if (ia == NULL && ifra->ifra_prefixmask.sin6_len == 0)
  		return (EINVAL);
  	if (ifra->ifra_prefixmask.sin6_len != 0) {
-@@ -733,6 +737,7 @@
+@@ -733,6 +738,7 @@
  	 * and the address is a scoped one, validate/set the scope
  	 * zone identifier.
  	 */
@@ -49,7 +57,7 @@
  	dst6 = ifra->ifra_dstaddr;
  	if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) != 0 &&
  	    (dst6.sin6_family == AF_INET6)) {
-@@ -758,6 +763,7 @@
+@@ -758,6 +764,7 @@
  	 * loopback interface.  If specified, the corresponding prefix length
  	 * must be 128.
  	 */
@@ -57,7 +65,7 @@
  	if (ifra->ifra_dstaddr.sin6_family == AF_INET6) {
  		if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) == 0) {
  			/* XXX: noisy message */
-@@ -772,6 +778,7 @@
+@@ -772,6 +779,7 @@
  		}
  	}
  	/* lifetime consistency check */
@@ -65,7 +73,7 @@
  	lt = &ifra->ifra_lifetime;
  	if (lt->ia6t_pltime > lt->ia6t_vltime)
  		return (EINVAL);
-@@ -792,6 +799,7 @@
+@@ -792,6 +800,7 @@
  	 * If this is a new address, allocate a new ifaddr and link it
  	 * into chains.
  	 */
@@ -73,7 +81,7 @@
  	if (ia == NULL) {
  		hostIsNew = 1;
  		/*
-@@ -838,6 +846,7 @@
+@@ -838,6 +847,7 @@
  	ia->ia6_updatetime = time_second;
  
  	/* set prefix mask */
@@ -81,7 +89,7 @@
  	if (ifra->ifra_prefixmask.sin6_len) {
  		/*
  		 * We prohibit changing the prefix length of an existing
-@@ -861,6 +870,7 @@
+@@ -861,6 +871,7 @@
  	 * install the new destination.  Note that the interface must be
  	 * p2p or loopback (see the check above.)
  	 */
@@ -89,7 +97,7 @@
  	if (dst6.sin6_family == AF_INET6 &&
  	    !IN6_ARE_ADDR_EQUAL(&dst6.sin6_addr, &ia->ia_dstaddr.sin6_addr)) {
  		int e;
-@@ -881,6 +891,7 @@
+@@ -881,6 +892,7 @@
  	 * to see if the address is deprecated or invalidated, but initialize
  	 * these members for applications.
  	 */
@@ -97,7 +105,7 @@
  	ia->ia6_lifetime = ifra->ifra_lifetime;
  	if (ia->ia6_lifetime.ia6t_vltime != ND6_INFINITE_LIFETIME) {
  		ia->ia6_lifetime.ia6t_expire =
-@@ -914,6 +925,7 @@
+@@ -914,6 +926,7 @@
  	 * so that corresponding MLD responses would not have a tentative
  	 * source address.
  	 */
@@ -105,7 +113,7 @@
  	ia->ia6_flags &= ~IN6_IFF_DUPLICATED;	/* safety */
  	if (hostIsNew && in6if_do_dad(ifp))
  		ia->ia6_flags |= IN6_IFF_TENTATIVE;
-@@ -1102,6 +1114,7 @@
+@@ -1102,6 +1115,7 @@
  	 * XXX It may be of use, if we can administratively
  	 * disable DAD.
  	 */
