@@ -298,9 +298,11 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			rt_array[n] = rt;
 		} else {
 			struct rtentry *rt = tt->data;
-			dprint(("-ptree_addroute: rt->mpath_array=%p\n",rt->mpath_array));
-			dprint(("-ptree_addroute: rt->mpath_array[0]=%p\n",rt->mpath_array[0]));
-			rt->mpath_array[0] = NULL;
+			struct rtentry **rt_array = rt->mpath_array;
+			dprint(("-ptree_addroute: rt_array=%p\n",rt_array));
+			dprint(("-ptree_addroute: *rt_array=%p\n",*rt_array));
+			dprint(("-ptree_addroute: rt_array[0]=%p\n",rt_array[0]));
+			rt_array = NULL;
 		}
 #endif /* mluti path */
 		return tt;
