@@ -1,5 +1,5 @@
 --- route.c.orig	2005-01-11 01:52:53.000000000 +0900
-+++ route.c	2005-01-27 16:37:41.000000000 +0900
++++ route.c	2005-01-27 16:48:54.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1180,7 +1180,7 @@
  }
  
  /*
-@@ -768,495 +814,533 @@
+@@ -768,495 +814,532 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -1916,7 +1916,7 @@
 +			 * Add the gateway. Possibly re-malloc-ing the storage for it
 +			 * 
 +			 */
-+				//RT_LOCK(rt);
++				RT_LOCK(rt);
 +				dprint(("rtreq_ADD: RT_LOCK > rt->rt_mtx = %p\n",
 +										&(rt)->rt_mtx));
 +				if ((error = rt_setgate(rt, dst, gateway)) != 0) {
@@ -2040,7 +2040,6 @@
 +				rt->rt_ifa = ifa;
 +				rt->rt_ifp = ifa->ifa_ifp;
 +				rt->rt_rmx.rmx_weight = 1;
-+				RT_LOCK(rt);
 +				dprint(("rtreq_ADD: set member into the rt(2).\n ifa = %p ifp = %p flags = 0x%x fibnum = %d\n",rt->rt_ifa,rt->rt_ifp,rt->rt_flags,rt->rt_fibnum));
 +				/*
 +				 * If it still failed to go into the tree,
@@ -2137,7 +2136,7 @@
  #undef senderr
  }
  
-@@ -1267,71 +1351,78 @@
+@@ -1267,71 +1350,78 @@
  #undef ifpaddr
  #undef flags
  
@@ -2270,7 +2269,7 @@
  }
  
  /*
-@@ -1339,228 +1430,235 @@
+@@ -1339,228 +1429,235 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
