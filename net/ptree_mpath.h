@@ -36,7 +36,8 @@ struct ptree_node_head {
 		struct  ptree_node *(*pnh_matchaddr)    /* locate based on sockaddr */
 				(void *v, struct ptree_node_head *head);
 		struct  ptree_node *(*pnh_lookup)       /* locate based on sockaddr */
-				(void *v, void *mask, int keylen, struct ptree_node_head *head);
+				(char *key, int keylen, struct ptree *top);
+				//(void *v, void *mask, int keylen, struct ptree_node_head *head);
 		struct  ptree_node *(*pnh_matchpkt)     /* locate based on packet hdr */
 				(void *v, struct ptree_node_head *head);
 		int     (*pnh_walktree)                 /* traverse tree */

@@ -553,7 +553,7 @@ ptree_addroute(v_arg, n_arg, head)
 {
 		dprint(("-ptree_addroute Start\n"));
 		debug_tree_print(head);
-		caddr_t netmask = (caddr_t)n_arg;
+		//caddr_t netmask = (caddr_t)n_arg;
 
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt;
