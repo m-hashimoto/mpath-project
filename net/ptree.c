@@ -37,7 +37,6 @@ char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 static struct ptree_node *
 ptree_node_create (char *key, int keylen)
 {
-  dprint(("--ptree_node_create Start\n"));
   struct ptree_node *x;
   int len;
 
@@ -47,8 +46,8 @@ ptree_node_create (char *key, int keylen)
   if (! x)
     return NULL;
 
-  //x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
-  x->key = (char *)((char *)x + sizeof (struct ptree_node));
+  ////x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
+  //x->key = (char *)((char *)x + sizeof (struct ptree_node));
   x->keylen = keylen;
   x->parent = NULL;
   x->child[0] = NULL;
