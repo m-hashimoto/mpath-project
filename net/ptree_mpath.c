@@ -262,7 +262,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 						
 						rt = rt_node->data;
 						rt0 = tt->data;
-						n = mpath_count(rt0);
+						n = ptree_mpath_count(rt0);
 						rt_array = rt0->mpath_array;
 						rt_array[n] = rt;
 				}
