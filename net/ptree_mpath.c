@@ -96,10 +96,15 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	int len = 8*LEN(v);
 	
 #ifdef DEBUG
-	if(head->pnh_offset == 8)
-		printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET, v); printf("\n");
-	else
-		printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET6, v); printf("\n");
+	if(head->pnh_offset == 8){
+		printf("-ptree_insert: addr");
+		sprint_inet_ntoa(AF_INET, v);
+		printf("/%d\n",len);
+	} else {
+		printf("-ptree_insert: addr");
+		sprint_inet_ntoa(AF_INET6, v);
+		printf("/%d\n",len);
+	}
 #endif
 #if 0
 	dprint(("-ptree_insert Start: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] headoff[%d]\n",
@@ -119,10 +124,15 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			len++;
 		len = 8*len;
 #ifdef DEBUG
-		if(head->pnh_offset == 8)
-			printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET, v); printf("\n");
-		else
-			printf("-ptree_insert: addr"); sprint_inet_ntoa(AF_INET6, v); printf("\n");
+		if(head->pnh_offset == 8){
+			printf("-ptree_insert: addr");
+			sprint_inet_ntoa(AF_INET, v);
+			printf("/%d\n",len);
+		} else {
+			printf("-ptree_insert: addr");
+			sprint_inet_ntoa(AF_INET6, v);
+			printf("/%d\n",len);
+		}
 #endif
 #if 0
 		dprint(("-ptree_insert: m[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d] headoff[%d]\n",
@@ -212,10 +222,15 @@ ptree_matchaddr(v_arg, head)
 	
 	vlen = (int)8*LEN(v);
 #ifdef DEBUG
-		if(head->pnh_offset == 8)
-			printf("-ptree_matchaddr: addr");sprint_inet_ntoa(AF_INET, v);printf("\n");
-		else
-			printf("-ptree_matchaddr: addr");sprint_inet_ntoa(AF_INET6, v);printf("\n");
+		if(head->pnh_offset == 8){
+			printf("-ptree_matchaddr: addr");
+			sprint_inet_ntoa(AF_INET, v);
+			printf("/%d\n",vlen);
+		} else {
+			printf("-ptree_matchaddr: addr");
+			sprint_inet_ntoa(AF_INET6, v);
+			printf("/%d\n",vlen);
+		}
 #endif
 #if 0
 	dprint(("-ptree_matchaddr: v[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
@@ -235,10 +250,15 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 #ifdef DEBUG
-		if(head->pnh_offset == 8)
-			printf("-ptree_insert: save_t");sprint_inet_ntoa(AF_INET, cp);printf("\n");
-		else
-			printf("-ptree_insert: save_t");sprint_inet_ntoa(AF_INET6, cp);printf("\n");
+		if(head->pnh_offset == 8){
+			printf("-ptree_insert: save_t");
+			sprint_inet_ntoa(AF_INET, cp);
+			printf("/%d\n",vlen);
+		}else{
+			printf("-ptree_insert: save_t");
+			sprint_inet_ntoa(AF_INET6, cp);
+			printf("/%d\n",vlen);
+		}
 #endif
 #if 0
 	dprint(("-ptree_matchaddr: cp[%d.%d.%d.%d|%d.%d.%d.%d|%d.%d.%d.%d/%d]\n",
