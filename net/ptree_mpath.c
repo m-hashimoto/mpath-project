@@ -143,7 +143,7 @@ static int ptree_satisfies_leaf(char *trial,
 	/* Find first bit at which v and t->rn_key differ */ 
 	{
 		register caddr_t cp2 = t->rn_key + head_off;
-		register int cmp_res;
+		//register int cmp_res;
 		caddr_t cplim = v + vlen;
 		
 		dprint(("-ptree_insert: "));
