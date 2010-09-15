@@ -1,9 +1,25 @@
 /* Additinal patricia trie Routing Functions.
- * 	ptree_matchaddr(v_arg, head)
- * 	ptree_addroute(v_arg, n_arg, head, treenode)	
- * 	ptree_deladdr(v_arg, netmask_arg, head)
- * 	ptree_walktree_from(h, a, m, f, w)
+ * 	ptree_matchaddr
+ * 	ptree_addroute
+ * 	ptree_deladdr
+ * 	ptree_walktree_from
+ * 	ptree_newpair
+ * 	ptree_inithead
+ * 	ptree_init
  */
+
+#include "opt_inet.h"
+#include "opt_inet6.h"
+
+#include <sys/param.h>
+#include <sys/systm.h>
+#include <sys/malloc.h>
+#include <sys/socket.h>
+#include <sys/domain.h>
+#include <sys/syslog.h>
+#include <net/ptree.h>
+#include <net/if.h>
+#include <net/if_var.h>
 
 static char *rn_zeros, *rn_ones, *addmask_key;
 	

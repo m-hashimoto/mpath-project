@@ -3,10 +3,10 @@
 
 #ifdef _KERNEL
 #include <sys/param.h>
-#include <sys/system.h>
+#include <sys/systm.h>
 #include <sys/malloc.h>
 #include <sys/syslog.h>
-#include <sys/net/ptree.h>
+#include <net/ptree.h>
 #else /*_KERNEL*/
 #include <stdio.h>
 #include <string.h>
@@ -83,7 +83,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 
 /* ptree_lookup() returns the node with the key if any.
    returned node may be a branching node (that doesn't have data). */
-static struct ptree_node *
+struct ptree_node *
 ptree_lookup (char *key, int keylen, struct ptree *t)
 {
   struct ptree_node *x;
@@ -179,21 +179,24 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 }
 
 /* locks the node */
-void
+/*
+	void
 ptree_node_lock (struct ptree_node *x)
 {
   x->lock++;
 }
-
+*/
 /* unlocks the node. if the lock(reference) becomes 0,
    it will be removed. */
-void
+/*
+	void
 ptree_node_unlock (struct ptree_node *x)
 {
   x->lock--;
   if (x->lock == 0)
     ptree_remove (x);
 }
+*/
 
 /* locks for the tree holding
    but does not lock for the caller reference. */
@@ -409,12 +412,8 @@ ptree_delete (struct ptree *t)
   XRTFREE (t);
 }
 
-
-static struct ptree_node *
-rn_newpair(v, b, nodes)
-	void *v;
-	int b;
-	struct ptree_node nodes[2];
+struct ptree_node *
+rn_newpair(void *v, int b, struct ptree_node *nodes)
 {
 	register struct ptree_node *tt = nodes, *t = tt + 1;
 	t->rn_bit = b;
