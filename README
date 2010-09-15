@@ -1,1 +1,17 @@
-test commit.
+# mpath project 2010
+
+1. Compile
+(1) Additional Kernel options.
+%vi /usr/src/sys/i386/conf/PATRICIA
+options		PATRICIA
+files		"/sys/conf/files.patricia"
+
+(2) confgure and make install
+/usr/src/sys/i386/conf/
+%config PATRICIA
+%cd ../compile/PATRICIA
+%make cleandepend && make depend
+%make && makeinstall
+%reboot
+
+will be updated...
