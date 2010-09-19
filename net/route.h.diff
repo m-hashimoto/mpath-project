@@ -1,0 +1,67 @@
+--- route.h.org	2010-09-06 08:54:26.000000000 +0900
++++ route.h	2010-09-15 19:57:02.000000000 +0900
+@@ -107,6 +107,10 @@
+  #endif
+ #endif
+ 
++#ifdef PATRICIA
++#define MPATH_MAX 10
++#endif
++
+ extern u_int rt_numfibs;	/* number fo usable routing tables */
+ extern u_int tunnel_fib;	/* tunnels use these */
+ extern u_int fwd_fib;		/* packets being forwarded use these routes */
+@@ -124,13 +128,22 @@
+  * gateway rather than the ultimate destination.
+  */
+ #ifndef RNF_NORMAL
+-#include <net/radix.h>
+-#ifdef RADIX_MPATH
+-#include <net/radix_mpath.h>
+-#endif
+-#endif
++ #ifdef PATRICIA
++  #include <net/ptree.h>
++ #else
++  #include <net/radix.h>
++ #endif /* PATRICIA */
++ #ifdef RADIX_MPATH
++  #include <net/radix_mpath.h>
++ #endif /* RADIX_MPATH */
++#endif /* RNF_NORMAL */
++
+ struct rtentry {
++#ifdef PATRICIA
++	struct	ptree_node rt_nodes[2];	/* tree glue, and other values */
++#else
+ 	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
++#endif
+ 	/*
+ 	 * XXX struct rtentry must begin with a struct radix_node (or two!)
+ 	 * because the code does some casts of a 'struct radix_node *'
+@@ -138,6 +151,16 @@
+ 	 */
+ #define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
+ #define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
++
++#ifdef PATRICIA
++	struct	sockaddr *rt_gateway[MPATH_MAX];	
++	int	rt_flags;	
++	int	rt_refcnt;
++	struct	ifnet *rt_ifp[MPATH_MAX];		
++	struct	ifaddr *rt_ifa[MPATH_MAX];		
++	struct	rt_metrics_lite rt_rmx;
++	u_int	rt_fibnum;
++#else
+ 	struct	sockaddr *rt_gateway;	/* value */
+ 	int	rt_flags;		/* up/down?, host/net */
+ 	int	rt_refcnt;		/* # held references */
+@@ -145,6 +168,8 @@
+ 	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
+ 	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
+ 	u_int	rt_fibnum;		/* which FIB */
++#endif
++
+ #ifdef _KERNEL
+ 	/* XXX ugly, user apps use this definition but don't have a mtx def */
+ 	struct	mtx rt_mtx;		/* mutex for routing entry */

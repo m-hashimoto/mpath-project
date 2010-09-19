@@ -1,0 +1,25 @@
+--- route.c.org	2010-09-06 08:54:21.000000000 +0900
++++ route.c	2010-09-15 17:47:59.000000000 +0900
+@@ -62,6 +62,10 @@
+ #include <net/radix_mpath.h>
+ #endif
+ 
++#ifdef PATRICIA
++#include <net/ptree.h>
++#endif
++
+ #include <netinet/in.h>
+ #include <netinet/ip_mroute.h>
+ 
+@@ -177,7 +181,11 @@
+ 		rt_numfibs = RT_MAXFIBS;
+ 	if (rt_numfibs == 0)
+ 		rt_numfibs = 1;
++#ifdef PATRICIA
++	ptree_init();
++#else
+ 	rn_init();	/* initialize all zeroes, all ones, mask table */
++#endif
+ }
+ SYSINIT(route_init, SI_SUB_PROTO_DOMAIN, SI_ORDER_THIRD, route_init, 0);
+ 
