@@ -1,17 +1,10 @@
 # mpath project 2010
+0. File
+README		: This file.
+install.sh	: Sell(tcsh) script for install.
 
-1. Compile
-(1) Additional Kernel options.
-%vi /usr/src/sys/i386/conf/PATRICIA
-options		PATRICIA
-files		"/sys/conf/files.patricia"
+1. Compile & Install
 
-(2) confgure and make install
-/usr/src/sys/i386/conf/
-%config PATRICIA
-%cd ../compile/PATRICIA
-%make cleandepend && make depend
-%make && makeinstall
-%reboot
+% ./install.sh
 
 will be updated...
