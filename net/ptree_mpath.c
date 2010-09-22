@@ -33,7 +33,7 @@ ptree_matchaddr(v_arg, head)
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
 	struct ptree_node *saved_t, *top = t;
-	int /*off = t->rn_offset,*/ vlen = LEN(cp), matched_off;
+	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
 	t = ptree_search(v, vlen, head);
@@ -63,7 +63,7 @@ ptree_matchaddr(v_arg, head)
 	 * lot of confusion.
 	 */
 	if (t->rn_flags & RNF_ROOT)
-		//t = t->rn_dupedkey;
+		t = t->rn_dupedkey;
 		return t;
 on1:
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */

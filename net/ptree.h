@@ -16,6 +16,7 @@ MALLOC_DECLARE(M_RTABLE);
 
 struct ptree_node {
   //char *key;
+  struct  ptree_mask *rn_mklist;
   caddr_t key;
   caddr_t rn_mask;
   int   keylen;
@@ -23,11 +24,12 @@ struct ptree_node {
   short	rn_bit;
   char	rn_bmask;
   u_char rn_flags;	/* enumerated next */
-#define PNF_NOMAL	1
-#define PNF_ROOT	2
+#define RNF_NOMAL	1
+#define RNF_ROOT	2
 #define RNF_ACTIVE	4
   struct ptree_node *parent;
   struct ptree_node *child[2];
+  struct ptree_node *rn_dupendkey;
   void *data;
 
   int rn_Off;
@@ -49,14 +51,28 @@ struct ptree_node {
 #define PTREE_RIGHT(x) (&(x)->child[1])
 #endif /*0*/
 
+struct ptree_mask {
+	short   rm_bit;                 /* bit offset; -1-index(netmask) */        char    rm_unused;              /* cf. rn_bmask */
+	u_char  rm_flags;               /* cf. rn_flags */
+	struct  radix_mask *rm_mklist;  /* more masks to try */
+	union   {
+		caddr_t rmu_mask;               /* the mask */
+		struct  radix_node *rmu_leaf;   /* for normal routes */
+	}       rm_rmu;
+	int     rm_refs;                /* # of references to this struct */
+};
+
+#define rm_mask rm_rmu.rmu_mask
+#define rm_leaf rm_rmu.rmu_leaf         /* extra field would make 32 bytes */
+
 struct ptree {
-  struct ptree_node *top;
-  int	 rnh_addsize;	/* permit, but not require fixed keys */
-  int	 rnh_pktsize;   /* permit, but not require fixed keys */
-  struct ptree_node rnh_nodes[3]; /* empty tree for comon case */
-  int	 rnh_multipath;	/* multipath capable ? */
+	struct ptree_node *top;
+	int	 rnh_addsize;	/* permit, but not require fixed keys */
+	int	 rnh_pktsize;   /* permit, but not require fixed keys */
+	struct ptree_node rnh_nodes[3]; /* empty tree for comon case */
+	int	 rnh_multipath;	/* multipath capable ? */
 #ifdef _KERNEL
-  struct rwlock rnh_lock; /* locks entire */
+	struct rwlock rnh_lock; /* locks entire */
 #endif
 };
 
@@ -87,7 +103,7 @@ struct ptree {
 #define Free(p) free((caddr_t)p, M_RTABLE);
 
 #define	RADIX_NODE_HEAD_LOCK_INIT(rnh)	\
-    rw_init_flags(&(rnh)->rnh_lock, "radix node head", 0)
+	rw_init_flags(&(rnh)->rnh_lock, "radix node head", 0)
 #define	RADIX_NODE_HEAD_LOCK(rnh)	rw_wlock(&(rnh)->rnh_lock)
 #define	RADIX_NODE_HEAD_UNLOCK(rnh)	rw_wunlock(&(rnh)->rnh_lock)
 #define	RADIX_NODE_HEAD_RLOCK(rnh)	rw_rlock(&(rnh)->rnh_lock)
