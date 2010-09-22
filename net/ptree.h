@@ -24,12 +24,12 @@ struct ptree_node {
   short	rn_bit;
   char	rn_bmask;
   u_char rn_flags;	/* enumerated next */
-#define RNF_NOMAL	1
+#define RNF_NORMAL	1
 #define RNF_ROOT	2
 #define RNF_ACTIVE	4
   struct ptree_node *parent;
   struct ptree_node *child[2];
-  struct ptree_node *rn_dupendkey;
+  struct ptree_node *rn_dupedkey;
   void *data;
 
   int rn_Off;
@@ -54,16 +54,17 @@ struct ptree_node {
 struct ptree_mask {
 	short   rm_bit;                 /* bit offset; -1-index(netmask) */        char    rm_unused;              /* cf. rn_bmask */
 	u_char  rm_flags;               /* cf. rn_flags */
-	struct  radix_mask *rm_mklist;  /* more masks to try */
+	struct  ptree_mask *rm_mklist;  /* more masks to try */
 	union   {
 		caddr_t rmu_mask;               /* the mask */
-		struct  radix_node *rmu_leaf;   /* for normal routes */
-	}       rm_rmu;
+		struct  ptree_node *rmu_leaf;   /* for normal routes */
+	}rm_rmu;
 	int     rm_refs;                /* # of references to this struct */
 };
 
 #define rm_mask rm_rmu.rmu_mask
 #define rm_leaf rm_rmu.rmu_leaf         /* extra field would make 32 bytes */
+typedef int walktree_f_t(struct ptree_node *, void *);
 
 struct ptree {
 	struct ptree_node *top;
@@ -75,6 +76,8 @@ struct ptree {
 	struct rwlock rnh_lock; /* locks entire */
 #endif
 };
+
+#define rnh_treetop top
 
 #ifdef _KERNEL
 #define XRTMALLOC(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT | M_ZERO))

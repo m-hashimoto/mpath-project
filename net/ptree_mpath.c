@@ -22,6 +22,9 @@
 #include <net/if_var.h>
 
 static char *rn_zeros, *rn_ones, *addmask_key;
+static int      max_keylen;
+static struct radix_mask *rn_mkfreelist;
+static struct radix_node_head *mask_rnhead;
 	
 	struct ptree_node *
 ptree_matchaddr(v_arg, head)
@@ -91,7 +94,7 @@ on1:
 	t = saved_t;
 	/* start searching up the tree */
 	do {
-		register struct radix_mask *m;
+		register struct ptree_mask *m;
 		t = t->rn_parent;
 		m = t->rn_mklist;
 		/*
@@ -130,7 +133,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	short b = 0, b_leaf = 0;
 	int keyduplicated;
 	caddr_t mmask;
-	struct radix_mask *m, **mp;
+	struct ptree_mask *m, **mp;
 
 	/*
 	 * In dealing with non-contiguous masks, there may be
@@ -282,7 +285,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	struct ptree *head;
 {
 	register struct ptree_node *t, *p, *x, *tt;
-	struct radix_mask *m, *saved_m, **mp;
+	struct ptree_mask *m, *saved_m, **mp;
 	struct ptree_node *dupedkey, *saved_tt, *top;
 	caddr_t v, netmask;
 	int b, head_off, vlen;
@@ -467,16 +470,18 @@ out:
  */
 static int
 ptree_walktree_from(h, a, m, f, w)
-	struct radix_node_head *h;
+	struct ptree *h;
 	void *a, *m;
 	walktree_f_t *f;
 	void *w;
 {
+	printf("ptree_walktree_from\n");
+
 	int error;
-	struct radix_node *base, *next;
+	struct ptree_node *base, *next;
 	u_char *xa = (u_char *)a;
 	u_char *xm = (u_char *)m;
-	register struct radix_node *rn, *last = 0 /* shut up gcc */;
+	register struct ptree_node *rn, *last = 0 /* shut up gcc */;
 	int stopping = 0;
 	int lastb;
 
@@ -570,6 +575,7 @@ ptree_newpair(v, b, nodes)
 	int b;
 	struct ptree_node nodes[2];
 {
+	printf("ptree_newpair\n");
 	register struct ptree_node *tt = nodes, *t = tt + 1;
 	t->rn_bit = b; 
 	t->rn_bmask = 0x80 >> (b & 7);  
@@ -600,6 +606,7 @@ ptree_inithead(head, off)
 	void **head;
 	int off;
 {
+	printf("ptree_inithead\n");
 	register struct ptree *rnh;
 	register struct ptree_node *t, *tt, *ttt;
 	if (*head)
@@ -635,6 +642,7 @@ ptree_inithead(head, off)
 	void
 ptree_init()
 {
+	printf("ptree_init\n");
 	char *cp, *cplim;
 #ifdef _KERNEL
 	struct domain *dom;

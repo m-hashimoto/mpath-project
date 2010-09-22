@@ -5,7 +5,7 @@ echo mpath project install...
 #set conf2 = "./conf/options.patrisia"
 set conf = "./conf/*"
 set kconf = "./i386/conf/PATRICIA"
-set cprg = "./net/*"
+set cprg = "./net/*.diff"
 
 cp ${conf} /usr/src/sys/conf/
 cp ${kconf} /usr/src/sys/i386/conf/

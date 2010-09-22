@@ -2,10 +2,10 @@
 
 0. File
 README		: This file.
-install.sh	: Sell(tcsh) script for install.
+install.sh	: Sell(csh/tcsh) script for install.
 
 1. Compile & Install
-
 % ./install.sh
+% reboot
 
 will be updated...
