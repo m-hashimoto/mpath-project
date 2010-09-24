@@ -411,32 +411,3 @@ ptree_delete (struct ptree *t)
 
   XRTFREE (t);
 }
-
-struct ptree_node *
-rn_newpair(void *v, int b, struct ptree_node *nodes)
-{
-	register struct ptree_node *tt = nodes, *t = tt + 1;
-	t->rn_bit = b;
-	t->rn_bmask = 0x80 >> (b & 7);
-	t->rn_left = tt;
-	t->rn_offset = b >> 3;
-
-#if 0  /* XXX perhaps we should fill these fields as well. */
-	t->rn_parent = t->rn_right = NULL;
-
-	tt->rn_mask = NULL;
-	tt->rn_bmask = 0;
-#endif
-	tt->rn_bit = -1;
-	tt->rn_key = (caddr_t)v;
-	tt->rn_parent = t;
-	tt->rn_flags = t->rn_flags = RNF_ACTIVE;
-#ifdef RN_DEBUG
-	tt->rn_info = rn_nodenum++; t->rn_info = rn_nodenum++;
-	tt->rn_twin = t;
-	tt->rn_ybro = rn_clist;
-	rn_clist = tt;
-#endif
-	return t;
-}
-

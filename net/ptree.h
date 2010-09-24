@@ -133,8 +133,4 @@ struct ptree_node *ptree_next (struct ptree_node *v);
 
 struct ptree *ptree_create (void);
 void ptree_delete (struct ptree *t);
-
-struct ptree_node *rn_newpair(void *v, int b, struct ptree_node *nodes);
-
 #endif /*_PTREE_H_*/
-

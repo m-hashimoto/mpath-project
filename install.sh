@@ -5,11 +5,15 @@ echo mpath project install...
 #set conf2 = "./conf/options.patrisia"
 set conf = "./conf/*"
 set kconf = "./i386/conf/PATRICIA"
-set cprg = "./net/*.diff"
+set diff = "./net/*.diff"
+set cprg = "./net/*.c"
+set head = "./net/*.h"
 
 cp ${conf} /usr/src/sys/conf/
 cp ${kconf} /usr/src/sys/i386/conf/
+cp ${diff} /usr/src/sys/net/
 cp ${cprg} /usr/src/sys/net/
+cp ${head} /usr/src/sys/net/
 
 cd /usr/src/sys/conf
 patch -N < options.i386.diff
@@ -23,4 +27,5 @@ config PATRICIA
 
 cd ../compile/PATRICIA
 make cleandepend && make depend
-make && make install
+make
+#make install
