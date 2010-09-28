@@ -973,9 +973,6 @@ ptree_inithead(head, off)
 	rnh->rnh_walktree = ptree_walktree;
 	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
-#ifdef DEBUG
-	printf("off %d\n",off);
-#endif
 	return (1);
 }
 
