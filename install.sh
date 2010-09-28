@@ -72,5 +72,5 @@ config -g PATRICIA
 cd ../compile/PATRICIA
 make cleandepend
 make depend
-#make
+make
 #make install
