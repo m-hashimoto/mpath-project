@@ -85,6 +85,7 @@ options 	HZ=1000
 options		PATRICIA
 
 # for debug
+options		RN_DEBUG
 options		DEBUG
 
 # To make an SMP kernel, the next two lines are needed
