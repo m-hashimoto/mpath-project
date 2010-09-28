@@ -52,6 +52,7 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 	int *dupentry; 
 	struct ptree_node nodes[2];
 {
+	printf("ptree_insert\n");
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
 	int head_off = top->rn_offset, vlen = (int)LEN(v);
@@ -117,6 +118,7 @@ ptree_addmask(n_arg, search, skip)
 	int search, skip;
 	void *n_arg;
 {
+	printf("ptree_addmask\n");
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
 	register caddr_t cp, cplim;
@@ -192,6 +194,7 @@ ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
 	void *v_arg, *m_arg;
 {
+	printf("ptree_seach_m\n");
 	register struct ptree_node *x;
 	register caddr_t v = v_arg, m = m_arg;
 
@@ -209,6 +212,7 @@ ptree_search_m(v_arg, head, m_arg)
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
+	printf("ptree_refines\n");
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
 	int longer = LEN(n++) - (int)LEN(m++);
@@ -236,6 +240,7 @@ ptree_refines(m_arg, n_arg)
 ptree_lexobetter(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
+	printf("ptree_lexobetter\n");
 	register u_char *mp = m_arg, *np = n_arg, *lim;
 
 	if (LEN(mp) > LEN(np))  
@@ -252,6 +257,7 @@ ptree_new_mask(tt, next)
 	register struct ptree_node *tt; 
 	register struct ptree_mask *next;
 {      
+	printf("ptree_new_mask\n");
 	register struct ptree_mask *m;
 
 	MKGet(m);
@@ -277,6 +283,7 @@ ptree_satisfies_leaf(trial, leaf, skip)
 	register struct ptree_node *leaf;
 	int skip;
 {
+	printf("ptree_satisfines_leaf\n");
 	register char *cp = trial, *cp2 = leaf->rn_key, *cp3 = leaf->rn_mask;
 	char *cplim;
 	int length = min(LEN(cp), LEN(cp2));
@@ -297,6 +304,7 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree *head;
 {
+	printf("ptree_matchaddr\n");
 	caddr_t v = v_arg;
 	register struct ptree_node *t = head->top, *x;
 	register caddr_t cp = v, cp2;
@@ -393,6 +401,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	struct ptree *head;
 	struct ptree_node treenodes[2];
 {
+	printf("ptree_addroute\n");
 	caddr_t v = (caddr_t)v_arg, netmask = (caddr_t)n_arg;
 	register struct ptree_node *t, *x = 0, *tt;
 	struct ptree_node *saved_tt, *top = head->rnh_treetop;
@@ -550,6 +559,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	void *v_arg, *netmask_arg;
 	struct ptree *head;
 {
+	printf("ptree_deladdr\n");
 	register struct ptree_node *t, *p, *x, *tt;
 	struct ptree_mask *m, *saved_m, **mp;
 	struct ptree_node *dupedkey, *saved_tt, *top;
@@ -841,6 +851,7 @@ ptree_walktree(h, f, w)
 	walktree_f_t *f;
 	void *w;
 {
+	printf("ptree_walktree\n");
 	int error;
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
