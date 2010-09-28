@@ -39,6 +39,11 @@ cd /usr/src/sys/contrib/ipfilter/netinet/
 patch -R < ip_pool.h.diff
 patch -R < ip_pool.c.diff
 rm *.diff
+cd ../../pf/net
+patch -R < pf.c.diff
+patch -R < pf_table.c.diff
+patch -R < pfvar.h.diff
+rm *.diff
 
 cd /usr/src/sys/fs/nfs/
 patch -R < nfsport.h.diff

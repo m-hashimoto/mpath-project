@@ -1,0 +1,11 @@
+--- in6_proto.c.org	2010-09-28 11:49:36.000000000 +0900
++++ in6_proto.c	2010-09-28 11:49:57.000000000 +0900
+@@ -84,7 +84,7 @@
+ #include <sys/sysctl.h>
+ 
+ #include <net/if.h>
+-#include <net/radix.h>
++#include <net/ptree.h>
+ #include <net/route.h>
+ #ifdef RADIX_MPATH
+ #include <net/radix_mpath.h>

@@ -1,0 +1,47 @@
+--- nd6_rtr.c.org	2010-09-28 11:00:11.000000000 +0900
++++ nd6_rtr.c	2010-09-28 11:29:04.000000000 +0900
+@@ -53,7 +53,7 @@
+ #include <net/if_types.h>
+ #include <net/if_dl.h>
+ #include <net/route.h>
+-#include <net/radix.h>
++#include <net/ptree.h>
+ #include <net/vnet.h>
+ 
+ #include <netinet/in.h>
+@@ -84,7 +84,7 @@
+ static void in6_init_address_ltimes __P((struct nd_prefix *,
+ 	struct in6_addrlifetime *));
+ 
+-static int rt6_deleteroute(struct radix_node *, void *);
++static int rt6_deleteroute(struct ptree_node *, void *);
+ 
+ VNET_DECLARE(int, nd6_recalc_reachtm_interval);
+ #define	V_nd6_recalc_reachtm_interval	VNET(nd6_recalc_reachtm_interval)
+@@ -1557,7 +1557,7 @@
+ 	struct nd_prefix *opr;
+ 	u_long rtflags;
+ 	int error = 0;
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	struct rtentry *rt = NULL;
+ 	char ip6buf[INET6_ADDRSTRLEN];
+ 	struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
+@@ -2076,7 +2076,7 @@
+ void
+ rt6_flush(struct in6_addr *gateway, struct ifnet *ifp)
+ {
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	int s = splnet();
+ 
+ 	/* We'll care only link-local addresses */
+@@ -2096,7 +2096,7 @@
+ }
+ 
+ static int
+-rt6_deleteroute(struct radix_node *rn, void *arg)
++rt6_deleteroute(struct ptree_node *rn, void *arg)
+ {
+ #define SIN6(s)	((struct sockaddr_in6 *)s)
+ 	struct rtentry *rt = (struct rtentry *)rn;

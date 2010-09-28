@@ -1,0 +1,109 @@
+--- in6_rmx.c.org	2010-09-28 11:00:01.000000000 +0900
++++ in6_rmx.c	2010-09-28 12:03:59.000000000 +0900
+@@ -116,13 +116,13 @@
+ /*
+  * Do what we need to do when inserting a route.
+  */
+-static struct radix_node *
+-in6_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
+-    struct radix_node *treenodes)
++static struct ptree_node *
++in6_addroute(void *v_arg, void *n_arg, struct ptree *head,
++    struct ptree_node *treenodes)
+ {
+ 	struct rtentry *rt = (struct rtentry *)treenodes;
+ 	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)rt_key(rt);
+-	struct radix_node *ret;
++	struct ptree_node *ret;
+ 
+ 	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
+ 	if (IN6_IS_ADDR_MULTICAST(&sin6->sin6_addr))
+@@ -153,7 +153,7 @@
+ 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
+ 		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
+ 
+-	ret = rn_addroute(v_arg, n_arg, head, treenodes);
++	ret = ptree_addroute(v_arg, n_arg, head, treenodes);
+ 	if (ret == NULL) {
+ 		struct rtentry *rt2;
+ 		/*
+@@ -187,10 +187,10 @@
+  * were managing the route, stop doing so and set the expiration timer
+  * back off again.
+  */
+-static struct radix_node *
+-in6_matroute(void *v_arg, struct radix_node_head *head)
++static struct ptree_node *
++in6_matroute(void *v_arg, struct ptree *head)
+ {
+-	struct radix_node *rn = rn_match(v_arg, head);
++	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
+ 	struct rtentry *rt = (struct rtentry *)rn;
+ 
+ 	if (rt && rt->rt_refcnt == 0) { /* this is first reference */
+@@ -222,7 +222,7 @@
+     &VNET_NAME(rtq_toomany6) , 0, "");
+ 
+ struct rtqk_arg {
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	int mode;
+ 	int updating;
+ 	int draining;
+@@ -237,7 +237,7 @@
+  * nothing has a timeout longer than the current value of rtq_reallyold6.
+  */
+ static int
+-in6_rtqkill(struct radix_node *rn, void *rock)
++in6_rtqkill(struct ptree_node *rn, void *rock)
+ {
+ 	struct rtqk_arg *ap = rock;
+ 	struct rtentry *rt = (struct rtentry *)rn;
+@@ -287,7 +287,7 @@
+ in6_rtqtimo(void *rock)
+ {
+ 	CURVNET_SET_QUIET((struct vnet *) rock);
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	struct rtqk_arg arg;
+ 	struct timeval atv;
+ 	static time_t last_adjusted_timeout = 0;
+@@ -343,7 +343,7 @@
+  * Age old PMTUs.
+  */
+ struct mtuex_arg {
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	time_t nextstop;
+ };
+ 
+@@ -351,7 +351,7 @@
+ #define	V_rtq_mtutimer			VNET(rtq_mtutimer)
+ 
+ static int
+-in6_mtuexpire(struct radix_node *rn, void *rock)
++in6_mtuexpire(struct ptree_node *rn, void *rock)
+ {
+ 	struct rtentry *rt = (struct rtentry *)rn;
+ 	struct mtuex_arg *ap = rock;
+@@ -378,7 +378,7 @@
+ in6_mtutimo(void *rock)
+ {
+ 	CURVNET_SET_QUIET((struct vnet *) rock);
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	struct mtuex_arg arg;
+ 	struct timeval atv;
+ 
+@@ -414,9 +414,9 @@
+ int
+ in6_inithead(void **head, int off)
+ {
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 
+-	if (!rn_inithead(head, offsetof(struct sockaddr_in6, sin6_addr) << 3))
++	if (!ptree_inithead(head, offsetof(struct sockaddr_in6, sin6_addr) << 3))
+ 		return 0;		/* See above */
+ 
+ 	if (off == 0)		/* See above */

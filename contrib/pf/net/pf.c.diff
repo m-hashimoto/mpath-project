@@ -1,0 +1,20 @@
+--- pf.c.org	2010-09-28 17:37:17.000000000 +0900
++++ pf.c	2010-09-28 17:40:31.000000000 +0900
+@@ -5976,7 +5976,7 @@
+ #else
+ 	struct route		 ro;
+ #endif
+-	struct radix_node	*rn;
++	struct ptree_node	*rn;
+ 	struct rtentry		*rt;
+ 	struct ifnet		*ifp;
+ 
+@@ -6035,7 +6035,7 @@
+ 
+ 		/* Perform uRPF check if passed input interface */
+ 		ret = 0;
+-		rn = (struct radix_node *)ro.ro_rt;
++		rn = (struct ptree_node *)ro.ro_rt;
+ 		do {
+ 			rt = (struct rtentry *)rn;
+ #ifndef __FreeBSD__ /* CARPDEV */
