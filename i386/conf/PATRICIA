@@ -77,12 +77,15 @@ options		FLOWTABLE		# per-cpu routing cache
 #options 	KDTRACE_HOOKS		# Kernel DTrace hooks
 
 # dummynet options
-#options 	IPFIREWALL
-#options 	DUMMYNET
-#options 	HZ=1000
+options 	IPFIREWALL
+options 	DUMMYNET
+options 	HZ=1000
 
 # patricia-trie for multi path routing
 options		PATRICIA
+
+# for debug
+options		DEBUG
 
 # To make an SMP kernel, the next two lines are needed
 options 	SMP			# Symmetric MultiProcessor Kernel
