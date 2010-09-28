@@ -5,21 +5,8 @@ README			:This file.
 install.sh		:Sell(csh/tcsh) script for install.
 uninstall.sh		:Sell script for uninstall(unpacth).
 
-conf/options.i386.diff	:Kernel option's patch file.
-     files.patricia	:New files added to the kernel.
 
-i386/conf/PATRICIA	:Kernel configuration.
-
-net/ptree.c		:Programs for multi path rouuting.
-    ptree.h		:
-    ptree_mpath.c	:
-    route.c.diff	:
-    route.h.diff	:
-
-
-1. Compile & Install
-% ./install.sh
-% reboot
-
-
-will be updated...
+--------------------------------------
+UPDATA
+--------------------------------------
+2010/09/29 Patricia and Radix replaced.
