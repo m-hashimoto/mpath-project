@@ -1,0 +1,13 @@
+--- files.org	2010-09-28 08:55:05.000000000 +0900
++++ files	2010-09-28 09:06:35.000000000 +0900
+@@ -2226,8 +2226,8 @@
+ net/mppcd.c			optional netgraph_mppc_compression
+ net/netisr.c			standard
+ net/pfil.c			optional ether | inet
+-net/radix.c			standard
+-net/radix_mpath.c		standard
++net/ptree.c			optional patricia
++net/ptree_mpath.c		optional patricia
+ net/raw_cb.c			standard
+ net/raw_usrreq.c		standard
+ net/route.c			standard

@@ -1,0 +1,48 @@
+--- rtsock.c.org	2010-09-28 10:09:44.000000000 +0900
++++ rtsock.c	2010-09-28 14:50:50.000000000 +0900
+@@ -105,7 +105,7 @@
+ 			caddr_t cp, struct walkarg *w);
+ static int	rt_xaddrs(caddr_t cp, caddr_t cplim,
+ 			struct rt_addrinfo *rtinfo);
+-static int	sysctl_dumpentry(struct radix_node *rn, void *vw);
++static int	sysctl_dumpentry(struct ptree_node *rn, void *vw);
+ static int	sysctl_iflist(int af, struct walkarg *w);
+ static int	sysctl_ifmalist(int af, struct walkarg *w);
+ static int	route_output(struct mbuf *m, struct socket *so);
+@@ -462,7 +462,7 @@
+ #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
+ 	struct rt_msghdr *rtm = NULL;
+ 	struct rtentry *rt = NULL;
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	struct rt_addrinfo info;
+ 	int len, error = 0;
+ 	struct ifnet *ifp = NULL;
+@@ -598,8 +598,7 @@
+ 		if (rnh == NULL)
+ 			senderr(EAFNOSUPPORT);
+ 		RADIX_NODE_HEAD_RLOCK(rnh);
+-		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST],
+-			info.rti_info[RTAX_NETMASK], rnh);
++		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST], info.rti_info[RTAX_NETMASK], (int) info.rti_info[RTAX_DST], rnh);
+ 		if (rt == NULL) {	/* XXX looks bogus */
+ 			RADIX_NODE_HEAD_RUNLOCK(rnh);
+ 			senderr(ESRCH);
+@@ -1302,7 +1301,7 @@
+  * This is used in dumping the kernel table via sysctl().
+  */
+ static int
+-sysctl_dumpentry(struct radix_node *rn, void *vw)
++sysctl_dumpentry(struct ptree_node *rn, void *vw)
+ {
+ 	struct walkarg *w = vw;
+ 	struct rtentry *rt = (struct rtentry *)rn;
+@@ -1459,7 +1458,7 @@
+ {
+ 	int	*name = (int *)arg1;
+ 	u_int	namelen = arg2;
+-	struct radix_node_head *rnh = NULL; /* silence compiler. */
++	struct ptree *rnh = NULL; /* silence compiler. */
+ 	int	i, lim, error = EINVAL;
+ 	u_char	af;
+ 	struct	walkarg w;

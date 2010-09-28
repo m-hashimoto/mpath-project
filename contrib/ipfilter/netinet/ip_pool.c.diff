@@ -1,0 +1,76 @@
+--- ip_pool.c.org	2010-09-28 13:07:18.000000000 +0900
++++ ip_pool.c	2010-09-28 15:01:47.000000000 +0900
+@@ -71,7 +71,7 @@
+ #if defined(IPFILTER_LOOKUP) && defined(_KERNEL) && \
+       ((BSD >= 198911) && !defined(__osf__) && \
+       !defined(__hpux) && !defined(__sgi))
+-static int rn_freenode __P((struct radix_node *, void *));
++static int rn_freenode __P((struct ptree_node *, void *));
+ #endif
+ 
+ /* END OF INCLUDES */
+@@ -374,12 +374,12 @@
+ ip_pool_t *ipo;
+ addrfamily_t *addr, *mask;
+ {
+-	struct radix_node *n;
++	struct ptree_node *n;
+ 	SPL_INT(s);
+ 
+ 	SPL_NET(s);
+ 	RADIX_NODE_HEAD_LOCK(ipo->ipo_head);
+-	n = ipo->ipo_head->rnh_lookup(addr, mask, ipo->ipo_head);
++	n = ipo->ipo_head->rnh_lookup(addr, mask, (int)addr, ipo->ipo_head);
+ 	RADIX_NODE_HEAD_UNLOCK(ipo->ipo_head);
+ 	SPL_X(s);
+ 	return (ip_pool_node_t *)n;
+@@ -400,7 +400,7 @@
+ int ipversion;
+ void *dptr;
+ {
+-	struct radix_node *rn;
++	struct ptree_node *rn;
+ 	ip_pool_node_t *m;
+ 	i6addr_t *addr;
+ 	addrfamily_t v;
+@@ -462,7 +462,7 @@
+ i6addr_t *addr, *mask;
+ int info;
+ {
+-	struct radix_node *rn;
++	struct ptree_node *rn;
+ 	ip_pool_node_t *x;
+ 
+ 	KMALLOC(x, ip_pool_node_t *);
+@@ -546,7 +546,7 @@
+ 		return ENOMEM;
+ 	bzero(h, sizeof(*h));
+ 
+-	if (rn_inithead((void **)&h->ipo_head,
++	if (ptree_inithead((void **)&h->ipo_head,
+ 			offsetof(addrfamily_t, adf_addr) << 3) == 0) {
+ 		KFREE(h);
+ 		return ENOMEM;
+@@ -958,10 +958,10 @@
+ # if defined(_KERNEL) && ((BSD >= 198911) && !defined(__osf__) && \
+       !defined(__hpux) && !defined(__sgi))
+ static int
+-rn_freenode(struct radix_node *n, void *p)
++rn_freenode(struct ptree_node *n, void *p)
+ {
+-	struct radix_node_head *rnh = p;
+-	struct radix_node *d;
++	struct ptree *rnh = p;
++	struct ptree_node *d;
+ 
+ 	d = rnh->rnh_deladdr(n->rn_key, NULL, rnh);
+ 	if (d != NULL) {
+@@ -973,7 +973,7 @@
+ 
+ void
+ rn_freehead(rnh)
+-      struct radix_node_head *rnh;
++      struct ptree *rnh;
+ {
+ 
+ 	RADIX_NODE_HEAD_LOCK(rnh);

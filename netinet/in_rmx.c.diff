@@ -1,0 +1,119 @@
+--- in_rmx.c.org	2010-09-28 10:19:56.000000000 +0900
++++ in_rmx.c	2010-09-28 10:47:27.000000000 +0900
+@@ -70,9 +70,9 @@
+ /*
+  * Do what we need to do when inserting a route.
+  */
+-static struct radix_node *
+-in_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
+-    struct radix_node *treenodes)
++static struct ptree_node *
++in_addroute(void *v_arg, void *n_arg, struct ptree *head,
++    struct ptree_node *treenodes)
+ {
+ 	struct rtentry *rt = (struct rtentry *)treenodes;
+ 	struct sockaddr_in *sin = (struct sockaddr_in *)rt_key(rt);
+@@ -107,7 +107,7 @@
+ 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
+ 		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
+ 
+-	return (rn_addroute(v_arg, n_arg, head, treenodes));
++	return (ptree_addroute(v_arg, n_arg, head, treenodes));
+ }
+ 
+ /*
+@@ -115,10 +115,10 @@
+  * were managing the route, stop doing so and set the expiration timer
+  * back off again.
+  */
+-static struct radix_node *
+-in_matroute(void *v_arg, struct radix_node_head *head)
++static struct ptree_node *
++in_matroute(void *v_arg, struct ptree *head)
+ {
+-	struct radix_node *rn = rn_match(v_arg, head);
++	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
+ 	struct rtentry *rt = (struct rtentry *)rn;
+ 
+ 	/*XXX locking? */
+@@ -156,7 +156,7 @@
+  * timed out.
+  */
+ static void
+-in_clsroute(struct radix_node *rn, struct radix_node_head *head)
++in_clsroute(struct ptree_node *rn, struct ptree *head)
+ {
+ 	struct rtentry *rt = (struct rtentry *)rn;
+ 
+@@ -184,7 +184,7 @@
+ }
+ 
+ struct rtqk_arg {
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	int draining;
+ 	int killed;
+ 	int found;
+@@ -198,7 +198,7 @@
+  * nothing has a timeout longer than the current value of rtq_reallyold.
+  */
+ static int
+-in_rtqkill(struct radix_node *rn, void *rock)
++in_rtqkill(struct ptree_node *rn, void *rock)
+ {
+ 	struct rtqk_arg *ap = rock;
+ 	struct rtentry *rt = (struct rtentry *)rn;
+@@ -269,7 +269,7 @@
+ static void
+ in_rtqtimo_one(void *rock)
+ {
+-	struct radix_node_head *rnh = rock;
++	struct ptree *rnh = rock;
+ 	struct rtqk_arg arg;
+ 	static time_t last_adjusted_timeout = 0;
+ 
+@@ -315,7 +315,7 @@
+ in_rtqdrain(void)
+ {
+ 	VNET_ITERATOR_DECL(vnet_iter);
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	struct rtqk_arg arg;
+ 	int 	fibnum;
+ 
+@@ -346,7 +346,7 @@
+ int
+ in_inithead(void **head, int off)
+ {
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 
+ 	/* XXX MRT
+ 	 * This can be called from vfs_export.c too in which case 'off'
+@@ -356,7 +356,7 @@
+ 	 * on a bad design. After RELENG_7 this should be fixed but that
+ 	 * will change the ABI, so for now do it this way.
+ 	 */
+-	if (!rn_inithead(head, 32))
++	if (!ptree_inithead(head, 32))
+ 		return 0;
+ 
+ 	if (off == 0)		/* XXX MRT  see above */
+@@ -404,7 +404,7 @@
+ };
+ 
+ static int
+-in_ifadownkill(struct radix_node *rn, void *xap)
++in_ifadownkill(struct ptree_node *rn, void *xap)
+ {
+ 	struct in_ifadown_arg *ap = xap;
+ 	struct rtentry *rt = (struct rtentry *)rn;
+@@ -430,7 +430,7 @@
+ in_ifadown(struct ifaddr *ifa, int delete)
+ {
+ 	struct in_ifadown_arg arg;
+-	struct radix_node_head *rnh;
++	struct ptree *rnh;
+ 	int	fibnum;
+ 
+ 	if (ifa->ifa_addr->sa_family != AF_INET)

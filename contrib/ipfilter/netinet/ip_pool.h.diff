@@ -1,0 +1,31 @@
+--- ip_pool.h.org	2010-09-28 12:52:14.000000000 +0900
++++ ip_pool.h	2010-09-28 12:54:00.000000000 +0900
+@@ -11,8 +11,8 @@
+ 
+ #if defined(_KERNEL) && !defined(__osf__) && !defined(__hpux) && \
+     !defined(linux) && !defined(sun) && !defined(AIX)
+-# include <net/radix.h>
+-extern void rn_freehead __P((struct radix_node_head *));
++# include <net/ptree.h>
++extern void rn_freehead __P((struct ptree *));
+ # define FreeS(p, z)		KFREES(p, z)
+ extern int max_keylen;
+ #else
+@@ -31,7 +31,7 @@
+ #define	IP_POOL_POSITIVE	1
+ 
+ typedef	struct ip_pool_node {
+-	struct	radix_node	ipn_nodes[2];
++	struct	ptree_node	ipn_nodes[2];
+ 	addrfamily_t		ipn_addr;
+ 	addrfamily_t		ipn_mask;
+ 	int			ipn_info;
+@@ -45,7 +45,7 @@
+ typedef	struct ip_pool_s {
+ 	struct ip_pool_s	*ipo_next;
+ 	struct ip_pool_s	**ipo_pnext;
+-	struct radix_node_head	*ipo_head;
++	struct ptree	*ipo_head;
+ 	ip_pool_node_t	*ipo_list;
+ 	u_long		ipo_hits;
+ 	int		ipo_unit;

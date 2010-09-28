@@ -15,7 +15,6 @@ MALLOC_DECLARE(M_RTABLE);
 //#endif /*0*/
 
 struct ptree_node {
-  //char *key;
   struct  ptree_mask *rn_mklist;
   caddr_t key;
   caddr_t rn_mask;
@@ -72,6 +71,30 @@ struct ptree {
 	int	 rnh_pktsize;   /* permit, but not require fixed keys */
 	struct ptree_node rnh_nodes[3]; /* empty tree for comon case */
 	int	 rnh_multipath;	/* multipath capable ? */
+
+	struct  ptree_node *(*rnh_addaddr)
+		(void *v, void *mask,
+		 struct ptree *head, struct ptree_node nodes[]);
+	struct  ptree_node *(*rnh_addpkt) /* add based on packet hdr */
+		(void *v, void *mask,
+		 struct ptree *head, struct ptree_node nodes[]);
+	struct  ptree_node *(*rnh_deladdr) /* remove based on sockaddr */
+		(void *v, void *mask, struct ptree *head);  
+  	struct  ptree_node *(*rnh_delpkt) /* remove based on packet hdr */
+		(void *v, void *mask, struct ptree *head); 
+ 	struct  ptree_node *(*rnh_matchaddr) /* locate based on sockaddr */
+		(void *v, struct ptree *head);
+	struct  ptree_node *(*rnh_lookup) /* locate based on sockaddr */  
+  		(void *v, void *m, int keylen, struct ptree *head);
+	struct  ptree_node *(*rnh_matchpkt)/* locate based on packet hdr */
+		(void *v, struct ptree *head);
+	int     (*rnh_walktree)                 /* traverse tree */
+		(struct ptree *head, walktree_f_t *f, void *w);
+	int     (*rnh_walktree_from)            /* traverse tree below a */
+		(struct ptree *head, void *a, void *m,
+		 walktree_f_t *f, void *w);
+	void    (*rnh_close)    /* do something when the last ref drops */
+		(struct ptree_node *rn, struct ptree *head);
 #ifdef _KERNEL
 	struct rwlock rnh_lock; /* locks entire */
 #endif
@@ -123,7 +146,18 @@ struct ptree {
 //void ptree_node_lock (struct ptree_node *x);
 //void ptree_node_unlock (struct ptree_node *x);
 
-struct ptree_node *ptree_lookup (char *key, int keylen, struct ptree *t);
+void     ptree_init(void);
+int      ptree_inithead(void **, int);
+int      ptree_refines(void *, void *);
+struct ptree_node
+*ptree_addmask(void *, int, int),
+	*ptree_addroute (void *, void *, struct ptree *,	
+			struct ptree_node [2]),
+	*ptree_deladdr(void *, void *, struct ptree *),
+	*ptree_matchaddr(void *, struct ptree *);
+
+struct ptree_node *ptree_lookup (void *key, void *mask, 
+		int keylen, struct ptree *t);
 struct ptree_node *ptree_search (char *key, int keylen, struct ptree *t);
 struct ptree_node *ptree_add (char *key, int keylen, void *data, struct ptree *t);
 void ptree_remove (struct ptree_node *v);

@@ -8,28 +8,180 @@
 #include <sys/domain.h>
 #include <sys/syslog.h>
 #include <net/ptree.h>
+#include <net/route.h>
 #include <net/if.h>
 #include <net/if_var.h>
 
-static int
-	ptree_walktree_from(struct ptree *h, void *a, void *m, 
-		walktree_f_t *f, void *w),
-	ptree_satisfies_leaf(char *trial,register struct ptree_node *leaf,
-		       	int skip);
-static struct ptree_node
-	*ptree_search_m(void *v_arg, struct ptree_node *head, void *m_arg),
-	*ptree_matchaddr(void *v_arg, struct ptree *head),
-	*ptree_addroute(void *v_arg, void *n_arg, struct ptree *head,
-		       	struct ptree_node treenodes[2]),
-	*ptree_deladdr(void *v_arg, void *netmask_arg, struct ptree *head),
-	*ptree_newpair(void *, int, struct ptree_node[2]);
 
 static char *rn_zeros, *rn_ones, *addmask_key;
 static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
 
+#define MKGet(m) {                                              \
+	if (rn_mkfreelist) {                                    \
+		m = rn_mkfreelist;                              \
+		rn_mkfreelist = (m)->rm_mklist;                 \
+	} else                                                  \
+	R_Malloc(m, struct ptree_mask *, sizeof (struct ptree_mask)); }
+
+#define MKFree(m) { (m)->rm_mklist = rn_mkfreelist; rn_mkfreelist = (m);}
 #define LEN(x) (*(const u_char *)(x))
+#define rn_masktop (mask_rnhead->rnh_treetop)
+
+static int ptree_walktree_from(struct ptree *h, void *a, void *m, 
+		walktree_f_t *f, void *w);
+static int ptree_walktree(struct ptree *h, walktree_f_t *f, void *w);
+static int ptree_satisfies_leaf(char *trial,
+		register struct ptree_node *leaf, int skip);
+static struct ptree_node *ptree_newpair(void *v, int b,
+	       	struct ptree_node[2]);
+static struct ptree_node *ptree_search_m(void *v_arg,
+	       	struct ptree_node *head, void *m_arg);
+static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
+		int *dupentry, struct ptree_node nodes[2]);
+static int ptree_lexobetter(void *m_arg, void *n_arg);
+static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
+	       register struct ptree_mask *next);
+
+
+	static struct ptree_node 
+*ptree_insert(v_arg, head, dupentry, nodes)  
+	void *v_arg;
+	struct ptree *head;   
+	int *dupentry; 
+	struct ptree_node nodes[2];
+{
+	caddr_t v = v_arg;
+	struct ptree_node *top = head->rnh_treetop; 
+	int head_off = top->rn_offset, vlen = (int)LEN(v);
+	register struct ptree_node *t = ptree_search(v_arg, LEN(v_arg), head);
+	register caddr_t cp = v + head_off; 
+	register int b; 
+	struct ptree_node *tt;  
+	/* Find first bit at which v and t->rn_key differ */ 
+	{         
+		register caddr_t cp2 = t->rn_key + head_off;  
+		register int cmp_res;
+		caddr_t cplim = v + vlen;
+		while (cp < cplim) 
+			if (*cp2++ != *cp++)   
+				goto on1;   
+		*dupentry = 1;  
+		return t;
+on1:          
+		*dupentry = 0;  
+		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
+		for (b = (cp - v) << 3; cmp_res; b--) 
+			cmp_res >>= 1;    
+	}   
+	{
+		register struct ptree_node *p, *x = top;  
+		cp = v;  
+		do {  
+			p = x;    
+			if (cp[x->rn_offset] & x->rn_bmask)
+				x = x->rn_right;
+			else     
+				x = x->rn_left;
+		}
+		while (b > (unsigned) x->rn_bit);                                /* x->rn_bit < b && x->rn_bit >= 0 */
+#ifdef RN_DEBUG
+		if (rn_debug)
+			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
+#endif 
+		t = ptree_newpair(v_arg, b, nodes);
+		tt = t->rn_left;
+		if ((cp[p->rn_offset] & p->rn_bmask) == 0)
+			p->rn_left = t;
+		else
+			p->rn_right = t;
+		x->rn_parent = t;
+		t->rn_parent = p; /* frees x, p as temp vars below */
+		if ((cp[t->rn_offset] & t->rn_bmask) == 0) {
+			t->rn_right = x;
+		} else {
+			t->rn_right = tt;
+			t->rn_left = x;
+		}
+#ifdef RN_DEBUG
+		if (rn_debug)
+			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
+#endif
+	}
+	return (tt);
+}
+
+	struct ptree_node *
+ptree_addmask(n_arg, search, skip)        
+	int search, skip;
+	void *n_arg;
+{
+	caddr_t netmask = (caddr_t)n_arg;
+	register struct ptree_node *x;
+	register caddr_t cp, cplim;
+	register int b = 0, mlen, j;
+	int maskduplicated, m0, isnormal;
+	struct ptree_node *saved_x;  
+	static int last_zeroed = 0;  
+	if ((mlen = LEN(netmask)) > max_keylen) 
+		mlen = max_keylen;
+	if (skip == 0)  
+		skip = 1; 
+	if (mlen <= skip) 
+		return (mask_rnhead->rnh_nodes);   
+	if (skip > 1) 
+		bcopy(rn_ones + 1, addmask_key + 1, skip - 1); 
+	if ((m0 = mlen) > skip) 
+		bcopy(netmask + skip, addmask_key + skip, mlen - skip);
+	/*         * Trim trailing zeroes.         */  
+	for (cp = addmask_key + mlen; (cp > addmask_key) && cp[-1] == 0;)
+		cp--;    
+	mlen = cp - addmask_key; 
+	if (mlen <= skip) {        
+		if (m0 >= last_zeroed)  
+			last_zeroed = mlen;  
+		return (mask_rnhead->rnh_nodes); 
+	}     
+	if (m0 < last_zeroed)  
+		bzero(addmask_key + m0, last_zeroed - m0); 
+	*addmask_key = last_zeroed = mlen;  
+	x = ptree_search(addmask_key, LEN(addmask_key), mask_rnhead);  
+	if (bcmp(addmask_key, x->rn_key, mlen) != 0)  
+		x = 0;  
+	if (x || search)
+		return (x); 
+	R_Zalloc(x, struct ptree_node *, max_keylen + 2 * sizeof (*x));
+	if ((saved_x = x) == 0)
+		return (0);
+	netmask = cp = (caddr_t)(x + 2);
+	bcopy(addmask_key, cp, mlen);
+	x = ptree_insert(cp, mask_rnhead, &maskduplicated, x);
+	if (maskduplicated) { 
+		log(LOG_ERR, "rn_addmask: mask impossibly already in tree");
+		Free(saved_x);
+		return (x);
+	}
+	cplim = netmask + mlen;
+	isnormal = 1;
+	for (cp = netmask + skip; (cp < cplim) && *(u_char *)cp == 0xff;)
+		cp++;
+	if (cp != cplim) {
+		static char normal_chars[] = {
+			0, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
+
+		for (j = 0x80; (j & *cp) != 0; j >>= 1)
+			b++;
+		if (*cp != normal_chars[b] || cp != (cplim - 1))
+			isnormal = 0;
+	}
+	b += (cp - netmask) << 3;
+	x->rn_bit = -1 - b;
+	if (isnormal)
+		x->rn_flags |= RNF_NORMAL;
+	return (x);
+}
+
 
 /*
  *  * Same as above, but with an additional mask.
@@ -53,6 +205,72 @@ ptree_search_m(v_arg, head, m_arg)
 	return x;
 }
 
+	int
+ptree_refines(m_arg, n_arg)
+	void *m_arg, *n_arg;
+{
+	register caddr_t m = m_arg, n = n_arg;
+	register caddr_t lim, lim2 = lim = n + LEN(n);
+	int longer = LEN(n++) - (int)LEN(m++);
+	int masks_are_equal = 1;
+
+	if (longer > 0)
+		lim -= longer;
+	while (n < lim) {
+		if (*n & ~(*m))
+			return 0;
+		if (*n++ != *m++)
+			masks_are_equal = 0;
+	}
+	while (n < lim2)
+		if (*n++)
+			return 0;
+	if (masks_are_equal && (longer < 0))
+		for (lim2 = m - longer; m < lim2; )
+			if (*m++)
+				return 1;
+	return (!masks_are_equal);
+}
+
+	static int      
+ptree_lexobetter(m_arg, n_arg)
+	void *m_arg, *n_arg;
+{
+	register u_char *mp = m_arg, *np = n_arg, *lim;
+
+	if (LEN(mp) > LEN(np))  
+		return 1;  /* not really, but need to check longer one first */   
+	if (LEN(mp) == LEN(np))
+		for (lim = mp + LEN(mp); mp < lim;)
+			if (*mp++ > *np++)
+				return 1;
+	return 0;
+}
+
+	static struct ptree_mask *
+ptree_new_mask(tt, next)
+	register struct ptree_node *tt; 
+	register struct ptree_mask *next;
+{      
+	register struct ptree_mask *m;
+
+	MKGet(m);
+	if (m == 0) {
+		log(LOG_ERR, "Mask for route not entered\n");
+		return (0);
+	}
+	bzero(m, sizeof *m);
+	m->rm_bit = tt->rn_bit;
+	m->rm_flags = tt->rn_flags;
+	if (tt->rn_flags & RNF_NORMAL)
+		m->rm_leaf = tt;
+	else
+		m->rm_mask = tt->rn_mask;
+	m->rm_mklist = next;
+	tt->rn_mklist = m;
+	return m;
+}
+
 	static int
 ptree_satisfies_leaf(trial, leaf, skip)
 	char *trial;
@@ -73,7 +291,6 @@ ptree_satisfies_leaf(trial, leaf, skip)
 			return 0;
 	return 1;
 }
-
 
 	struct ptree_node *
 ptree_matchaddr(v_arg, head)
@@ -192,7 +409,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	 * nodes and possibly save time in calculating indices.
 	 */
 	if (netmask)  {
-		if ((x = rn_addmask(netmask, 0, top->rn_offset)) == 0)
+		if ((x = ptree_addmask(netmask, 0, top->rn_offset)) == 0)
 			return (0);
 		b_leaf = x->rn_bit;
 		b = -1 - x->rn_bit;
@@ -201,7 +418,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	/*
 	 * Deal with duplicated keys: attach node to previous instance
 	 */
-	saved_tt = tt = rn_insert(v, head, &keyduplicated, treenodes);//updata
+	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
 	if (keyduplicated) {
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
 			if (tt->rn_mask == netmask)
@@ -209,8 +426,8 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 			if (netmask == 0 ||
 					(tt->rn_mask &&
 					 ((b_leaf < tt->rn_bit) /* index(netmask) > node */
-					  || rn_refines(netmask, tt->rn_mask)//updata
-					  || rn_lexobetter(netmask, tt->rn_mask))))//updata
+					  || ptree_refines(netmask, tt->rn_mask)
+					  || ptree_lexobetter(netmask, tt->rn_mask))))
 				break;
 		}
 		/*
@@ -233,7 +450,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 			tt->rn_flags = t->rn_flags;
 			tt->rn_parent = x = t->rn_parent;
 			t->rn_parent = tt;	 		/* parent */
-			if (x->rn_left == t)//updata
+			if (x->rn_left == t)
 				x->rn_left = tt;
 			else
 				x->rn_right = tt;
@@ -273,7 +490,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	if (x->rn_bit < 0) {
 		for (mp = &t->rn_mklist; x; x = x->rn_dupedkey)
 			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
-				*mp = m = rn_new_radix_mask(x, 0);
+				*mp = m = ptree_new_mask(x, 0);
 				if (m)
 					mp = &m->rm_mklist;
 			}
@@ -320,11 +537,11 @@ on2:
 			tt->rn_mklist = m;
 			return tt;
 		}
-		if (rn_refines(netmask, mmask)
-				|| rn_lexobetter(netmask, mmask))
+		if (ptree_refines(netmask, mmask)
+				|| ptree_lexobetter(netmask, mmask))
 			break;
 	}
-	*mp = rn_new_radix_mask(tt, *mp);
+	*mp = ptree_new_mask(tt, *mp);
 	return tt;
 }
 
@@ -342,9 +559,9 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	v = v_arg;
 	netmask = netmask_arg;
 	x = head->top;
-	tt = rn_search(v, x);
-	head_off = x->rn_offset;
 	vlen =  LEN(v);
+	tt = ptree_search(v, vlen, head);
+	head_off = x->rn_offset;
 	saved_tt = tt;
 	top = x;
 	if (tt == 0 ||
@@ -354,7 +571,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	 * Delete our route from mask lists.
 	 */
 	if (netmask) {
-		if ((x = rn_addmask(netmask, 1, head_off)) == 0)
+		if ((x = ptree_addmask(netmask, 1, head_off)) == 0)
 			return (0);
 		netmask = x->rn_key;
 		while (tt->rn_mask != netmask)
@@ -475,7 +692,7 @@ on1:
 			   in the same order attached to our mklist */
 			for (m = t->rn_mklist; m && x; x = x->rn_dupedkey)
 				if (m == x->rn_mklist) {
-					struct radix_mask *mm = m->rm_mklist;
+					struct ptree_mask *mm = m->rm_mklist;
 					x->rn_mklist = 0;
 					if (--(m->rm_refs) < 0)
 						MKFree(m);
@@ -618,6 +835,41 @@ ptree_walktree_from(h, a, m, f, w)
 	return 0;
 }
 
+	static int
+ptree_walktree(h, f, w)
+	struct ptree *h;
+	walktree_f_t *f;
+	void *w;
+{
+	int error;
+	struct ptree_node *base, *next;
+	register struct ptree_node *rn = h->rnh_treetop;
+
+	while (rn->rn_bit >= 0) 
+		rn = rn->rn_left;
+	for (;;) {  
+		base = rn;
+		/* If at right child go back up, otherwise, go right */
+		while (rn->rn_parent->rn_right == rn
+				&& (rn->rn_flags & RNF_ROOT) == 0)                        rn = rn->rn_parent;
+		for (rn = rn->rn_parent->rn_right; rn->rn_bit >= 0;)
+			rn = rn->rn_left; 
+		next = rn;
+		/* Process leaves */
+		while ((rn = base)) {
+			base = rn->rn_dupedkey;
+			if (!(rn->rn_flags & RNF_ROOT)
+					&& (error = (*f)(rn, w)))
+				return (error);
+		}
+		rn = next;
+		if (rn->rn_flags & RNF_ROOT)
+			return (0);
+	}
+	/* NOTREACHED */
+}
+
+
 	static struct ptree_node *
 ptree_newpair(v, b, nodes)
 	void *v;
@@ -626,7 +878,7 @@ ptree_newpair(v, b, nodes)
 {
 	printf("ptree_newpair\n");
 	register struct ptree_node *tt = nodes, *t = tt + 1;
-	t->rn_bit = b; 
+	t->rn_bit = b;
 	t->rn_bmask = 0x80 >> (b & 7);  
 	t->rn_left = tt;
 	t->rn_Off = b >> 3;
@@ -667,7 +919,7 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-	t = rn_newpair(rn_zeros, off, rnh->rnh_nodes);
+	t = ptree_newpair(rn_zeros, off, rnh->rnh_nodes);
 	ttt = rnh->rnh_nodes + 2;
 	t->rn_right = ttt;
 	t->rn_parent = t;
@@ -676,14 +928,12 @@ ptree_inithead(head, off)
 	tt->rn_bit = -1 - off;
 	*ttt = *tt;
 	ttt->rn_key = rn_ones;
-	/*
-	   rnh->rnh_addaddr = rn_addroute;
-	   rnh->rnh_deladdr = rn_delete;
-	   rnh->rnh_matchaddr = rn_match;
-	   rnh->rnh_lookup = rn_lookup;
-	   rnh->rnh_walktree = rn_walktree;
-	   rnh->rnh_walktree_from = rn_walktree_from;
-	   */
+	rnh->rnh_addaddr = ptree_addroute;
+	rnh->rnh_deladdr = ptree_deladdr;
+	rnh->rnh_matchaddr = ptree_matchaddr;
+	rnh->rnh_lookup = ptree_lookup;
+	rnh->rnh_walktree = ptree_walktree;
+	rnh->rnh_walktree_from = ptree_walktree_from;
 	rnh->top = t;
 	return (1);
 }

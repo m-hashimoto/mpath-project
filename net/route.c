@@ -62,10 +62,7 @@
 #include <net/radix_mpath.h>
 #endif
 
-#ifdef PATRICIA
 #include <net/ptree.h>
-#endif
-
 #include <netinet/in.h>
 #include <netinet/ip_mroute.h>
 
@@ -143,25 +140,24 @@ sysctl_my_fibnum(SYSCTL_HANDLER_ARGS)
 SYSCTL_PROC(_net, OID_AUTO, my_fibnum, CTLTYPE_INT|CTLFLAG_RD,
             NULL, 0, &sysctl_my_fibnum, "I", "default FIB of caller");
 
-static __inline struct radix_node_head **
+static __inline struct ptree **
 rt_tables_get_rnh_ptr(int table, int fam)
 {
-	struct radix_node_head **rnh;
+	struct ptree **rnh;
 
-	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.",
-	    __func__));
+	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.", __func__));
 	KASSERT(fam >= 0 && fam < (AF_MAX+1), ("%s: fam out of bounds.",
 	    __func__));
 
 	/* rnh is [fib=0][af=0]. */
-	rnh = (struct radix_node_head **)V_rt_tables;
+	rnh = (struct ptree **)V_rt_tables;
 	/* Get the offset to the requested table and fam. */
 	rnh += table * (AF_MAX+1) + fam;
 
 	return (rnh);
 }
 
-struct radix_node_head *
+struct ptree *
 rt_tables_get_rnh(int table, int fam)
 {
 
@@ -181,11 +177,7 @@ route_init(void)
 		rt_numfibs = RT_MAXFIBS;
 	if (rt_numfibs == 0)
 		rt_numfibs = 1;
-#ifdef PATRICIA
-	ptree_init();
-#else
-	rn_init();	/* initialize all zeroes, all ones, mask table */
-#endif
+	ptree_init();	/* initialize all zeroes, all ones, mask table */
 }
 SYSINIT(route_init, SI_SUB_PROTO_DOMAIN, SI_ORDER_THIRD, route_init, 0);
 
@@ -193,12 +185,12 @@ static void
 vnet_route_init(const void *unused __unused)
 {
 	struct domain *dom;
-	struct radix_node_head **rnh;
+	struct ptree **rnh;
 	int table;
 	int fam;
 
 	V_rt_tables = malloc(rt_numfibs * (AF_MAX+1) *
-	    sizeof(struct radix_node_head *), M_RTABLE, M_WAITOK|M_ZERO);
+	    sizeof(struct ptree *), M_RTABLE, M_WAITOK|M_ZERO);
 
 	V_rtzone = uma_zcreate("rtentry", sizeof(struct rtentry), NULL, NULL,
 	    NULL, NULL, UMA_ALIGN_PTR, 0);
@@ -338,9 +330,9 @@ struct rtentry *
 rtalloc1_fib(struct sockaddr *dst, int report, u_long ignflags,
 		    u_int fibnum)
 {
-	struct radix_node_head *rnh;
+	struct ptree *rnh;
 	struct rtentry *rt;
-	struct radix_node *rn;
+	struct ptree_node *rn;
 	struct rtentry *newrt;
 	struct rt_addrinfo info;
 	int err = 0, msgtype = RTM_MISS;
@@ -407,7 +399,7 @@ done:
 void
 rtfree(struct rtentry *rt)
 {
-	struct radix_node_head *rnh;
+	struct ptree *rnh;
 
 	KASSERT(rt != NULL,("%s: NULL rt", __func__));
 	rnh = rt_tables_get_rnh(rt->rt_fibnum, rt_key(rt)->sa_family);
@@ -435,7 +427,7 @@ rtfree(struct rtentry *rt)
 	 * on the entry so that the code below reclaims the storage.
 	 */
 	if (rt->rt_refcnt == 0 && rnh->rnh_close)
-		rnh->rnh_close((struct radix_node *)rt, rnh);
+		rnh->rnh_close((struct ptree_node *)rt, rnh);
 
 	/*
 	 * If we are no longer "up" (and ref == 0)
@@ -510,7 +502,7 @@ rtredirect_fib(struct sockaddr *dst,
 	short *stat = NULL;
 	struct rt_addrinfo info;
 	struct ifaddr *ifa;
-	struct radix_node_head *rnh;
+	struct ptree *rnh;
 
 	ifa = NULL;
 	rnh = rt_tables_get_rnh(fibnum, dst->sa_family);
@@ -833,8 +825,8 @@ rt_getifa_fib(struct rt_addrinfo *info, u_int fibnum)
 int
 rtexpunge(struct rtentry *rt)
 {
-	struct radix_node *rn;
-	struct radix_node_head *rnh;
+	struct ptree_node *rn;
+	struct ptree *rnh;
 	struct ifaddr *ifa;
 	int error = 0;
 
@@ -1008,8 +1000,8 @@ rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
 #ifdef FLOWTABLE
 	register struct rtentry *rt0;
 #endif
-	register struct radix_node *rn;
-	register struct radix_node_head *rnh;
+	register struct ptree_node *rn;
+	register struct ptree *rnh;
 	struct ifaddr *ifa;
 	struct sockaddr *ndst;
 #define senderr(x) { error = x ; goto bad; }
@@ -1281,7 +1273,7 @@ rt_setgate(struct rtentry *rt, struct sockaddr *dst, struct sockaddr *gate)
 	/* XXX dst may be overwritten, can we move this to below */
 	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
 #ifdef INVARIANTS
-	struct radix_node_head *rnh;
+	struct ptree *rnh;
 
 	rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
 #endif
@@ -1413,8 +1405,8 @@ rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
 	 */
 	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
 		if (cmd == RTM_DELETE) {
-			struct radix_node_head *rnh;
-			struct radix_node *rn;
+			struct ptree *rnh;
+			struct ptree_node *rn;
 			/*
 			 * Look up an rtentry that is in the routing tree and
 			 * contains the correct info.
@@ -1447,7 +1439,7 @@ rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
 			}
 			else
 #endif
-			rn = rnh->rnh_lookup(dst, netmask, rnh);
+			rn = rnh->rnh_lookup(dst, netmask,(int)dst, rnh);
 			error = (rn == NULL ||
 			    (rn->rn_flags & RNF_ROOT) ||
 			    RNTORT(rn)->rt_ifa != ifa ||

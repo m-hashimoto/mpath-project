@@ -83,7 +83,6 @@ options		FLOWTABLE		# per-cpu routing cache
 
 # patricia-trie for multi path routing
 options		PATRICIA
-files		"/sys/conf/files.patricia"
 
 # To make an SMP kernel, the next two lines are needed
 options 	SMP			# Symmetric MultiProcessor Kernel
