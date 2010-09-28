@@ -1,4 +1,9 @@
 #!/bin/tcsh
+if ( `whoami` != "root" ) then   
+echo "This shellscript must be run by user root." 
+exit
+endif
+
 echo uninstall mpath project...
 
 cd /usr/src/sys/conf
@@ -33,6 +38,10 @@ rm *.diff
 cd /usr/src/sys/contrib/ipfilter/netinet/
 patch -R < ip_pool.h.diff
 patch -R < ip_pool.c.diff
+rm *.diff
+
+cd /usr/src/sys/fs/nfs/
+patch -R < nfsport.h.diff
 rm *.diff
 
 cd /usr/src/sys/i386/conf/

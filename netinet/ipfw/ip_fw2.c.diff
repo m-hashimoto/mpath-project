@@ -1,5 +1,5 @@
 --- ip_fw2.c.org	2010-09-28 15:14:31.000000000 +0900
-+++ ip_fw2.c	2010-09-28 15:19:53.000000000 +0900
++++ ip_fw2.c	2010-09-28 15:44:11.000000000 +0900
 @@ -65,7 +65,7 @@
  #include <sys/ucred.h>
  #include <net/ethernet.h> /* for ETHERTYPE_IP */
@@ -60,6 +60,15 @@
  
  	IPFW_WLOCK_ASSERT(ch);
  
+@@ -1920,7 +1920,7 @@
+ 	uint16_t j;
+ 
+ 	for (i = 0; i < IPFW_TABLES_MAX; i++) {
+-		if (!rn_inithead((void **)&ch->tables[i], 32)) {
++		if (!ptree_inithead((void **)&ch->tables[i], 32)) {
+ 			for (j = 0; j < i; j++) {
+ 				(void) flush_table(ch, j);
+ 			}
 @@ -1934,7 +1934,7 @@
  lookup_table(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
      uint32_t *val)
