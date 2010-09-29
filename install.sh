@@ -1,5 +1,4 @@
 #!/bin/tcsh
-set user = `whoami`
 if ( `whoami` != "root" ) then 	
 echo "This shellscript must be run by user root." 
 exit
