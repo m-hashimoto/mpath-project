@@ -53,7 +53,6 @@ rm *.diff
 #rm PATRICIA
 
 #config GENERIC
-
 #cd ../compile/GENERIC
 #make cleandepend && make depend
 #make && make install
