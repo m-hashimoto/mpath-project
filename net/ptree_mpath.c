@@ -545,11 +545,12 @@ printf("ptree_addroute: break(Deal with duplicated keys)\n");
 		 * Skip over masks whose index is > that of new node
 		 */
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
-			if (m->rm_bit >= b_leaf)
+			if (m->rm_bit >= b_leaf){
 #ifdef DEBUG
 printf("ptree_addroute: that of new node)\n");
 #endif
 				break;
+			}
 		t->rn_mklist = m; *mp = 0;
 	}
 on2:

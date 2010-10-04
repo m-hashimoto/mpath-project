@@ -120,12 +120,16 @@ ptree_search (char *key, int keylen, struct ptree *t)
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %s, keylen = %d\n",key,keylen);
+printf("key = %p, keylen = %d\n",&key,keylen);
 #endif
 	struct ptree_node *x, *match;
 
 	match = NULL;
 	x = t->top;
+#ifdef DEBUG
+	printf("ptree_search: treetop->key = %p\n",x->key);
+	printf("ptree_search: treetop->keylen = %d\n",x->keylen);
+#endif
 	while (x && x->keylen <= keylen &&
 			ptree_match (x->key, key, x->keylen))
 	{

@@ -75,7 +75,7 @@ make install
 
 echo restart now? (yes/no)
 set restart = $<
-if(restart == "yes") then
+if(${restart} == "yes") then
 	reboot
 else
 	exit
