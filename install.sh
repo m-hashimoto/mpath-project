@@ -72,3 +72,11 @@ make cleandepend
 make depend
 make
 make install
+
+echo restart now? (yes/no)
+set restart = $<
+if(restart == "yes") then
+	reboot
+else
+	exit
+endif

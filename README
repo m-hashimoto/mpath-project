@@ -1,9 +1,10 @@
+#
 # mpath project 2010
-
+#
 0. File
 README				:This file.
 install.sh			:Sell(csh/tcsh) script for install.
-uninstall.sh		:Sell script for uninstall(unpacth).
+uninstall.sh			:Sell script for uninstall(unpacth).
 
 1. Compile & Install
 % ./install.sh
