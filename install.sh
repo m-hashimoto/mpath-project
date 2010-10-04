@@ -64,6 +64,20 @@ patch -N < pfvar.h.diff
 cd /usr/src/sys/fs/nfs/
 patch -N < nfsport.h.diff
 
+
+while ( 1 ); do
+echo -n " Configure Now? [Yes/No] "
+set configure = $<
+switch ($configure)
+case [yY][eE][sS]:
+	break;
+case [nN][oO]:
+	exit
+default:
+	echo "Type Yes/No."
+	exit
+endsw
+
 cd /usr/src/sys/i386/conf/
 config PATRICIA
 
@@ -73,10 +87,15 @@ make depend
 make
 make install
 
-echo restart now? (yes/no)
-set restart = $<
-if(${restart} == "yes") then
+while ( 1 ); do
+echo -n " Reboot Now? [Yes/No] "
+set reboot = $<
+switch ($reboot)
+case [yY][eE][sS]:
 	reboot
-else
+case [nN][oO]:
 	exit
-endif
+default:
+	echo "Type Yes/No."
+	exit
+endsw

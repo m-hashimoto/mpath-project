@@ -73,6 +73,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 {
 #ifdef DEBUG
 printf("ptree_match\n");
+printf("keyi: %p, keyj: %p\n",keyi,keyj);
 #endif
   int bytes;
   int bits;
@@ -80,6 +81,7 @@ printf("ptree_match\n");
   bits = (int)keylen % 8;
 #ifdef DEBUG
 printf("keylen: %d, bytes: %d, bits %d\n",keylen,bytes,bits);
+printf("keyi[bytes] = %p, keyj[bytes] = %p\n",keyi[bytes],keyj[bytes]);
 #endif
   if (! memcmp (keyi, keyj, bytes) &&
       ! (keyi[bytes] ^ keyj[bytes]) & mask[bits])
