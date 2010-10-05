@@ -81,7 +81,7 @@ printf("keyi: %p, keyj: %p, keylen: %d\n",keyi,keyj,keylen);
   bits = (int)keylen % 8;
 #ifdef DEBUG
 printf("bytes: %d, bits %d\n",bytes,bits);
-printf("keyi[bytes] = %s, keyj[bytes] = %s\n",keyi[bytes],keyj[bytes]);
+printf("keyi[bytes] = %d, keyj[bytes] = %d\n",keyi[bytes],keyj[bytes]);
 #endif
   if (! memcmp (keyi, keyj, bytes) &&
       ! (keyi[bytes] ^ keyj[bytes]) & mask[bits])
@@ -150,29 +150,29 @@ printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
 */
 
 	struct ptree_node *
-ptree_search(v_arg, keylen, head)
-	void *v_arg;
+ptree_search(key, keylen, head)
+	void *key;
 	int keylen;
 	struct ptree *head;
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %p, keylen = %d, ptree = %p\n",&v_arg,keylen,t);
+printf("key = %p, keylen = %d, ptree = %p\n",&key,keylen,head);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v;
 
-	for (x = head->top, v = v_arg; x->keylen <= keylen || x->rn_bit >= 0;) {
+	for (x = head->top, v = key; x->keylen <= keylen || x->rn_bit >= 0;) {
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
 #ifdef DEBUG
-printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
+printf("ptree_seach: child->key = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 		}
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
-printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
+printf("ptree_seach: child->key = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 		}
 	}
