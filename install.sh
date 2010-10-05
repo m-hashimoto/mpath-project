@@ -77,6 +77,7 @@ default:
 	echo "Type Yes/No."
 	exit
 endsw
+end
 
 cd /usr/src/sys/i386/conf/
 config PATRICIA
@@ -99,3 +100,4 @@ default:
 	echo "Type Yes/No."
 	exit
 endsw
+end

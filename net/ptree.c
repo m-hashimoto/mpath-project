@@ -73,15 +73,15 @@ ptree_match (char *keyi, char *keyj, int keylen)
 {
 #ifdef DEBUG
 printf("ptree_match\n");
-printf("keyi: %p, keyj: %p\n",keyi,keyj);
+printf("keyi: %p, keyj: %p, keylen: %d\n",keyi,keyj,keylen);
 #endif
   int bytes;
   int bits;
   bytes = (int)keylen / 8;
   bits = (int)keylen % 8;
 #ifdef DEBUG
-printf("keylen: %d, bytes: %d, bits %d\n",keylen,bytes,bits);
-printf("keyi[bytes] = %p, keyj[bytes] = %p\n",keyi[bytes],keyj[bytes]);
+printf("bytes: %d, bits %d\n",bytes,bits);
+printf("keyi[bytes] = %s, keyj[bytes] = %s\n",keyi[bytes],keyj[bytes]);
 #endif
   if (! memcmp (keyi, keyj, bytes) &&
       ! (keyi[bytes] ^ keyj[bytes]) & mask[bits])
@@ -117,12 +117,13 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 /* ptree_search() returns the ptree_node with data
    that matches the key. If data is NULL, it is a branching node,
    and ptree_search() ignores it. no caller reference lock. */
+/*
 	struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %p, keylen = %d\n",&key,keylen);
+printf("key = %p, keylen = %d, ptree = %p\n",&key,keylen,t);
 #endif
 	struct ptree_node *x, *match;
 
@@ -138,10 +139,44 @@ printf("key = %p, keylen = %d\n",&key,keylen);
 		if (x->data)
 			match = x;
 		x = x->child[check_bit (key, x->keylen)];
+#ifdef DEBUG
+printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
+#endif
+
 	}
 
-	//ptree_node_lock (match);
 	return match;
+}
+*/
+
+	struct ptree_node *
+ptree_search(v_arg, keylen, head)
+	void *v_arg;
+	int keylen;
+	struct ptree *head;
+{
+#ifdef DEBUG
+printf("ptree_search\n");
+printf("key = %p, keylen = %d, ptree = %p\n",&v_arg,keylen,t);
+#endif
+	register struct ptree_node *x;
+	register caddr_t v;
+
+	for (x = head->top, v = v_arg; x->keylen <= keylen || x->rn_bit >= 0;) {
+		if (x->rn_bmask & v[x->rn_offset]){
+			x = x->rn_right;
+#ifdef DEBUG
+printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
+#endif
+		}
+		else{
+			x = x->rn_left;
+#ifdef DEBUG
+printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
+#endif
+		}
+	}
+	return (x);
 }
 
 	static void
