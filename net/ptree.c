@@ -166,15 +166,18 @@ printf("key = %p, keylen = %d, ptree = %p\n",&key,keylen,t);
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
 #ifdef DEBUG
-printf("ptree_seach: child->key = %p, keylen = %d\n",x->key,x->keylen);
+printf("ptree_search: child->key = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 		}
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
-printf("ptree_seach: child->key = %p, keylen = %d\n",x->key,x->keylen);
+printf("ptree_search: child->key = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 		}
+#ifdef DEBUG
+printf("ptree_search: x->rn_bit = %p\n",x->rn_bit);
+#endif
 	}
 	return (x);
 }
