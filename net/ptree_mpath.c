@@ -236,7 +236,7 @@ ptree_refines(m_arg, n_arg)
 {
 #ifdef DEBUG
 printf("ptree_refines\n");
-printf("m_arg = %p, n_arg = %p\n"*m_arg,n_arg);
+printf("m_arg = %p, n_arg = %p\n",m_arg,n_arg);
 #endif
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
