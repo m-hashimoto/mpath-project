@@ -162,7 +162,7 @@ printf("key = %p, keylen = %d, ptree = %p\n",&key,keylen,t);
 	register struct ptree_node *x;
 	register caddr_t v;
 
-	for (x = t->top, v = key; x->keylen <= keylen || x->rn_bit >= 0;) {
+	for (x = t->top, v = key; x->keylen <= keylen && x->rn_bit >= 0;) {
 #ifdef DEBUG
 printf("ptree_search: x->rn_bit = %d, x->rn_offset = %d\n",x->rn_bit,x->rn_offset);
 #endif
@@ -181,6 +181,10 @@ printf("ptree_search: x->rn_left = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 		}
 	}
+#ifdef DEBUG
+printf("return node\n");
+printf("ptree_search: x = %p, keylen = %d\n",x->key,x->keylen);
+#endif
 	return (x);
 }
 
