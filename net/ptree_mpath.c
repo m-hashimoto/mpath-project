@@ -54,7 +54,7 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 {
 #ifdef DEBUG
 printf("ptree_insert\n");
-printf("v_arg = %x, head = %p, dupentry = %d\n",*v_arg,head,*dupentry);
+printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
@@ -136,7 +136,7 @@ ptree_addmask(n_arg, search, skip)
 {
 #ifdef DEBUG
 printf("ptree_addmask\n");
-printf("search = %d, skip = %d, n_arg = %x\n",search,skip,*n_arg);
+printf("search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg);
 #endif
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
@@ -215,7 +215,7 @@ ptree_search_m(v_arg, head, m_arg)
 {
 #ifdef DEBUG
 printf("ptree_seach_m\n");
-printf("v_arg = %x, head = %p, m_arg = %x\n",*v_arg,head,*m_arg);
+printf("v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v = v_arg, m = m_arg;
@@ -236,7 +236,7 @@ ptree_refines(m_arg, n_arg)
 {
 #ifdef DEBUG
 printf("ptree_refines\n");
-printf("m_arg = %x, n_arg = %x\n",*m_arg,*n_arg);
+printf("m_arg = %p, n_arg = %p\n"*m_arg,n_arg);
 #endif
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
