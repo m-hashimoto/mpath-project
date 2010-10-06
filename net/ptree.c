@@ -157,7 +157,7 @@ ptree_search(key, keylen, t)
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %x, keylen = %d, ptree = %x\n",&key,keylen,t);
+printf("key = %x, keylen = %d, ptree = %x\n",*key,keylen,*t);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v;
@@ -170,20 +170,20 @@ printf("ptree_search: x->rn_bit = %d, x->rn_offset = %d\n",x->rn_bit,x->rn_offse
 			x = x->rn_right;
 #ifdef DEBUG
 printf("go to right node\n");
-printf("ptree_search: x->rn_right = %x, keylen = %d\n",x->key,x->keylen);
+printf("ptree_search: x->rn_right = %x, keylen = %d\n",*x->key,x->keylen);
 #endif
 		}
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
 printf("go to left node\n");
-printf("ptree_search: x->rn_left = %x, keylen = %d\n",x->key,x->keylen);
+printf("ptree_search: x->rn_left = %x, keylen = %d\n",*x->key,x->keylen);
 #endif
 		}
 	}
 #ifdef DEBUG
 printf("return node\n");
-printf("ptree_search: x = %x, keylen = %d\n",x->key,x->keylen);
+printf("ptree_search: x = %x, keylen = %d\n",*x->key,x->keylen);
 #endif
 	return (x);
 }
