@@ -65,7 +65,7 @@ cd /usr/src/sys/fs/nfs/
 patch -N < nfsport.h.diff
 
 
-while ( 1 ); do
+while ( 1 );
 echo -n " Configure Now? [Yes/No] "
 set configure = $<
 switch ($configure)
@@ -88,7 +88,7 @@ make depend
 make
 make install
 
-while ( 1 ); do
+while ( 1 );
 echo -n " Reboot Now? [Yes/No] "
 set reboot = $<
 switch ($reboot)
