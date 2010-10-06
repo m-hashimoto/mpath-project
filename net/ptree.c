@@ -73,7 +73,7 @@ ptree_match (char *keyi, char *keyj, int keylen)
 {
 #ifdef DEBUG
 printf("ptree_match\n");
-printf("keyi: %x, keyj: %x, keylen: %d\n",keyi,keyj,keylen);
+printf("keyi: %x, keyj: %x, keylen: %d\n",*keyi,*keyj,keylen);
 #endif
   int bytes;
   int bits;
