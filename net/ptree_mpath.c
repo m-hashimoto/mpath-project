@@ -54,7 +54,7 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 {
 #ifdef DEBUG
 printf("ptree_insert\n");
-printf("v_arg = %x, head = %x, dupentry = %d\n",v_arg,head,&dupentry);
+printf("v_arg = %x, head = %p, dupentry = %d\n",*v_arg,head,*dupentry);
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
@@ -64,7 +64,7 @@ printf("v_arg = %x, head = %x, dupentry = %d\n",v_arg,head,&dupentry);
 	register int b; 
 	struct ptree_node *tt;  
 #ifdef DEBUG
-printf("ptree_insert: t=ptree_search(v_arg)=%x\n",t->rn_key);
+printf("ptree_insert: t=ptree_search(v_arg)=%x\n",*t->rn_key);
 #endif	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
@@ -77,7 +77,7 @@ printf("ptree_insert: t=ptree_search(v_arg)=%x\n",t->rn_key);
 				goto on1;   
 		*dupentry = 1;  
 #ifdef DEBUG
-printf("ptree_insert: t(ptree_search)=%x\n",t->rn_key);
+printf("ptree_insert: t(ptree_search)=%x\n",*t->rn_key);
 #endif	
 		return t;
 on1:       
@@ -124,7 +124,7 @@ on1:
 #endif
 	}
 #ifdef DEBUG
-printf("ptree_insert: tt=%x\n",tt->rn_key);
+printf("ptree_insert: tt=%x\n",*tt->rn_key);
 #endif	
 	return (tt);
 }
@@ -136,7 +136,7 @@ ptree_addmask(n_arg, search, skip)
 {
 #ifdef DEBUG
 printf("ptree_addmask\n");
-printf("search = %d, skip = %d, n_arg = %x\n",search,skip,n_arg);
+printf("search = %d, skip = %d, n_arg = %x\n",search,skip,*n_arg);
 #endif
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
@@ -215,7 +215,7 @@ ptree_search_m(v_arg, head, m_arg)
 {
 #ifdef DEBUG
 printf("ptree_seach_m\n");
-printf("v_arg = %x, head = %x, m_arg = %x\n",v_arg,head,m_arg);
+printf("v_arg = %x, head = %p, m_arg = %x\n",*v_arg,head,*m_arg);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v = v_arg, m = m_arg;
@@ -236,7 +236,7 @@ ptree_refines(m_arg, n_arg)
 {
 #ifdef DEBUG
 printf("ptree_refines\n");
-printf("m_arg = %x, n_arg = %x\n",m_arg,n_arg);
+printf("m_arg = %x, n_arg = %x\n",*m_arg,*n_arg);
 #endif
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
@@ -464,7 +464,7 @@ printf("ptree_addroute\n");
 	 */
 	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
 #ifdef DEBUG
-printf("ptree_addroute: tt(ptree_insert)=%x\n",tt->rn_key);
+printf("ptree_addroute: tt(ptree_insert)=%x\n",*tt->rn_key);
 #endif
 	if (keyduplicated) {
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
