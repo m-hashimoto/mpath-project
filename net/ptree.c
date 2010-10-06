@@ -157,7 +157,7 @@ ptree_search(key, keylen, t)
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %x, keylen = %d, ptree = %x\n",*key,keylen,*t);
+printf("key = %x, keylen = %d, ptree = %p\n",*key,keylen,t);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v;
