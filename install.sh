@@ -75,7 +75,6 @@ case [nN][oO]:
 	exit
 default:
 	echo "Type Yes/No."
-	exit
 endsw
 end
 
@@ -98,7 +97,6 @@ case [nN][oO]:
 	exit
 default:
 	echo "Type Yes/No."
-	exit
 endsw
 end
 
@@ -112,6 +110,5 @@ case [nN][oO]:
 	exit
 default:
 	echo "Type Yes/No."
-	exit
 endsw
 end
