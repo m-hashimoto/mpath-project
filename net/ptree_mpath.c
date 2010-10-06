@@ -54,7 +54,7 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 {
 #ifdef DEBUG
 printf("ptree_insert\n");
-printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,&dupentry);
+printf("v_arg = %x, head = %x, dupentry = %d\n",v_arg,head,&dupentry);
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
@@ -64,7 +64,7 @@ printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,&dupentry);
 	register int b; 
 	struct ptree_node *tt;  
 #ifdef DEBUG
-printf("ptree_insert: t(ptree_search)=%s\n",t->rn_key);
+printf("ptree_insert: t=ptree_search(v_arg)=%x\n",t->rn_key);
 #endif	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
@@ -77,7 +77,7 @@ printf("ptree_insert: t(ptree_search)=%s\n",t->rn_key);
 				goto on1;   
 		*dupentry = 1;  
 #ifdef DEBUG
-printf("ptree_insert: t(ptree_search)=%s\n",t->rn_key);
+printf("ptree_insert: t(ptree_search)=%x\n",t->rn_key);
 #endif	
 		return t;
 on1:       
@@ -124,7 +124,7 @@ on1:
 #endif
 	}
 #ifdef DEBUG
-printf("ptree_insert: tt=%s\n",tt->rn_key);
+printf("ptree_insert: tt=%x\n",tt->rn_key);
 #endif	
 	return (tt);
 }
@@ -136,7 +136,7 @@ ptree_addmask(n_arg, search, skip)
 {
 #ifdef DEBUG
 printf("ptree_addmask\n");
-printf("search = %d, skip = %d, n_arg = %p\n",search,skip,n_arg);
+printf("search = %d, skip = %d, n_arg = %x\n",search,skip,n_arg);
 #endif
 	caddr_t netmask = (caddr_t)n_arg;
 	register struct ptree_node *x;
@@ -215,7 +215,7 @@ ptree_search_m(v_arg, head, m_arg)
 {
 #ifdef DEBUG
 printf("ptree_seach_m\n");
-printf("v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg);
+printf("v_arg = %x, head = %x, m_arg = %x\n",v_arg,head,m_arg);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v = v_arg, m = m_arg;
@@ -236,7 +236,7 @@ ptree_refines(m_arg, n_arg)
 {
 #ifdef DEBUG
 printf("ptree_refines\n");
-printf("m_arg = %p, n_arg = %p\n",m_arg,n_arg);
+printf("m_arg = %x, n_arg = %x\n",m_arg,n_arg);
 #endif
 	register caddr_t m = m_arg, n = n_arg;
 	register caddr_t lim, lim2 = lim = n + LEN(n);
@@ -464,7 +464,7 @@ printf("ptree_addroute\n");
 	 */
 	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
 #ifdef DEBUG
-printf("ptree_addroute: tt(ptree_insert)=%s\n",tt->rn_key);
+printf("ptree_addroute: tt(ptree_insert)=%x\n",tt->rn_key);
 #endif
 	if (keyduplicated) {
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
@@ -822,11 +822,11 @@ printf("ptree_walktree_from\n");
 	 * rn_search_m is sort-of-open-coded here. We cannot use the
 	 * function because we need to keep track of the last node seen.
 	 */
-	/* printf("about to search\n"); */
+	printf("about to search\n"); 
 	for (rn = h->rnh_treetop; rn->rn_bit >= 0; ) {
 		last = rn;
-		/* printf("rn_bit %d, rn_bmask %x, xm[rn_offset] %x\n",
-		   rn->rn_bit, rn->rn_bmask, xm[rn->rn_offset]); */
+		printf("rn_bit %d, rn_bmask %x, xm[rn_offset] %x\n",
+		   rn->rn_bit, rn->rn_bmask, xm[rn->rn_offset]);
 		if (!(rn->rn_bmask & xm[rn->rn_offset])) {
 			break;
 		}
@@ -836,7 +836,7 @@ printf("ptree_walktree_from\n");
 			rn = rn->rn_left;
 		}
 	}
-	/* printf("done searching\n"); */
+	printf("done searching\n");
 
 	/*
 	 * Two cases: either we stepped off the end of our mask,
@@ -847,7 +847,7 @@ printf("ptree_walktree_from\n");
 	rn = last;
 	lastb = rn->rn_bit;
 
-	/* printf("rn %p, lastb %d\n", rn, lastb);*/
+	printf("rn %p, lastb %d\n", rn, lastb);
 
 	/*
 	 * This gets complicated because we may delete the node
@@ -858,7 +858,7 @@ printf("ptree_walktree_from\n");
 		rn = rn->rn_left;
 
 	while (!stopping) {
-		/* printf("node %p (%d)\n", rn, rn->rn_bit); */
+		printf("node %p (%d)\n", rn, rn->rn_bit);
 		base = rn;
 		/* If at right child go back up, otherwise, go right */
 		while (rn->rn_parent->rn_right == rn
@@ -868,7 +868,7 @@ printf("ptree_walktree_from\n");
 			/* if went up beyond last, stop */
 			if (rn->rn_bit < lastb) {
 				stopping = 1;
-				/* printf("up too far\n"); */
+				printf("up too far\n");
 				/*
 				 * XXX we should jump to the 'Process leaves'
 				 * part, because the values of 'rn' and 'next'
@@ -886,7 +886,7 @@ printf("ptree_walktree_from\n");
 		/* Process leaves */
 		while ((rn = base) != 0) {
 			base = rn->rn_dupedkey;
-			/* printf("leaf %p\n", rn); */
+			printf("leaf %p\n", rn);
 			if (!(rn->rn_flags & RNF_ROOT)
 					&& (error = (*f)(rn, w)))
 				return (error);
@@ -894,7 +894,7 @@ printf("ptree_walktree_from\n");
 		rn = next;
 
 		if (rn->rn_flags & RNF_ROOT) {
-			/* printf("root, stopping"); */
+			printf("root, stopping");
 			stopping = 1;
 		}
 
