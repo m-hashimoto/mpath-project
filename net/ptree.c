@@ -164,7 +164,7 @@ printf("key = %p, keylen = %d, ptree = %p\n",&key,keylen,t);
 
 	for (x = t->top, v = key; x->keylen <= keylen || x->rn_bit >= 0;) {
 #ifdef DEBUG
-printf("ptree_search: x->rn_bit = %p, x->rn_offset = %p\n",x->rn_bit,x->rn_offset);
+printf("ptree_search: x->rn_bit = %d, x->rn_offset = %d\n",x->rn_bit,x->rn_offset);
 #endif
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
@@ -176,7 +176,7 @@ printf("ptree_search: x->rn_right = %p, keylen = %d\n",x->key,x->keylen);
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
-pritnf("go to left node\n");
+printf("go to left node\n");
 printf("ptree_search: x->rn_left = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 		}
