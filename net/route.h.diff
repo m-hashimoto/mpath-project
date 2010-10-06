@@ -1,7 +1,43 @@
---- route.h.org	2010-09-23 05:26:56.000000000 +0900
-+++ route.h	2010-09-28 08:25:01.000000000 +0900
-@@ -107,6 +107,8 @@
-  #endif
+--- route.h.org	2010-10-06 14:15:48.000000000 +0900
++++ route.h	2010-10-06 14:19:26.000000000 +0900
+@@ -88,25 +88,27 @@
+ 
+ /* MRT compile-time constants */
+ #ifdef _KERNEL
+- #ifndef ROUTETABLES
+-  #define RT_NUMFIBS 1
+-  #define RT_MAXFIBS 1
+- #else
+-  /* while we use 4 bits in the mbuf flags, we are limited to 16 */
+-  #define RT_MAXFIBS 16
+-  #if ROUTETABLES > RT_MAXFIBS
+-   #define RT_NUMFIBS RT_MAXFIBS
+-   #error "ROUTETABLES defined too big"
+-  #else
+-   #if ROUTETABLES == 0
+-    #define RT_NUMFIBS 1
+-   #else
+-    #define RT_NUMFIBS ROUTETABLES
+-   #endif
+-  #endif
+- #endif
++#ifndef ROUTETABLES
++#define RT_NUMFIBS 1
++#define RT_MAXFIBS 1
++#else
++/* while we use 4 bits in the mbuf flags, we are limited to 16 */
++#define RT_MAXFIBS 16
++#if ROUTETABLES > RT_MAXFIBS
++#define RT_NUMFIBS RT_MAXFIBS
++#error "ROUTETABLES defined too big"
++#else
++#if ROUTETABLES == 0
++#define RT_NUMFIBS 1
++#else
++#define RT_NUMFIBS ROUTETABLES
++#endif
++#endif
++#endif
  #endif
  
 +#define MPATH_MAX 10
@@ -28,30 +64,22 @@
  	/*
  	 * XXX struct rtentry must begin with a struct radix_node (or two!)
  	 * because the code does some casts of a 'struct radix_node *'
-@@ -138,13 +141,15 @@
- 	 */
- #define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
- #define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
--	struct	sockaddr *rt_gateway;	/* value */
--	int	rt_flags;		/* up/down?, host/net */
--	int	rt_refcnt;		/* # held references */
--	struct	ifnet *rt_ifp;		/* the answer: interface to use */
--	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
--	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
--	u_int	rt_fibnum;		/* which FIB */
-+
-+	struct	sockaddr *rt_gateway;	
-+	int	rt_flags;	
-+	int	rt_refcnt;
-+	struct	ifnet *rt_ifp;		
-+	struct	ifaddr *rt_ifa;		
-+	struct	rt_metrics_lite rt_rmx;
-+	u_int	rt_fibnum;
+@@ -145,10 +148,14 @@
+ 	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
+ 	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
+ 	u_int	rt_fibnum;		/* which FIB */
 +
  #ifdef _KERNEL
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
-@@ -197,7 +202,7 @@
+ #endif
++
++	struct rtentry	*next;
++	struct rtentry	*prev;
+ };
+ 
+ /*
+@@ -197,7 +204,7 @@
  #define	RTF_LOCAL	0x200000 	/* route represents a local address */
  #define	RTF_BROADCAST	0x400000	/* route represents a bcast address */
  #define	RTF_MULTICAST	0x800000	/* route represents a mcast address */
@@ -60,7 +88,7 @@
  #define	RTF_STICKY	 0x10000000	/* always route dst->src */
  
  #define	RTF_RNH_LOCKED	 0x40000000	/* radix node head is locked */
-@@ -313,9 +318,9 @@
+@@ -313,9 +320,9 @@
   * The case sa_len == 0 should only apply to empty structures.
   */
  #define SA_SIZE(sa)						\
@@ -73,7 +101,7 @@
  
  #ifdef _KERNEL
  
-@@ -330,20 +335,20 @@
+@@ -330,20 +337,20 @@
  #define	RT_ADDREF(_rt)	do {					\
  	RT_LOCK_ASSERT(_rt);					\
  	KASSERT((_rt)->rt_refcnt >= 0,				\
@@ -97,7 +125,7 @@
  	else {							\
  		RT_REMREF(_rt);					\
  		RT_UNLOCK(_rt);					\
-@@ -373,7 +378,7 @@
+@@ -373,7 +380,7 @@
  	}							\
  } while (0)
  
@@ -106,7 +134,7 @@
  
  struct ifmultiaddr;
  
-@@ -410,9 +415,9 @@
+@@ -410,9 +417,9 @@
  int	 rtinit(struct ifaddr *, int, int);
  int	 rtioctl(u_long, caddr_t);
  void	 rtredirect(struct sockaddr *, struct sockaddr *,
@@ -118,7 +146,7 @@
  
  /* defaults to "all" FIBs */
  int	 rtinit_fib(struct ifaddr *, int, int);
-@@ -427,9 +432,9 @@
+@@ -427,9 +434,9 @@
  struct rtentry *rtalloc1_fib(struct sockaddr *, int, u_long, u_int);
  int	 rtioctl_fib(u_long, caddr_t, u_int);
  void	 rtredirect_fib(struct sockaddr *, struct sockaddr *,
