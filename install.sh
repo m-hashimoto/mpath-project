@@ -70,7 +70,7 @@ echo -n " Configure Now? [Yes/No] "
 set configure = $<
 switch ($configure)
 case [yY][eE][sS]:
-	break;
+	break
 case [nN][oO]:
 	exit
 default:
@@ -86,7 +86,21 @@ cd ../compile/PATRICIA
 make cleandepend
 make depend
 make
-make install
+
+while ( 1 );
+echo -n " Install Now? [Yes/No] "
+set configure = $<
+switch ($configure)
+case [yY][eE][sS]:
+	make install;
+	break
+case [nN][oO]:
+	exit
+default:
+	echo "Type Yes/No."
+	exit
+endsw
+end
 
 while ( 1 );
 echo -n " Reboot Now? [Yes/No] "
