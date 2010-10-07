@@ -5,4 +5,4 @@
  XEN			opt_global.h
 +
 +# Mpath Project Options
-+PATRICIA		ptree.h
++PATRICIA		opt_ptree.h
