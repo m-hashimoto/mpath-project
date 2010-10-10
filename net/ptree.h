@@ -36,9 +36,9 @@ struct ptree_node {
   void *data;
 
   int rn_Off;
-#ifdef PTREE_MPATH
-  struct ptree_node *mlist[MAX_MPATH];
-#endif
+//#ifdef PTREE_MPATH
+//  struct ptree_node *mlist[MAX_MPATH];
+//#endif
 #ifdef RN_DEBUG
   int rn_info;
   struct ptree_node *rn_twin;
