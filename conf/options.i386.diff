@@ -6,3 +6,4 @@
 +
 +# Mpath Project Options
 +PATRICIA		opt_ptree.h
++PTREE_MPATH		opt_ptree.h
