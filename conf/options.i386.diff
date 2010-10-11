@@ -1,5 +1,10 @@
-118a119,122
-> 
-> #Patricia mpath option
-> PATRICIA		opt_ptree.h
-> PTREE_MPATH		opt_ptree.h
+--- options.i386.orig	2010-10-11 10:59:16.000000000 +0900
++++ options.i386	2010-10-11 11:01:30.000000000 +0900
+@@ -116,3 +116,7 @@
+ 
+ NATIVE			opt_global.h
+ XEN			opt_global.h
++
++#Patricia mpath option
++PATRICIA		opt_ptree.h
++PTREE_MPATH		opt_ptree.h
