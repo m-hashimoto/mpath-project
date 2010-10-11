@@ -14,7 +14,7 @@ MALLOC_DECLARE(M_RTABLE);
 #endif
 //#endif /*0*/
 
-#ifdef PTREE_MPATH
+#if 0
 #define MAX_MPATH 5
 #endif
 
@@ -36,7 +36,7 @@ struct ptree_node {
   void *data;
 
   int rn_Off;
-#ifdef PTREE_MPATH
+#if 0
   struct ptree_node *mlist;
 #endif
 
