@@ -1,9 +1,5 @@
---- options.i386.org	2010-09-28 21:13:09.000000000 +0900
-+++ options.i386	2010-09-28 21:24:55.000000000 +0900
-@@ -116,3 +116,6 @@
- NATIVE			opt_global.h
- XEN			opt_global.h
-+
-+# Mpath Project Options
-+PATRICIA		opt_ptree.h
-+PTREE_MPATH		opt_ptree.h
+118a119,122
+> 
+> #Patricia mpath option
+> PATRICIA		opt_ptree.h
+> PTREE_MPATH		opt_ptree.h
