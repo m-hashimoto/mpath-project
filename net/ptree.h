@@ -167,4 +167,25 @@ struct ptree_node *ptree_next (struct ptree_node *v);
 
 struct ptree *ptree_create (void);
 void ptree_delete (struct ptree *t);
+
+/*
+ * Patricia trie API with multipath support
+ */
+struct route;
+struct rtentry;
+struct sockaddr;
+int	ptree_mpath_capable(struct ptree *);
+struct ptree_node *ptree_mpath_next(struct ptree_node *);
+u_int32_t ptree_mpath_count(struct ptree_node *);
+struct rtentry *rt_mpath_matchgate(struct rtentry *, struct sockaddr *);
+int rt_mpath_conflict(struct ptree *, struct rtentry *,
+    struct sockaddr *);
+void rtalloc_mpath_fib(struct route *, u_int32_t, u_int);
+#define rtalloc_mpath(_route, _hash) rtalloc_mpath_fib((_route), (_hash), 0)
+struct ptree_node *ptree_mpath_lookup(void *, void *,
+    struct ptree *);
+int rt_mpath_deldup(struct rtentry *, struct rtentry *);
+int	ptree4_mpath_inithead(void **, int);
+int	ptree6_mpath_inithead(void **, int);
+
 #endif /*_PTREE_H_*/

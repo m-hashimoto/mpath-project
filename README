@@ -8,6 +8,6 @@ uninstall.sh			:Sell script for uninstall(unpacth).
 
 
 UPDATA
-2010/10/10 Add rtentry list.
+2010/10/11 Add rtentry list.
 2010/10/05 Implementation of ptree routeing table.
 2010/09/29 Add ptree routeing table. (debugging...)

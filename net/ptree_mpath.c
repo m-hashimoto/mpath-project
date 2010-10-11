@@ -1042,3 +1042,304 @@ printf("ptree_init\n");
 	if (ptree_inithead((void **)(void *)&mask_rnhead, 0) == 0)
 		panic("ptree_init 2");
 }
+
+/*
+ *  functions for multi path routing.
+ */
+
+int
+ptree_mpath_capable(struct ptree *rnh)
+{
+
+	return rnh->rnh_multipath;
+}
+
+struct ptree_node *
+ptree_mpath_next(struct ptree_node *rn)
+{
+	struct ptree_node *next;
+
+	if (!rn->rn_dupedkey)
+		return NULL;
+	next = rn->rn_dupedkey;
+	if (rn->rn_mask == next->rn_mask)
+		return next;
+	else
+		return NULL;
+}
+
+uint32_t
+ptree_mpath_count(struct ptree_node *rn)
+{
+	uint32_t i = 0;
+	struct rtentry *rt;
+	
+	while (rn != NULL) {
+		rt = (struct rtentry *)rn;
+		i += rt->rt_rmx.rmx_weight;
+		rn = ptree_mpath_next(rn);
+	}
+	return (i);
+}
+
+struct rtentry *
+rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
+{
+	struct ptree_node *rn;
+
+	if (!ptree_mpath_next((struct ptree_node *)rt))
+		return rt;
+
+	if (!gate)
+		return NULL;
+
+	/* beyond here, we use rn as the master copy */
+	rn = (struct ptree_node *)rt;
+	do {
+		rt = (struct rtentry *)rn;
+		/*
+		 * we are removing an address alias that has 
+		 * the same prefix as another address
+		 * we need to compare the interface address because
+		 * rt_gateway is a special sockadd_dl structure
+		 */
+		if (rt->rt_gateway->sa_family == AF_LINK) {
+			if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len))
+				break;
+		} else {
+			if (rt->rt_gateway->sa_len == gate->sa_len &&
+			    !memcmp(rt->rt_gateway, gate, gate->sa_len))
+				break;
+		}
+	} while ((rn = ptree_mpath_next(rn)) != NULL);
+
+	return (struct rtentry *)rn;
+}
+
+/* 
+ * go through the chain and unlink "rt" from the list
+ * the caller will free "rt"
+ */
+int
+rt_mpath_deldup(struct rtentry *headrt, struct rtentry *rt)
+{
+        struct ptree_node *t, *tt;
+
+        if (!headrt || !rt)
+            return (0);
+        t = (struct ptree_node *)headrt;
+        tt = ptree_mpath_next(t);
+        while (tt) {
+            if (tt == (struct ptree_node *)rt) {
+                t->rn_dupedkey = tt->rn_dupedkey;
+                tt->rn_dupedkey = NULL;
+    	        tt->rn_flags &= ~RNF_ACTIVE;
+	        tt[1].rn_flags &= ~RNF_ACTIVE;
+                return (1);
+            }
+            t = tt;
+            tt = ptree_mpath_next((struct ptree_node *)t);
+        }
+        return (0);
+}
+
+/*
+ * check if we have the same key/mask/gateway on the table already.
+ */
+int
+rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
+    struct sockaddr *netmask)
+{
+	struct ptree_node *rn, *rn1;
+	struct rtentry *rt1;
+	char *p, *q, *eq;
+	int same, l, skip;
+
+	rn = (struct ptree_node *)rt;
+	rn1 = rnh->rnh_lookup(rt_key(rt), netmask, rnh);
+	if (!rn1 || rn1->rn_flags & RNF_ROOT)
+		return 0;
+
+	/*
+	 * unlike other functions we have in this file, we have to check
+	 * all key/mask/gateway as rnh_lookup can match less specific entry.
+	 */
+	rt1 = (struct rtentry *)rn1;
+
+	/* compare key. */
+	if (rt_key(rt1)->sa_len != rt_key(rt)->sa_len ||
+	    bcmp(rt_key(rt1), rt_key(rt), rt_key(rt1)->sa_len))
+		goto different;
+
+	/* key was the same.  compare netmask.  hairy... */
+	if (rt_mask(rt1) && netmask) {
+		skip = rnh->rnh_treetop->rn_offset;
+		if (rt_mask(rt1)->sa_len > netmask->sa_len) {
+			/*
+			 * as rt_mask(rt1) is made optimal by radix.c,
+			 * there must be some 1-bits on rt_mask(rt1)
+			 * after netmask->sa_len.  therefore, in
+			 * this case, the entries are different.
+			 */
+			if (rt_mask(rt1)->sa_len > skip)
+				goto different;
+			else {
+				/* no bits to compare, i.e. same*/
+				goto maskmatched;
+			}
+		}
+
+		l = rt_mask(rt1)->sa_len;
+		if (skip > l) {
+			/* no bits to compare, i.e. same */
+			goto maskmatched;
+		}
+		p = (char *)rt_mask(rt1);
+		q = (char *)netmask;
+		if (bcmp(p + skip, q + skip, l - skip))
+			goto different;
+		/*
+		 * need to go through all the bit, as netmask is not
+		 * optimal and can contain trailing 0s
+		 */
+		eq = (char *)netmask + netmask->sa_len;
+		q += l;
+		same = 1;
+		while (eq > q)
+			if (*q++) {
+				same = 0;
+				break;
+			}
+		if (!same)
+			goto different;
+	} else if (!rt_mask(rt1) && !netmask)
+		; /* no mask to compare, i.e. same */
+	else {
+		/* one has mask and the other does not, different */
+		goto different;
+	}
+
+maskmatched:
+
+	/* key/mask were the same.  compare gateway for all multipaths */
+	do {
+		rt1 = (struct rtentry *)rn1;
+
+		/* sanity: no use in comparing the same thing */
+		if (rn1 == rn)
+			continue;
+        
+		if (rt1->rt_gateway->sa_family == AF_LINK) {
+			if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
+			    bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
+			    rt1->rt_ifa->ifa_addr->sa_len))
+				continue;
+		} else {
+			if (rt1->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
+			    bcmp(rt1->rt_gateway, rt->rt_gateway,
+			    rt1->rt_gateway->sa_len))
+				continue;
+		}
+
+		/* all key/mask/gateway are the same.  conflicting entry. */
+		return EEXIST;
+	} while ((rn1 = ptree_mpath_next(rn1)) != NULL);
+
+different:
+	return 0;
+}
+
+void
+rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
+{
+	struct ptree_node *rn0, *rn;
+	u_int32_t n;
+	struct rtentry *rt;
+	int64_t weight;
+
+	/*
+	 * XXX we don't attempt to lookup cached route again; what should
+	 * be done for sendto(3) case?
+	 */
+	if (ro->ro_rt && ro->ro_rt->rt_ifp && (ro->ro_rt->rt_flags & RTF_UP))
+		return;				 
+	ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, 0, fibnum);
+
+	/* if the route does not exist or it is not multipath, don't care */
+	if (ro->ro_rt == NULL)
+		return;
+	if (ptree_mpath_next((struct radix_node *)ro->ro_rt) == NULL) {
+		RT_UNLOCK(ro->ro_rt);
+		return;
+	}
+
+	/* beyond here, we use rn as the master copy */
+	rn0 = rn = (struct ptree_node *)ro->ro_rt;
+	n = ptree_mpath_count(rn0);
+
+	/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
+	hash += hashjitter;
+	hash %= n;
+	for (weight = abs((int32_t)hash), rt = ro->ro_rt;
+	     weight >= rt->rt_rmx.rmx_weight && rn; 
+	     weight -= rt->rt_rmx.rmx_weight) {
+		
+		/* stay within the multipath routes */
+		if (rn->rn_dupedkey && rn->rn_mask != rn->rn_dupedkey->rn_mask)
+			break;
+		rn = rn->rn_dupedkey;
+		rt = (struct rtentry *)rn;
+	}
+	/* XXX try filling rt_gwroute and avoid unreachable gw  */
+
+	/* gw selection has failed - there must be only zero weight routes */
+	if (!rn) {
+		RT_UNLOCK(ro->ro_rt);
+		ro->ro_rt = NULL;
+		return;
+	}
+	if (ro->ro_rt != rt) {
+		RTFREE_LOCKED(ro->ro_rt);
+		ro->ro_rt = (struct rtentry *)rn;
+		RT_LOCK(ro->ro_rt);
+		RT_ADDREF(ro->ro_rt);
+
+	} 
+	RT_UNLOCK(ro->ro_rt);
+}
+
+extern int	in6_inithead(void **head, int off);
+extern int	in_inithead(void **head, int off);
+
+#ifdef INET
+int
+ptree4_mpath_inithead(void **head, int off)
+{
+	struct ptree *rnh;
+
+	hashjitter = arc4random();
+	if (in_inithead(head, off) == 1) {
+		rnh = (struct ptree *)*head;
+		rnh->rnh_multipath = 1;
+		return 1;
+	} else
+		return 0;
+}
+#endif
+
+#ifdef INET6
+int
+ptree6_mpath_inithead(void **head, int off)
+{
+	struct ptree *rnh;
+
+	hashjitter = arc4random();
+	if (in6_inithead(head, off) == 1) {
+		rnh = (struct ptree *)*head;
+		rnh->rnh_multipath = 1;
+		return 1;
+	} else
+		return 0;
+}
+
+#endif
