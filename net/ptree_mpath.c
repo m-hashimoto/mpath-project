@@ -1120,6 +1120,8 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
  * go through the chain and unlink "rt" from the list
  * the caller will free "rt"
  */
+static uint32_t hashjitter;
+
 int
 rt_mpath_deldup(struct rtentry *headrt, struct rtentry *rt)
 {
@@ -1156,7 +1158,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	int same, l, skip;
 
 	rn = (struct ptree_node *)rt;
-	rn1 = rnh->rnh_lookup(rt_key(rt), netmask, rnh);
+	rn1 = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
 	if (!rn1 || rn1->rn_flags & RNF_ROOT)
 		return 0;
 
