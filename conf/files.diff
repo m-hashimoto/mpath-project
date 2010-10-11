@@ -6,8 +6,8 @@
  net/pfil.c			optional ether | inet
 -net/radix.c			standard
 -net/radix_mpath.c		standard
-+net/ptree.c			optional patricia
-+net/ptree_mpath.c		optional patricia
++net/ptree.c			standard
++net/ptree_mpath.c		standard
  net/raw_cb.c			standard
  net/raw_usrreq.c		standard
  net/route.c			standard
