@@ -1270,7 +1270,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 	/* if the route does not exist or it is not multipath, don't care */
 	if (ro->ro_rt == NULL)
 		return;
-	if (ptree_mpath_next((struct radix_node *)ro->ro_rt) == NULL) {
+	if (ptree_mpath_next((struct ptree_node *)ro->ro_rt) == NULL) {
 		RT_UNLOCK(ro->ro_rt);
 		return;
 	}
