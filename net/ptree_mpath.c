@@ -1054,15 +1054,16 @@ ptree_mpath_capable(struct ptree *rnh)
 	return rnh->rnh_multipath;
 }
 
-struct ptree_node *
-ptree_mpath_next(struct ptree_node *rn)
+struct rtentry *
+ptree_mpath_next(struct ptree_node *rn, int n)
 {
-	struct ptree_node *next;
+	struct rtenty *rt, *next;
+	rt = (struct rtentry *)rn;
 
-	if (!rn->rn_dupedkey)
+	if (!rt->mlist)
 		return NULL;
-	next = rn->rn_dupedkey;
-	if (rn->rn_mask == next->rn_mask)
+	next = rt->mlist[n];
+	if (!next)
 		return next;
 	else
 		return NULL;
@@ -1073,21 +1074,24 @@ ptree_mpath_count(struct ptree_node *rn)
 {
 	uint32_t i = 0;
 	struct rtentry *rt;
-	
-	while (rn != NULL) {
-		rt = (struct rtentry *)rn;
-		i += rt->rt_rmx.rmx_weight;
-		rn = ptree_mpath_next(rn);
+	rt = (struct rtentry *)rn;
+	/* count mlist */
+	while (rt != NULL) {
+		if(rt->mlist[i]!=NULL)
+			i += rt->rt_rmx.rmx_weight;
 	}
+	i++;	/* default gateway */
 	return (i);
 }
 
 struct rtentry *
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
+	uint32_t	i = 0;
 	struct ptree_node *rn;
+	struct rtentry	*match;
 
-	if (!ptree_mpath_next((struct ptree_node *)rt))
+	if (!rt->mlist)
 		return rt;
 
 	if (!gate)
@@ -1096,24 +1100,24 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 	/* beyond here, we use rn as the master copy */
 	rn = (struct ptree_node *)rt;
 	do {
-		rt = (struct rtentry *)rn;
+		match = rt->mlist[i];
 		/*
 		 * we are removing an address alias that has 
 		 * the same prefix as another address
 		 * we need to compare the interface address because
 		 * rt_gateway is a special sockadd_dl structure
 		 */
-		if (rt->rt_gateway->sa_family == AF_LINK) {
-			if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len))
+		if (match->rt_gateway->sa_family == AF_LINK) {
+			if (!memcmp(match->rt_ifa->ifa_addr, gate, gate->sa_len))
 				break;
 		} else {
-			if (rt->rt_gateway->sa_len == gate->sa_len &&
-			    !memcmp(rt->rt_gateway, gate, gate->sa_len))
+			if (match->rt_gateway->sa_len == gate->sa_len &&
+			    !memcmp(match->rt_gateway, gate, gate->sa_len))
 				break;
 		}
-	} while ((rn = ptree_mpath_next(rn)) != NULL);
+	} while (rt->mlist[i] != NULL);
 
-	return (struct rtentry *)rn;
+	return (struct rtentry *)match;
 }
 
 /* 

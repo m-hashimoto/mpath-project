@@ -117,7 +117,7 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 /* ptree_search() returns the ptree_node with data
    that matches the key. If data is NULL, it is a branching node,
    and ptree_search() ignores it. no caller reference lock. */
-/*
+#if 0
 	struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
@@ -147,8 +147,7 @@ printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
 
 	return match;
 }
-*/
-
+#endif
 	struct ptree_node *
 ptree_search(key, keylen, t)
 	char *key;
@@ -246,16 +245,16 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 }
 
 /* locks the node */
-/*
+#if 0
    void
    ptree_node_lock (struct ptree_node *x)
    {
    x->lock++;
    }
-   */
+ 
 /* unlocks the node. if the lock(reference) becomes 0,
    it will be removed. */
-/*
+
    void
    ptree_node_unlock (struct ptree_node *x)
    {
@@ -263,7 +262,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
    if (x->lock == 0)
    ptree_remove (x);
    }
-   */
+#endif
 
 /* locks for the tree holding
    but does not lock for the caller reference. */
@@ -322,9 +321,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 			v = x;
 		else
 		{
-			/* locks the branching node x for the tree holding */
-			// ptree_node_lock (x);
-
 			v = ptree_node_create (key, keylen);
 			if (! v)
 			{
@@ -336,9 +332,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 			ptree_link (x, v);
 		}
 	}
-
-	/* locks for the tree holding */
-	//ptree_node_lock (v);
 	return v;
 }
 
@@ -393,7 +386,6 @@ ptree_head (struct ptree *t)
 	if (! t->top)
 		return NULL;
 
-	//ptree_node_lock (t->top);
 	return t->top;
 }
 
@@ -408,16 +400,12 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
-		//ptree_node_lock (w);
-		//ptree_node_unlock (v);
 		return w;
 	}
 
 	if (v->child[1])
 	{
 		w = v->child[1];
-		//ptree_node_lock (w);
-		//ptree_node_unlock (v);
 		return w;
 	}
 
@@ -426,8 +414,6 @@ ptree_next (struct ptree_node *v)
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
-		//ptree_node_lock (w);
-		//ptree_node_unlock (v);
 		return w;
 	}
 
@@ -444,14 +430,10 @@ ptree_next (struct ptree_node *v)
 		w = t->child[1];
 		XRTASSERT (w, ("xrt: an impossible end of traverse"));
 
-		//ptree_node_lock (w);
-		//ptree_node_unlock (v);
-
 		return w;
 	}
 
 	/* end of traverse */
-	//ptree_node_unlock (v);
 	return NULL;
 }
 

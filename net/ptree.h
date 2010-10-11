@@ -51,7 +51,8 @@ struct ptree_node {
 #endif /*0*/
 
 struct ptree_mask {
-	short   rm_bit;                 /* bit offset; -1-index(netmask) */        char    rm_unused;              /* cf. rn_bmask */
+	short   rm_bit;                 /* bit offset; -1-index(netmask) */ 
+ 	char    rm_unused;              /* cf. rn_bmask */
 	u_char  rm_flags;               /* cf. rn_flags */
 	struct  ptree_mask *rm_mklist;  /* more masks to try */
 	union   {
@@ -67,36 +68,36 @@ typedef int walktree_f_t(struct ptree_node *, void *);
 
 struct ptree {
 	struct ptree_node *top;
-	int	 rnh_addsize;	/* permit, but not require fixed keys */
-	int	 rnh_pktsize;   /* permit, but not require fixed keys */
-	struct ptree_node rnh_nodes[3]; /* empty tree for comon case */
-	int	 rnh_multipath;	/* multipath capable ? */
+	int	 rnh_addsize;		/* permit, but not require fixed keys */
+	int	 rnh_pktsize;  		/* permit, but not require fixed keys */
+	struct ptree_node rnh_nodes[3];	/* empty tree for comon case */
+	int	 rnh_multipath;		/* multipath capable ? */
 
 	struct  ptree_node *(*rnh_addaddr)
 		(void *v, void *mask,
 		 struct ptree *head, struct ptree_node nodes[]);
-	struct  ptree_node *(*rnh_addpkt) /* add based on packet hdr */
+	struct  ptree_node *(*rnh_addpkt) 	/* add based on packet hdr */
 		(void *v, void *mask,
 		 struct ptree *head, struct ptree_node nodes[]);
-	struct  ptree_node *(*rnh_deladdr) /* remove based on sockaddr */
+	struct  ptree_node *(*rnh_deladdr) 	/* remove based on sockaddr */
 		(void *v, void *mask, struct ptree *head);  
-  	struct  ptree_node *(*rnh_delpkt) /* remove based on packet hdr */
+  	struct  ptree_node *(*rnh_delpkt) 	/* remove based on packet hdr */
 		(void *v, void *mask, struct ptree *head); 
- 	struct  ptree_node *(*rnh_matchaddr) /* locate based on sockaddr */
+ 	struct  ptree_node *(*rnh_matchaddr) 	/* locate based on sockaddr */
 		(void *v, struct ptree *head);
-	struct  ptree_node *(*rnh_lookup) /* locate based on sockaddr */  
+	struct  ptree_node *(*rnh_lookup) 	/* locate based on sockaddr */  
   		(void *v, void *m, int keylen, struct ptree *head);
-	struct  ptree_node *(*rnh_matchpkt)/* locate based on packet hdr */
+	struct  ptree_node *(*rnh_matchpkt)	/* locate based on packet hdr */
 		(void *v, struct ptree *head);
 	int     (*rnh_walktree)                 /* traverse tree */
 		(struct ptree *head, walktree_f_t *f, void *w);
 	int     (*rnh_walktree_from)            /* traverse tree below a */
 		(struct ptree *head, void *a, void *m,
 		 walktree_f_t *f, void *w);
-	void    (*rnh_close)    /* do something when the last ref drops */
+	void    (*rnh_close)    	/* do something when the last ref drops */
 		(struct ptree_node *rn, struct ptree *head);
 #ifdef _KERNEL
-	struct rwlock rnh_lock; /* locks entire */
+	struct rwlock rnh_lock; 	/* locks entire */
 #endif
 };
 
@@ -143,8 +144,6 @@ struct ptree {
 #endif /* _KERNEL */
 
 
-//void ptree_node_lock (struct ptree_node *x);
-//void ptree_node_unlock (struct ptree_node *x);
 
 void     ptree_init(void);
 int      ptree_inithead(void **, int);
@@ -175,7 +174,7 @@ struct route;
 struct rtentry;
 struct sockaddr;
 int	ptree_mpath_capable(struct ptree *);
-struct ptree_node *ptree_mpath_next(struct ptree_node *);
+struct rtentry *ptree_mpath_next(struct ptree_node *, int);
 u_int32_t ptree_mpath_count(struct ptree_node *);
 struct rtentry *rt_mpath_matchgate(struct rtentry *, struct sockaddr *);
 int rt_mpath_conflict(struct ptree *, struct rtentry *,

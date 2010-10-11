@@ -1,5 +1,5 @@
 --- route.h.orig	2010-10-11 08:21:47.000000000 +0900
-+++ route.h	2010-10-11 10:33:05.000000000 +0900
++++ route.h	2010-10-11 16:08:39.000000000 +0900
 @@ -88,23 +88,23 @@
  
  /* MRT compile-time constants */
@@ -41,7 +41,7 @@
  #endif
  
  extern u_int rt_numfibs;	/* number fo usable routing tables */
-@@ -124,13 +124,31 @@
+@@ -124,13 +124,18 @@
   * gateway rather than the ultimate destination.
   */
  #ifndef RNF_NORMAL
@@ -49,25 +49,13 @@
 +#include <net/ptree.h>
  #ifdef RADIX_MPATH
  #include <net/radix_mpath.h>
+-#endif
+-#endif
 +#endif /* RADIX_MPATH */
 +#endif /* RNF_NORMAL */
 +
 +#ifdef PTREE_MPATH
 +#define MAX_MPATH 10
-+struct mrtentry {
-+	struct	sockaddr *mrt_gateway;
-+	int	mrt_flags;
-+	int	mrt_refcnt;
-+	struct	ifnet *mrt_ifp;
-+	struct	ifaddr *mrt_ifa;
-+	struct	rt_metrics_lite mrt_rmx;
-+	u_int	mrt_fibnum;
-+
-+#ifdef _KERNEL
-+	struct	mtx mrt_mtx;
- #endif
--#endif
-+}
 +#endif /* PTREE_MPATH */
 +
  struct rtentry {
@@ -76,19 +64,19 @@
  	/*
  	 * XXX struct rtentry must begin with a struct radix_node (or two!)
  	 * because the code does some casts of a 'struct radix_node *'
-@@ -145,6 +163,11 @@
+@@ -145,6 +150,11 @@
  	struct	ifaddr *rt_ifa;		/* the answer: interface address to use */
  	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
  	u_int	rt_fibnum;		/* which FIB */
 +
 +#ifdef PTREE_MPATH
-+	struct mrtentry	*mlist[MAX_MPATH];	/* multi path list */
++	struct rtentry	*mlist[MAX_MPATH];	/* multi path list */
 +#endif
 +
  #ifdef _KERNEL
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
-@@ -197,7 +220,7 @@
+@@ -197,7 +207,7 @@
  #define	RTF_LOCAL	0x200000 	/* route represents a local address */
  #define	RTF_BROADCAST	0x400000	/* route represents a bcast address */
  #define	RTF_MULTICAST	0x800000	/* route represents a mcast address */
@@ -97,7 +85,7 @@
  #define	RTF_STICKY	 0x10000000	/* always route dst->src */
  
  #define	RTF_RNH_LOCKED	 0x40000000	/* radix node head is locked */
-@@ -313,9 +336,9 @@
+@@ -313,9 +323,9 @@
   * The case sa_len == 0 should only apply to empty structures.
   */
  #define SA_SIZE(sa)						\
@@ -110,7 +98,7 @@
  
  #ifdef _KERNEL
  
-@@ -330,20 +353,20 @@
+@@ -330,20 +340,20 @@
  #define	RT_ADDREF(_rt)	do {					\
  	RT_LOCK_ASSERT(_rt);					\
  	KASSERT((_rt)->rt_refcnt >= 0,				\
@@ -134,7 +122,7 @@
  	else {							\
  		RT_REMREF(_rt);					\
  		RT_UNLOCK(_rt);					\
-@@ -373,7 +396,7 @@
+@@ -373,7 +383,7 @@
  	}							\
  } while (0)
  
@@ -143,7 +131,7 @@
  
  struct ifmultiaddr;
  
-@@ -410,9 +433,9 @@
+@@ -410,9 +420,9 @@
  int	 rtinit(struct ifaddr *, int, int);
  int	 rtioctl(u_long, caddr_t);
  void	 rtredirect(struct sockaddr *, struct sockaddr *,
@@ -155,7 +143,7 @@
  
  /* defaults to "all" FIBs */
  int	 rtinit_fib(struct ifaddr *, int, int);
-@@ -427,9 +450,9 @@
+@@ -427,9 +437,9 @@
  struct rtentry *rtalloc1_fib(struct sockaddr *, int, u_long, u_int);
  int	 rtioctl_fib(u_long, caddr_t, u_int);
  void	 rtredirect_fib(struct sockaddr *, struct sockaddr *,
