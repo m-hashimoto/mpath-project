@@ -1054,21 +1054,6 @@ ptree_mpath_capable(struct ptree *rnh)
 	return rnh->rnh_multipath;
 }
 
-struct rtentry *
-ptree_mpath_next(struct ptree_node *rn, int n)
-{
-	struct rtenty *rt, *next;
-	rt = (struct rtentry *)rn;
-
-	if (!rt->mlist)
-		return NULL;
-	next = rt->mlist[n];
-	if (!next)
-		return next;
-	else
-		return NULL;
-}
-
 uint32_t
 ptree_mpath_count(struct ptree_node *rn)
 {
@@ -1080,7 +1065,6 @@ ptree_mpath_count(struct ptree_node *rn)
 		if(rt->mlist[i]!=NULL)
 			i += rt->rt_rmx.rmx_weight;
 	}
-	i++;	/* default gateway */
 	return (i);
 }
 
@@ -1127,24 +1111,23 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 static uint32_t hashjitter;
 
 int
-rt_mpath_deldup(struct rtentry *headrt, struct rtentry *rt)
+rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
-        struct ptree_node *t, *tt;
+	uint32_t i = 0, lcount;
+        struct rtentry *t;
 
         if (!headrt || !rt)
             return (0);
-        t = (struct ptree_node *)headrt;
-        tt = ptree_mpath_next(t);
-        while (tt) {
-            if (tt == (struct ptree_node *)rt) {
-                t->rn_dupedkey = tt->rn_dupedkey;
-                tt->rn_dupedkey = NULL;
-    	        tt->rn_flags &= ~RNF_ACTIVE;
-	        tt[1].rn_flags &= ~RNF_ACTIVE;
+      
+	lcount = ptree_mpath_count((struct ptree_node *)headrt);
+        t = headrt->mlist[i];
+        while (t) {
+            if (t == rt) {
+                t->mlist[i] = tt->mlist[lcount-1];
+		t->mlist[lcount-1] = NULL;
                 return (1);
             }
-            t = tt;
-            tt = ptree_mpath_next((struct ptree_node *)t);
+            i++;
         }
         return (0);
 }
@@ -1156,21 +1139,20 @@ int
 rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
     struct sockaddr *netmask)
 {
-	struct ptree_node *rn, *rn1;
+	struct ptree_node *rn;
 	struct rtentry *rt1;
 	char *p, *q, *eq;
 	int same, l, skip;
 
-	rn = (struct ptree_node *)rt;
-	rn1 = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
-	if (!rn1 || rn1->rn_flags & RNF_ROOT)
+	rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
+	if (!rn || rn->rn_flags & RNF_ROOT)
 		return 0;
 
 	/*
 	 * unlike other functions we have in this file, we have to check
 	 * all key/mask/gateway as rnh_lookup can match less specific entry.
 	 */
-	rt1 = (struct rtentry *)rn1;
+	rt1 = (struct rtentry *)rn;
 
 	/* compare key. */
 	if (rt_key(rt1)->sa_len != rt_key(rt)->sa_len ||
@@ -1226,15 +1208,10 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	}
 
 maskmatched:
-
+	uint32_t	i = 0;
+	rt1 = rt->mlist[i];
 	/* key/mask were the same.  compare gateway for all multipaths */
 	do {
-		rt1 = (struct rtentry *)rn1;
-
-		/* sanity: no use in comparing the same thing */
-		if (rn1 == rn)
-			continue;
-        
 		if (rt1->rt_gateway->sa_family == AF_LINK) {
 			if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 			    bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
@@ -1249,7 +1226,7 @@ maskmatched:
 
 		/* all key/mask/gateway are the same.  conflicting entry. */
 		return EEXIST;
-	} while ((rn1 = ptree_mpath_next(rn1)) != NULL);
+	} while ((rt1 = rt->mlist[++i]) != NULL);
 
 different:
 	return 0;
@@ -1260,7 +1237,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 	struct ptree_node *rn0, *rn;
 	u_int32_t n;
-	struct rtentry *rt;
+	struct rtentry *rt, *rt0;
 	int64_t weight;
 
 	/*
@@ -1274,39 +1251,31 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 	/* if the route does not exist or it is not multipath, don't care */
 	if (ro->ro_rt == NULL)
 		return;
-	if (ptree_mpath_next((struct ptree_node *)ro->ro_rt) == NULL) {
+	if (ro->ro_rt->mlist == NULL) {
 		RT_UNLOCK(ro->ro_rt);
 		return;
 	}
 
 	/* beyond here, we use rn as the master copy */
-	rn0 = rn = (struct ptree_node *)ro->ro_rt;
-	n = ptree_mpath_count(rn0);
+	rt0 = ro->ro_rt;
+	n = ptree_mpath_count(rt0);
 
 	/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 	hash += hashjitter;
 	hash %= n;
-	for (weight = abs((int32_t)hash), rt = ro->ro_rt;
-	     weight >= rt->rt_rmx.rmx_weight && rn; 
-	     weight -= rt->rt_rmx.rmx_weight) {
-		
-		/* stay within the multipath routes */
-		if (rn->rn_dupedkey && rn->rn_mask != rn->rn_dupedkey->rn_mask)
-			break;
-		rn = rn->rn_dupedkey;
-		rt = (struct rtentry *)rn;
-	}
+	rt = rt0->mlist[n];
+	
 	/* XXX try filling rt_gwroute and avoid unreachable gw  */
 
 	/* gw selection has failed - there must be only zero weight routes */
-	if (!rn) {
+	if (!rt) {
 		RT_UNLOCK(ro->ro_rt);
 		ro->ro_rt = NULL;
 		return;
 	}
 	if (ro->ro_rt != rt) {
 		RTFREE_LOCKED(ro->ro_rt);
-		ro->ro_rt = (struct rtentry *)rn;
+		ro->ro_rt = rt;
 		RT_LOCK(ro->ro_rt);
 		RT_ADDREF(ro->ro_rt);
 
