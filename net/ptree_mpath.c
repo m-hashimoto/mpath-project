@@ -55,7 +55,7 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 {
 #ifdef DEBUG
 printf("ptree_insert\n");
-printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
+printf("v_arg = %x, head = %p, dupentry = %d\n",(caddr_t)&v_arg,head,*dupentry);
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
@@ -579,11 +579,12 @@ printf("ptree_addroute: goto on2\n");
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 		if (m->rm_bit < b_leaf)
 			continue;
-		if (m->rm_bit > b_leaf)
+		if (m->rm_bit > b_leaf){
 #ifdef DEBUG
 printf("ptree_addroute: break(double loop on deletion)\n");
 #endif
 			break;
+		}
 		if (m->rm_flags & RNF_NORMAL) {
 			mmask = m->rm_leaf->rn_mask;
 			if (tt->rn_flags & RNF_NORMAL) {
@@ -599,11 +600,12 @@ printf("ptree_addroute: break(double loop on deletion)\n");
 			return tt;
 		}
 		if (ptree_refines(netmask, mmask)
-				|| ptree_lexobetter(netmask, mmask))
+				|| ptree_lexobetter(netmask, mmask)){
 #ifdef DEBUG
 printf("ptree_addroute: break(double loop on deletion 2)\n");
 #endif
 			break;
+		}
 	}
 	*mp = ptree_new_mask(tt, *mp);
 	return tt;
