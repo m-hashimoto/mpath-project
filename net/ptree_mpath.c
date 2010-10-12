@@ -1114,18 +1114,18 @@ static uint32_t hashjitter;
 int
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
-	uint32_t i = 0, lcount;
+	uint32_t i = 0, n;
         struct rtentry *t;
 
         if (!headrt || !rt)
             return (0);
       
-	lcount = ptree_mpath_count((struct ptree_node *)headrt);
+	n = ptree_mpath_count((struct ptree_node *)headrt);
         t = headrt->mlist[i];
         while (t) {
             if (t == rt) {
-                t->mlist[i] = tt->mlist[lcount-1];
-		t->mlist[lcount-1] = NULL;
+                t->mlist[i] = t->mlist[n-1];
+		t->mlist[n-1] = NULL;
                 return (1);
             }
             i++;
@@ -1144,6 +1144,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	struct rtentry *rt1;
 	char *p, *q, *eq;
 	int same, l, skip;
+	uint32_t i;
 
 	rn = rnh->rnh_lookup(rt_key(rt), netmask, (int)LEN(rt_key(rt)), rnh);
 	if (!rn || rn->rn_flags & RNF_ROOT)
@@ -1209,7 +1210,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 	}
 
 maskmatched:
-	uint32_t	i = 0;
+	i = 0;
 	rt1 = rt->mlist[i];
 	/* key/mask were the same.  compare gateway for all multipaths */
 	do {
@@ -1257,7 +1258,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 
 	/* beyond here, we use rn as the master copy */
 	rt0 = ro->ro_rt;
-	n = ptree_mpath_count(rt0);
+	n = ptree_mpath_count((struct ptree_node *)rt0);
 
 	/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 	hash += hashjitter;
