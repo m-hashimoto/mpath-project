@@ -1235,10 +1235,8 @@ different:
 void
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
-	struct ptree_node *rn0, *rn;
 	u_int32_t n;
 	struct rtentry *rt, *rt0;
-	int64_t weight;
 
 	/*
 	 * XXX we don't attempt to lookup cached route again; what should
