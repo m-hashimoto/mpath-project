@@ -1,5 +1,5 @@
 --- route.h.orig	2010-10-11 08:21:47.000000000 +0900
-+++ route.h	2010-10-11 16:08:39.000000000 +0900
++++ route.h	2010-10-13 05:32:38.000000000 +0900
 @@ -88,23 +88,23 @@
  
  /* MRT compile-time constants */
@@ -70,7 +70,7 @@
  	u_int	rt_fibnum;		/* which FIB */
 +
 +#ifdef PTREE_MPATH
-+	struct rtentry	*mlist[MAX_MPATH];	/* multi path list */
++	struct rtentry	mlist[MAX_MPATH];	/* multi path list */
 +#endif
 +
  #ifdef _KERNEL
