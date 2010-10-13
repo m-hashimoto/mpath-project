@@ -817,7 +817,7 @@ ptree_walktree_from(h, a, m, f, w)
 	void *w;
 {
 #ifdef DEBUG
-printf("ptree_walktree_from\n");
+	printf("ptree_walktree_from\n");
 #endif
 	int error;
 	struct ptree_node *base, *next;
@@ -835,7 +835,7 @@ printf("ptree_walktree_from\n");
 	for (rn = h->rnh_treetop; rn->rn_bit >= 0; ) {
 		last = rn;
 		printf("rn_bit %d, rn_bmask %x, xm[rn_offset] %x\n",
-		   rn->rn_bit, rn->rn_bmask, xm[rn->rn_offset]);
+				rn->rn_bit, rn->rn_bmask, xm[rn->rn_offset]);
 		if (!(rn->rn_bmask & xm[rn->rn_offset])) {
 			break;
 		}
@@ -918,7 +918,7 @@ ptree_walktree(h, f, w)
 	void *w;
 {
 #ifdef DEBUG
-printf("ptree_walktree\n");
+	printf("ptree_walktree\n");
 #endif
 	int error;
 	struct ptree_node *base, *next;
@@ -929,7 +929,7 @@ printf("ptree_walktree\n");
 	for (;;) {  
 		base = rn;
 #ifdef DEBUG
-printf("ptree_walktree: node %p\n",rn->key);
+		printf("ptree_walktree: node %p\n",rn->key);
 #endif
 		/* If at right child go back up, otherwise, go right */
 		while (rn->rn_parent->rn_right == rn
@@ -959,7 +959,7 @@ ptree_newpair(v, b, nodes)
 	struct ptree_node nodes[2];
 {
 #ifdef DEBUG
-printf("ptree_newpair\n");
+	printf("ptree_newpair\n");
 #endif
 	register struct ptree_node *tt = nodes, *t = tt + 1;
 	t->rn_bit = b;
@@ -978,6 +978,9 @@ printf("ptree_newpair\n");
 	tt->rn_key = (caddr_t)v;
 	tt->rn_parent = t;
 	tt->rn_flags = t->rn_flags = RNF_ACTIVE;
+#ifdef PTREE_MPATH
+	tt->mpath_list = NULL;
+#endif
 #ifdef RN_DEBUG
 	tt->rn_info = rn_nodenum++;
 	t->rn_info = rn_nodenum++;
@@ -992,7 +995,7 @@ ptree_inithead(head, off)
 	int off;
 {
 #ifdef DEBUG
-printf("ptree_inithead\n");
+	printf("ptree_inithead\n");
 #endif
 	register struct ptree *rnh;
 	register struct ptree_node *t, *tt, *ttt;
@@ -1028,7 +1031,7 @@ printf("ptree_inithead\n");
 ptree_init()
 {
 #ifdef DEBUG
-printf("ptree_init\n");
+	printf("ptree_init\n");
 #endif
 	char *cp, *cplim;
 #ifdef _KERNEL
@@ -1059,14 +1062,14 @@ printf("ptree_init\n");
  *  functions for multi path routing.
  */
 #if 0
-int
+	int
 ptree_mpath_capable(struct ptree *rnh)
 {
 
 	return rnh->rnh_multipath;
 }
 
-uint32_t
+	uint32_t
 ptree_mpath_count(struct ptree_node *rn)
 {
 	uint32_t i = 0;
@@ -1080,7 +1083,7 @@ ptree_mpath_count(struct ptree_node *rn)
 	return (i);
 }
 
-struct rtentry *
+	struct rtentry *
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
 	uint32_t	i = 0;
@@ -1108,7 +1111,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				break;
 		} else {
 			if (match->rt_gateway->sa_len == gate->sa_len &&
-			    !memcmp(match->rt_gateway, gate, gate->sa_len))
+					!memcmp(match->rt_gateway, gate, gate->sa_len))
 				break;
 		}
 	} while (rt->mlist[i] != NULL);
@@ -1122,34 +1125,34 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
  */
 static uint32_t hashjitter;
 
-int
+	int
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 	uint32_t i = 0, n;
-        struct rtentry *t;
+	struct rtentry *t;
 
-        if (!headrt || !rt)
-            return (0);
-      
+	if (!headrt || !rt)
+		return (0);
+
 	n = ptree_mpath_count((struct ptree_node *)headrt);
-        t = headrt->mlist[i];
-        while (t) {
-            if (t == rt) {
-                t->mlist[i] = t->mlist[n-1];
-		t->mlist[n-1] = NULL;
-                return (1);
-            }
-            i++;
-        }
-        return (0);
+	t = headrt->mlist[i];
+	while (t) {
+		if (t == rt) {
+			t->mlist[i] = t->mlist[n-1];
+			t->mlist[n-1] = NULL;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 /*
  * check if we have the same key/mask/gateway on the table already.
  */
-int
+	int
 rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
-    struct sockaddr *netmask)
+		struct sockaddr *netmask)
 {
 	struct ptree_node *rn;
 	struct rtentry *rt1;
@@ -1169,7 +1172,7 @@ rt_mpath_conflict(struct ptree *rnh, struct rtentry *rt,
 
 	/* compare key. */
 	if (rt_key(rt1)->sa_len != rt_key(rt)->sa_len ||
-	    bcmp(rt_key(rt1), rt_key(rt), rt_key(rt1)->sa_len))
+			bcmp(rt_key(rt1), rt_key(rt), rt_key(rt1)->sa_len))
 		goto different;
 
 	/* key was the same.  compare netmask.  hairy... */
@@ -1227,13 +1230,13 @@ maskmatched:
 	do {
 		if (rt1->rt_gateway->sa_family == AF_LINK) {
 			if (rt1->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
-			    bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
-			    rt1->rt_ifa->ifa_addr->sa_len))
+					bcmp(rt1->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
+						rt1->rt_ifa->ifa_addr->sa_len))
 				continue;
 		} else {
 			if (rt1->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
-			    bcmp(rt1->rt_gateway, rt->rt_gateway,
-			    rt1->rt_gateway->sa_len))
+					bcmp(rt1->rt_gateway, rt->rt_gateway,
+						rt1->rt_gateway->sa_len))
 				continue;
 		}
 
@@ -1245,7 +1248,7 @@ different:
 	return 0;
 }
 
-void
+	void
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 	u_int32_t n;
@@ -1275,7 +1278,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 	hash += hashjitter;
 	hash %= n;
 	rt = rt0->mlist[n];
-	
+
 	/* XXX try filling rt_gwroute and avoid unreachable gw  */
 
 	/* gw selection has failed - there must be only zero weight routes */
@@ -1298,7 +1301,7 @@ extern int	in6_inithead(void **head, int off);
 extern int	in_inithead(void **head, int off);
 
 #ifdef INET
-int
+	int
 ptree4_mpath_inithead(void **head, int off)
 {
 	struct ptree *rnh;
@@ -1314,7 +1317,7 @@ ptree4_mpath_inithead(void **head, int off)
 #endif
 
 #ifdef INET6
-int
+	int
 ptree6_mpath_inithead(void **head, int off)
 {
 	struct ptree *rnh;
