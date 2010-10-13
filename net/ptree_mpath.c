@@ -65,7 +65,7 @@ printf("v_arg = %x, head = %p, dupentry = %d\n",(uint32_t)v_arg,head,*dupentry);
 	register int b; 
 	struct ptree_node *tt;  
 #ifdef DEBUG
-printf("ptree_insert: t=ptree_search(v_arg)=%p\n",t->rn_key);
+printf("ptree_insert: t=ptree_search(v_arg)=%x\n",(uint32_t)t->rn_key);
 #endif	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
