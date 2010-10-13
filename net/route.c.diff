@@ -1,5 +1,5 @@
 --- route.c.orig	2010-10-11 08:21:43.000000000 +0900
-+++ route.c	2010-10-14 01:00:31.000000000 +0900
++++ route.c	2010-10-14 02:39:27.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -87,12 +87,12 @@
 -	rnh = (struct radix_node_head **)V_rt_tables;
 +	rnh = (struct ptree **)V_rt_tables;
 +#ifdef DEBUG
-+	printf("rnh[fib=0][af=0] = %p\n",&rnh);
++	printf("rnh[fib=0][af=0] = %p\n",rnh);
 +#endif
  	/* Get the offset to the requested table and fam. */
  	rnh += table * (AF_MAX+1) + fam;
 +#ifdef DEBUG
-+	printf("return: rhn = %p\n",&rnh);
++	printf("return: rhn = %p\n",rnh);
 +#endif
  
  	return (rnh);
