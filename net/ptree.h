@@ -35,7 +35,7 @@ struct ptree_node {
   struct ptree_node *rn_dupedkey;
   void *data;
 
-#if PTREE_MPATH
+#ifdef PTREE_MPATH
   struct ptree_node *mpath_list[MAX_MPATH];
 #endif
 
