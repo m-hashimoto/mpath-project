@@ -576,6 +576,9 @@ printf("ptree_addroute: goto on2\n");
 	 * Need same criteria as when sorting dupedkeys to avoid
 	 * double loop on deletion.
 	 */
+#ifdef DEBUG
+printf("ptree_addroute: search through routes associated with node\n");
+#endif
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 		if (m->rm_bit < b_leaf)
 			continue;
@@ -607,6 +610,9 @@ printf("ptree_addroute: break(double loop on deletion 2)\n");
 			break;
 		}
 	}
+#ifdef DEBUG
+printf("ptree_addroute: add new mask\n");
+#endif
 	*mp = ptree_new_mask(tt, *mp);
 	return tt;
 }
