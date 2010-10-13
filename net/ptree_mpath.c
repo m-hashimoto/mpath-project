@@ -1055,7 +1055,7 @@ printf("ptree_init\n");
 /*
  *  functions for multi path routing.
  */
-
+#if 0
 int
 ptree_mpath_capable(struct ptree *rnh)
 {
@@ -1324,5 +1324,5 @@ ptree6_mpath_inithead(void **head, int off)
 	} else
 		return 0;
 }
-
 #endif
+#endif /* PTREE_MPATH */

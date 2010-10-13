@@ -1,5 +1,5 @@
 --- route.h.orig	2010-10-11 08:21:47.000000000 +0900
-+++ route.h	2010-10-13 06:05:57.000000000 +0900
++++ route.h	2010-10-13 16:29:36.000000000 +0900
 @@ -88,23 +88,23 @@
  
  /* MRT compile-time constants */
@@ -54,7 +54,7 @@
 +#endif /* RADIX_MPATH */
 +#endif /* RNF_NORMAL */
 +
-+#ifdef PTREE_MPATH
++#if 0
 +#define MAX_MPATH 10
 +#endif /* PTREE_MPATH */
 +
@@ -69,7 +69,7 @@
  	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
  	u_int	rt_fibnum;		/* which FIB */
 +
-+#ifdef PTREE_MPATH
++#if 0
 +	struct rtentry	*mlist[MAX_MPATH];	/* multi path list */
 +#endif
 +
