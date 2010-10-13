@@ -979,7 +979,7 @@ ptree_newpair(v, b, nodes)
 	tt->rn_parent = t;
 	tt->rn_flags = t->rn_flags = RNF_ACTIVE;
 #ifdef PTREE_MPATH
-	tt->mpath_list = NULL;
+	tt->mpath_list[0] = NULL;
 #endif
 #ifdef RN_DEBUG
 	tt->rn_info = rn_nodenum++;
