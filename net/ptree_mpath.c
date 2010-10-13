@@ -55,7 +55,7 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 {
 #ifdef DEBUG
 printf("ptree_insert\n");
-printf("v_arg = %x, head = %p, dupentry = %d\n",(uint32_t)v_arg,head,*dupentry);
+printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
@@ -928,6 +928,9 @@ printf("ptree_walktree\n");
 		rn = rn->rn_left;
 	for (;;) {  
 		base = rn;
+#ifdef DEBUG
+printf("ptree_walktree: node %p\n",rn->key);
+#endif
 		/* If at right child go back up, otherwise, go right */
 		while (rn->rn_parent->rn_right == rn
 				&& (rn->rn_flags & RNF_ROOT) == 0)                        rn = rn->rn_parent;

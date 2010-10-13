@@ -82,9 +82,7 @@ cd /usr/src/sys/i386/conf/
 config PATRICIA
 
 cd ../compile/PATRICIA
-make cleandepend
-make depend
-make
+make cleandepend && make depend && make
 
 while ( 1 );
 echo -n " Install Now? [Yes/No] "
