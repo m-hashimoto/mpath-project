@@ -159,7 +159,6 @@ ptree_common (void *keyi, int keyilen, void *keyj, int keyjlen)
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop;
-	struct ptree_node *new;
 	int head_off = top->rn_offset, vlen = LEN(v);
 	register struct ptree_node *t = ptree_search(v, (int)LEN(v), head);
 	register caddr_t cp = v + head_off; 
@@ -245,17 +244,18 @@ on1:
 				new = x;
 			else
 			{
-				new = ptree_node_create (v_arg, vlen);
+				struct ptree_node *n;
+				n = ptree_node_create (v_arg, vlen);
 #ifdef DEBUG
-				printf("ptree_insert: node create %p\n",new->rn_key);
+				printf("ptree_insert: node create %p\n",n->rn_key);
 #endif
-				if (! new)
+				if (! n)
 				{
 					XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
 							"ptree_common() failed.\n", v_arg, vlen);
 					return NULL;
 				}
-				ptree_link (x, new);
+				ptree_link (x, n);
 			}
 		}
 
@@ -280,7 +280,7 @@ on1:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
-	return (new);
+	return (n);
 }
 
 	struct ptree_node *
