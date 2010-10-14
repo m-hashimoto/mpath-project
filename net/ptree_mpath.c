@@ -158,7 +158,8 @@ ptree_common (void *keyi, int keyilen, void *keyj, int keyjlen)
 	printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
 #endif
 	caddr_t v = v_arg;
-	struct ptree_node *top = head->rnh_treetop; 
+	struct ptree_node *top = head->rnh_treetop;
+	struct ptree_node *n;
 	int head_off = top->rn_offset, vlen = LEN(v);
 	register struct ptree_node *t = ptree_search(v, (int)LEN(v), head);
 	register caddr_t cp = v + head_off; 
@@ -190,7 +191,7 @@ on1:
 			cmp_res >>= 1;    
 	}   
 	{
-		struct ptree_node *n, *p, *w, *x = top;  
+		register struct ptree_node *p, *w, *x = top;  
 		cp = v;  
 		do {  
 			p = x;    
