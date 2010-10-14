@@ -190,7 +190,7 @@ on1:
 			cmp_res >>= 1;    
 	}   
 	{
-		register struct ptree_node *n, *p, *w, *x = top;  
+		struct ptree_node *n, *p, *w, *x = top;  
 		cp = v;  
 		do {  
 			p = x;    

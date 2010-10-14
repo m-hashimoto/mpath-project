@@ -52,8 +52,8 @@ rm *.diff
 cd /usr/src/sys/i386/conf/
 rm PATRICIA
 #config GENERIC
-cd ../compile/
-rm -r PATRICIA
+#cd ../compile/
+#rm -r PATRICIA
 #cd GENERIC
 #make cleandepend && make depend
 #make && make install
