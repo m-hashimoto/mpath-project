@@ -350,7 +350,7 @@ ptree_add (char *key, int keylen, void *data, struct ptree *t)
 
 	return x;
 }
-#endif
+
 	void
 ptree_remove (struct ptree_node *v)
 {
@@ -377,7 +377,7 @@ ptree_remove (struct ptree_node *v)
 	ptree_link (v->parent, w);
 	ptree_node_delete (v);
 }
-
+#endif
 	struct ptree_node *
 ptree_head (struct ptree *t)
 {

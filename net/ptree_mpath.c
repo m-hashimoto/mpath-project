@@ -116,16 +116,21 @@ ptree_node_create (void *key, int keylen)
   if (! x)
     return NULL;
 
-  x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
+  x->rn_bit = -1;
+  x->rn_key = (caddr_t)v;
   x->keylen = keylen;
   x->parent = NULL;
   x->child[0] = NULL;
   x->child[1] = NULL;
+  x->rn_flags = RNF_ACTIVE;
   x->data = NULL;
-
-  /* fill in the key */
-  memcpy (x->key, key, keylen);
-  x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+#ifdef PTREE_MPATH
+  x->mpath_list[0] = NULL;
+#endif
+#ifdef RN_DEBUG
+  x->rn_info = rn_nodenum++;
+  x->rn_twin = t;
+#endif 
 
   return x;
 }
@@ -139,8 +144,8 @@ ptree_node_create (void *key, int keylen)
 	struct ptree_node nodes[2];
 {
 #ifdef DEBUG
-printf("ptree_insert\n");
-printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
+	printf("ptree_insert\n");
+	printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
 #endif
 	caddr_t v = v_arg;
 	struct ptree_node *top = head->rnh_treetop; 
@@ -149,26 +154,26 @@ printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
 	register caddr_t cp = v + head_off; 
 	register int b; 
 #ifdef DEBUG
-printf("ptree_insert: t=ptree_search(v_arg)=%x\n",(uint32_t)t->rn_key);
+	printf("ptree_insert: t=ptree_search(v_arg)=%x\n",(uint32_t)t->rn_key);
 #endif	
 	/* Find first bit at which v and t->rn_key differ */ 
 	{         
 		register caddr_t cp2 = t->rn_key + head_off;  
 		register int cmp_res;
 		caddr_t cplim = v + vlen;
-			
+
 		while (cp < cplim) 
 			if (*cp2++ != *cp++)   
 				goto on1;   
 		*dupentry = 1;  
 #ifdef DEBUG
-printf("ptree_insert: key dupenty\n");
+		printf("ptree_insert: key dupenty\n");
 #endif	
 		return t;
 on1:       
-		#ifdef DEBUG
+#ifdef DEBUG
 		printf("ptree_insert: goto on1\n");
-		#endif
+#endif
 		*dupentry = 0;  
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
