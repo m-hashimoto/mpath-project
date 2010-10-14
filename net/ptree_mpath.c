@@ -45,7 +45,49 @@ static int ptree_lexobetter(void *m_arg, void *n_arg);
 static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 	       register struct ptree_mask *next);
 
+/* locks the node */
+static struct ptree_node *
+ptree_node_create (void *key, int keylen)
+{
+  struct ptree_node *x;
+  int len;
 
+  len = sizeof (struct ptree_node) + keylen / 8 + 1;
+
+  XRTMALLOC(x, struct ptree_node *, len);
+  if (! x)
+    return NULL;
+
+  x->rn_bit = -1;
+  x->rn_key = (caddr_t)v;
+  x->keylen = keylen;
+  x->parent = NULL;
+  x->child[0] = NULL;
+  x->child[1] = NULL;
+  x->rn_flags = RNF_ACTIVE;
+  x->data = NULL;
+#ifdef PTREE_MPATH
+  x->mpath_list[0] = NULL;
+#endif
+#ifdef RN_DEBUG
+  x->rn_info = rn_nodenum++;
+  x->rn_twin = t;
+#endif 
+
+  return x;
+}
+
+static int
+check_bit (char *key, int keylen)
+{
+  int offset;
+  int shift;
+
+  offset = keylen / 8;
+  shift = 7 - keylen % 8;
+
+  return (key[offset] >> shift & 1);
+}
 	static void
 ptree_link (struct ptree_node *v, struct ptree_node *w)
 {
@@ -60,12 +102,13 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
 /* key_common_len() returns the bit length with which the keyi and
    the keyj are equal */
 	static int
-key_common_len (void *keyi, int keyilen, void *keyj, int keyjlen)
+key_common_len (void *v, int vlen, void *w, int wlen)
 {
 	int i;
 	int nmatch = 0;
-	int minkeylen = MIN (keyilen, keyjlen);
+	int minkeylen = MIN (vlen, wlen);
 	int keylen = 0;
+	caddr_t keyi = v, keyj = w;
 	unsigned char bitmask;
 	unsigned char diff;
 
@@ -102,39 +145,6 @@ ptree_common (void *keyi, int keyilen, void *keyj, int keyjlen)
 
 	return x;
 }
-
-/* locks the node */
-static struct ptree_node *
-ptree_node_create (void *key, int keylen)
-{
-  struct ptree_node *x;
-  int len;
-
-  len = sizeof (struct ptree_node) + keylen / 8 + 1;
-
-  XRTMALLOC(x, struct ptree_node *, len);
-  if (! x)
-    return NULL;
-
-  x->rn_bit = -1;
-  x->rn_key = (caddr_t)v;
-  x->keylen = keylen;
-  x->parent = NULL;
-  x->child[0] = NULL;
-  x->child[1] = NULL;
-  x->rn_flags = RNF_ACTIVE;
-  x->data = NULL;
-#ifdef PTREE_MPATH
-  x->mpath_list[0] = NULL;
-#endif
-#ifdef RN_DEBUG
-  x->rn_info = rn_nodenum++;
-  x->rn_twin = t;
-#endif 
-
-  return x;
-}
-
 
 	static struct ptree_node 
 *ptree_insert(v_arg, head, dupentry, nodes)  
