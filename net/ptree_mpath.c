@@ -46,6 +46,91 @@ static struct ptree_mask *ptree_new_mask(register struct ptree_node *tt,
 	       register struct ptree_mask *next);
 
 
+	static void
+ptree_link (struct ptree_node *v, struct ptree_node *w)
+{
+	/* check the w's key bit just after the v->key (keylen'th bit) */
+	int bit;
+
+	bit = check_bit (w->key, v->keylen);
+	v->child[bit] = w;
+	w->parent = v;
+}
+
+/* key_common_len() returns the bit length with which the keyi and
+   the keyj are equal */
+	static int
+key_common_len (void *keyi, int keyilen, void *keyj, int keyjlen)
+{
+	int i;
+	int nmatch = 0;
+	int minkeylen = MIN (keyilen, keyjlen);
+	int keylen = 0;
+	unsigned char bitmask;
+	unsigned char diff;
+
+	for (i = 0; i < minkeylen / 8; i++)
+	{
+		if (keyi[i] == keyj[i])
+			nmatch = i + 1;
+	}
+
+	keylen = nmatch * 8;
+	bitmask = 0x80;
+	diff = keyi[nmatch] ^ keyj[nmatch];
+	while (keylen < minkeylen && ! (bitmask & diff))
+	{
+		keylen++;
+		bitmask >>= 1;
+	}
+
+	return keylen;
+}
+
+/* ptree_common() creates and returns the branching node
+   between keyi and keyj */
+	static struct ptree_node *
+ptree_common (void *keyi, int keyilen, void *keyj, int keyjlen)
+{
+	int keylen;
+	struct ptree_node *x;
+
+	keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
+	x = ptree_node_create (keyi, keylen);
+	if (! x)
+		return NULL;
+
+	return x;
+}
+
+/* locks the node */
+static struct ptree_node *
+ptree_node_create (void *key, int keylen)
+{
+  struct ptree_node *x;
+  int len;
+
+  len = sizeof (struct ptree_node) + keylen / 8 + 1;
+
+  XRTMALLOC(x, struct ptree_node *, len);
+  if (! x)
+    return NULL;
+
+  x->key = (char *)((caddr_t)x + sizeof (struct ptree_node));
+  x->keylen = keylen;
+  x->parent = NULL;
+  x->child[0] = NULL;
+  x->child[1] = NULL;
+  x->data = NULL;
+
+  /* fill in the key */
+  memcpy (x->key, key, keylen);
+  x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
+
+  return x;
+}
+
+
 	static struct ptree_node 
 *ptree_insert(v_arg, head, dupentry, nodes)  
 	void *v_arg;
@@ -63,7 +148,6 @@ printf("v_arg = %p, head = %p, dupentry = %d\n",v_arg,head,*dupentry);
 	register struct ptree_node *t = ptree_search(v, (int)LEN(v), head);
 	register caddr_t cp = v + head_off; 
 	register int b; 
-	struct ptree_node *tt;  
 #ifdef DEBUG
 printf("ptree_insert: t=ptree_search(v_arg)=%x\n",(uint32_t)t->rn_key);
 #endif	
@@ -107,7 +191,7 @@ on1:
 #endif 
 		if (! x)
 		{
-			v = ptree_node_create (v,(int)LEN(v) );
+			v = ptree_node_create (v, vlen);
 			if (p)
 				ptree_link (p, v);
 			else
@@ -119,7 +203,7 @@ on1:
 			w = x;
 
 			/* create branching node */
-			x = ptree_common (key, keylen, w->key, w->keylen);
+			x = ptree_common (v, vlen, w->key, w->keylen);
 			if (! x)
 			{
 				XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
@@ -138,15 +222,15 @@ on1:
 
 			/* if the branching node is not the corresponding node,
 			   create the corresponding node to add */
-			if (x->keylen == keylen)
+			if (x->keylen == vlen)
 				v = x;
 			else
 			{
-				v = ptree_node_create (key, keylen);
+				v = ptree_node_create (v, vlen);
 				if (! v)
 				{
 					XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
-							"ptree_common() failed.\n", key, keylen);
+							"ptree_common() failed.\n", v, vlen);
 					return NULL;
 				}
 				ptree_link (x, v);

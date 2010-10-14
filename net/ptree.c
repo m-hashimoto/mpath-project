@@ -17,7 +17,7 @@
 #endif /*_KERNEL*/
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
-
+#if 0
 static struct ptree_node *
 ptree_node_create (char *key, int keylen)
 {
@@ -43,7 +43,7 @@ ptree_node_create (char *key, int keylen)
 
   return x;
 }
-
+#endif
 static void
 ptree_node_delete (struct ptree_node *x)
 {
@@ -185,7 +185,7 @@ printf("ptree_search: x = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 	return (x);
 }
-
+#if 0
 	static void
 ptree_link (struct ptree_node *v, struct ptree_node *w)
 {
@@ -242,7 +242,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 
 	return x;
 }
-
+#endif
 /* locks the node */
 #if 0
    void
