@@ -59,7 +59,7 @@ ptree_node_create (void *key, int keylen)
     return NULL;
 
   x->rn_bit = -1;
-  x->rn_key = (caddr_t)v;
+  x->rn_key = (caddr_t)key;
   x->keylen = keylen;
   x->parent = NULL;
   x->child[0] = NULL;
@@ -190,7 +190,7 @@ on1:
 			cmp_res >>= 1;    
 	}   
 	{
-		register struct ptree_node *p, *w, *x = top;  
+		register struct ptree_node *n, *p, *w, *x = top;  
 		cp = v;  
 		do {  
 			p = x;    
@@ -206,11 +206,11 @@ on1:
 #endif 
 		if (! x)
 		{
-			v = ptree_node_create (v, vlen);
+			x = ptree_node_create (v_arg, vlen);
 			if (p)
-				ptree_link (p, v);
+				ptree_link (p, x);
 			else
-				t->top = v;
+				head->top = x;
 		}
 		else
 		{
@@ -218,11 +218,11 @@ on1:
 			w = x;
 
 			/* create branching node */
-			x = ptree_common (v, vlen, w->key, w->keylen);
+			x = ptree_common (v_arg, vlen, w->key, w->keylen);
 			if (! x)
 			{
 				XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
-						"ptree_common() failed.\n", key, keylen);
+						"ptree_common() failed.\n", v_arg, vlen);
 				return NULL;
 			}
 
@@ -233,22 +233,22 @@ on1:
 			if (p)
 				ptree_link (p, x);
 			else
-				t->top = x;
+				head->top = x;
 
 			/* if the branching node is not the corresponding node,
 			   create the corresponding node to add */
 			if (x->keylen == vlen)
-				v = x;
+				n = x;
 			else
 			{
-				v = ptree_node_create (v, vlen);
-				if (! v)
+				n = ptree_node_create (v_arg, vlen);
+				if (! n)
 				{
 					XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
-							"ptree_common() failed.\n", v, vlen);
+							"ptree_common() failed.\n", v_arg, vlen);
 					return NULL;
 				}
-				ptree_link (x, v);
+				ptree_link (x, n);
 			}
 		}
 
@@ -274,9 +274,9 @@ on1:
 #endif
 	}
 #ifdef DEBUG
-	printf("ptree_insert: tt=%p\n",v->rn_key);
+	printf("ptree_insert: %p\n",n->rn_key);
 #endif	
-	return (v);
+	return (n);
 }
 
 	struct ptree_node *

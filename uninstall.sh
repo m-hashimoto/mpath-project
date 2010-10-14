@@ -52,6 +52,20 @@ rm *.diff
 cd /usr/src/sys/i386/conf/
 rm PATRICIA
 #config GENERIC
-#cd ../compile/GENERIC
+cd ../compile/
+rm -r PATRICIA
+#cd GENERIC
 #make cleandepend && make depend
 #make && make install
+#while ( 1 );
+#echo -n " Reboot Now? [Yes/No] "
+#set reboot = $<
+#switch ($reboot)
+#case [yY][eE][sS]:
+#	reboot
+#case [nN][oO]:
+#	exit
+#default:
+#	echo "Type Yes/No."
+#endsw
+#end
