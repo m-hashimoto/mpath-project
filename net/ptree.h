@@ -179,6 +179,7 @@ void ptree_delete (struct ptree *t);
 /*
  * Patricia trie API with multipath support
  */
+#ifdef PTREE_MPATH
 struct route;
 struct rtentry;
 struct sockaddr;
@@ -194,5 +195,5 @@ struct ptree_node *ptree_mpath_lookup(void *, void *,
 int rt_mpath_delete(struct rtentry *, struct rtentry *);
 int	ptree4_mpath_inithead(void **, int);
 int	ptree6_mpath_inithead(void **, int);
-
+#endif /* PTREE_MPATH */
 #endif /*_PTREE_H_*/
