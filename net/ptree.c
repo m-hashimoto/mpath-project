@@ -242,9 +242,9 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 
 	return x;
 }
-#endif
+
 /* locks the node */
-#if 0
+
    void
    ptree_node_lock (struct ptree_node *x)
    {
@@ -261,7 +261,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
    if (x->lock == 0)
    ptree_remove (x);
    }
-#endif
+
 
 /* locks for the tree holding
    but does not lock for the caller reference. */
@@ -350,7 +350,7 @@ ptree_add (char *key, int keylen, void *data, struct ptree *t)
 
 	return x;
 }
-
+#endif
 	void
 ptree_remove (struct ptree_node *v)
 {
