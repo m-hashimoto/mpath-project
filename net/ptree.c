@@ -17,7 +17,7 @@
 #endif /*_KERNEL*/
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
-#if 0
+
 static struct ptree_node *
 ptree_node_create (char *key, int keylen)
 {
@@ -43,7 +43,7 @@ ptree_node_create (char *key, int keylen)
 
   return x;
 }
-#endif
+
 static void
 ptree_node_delete (struct ptree_node *x)
 {
@@ -116,7 +116,7 @@ ptree_lookup (void *key, void *mask, int keylen, struct ptree *t)
 /* ptree_search() returns the ptree_node with data
    that matches the key. If data is NULL, it is a branching node,
    and ptree_search() ignores it. no caller reference lock. */
-#if 0
+
 	struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
@@ -146,7 +146,7 @@ printf("ptree_seach: child->key = %p, keylen = %d\n",x->key.x->keylen);
 
 	return match;
 }
-#endif
+
 	struct ptree_node *
 ptree_search(key, keylen, t)
 	char *key;
@@ -185,7 +185,7 @@ printf("ptree_search: x = %p, keylen = %d\n",x->key,x->keylen);
 #endif
 	return (x);
 }
-#if 0
+
 	static void
 ptree_link (struct ptree_node *v, struct ptree_node *w)
 {
@@ -377,7 +377,7 @@ ptree_remove (struct ptree_node *v)
 	ptree_link (v->parent, w);
 	ptree_node_delete (v);
 }
-#endif
+
 	struct ptree_node *
 ptree_head (struct ptree *t)
 {
