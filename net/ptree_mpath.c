@@ -207,6 +207,9 @@ on1:
 		if (! x)
 		{
 			x = ptree_node_create (v_arg, vlen);
+#ifdef DEBUG
+			printf("ptree_insert: node create %p\n",x->rn_key);
+#endif
 			if (p)
 				ptree_link (p, x);
 			else
@@ -242,6 +245,9 @@ on1:
 			else
 			{
 				n = ptree_node_create (v_arg, vlen);
+#ifdef DEBUG
+				printf("ptree_insert: node create %p\n",n->rn_key);
+#endif
 				if (! n)
 				{
 					XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
@@ -273,9 +279,6 @@ on1:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
-#ifdef DEBUG
-	printf("ptree_insert: %p\n",n->rn_key);
-#endif	
 	return (n);
 }
 
