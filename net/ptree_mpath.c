@@ -1243,7 +1243,7 @@ ptree_inithead(head, off)
 	printf("ptree_inithead\n");
 #endif
 	register struct ptree *rnh;
-	register struct ptree_node *t, *tt = *ttt = 0;
+	register struct ptree_node *t, *tt, *ttt;
 	if (*head)
 		return (1);
 	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
@@ -1253,27 +1253,22 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
+	t = rnh->rnh_nodes;
+	tt = t +1;
+	ttt = t + 2;
 	/* create empty tree */
 	t = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
-#if 0
 	tt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
 	ttt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
-#endif
+
 	t->rn_flags = RNF_ROOT;
-#if 0
 	tt->rn_flags = RNF_ACTIVE;
 	ttt->rn_flags = RNF_ACTIVE;
-#endif
-	t->parent = t;
-	t->left = tt;
-	t->right = ttt;
-#if 0
-	tt->parent = t;
-	ttt->parent = t;
-#endif	
-	rnh->rnh_nodes[0] = t;
-	rnh->rnh_nodes[1] = tt;
-	rnh->rnh_nodes[2] = ttt;
+	t->rn_parent = t;
+	t->rn_left = tt;
+	t->rn_right = ttt;
+	tt->rn_parent = t;
+	ttt->rn_parent = t;
 
 #if 0
 	t = ptree_newpair(rn_zeros, off, rnh->rnh_nodes);
