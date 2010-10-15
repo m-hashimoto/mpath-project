@@ -707,6 +707,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	printf("ptree_addroute: tt(ptree_insert)=%p\n",tt->rn_key);
 #endif
 	if (keyduplicated) {
+#ifdef DEBUG
+		printf("ptree_addroute: keyduplicated\n");
+#endif
 		for (t = tt; tt; t = tt, tt = tt->rn_dupedkey) {
 			if (tt->rn_mask == netmask)
 				return (0);
