@@ -773,7 +773,10 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	if (netmask) {
 		tt->rn_mask = netmask;
 		tt->rn_bit = x->rn_bit;
-		tt->rn_flags |= x->rn_flags & RNF_NORMAL;
+		tt->rn_flags = RNF_ACTIVE;
+#ifdef DEBUG
+		printf("ptree_addroute: netmask put in tt\n");
+#endif
 	}
 	t = saved_tt->rn_parent;
 	if (keyduplicated)
@@ -785,6 +788,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		x = t->rn_right;
 	/* Promote general routes from below */
 	if (x->rn_bit < 0) {
+#ifdef DEBUG
+		printf("ptree_addroute: rn_bit < 0\n");
+#endif
 		for (mp = &t->rn_mklist; x; x = x->rn_dupedkey)
 			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
 				*mp = m = ptree_new_mask(x, 0);
@@ -796,12 +802,8 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		 * Skip over masks whose index is > that of new node
 		 */
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
-			if (m->rm_bit >= b_leaf){
-#ifdef DEBUG
-				printf("ptree_addroute: that of new node)\n");
-#endif
+			if (m->rm_bit >= b_leaf)
 				break;
-			}
 		t->rn_mklist = m; *mp = 0;
 	}
 on2:
@@ -822,18 +824,11 @@ on2:
 	 * Need same criteria as when sorting dupedkeys to avoid
 	 * double loop on deletion.
 	 */
-#ifdef DEBUG
-	printf("ptree_addroute: search through routes associated with node\n");
-#endif
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 		if (m->rm_bit < b_leaf)
 			continue;
-		if (m->rm_bit > b_leaf){
-#ifdef DEBUG
-			printf("ptree_addroute: break(double loop on deletion)\n");
-#endif
+		if (m->rm_bit > b_leaf)
 			break;
-		}
 		if (m->rm_flags & RNF_NORMAL) {
 			mmask = m->rm_leaf->rn_mask;
 			if (tt->rn_flags & RNF_NORMAL) {
@@ -849,12 +844,8 @@ on2:
 			return tt;
 		}
 		if (ptree_refines(netmask, mmask)
-				|| ptree_lexobetter(netmask, mmask)){
-#ifdef DEBUG
-			printf("ptree_addroute: break(double loop on deletion 2)\n");
-#endif
+				|| ptree_lexobetter(netmask, mmask))
 			break;
-		}
 	}
 #ifdef DEBUG
 	printf("ptree_addroute: add new mask\n");
