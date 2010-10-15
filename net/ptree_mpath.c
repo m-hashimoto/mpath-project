@@ -305,6 +305,7 @@ on1:
 		{
 			x = ptree_node_create (v_arg, vlen);
 #ifdef DEBUG
+			printf("ptree_insert: search NULL\n");
 			printf("ptree_insert: node create %p\n",x->rn_key);
 #endif
 			if (p)
@@ -766,6 +767,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	/*
 	 * Put mask in tree.
 	 */
+#ifdef DEBUG
+	printf("ptree_addroute: put mask in tree\n");
+#endif
 	if (netmask) {
 		tt->rn_mask = netmask;
 		tt->rn_bit = x->rn_bit;
