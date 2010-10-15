@@ -35,8 +35,10 @@ static int ptree_walktree_from(struct ptree *h, void *a, void *m,
 static int ptree_walktree(struct ptree *h, walktree_f_t *f, void *w);
 static int ptree_satisfies_leaf(char *trial,
 		register struct ptree_node *leaf, int skip);
+#if 0
 static struct ptree_node *ptree_newpair(void *v, int b,
 	       	struct ptree_node[2]);
+#endif
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
@@ -1188,7 +1190,7 @@ ptree_walktree(h, f, w)
 	/* NOTREACHED */
 }
 
-
+#if 0
 	static struct ptree_node *
 ptree_newpair(v, b, nodes)
 	void *v;
@@ -1225,7 +1227,7 @@ ptree_newpair(v, b, nodes)
 #endif 
 	return t;
 }
-
+#endif
 	int
 ptree_inithead(head, off)
 	void **head;
@@ -1245,6 +1247,24 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
+	/* create empty tree */
+	t = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
+	tt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
+	ttt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
+	t->rn_flags = RNF_ROOT;
+	tt->rn_flags = RNF_ACTIVE;
+	ttt->rn_flags = RNF_ACTIVE;
+	t->parent = t;
+	t->left = tt;
+	t->right = ttt;
+	tt->parent = t;
+	ttt->parent = t;
+	
+	rnh->rnh_nodes[0] = t;
+	rnh->rnh_nodes[1] = tt;
+	rnh->rnh_nodes[2] = ttt;
+
+#if 0
 	t = ptree_newpair(rn_zeros, off, rnh->rnh_nodes);
 	ttt = rnh->rnh_nodes + 2;
 	t->rn_right = ttt;
@@ -1254,6 +1274,7 @@ ptree_inithead(head, off)
 	tt->rn_bit = -1 - off;
 	*ttt = *tt;
 	ttt->rn_key = rn_ones;
+#endif
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
 	rnh->rnh_matchaddr = ptree_matchaddr;
