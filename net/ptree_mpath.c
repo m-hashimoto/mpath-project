@@ -781,9 +781,15 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 #endif
 	}
 	t = saved_tt->rn_parent;
+#ifdef DEBUG
+	printf("ptree_addroute: parent of insert = %p\n",t);
+#endif
 	if (keyduplicated)
 		goto on2;
 	b_leaf = -1 - t->rn_bit;
+#ifdef DEBUG
+	printf("ptree_addroute: b_leaf = %d\n",b_leaf);
+#endif
 	if (t->rn_right == saved_tt)
 		x = t->rn_left;
 	else
@@ -1237,7 +1243,7 @@ ptree_inithead(head, off)
 	printf("ptree_inithead\n");
 #endif
 	register struct ptree *rnh;
-	register struct ptree_node *t, *tt, *ttt;
+	register struct ptree_node *t, *tt = *ttt = 0;
 	if (*head)
 		return (1);
 	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
@@ -1249,17 +1255,22 @@ ptree_inithead(head, off)
 	*head = rnh;
 	/* create empty tree */
 	t = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
+#if 0
 	tt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
 	ttt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
+#endif
 	t->rn_flags = RNF_ROOT;
+#if 0
 	tt->rn_flags = RNF_ACTIVE;
 	ttt->rn_flags = RNF_ACTIVE;
+#endif
 	t->parent = t;
 	t->left = tt;
 	t->right = ttt;
+#if 0
 	tt->parent = t;
 	ttt->parent = t;
-	
+#endif	
 	rnh->rnh_nodes[0] = t;
 	rnh->rnh_nodes[1] = tt;
 	rnh->rnh_nodes[2] = ttt;
