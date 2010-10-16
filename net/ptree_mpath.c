@@ -616,6 +616,9 @@ ptree_matchaddr(v_arg, head)
 		t = t->rn_dupedkey;
 	return t;
 on1:
+#ifdef DEBUG
+	printf("ptree_matchaddr: goto on1\n");
+#endif
 	test = (*cp ^ *cp2) & 0xff; /* find first bit that differs */
 	for (b = 7; (test >>= 1) > 0;)
 		b--;
@@ -640,6 +643,7 @@ on1:
 			return t;
 	t = saved_t;
 	/* start searching up the tree */
+#if 0
 	do {
 		register struct ptree_mask *m;
 		t = t->rn_parent;
@@ -665,6 +669,10 @@ on1:
 			m = m->rm_mklist;
 		}
 	} while (t != top);
+#endif
+#ifdef DEBUG
+	printf("ptree_matchaddr: no match\n");
+#endif
 	return 0;
 }
 
