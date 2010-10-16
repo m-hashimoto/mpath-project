@@ -579,10 +579,10 @@ ptree_matchaddr(v_arg, head)
 	printf("ptree_matchaddr\n");
 #endif
 	caddr_t v = v_arg;
-	register struct ptree_node *t = head->top, *x;
+	register struct ptree_node *t = head->top;
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
-	struct ptree_node *saved_t, *top = t;
+	struct ptree_node *saved_t;
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
