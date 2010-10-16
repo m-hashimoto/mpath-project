@@ -797,9 +797,11 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		x = t->rn_left;
 	else
 		x = t->rn_right;
+	if(!x)
+		goto on2;
 	/* Promote general routes from below */
 #ifdef DEBUG
-	printf("ptree_addroute: x = %p x->rn_bit = %d\n",x,x->rn_bit);
+	printf("ptree_addroute: x = %p\n",x);
 #endif
 	if (x->rn_bit < 0) {
 #ifdef DEBUG
