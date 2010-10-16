@@ -312,8 +312,12 @@ on1:
 #endif
 			if (p)
 				ptree_link (p, x);
-			else
+			else{
 				head->top = x;
+#ifdef DEBUG
+				printf("ptree_insert: insert in top\n");
+#endif
+			}
 		}
 		else
 		{
@@ -1315,8 +1319,8 @@ ptree_inithead(head, off)
 	ttt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
 
 	t->rn_flags = RNF_ROOT;
-	tt->rn_flags = RNF_ACTIVE;
-	ttt->rn_flags = RNF_ACTIVE;
+	tt->rn_flags = RNF_NORMAL;
+	ttt->rn_flags = RNF_NORMAL;
 	t->rn_parent = t;
 	t->rn_left = tt;
 	t->rn_right = ttt;
