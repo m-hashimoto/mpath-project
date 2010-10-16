@@ -1,5 +1,5 @@
 --- route.c.orig	2010-10-15 13:30:11.000000000 +0900
-+++ route.c	2010-10-17 05:51:27.000000000 +0900
++++ route.c	2010-10-17 08:35:15.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -306,7 +306,7 @@
  #endif
  	rn = rnh->rnh_matchaddr(dst, rnh);
 +#ifdef DEBUG
-+	printf("rtalloc1_fib: matchaddr rn = %p flags = %d\n",rn,rn->rn_flags);
++	printf("rtalloc1_fib: matchaddr rn = %p, needlock = %d\n",rn,needlock);
 +#endif
  	if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
  		newrt = rt = RNTORT(rn);
