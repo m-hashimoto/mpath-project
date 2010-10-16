@@ -1180,6 +1180,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[0];
 #ifdef DEBUG
 		printf("ptree_next: go left\n");
+		printf("w = %p\n",w);
 #endif
 		return w;
 	}
@@ -1189,6 +1190,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[1];
 #ifdef DEBUG
 		printf("ptree_next: go right\n");
+		printf("w = %p\n",w);
 #endif
 		return w;
 	}
@@ -1200,6 +1202,7 @@ ptree_next (struct ptree_node *v)
 		w = u->child[1];
 #ifdef DEBUG
 		printf("ptree_next: go parent, and go right\n");
+		printf("w = %p\n",w);
 #endif
 		return w;
 	}
@@ -1211,6 +1214,7 @@ ptree_next (struct ptree_node *v)
 		t = t->parent;
 #ifdef DEBUG
 		printf("ptree_next: go parent\n");
+		printf("t = %p\n",t);
 #endif
 		if(u == t)
 			return (t);
