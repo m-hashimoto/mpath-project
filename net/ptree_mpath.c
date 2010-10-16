@@ -129,27 +129,21 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 	register caddr_t v;
 
 	for (x = t->top, v = key; x->keylen <= keylen && x->rn_bit >= 0;) {
-#ifdef DEBUG
-printf("ptree_search: x->rn_bit = %d, x->rn_offset = %d\n",x->rn_bit,x->rn_offset);
-#endif
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
 #ifdef DEBUG
-printf("go to right node\n");
-printf("ptree_search: x->rn_right = %p, keylen = %d\n",x->key,x->keylen);
+printf("goto right: x = %p, rn_bit = %d\n",x->key,x->rn_bit);
 #endif
 		}
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
-printf("go to left node\n");
-printf("ptree_search: x->rn_left = %p, keylen = %d\n",x->key,x->keylen);
+printf("goto left: x = %p, rn_bit = %d\n",x->key,x->rn_bit);
 #endif
 		}
 	}
 #ifdef DEBUG
-printf("return node\n");
-printf("ptree_search: x = %p, keylen = %d\n",x->key,x->keylen);
+printf("return node: x = %p, rn_bit = %d\n",x->key,x->rn_bit);
 #endif
 	return (x);
 }
