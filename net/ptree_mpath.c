@@ -1193,6 +1193,8 @@ ptree_next (struct ptree_node *v)
 	{
 		u = t;
 		t = t->parent;
+		if(u == t)
+			return (t);
 	}
 
 	if (t)
@@ -1224,10 +1226,13 @@ ptree_walktree(h, f, w)
 		rn = rn->rn_left;
 	for (;;) {  
 		base = rn;
+		next = ptree_next(rn);
 #ifdef DEBUG
-		printf("ptree_walktree: node %p flags %d\n",rn->key,rn->rn_flags);
+		printf("ptree_walktree: base %p next %p\n",base->key,next->key);
+		printf("base: rn_flags & RNF_ROOT = %d\n",rn->rn_flags & RNF_ROOT);
+		printf("next: rn_flags & RNF_ROOT = %d\n",next->rn_flags & RNF_ROOT);
 #endif
-		if( (next = ptree_next(rn)) == NULL)
+		if( next == NULL)
 			return (0);
 
 #if 0
