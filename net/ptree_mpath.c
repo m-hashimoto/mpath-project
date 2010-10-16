@@ -638,12 +638,23 @@ on1:
 		 * a route to a net.
 		 */
 		if (t->rn_flags & RNF_NORMAL) {
-			if (rn_bit <= t->rn_bit)
+			if (rn_bit <= t->rn_bit){
+#ifdef DEBUG
+				printf("ptree_matchaddr: return %p\n",t);
+#endif
 				return t;
-		} else if (ptree_satisfies_leaf(v, t, matched_off))
+			}
+		} else if (ptree_satisfies_leaf(v, t, matched_off)){
+#ifdef DEBUG
+			printf("ptree_matchaddr: return %p\n",t);
+#endif
 			return t;
+		}
 	t = saved_t;
 	/* start searching up the tree */
+#ifdef DEBUG
+	printf("ptree_matchaddr: start searching up the tree\n");
+#endif
 
 	do {
 		register struct ptree_mask *m;
