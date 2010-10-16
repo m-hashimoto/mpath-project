@@ -797,9 +797,12 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	else
 		x = t->rn_right;
 	/* Promote general routes from below */
+#ifdef DEBUG
+	printf("ptree_addroute: x = %p\n",x);
+#endif
 	if (x->rn_bit < 0) {
 #ifdef DEBUG
-		printf("ptree_addroute: rn_bit < 0\n");
+		printf("ptree_addroute: if (rn_bit < 0)\n");
 #endif
 		for (mp = &t->rn_mklist; x; x = x->rn_dupedkey)
 			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
@@ -811,6 +814,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		/*
 		 * Skip over masks whose index is > that of new node
 		 */
+#ifdef DEBUG
+		printf("ptree_addroute: if (x->mklist)\n");
+#endif
 		for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist)
 			if (m->rm_bit >= b_leaf)
 				break;
@@ -818,7 +824,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	}
 on2:
 #ifdef DEBUG
-	printf("ptree_addroute: goto on2\n");
+	printf("ptree_addroute: on2\n");
 #endif
 	/* Add new route to highest possible ancestor's list */
 	if ((netmask == 0) || (b > t->rn_bit ))
