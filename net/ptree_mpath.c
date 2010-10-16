@@ -37,10 +37,8 @@ static int ptree_satisfies_leaf(char *trial,
 		register struct ptree_node *leaf, int skip);
 static struct ptree_node *ptree_newpair(void *v, int b,
 	       	struct ptree_node[2]);
-#if 0
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
-#endif
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
 		int *dupentry, struct ptree_node nodes[2]);
 static int ptree_lexobetter(void *m_arg, void *n_arg);
@@ -450,7 +448,6 @@ ptree_addmask(n_arg, search, skip)
  *  * Same as above, but with an additional mask.
  *   * XXX note this function is used only once.
  *    */
-#if 0
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
@@ -472,7 +469,7 @@ ptree_search_m(v_arg, head, m_arg)
 	}
 	return x;
 }
-#endif
+
 
 	int
 ptree_refines(m_arg, n_arg)
@@ -583,10 +580,10 @@ ptree_matchaddr(v_arg, head)
 	printf("ptree_matchaddr\n");
 #endif
 	caddr_t v = v_arg;
-	register struct ptree_node *t = head->top;
+	register struct ptree_node *t = head->top, *x;
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
-	struct ptree_node *saved_t;
+	struct ptree_node *saved_t, *top = t;
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
@@ -647,10 +644,12 @@ on1:
 			return t;
 	t = saved_t;
 	/* start searching up the tree */
-#if 0
+
 	do {
 		register struct ptree_mask *m;
+#if 0
 		t = t->rn_parent;
+#endif
 		m = t->rn_mklist;
 		/*
 		 * If non-contiguous masks ever become important
@@ -673,7 +672,7 @@ on1:
 			m = m->rm_mklist;
 		}
 	} while (t != top);
-#endif
+
 #ifdef DEBUG
 	printf("ptree_matchaddr: no match\n");
 #endif
@@ -789,6 +788,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		printf("ptree_addroute: netmask put in tt\n");
 #endif
 	}
+#if 0
 	t = saved_tt->rn_parent;
 #ifdef DEBUG
 	printf("ptree_addroute: parent of insert = %p\n",t);
@@ -813,7 +813,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 #ifdef DEBUG
 		printf("ptree_addroute: if (rn_bit < 0)\n");
 #endif
-		for (mp = &t->rn_mklist; x; x = x->rn_dupedkey)
+		for (mp = &saved_tt->rn_mklist; x; x = x->rn_dupedkey)
 			if (x->rn_mask && (x->rn_bit >= b_leaf) && x->rn_mklist == 0) {
 				*mp = m = ptree_new_mask(x, 0);
 				if (m)
@@ -831,6 +831,36 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				break;
 		t->rn_mklist = m; *mp = 0;
 	}
+#endif /* 0 */
+	t = saved_tt;
+	if (keyduplicated)
+		goto on2;
+	b_leaf = -1 - t->rn_bit;
+#ifdef DEBUG
+	printf("ptree_addroute: b_leaf = %d\n",b_leaf);
+#endif
+	if (t->rn_bit < 0) {
+#ifdef DEBUG
+		printf("ptree_addroute: if (rn_bit < 0)\n");
+#endif
+		for (mp = &saved_tt->rn_mklist; t; t = t->rn_dupedkey)
+			if (t->rn_mask && (t->rn_bit >= b_leaf) && t->rn_mklist == 0) {
+				*mp = m = ptree_new_mask(t, 0);
+				if (m)
+					mp = &m->rm_mklist;
+			}
+	} else if (t->rn_mklist) {
+		/*
+		 * Skip over masks whose index is > that of new node
+		 */
+#ifdef DEBUG
+		printf("ptree_addroute: if (t->mklist)\n");
+#endif
+		for (mp = &t->rn_mklist; (m = *mp); mp = &m->rm_mklist)
+			if (m->rm_bit >= b_leaf)
+				break;
+		t->rn_mklist = m; *mp = 0;
+	}
 on2:
 #ifdef DEBUG
 	printf("ptree_addroute: on2\n");
@@ -839,16 +869,19 @@ on2:
 	if ((netmask == 0) || (b > t->rn_bit ))
 		return tt; /* can't lift at all */
 	b_leaf = tt->rn_bit;
+#if 0
 	do {
 		x = t;
 		t = t->rn_parent;
 	} while (b <= t->rn_bit && x != top);
+#endif
 	/*
 	 * Search through routes associated with node to
 	 * insert new route according to index.
 	 * Need same criteria as when sorting dupedkeys to avoid
 	 * double loop on deletion.
 	 */
+	x = t;
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 		if (m->rm_bit < b_leaf)
 			continue;
@@ -872,6 +905,7 @@ on2:
 				|| ptree_lexobetter(netmask, mmask))
 			break;
 	}
+
 #ifdef DEBUG
 	printf("ptree_addroute: add new mask\n");
 #endif
