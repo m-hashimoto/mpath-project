@@ -143,7 +143,7 @@ printf("goto left: x = %p, rn_bit = %d\n",x->key,x->rn_bit);
 		}
 	}
 #ifdef DEBUG
-printf("return node: x = %p, rn_key = %p, flags = %d, rn_bit = %d\n",x,x->key,flags,x->rn_bit);
+printf("return node: x = %p, rn_key = %p, flags = %d, rn_bit = %d\n",x,x->key,x->rn_flags,x->rn_bit);
 #endif
 	return (x);
 }
