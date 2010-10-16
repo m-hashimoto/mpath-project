@@ -1257,8 +1257,12 @@ ptree_walktree(h, f, w)
 		printf("base: flags = %d, flags&RNF_ROOT = %d\n",base->rn_flags, base->rn_flags & RNF_ROOT);
 		printf("next: flags = %d, flags&RNF_ROOT = %d\n",next->rn_flags, next->rn_flags & RNF_ROOT);
 #endif
-		if( next == base )
+		if( next == base ){
+#ifdef DEBUG
+			printf("next = base\n");
+#endif
 			return (0);
+		}
 
 #if 0
 		/* If at right child go back up, otherwise, go right */
