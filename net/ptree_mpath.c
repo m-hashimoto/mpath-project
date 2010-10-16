@@ -647,9 +647,6 @@ on1:
 
 	do {
 		register struct ptree_mask *m;
-#if 0
-		t = t->rn_parent;
-#endif
 		m = t->rn_mklist;
 		/*
 		 * If non-contiguous masks ever become important
@@ -671,6 +668,7 @@ on1:
 			}
 			m = m->rm_mklist;
 		}
+		t = t->rn_parent;
 	} while (t != top);
 
 #ifdef DEBUG
