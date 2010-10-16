@@ -1257,13 +1257,12 @@ ptree_walktree(h, f, w)
 		base = rn;
 		next = ptree_next(rn);
 #ifdef DEBUG
-		printf("ptree_walktree: base %p next %p\n",base->key,next->key);
+		printf("ptree_walktree: base %p next %p\n",base,next);
 		printf("base: flags = %d, flags&RNF_ROOT = %d\n",base->rn_flags, base->rn_flags & RNF_ROOT);
-		printf("next: flags = %d, flags&RNF_ROOT = %d\n",next->rn_flags, next->rn_flags & RNF_ROOT);
 #endif
-		if( next == base ){
+		if( !next ){
 #ifdef DEBUG
-			printf("next = base\n");
+			printf("next = NULL\n");
 #endif
 			return (0);
 		}
@@ -1285,6 +1284,9 @@ ptree_walktree(h, f, w)
 		}
 #endif
 		rn = next;
+#ifdef DEBUG
+		printf("next: flags = %d, flags&RNF_ROOT = %d\n",rn->rn_flags, rn->rn_flags & RNF_ROOT);
+#endif
 		if (rn->rn_flags & RNF_ROOT)
 			return (0);
 	}
