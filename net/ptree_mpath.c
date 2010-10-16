@@ -35,10 +35,8 @@ static int ptree_walktree_from(struct ptree *h, void *a, void *m,
 static int ptree_walktree(struct ptree *h, walktree_f_t *f, void *w);
 static int ptree_satisfies_leaf(char *trial,
 		register struct ptree_node *leaf, int skip);
-#if 0
 static struct ptree_node *ptree_newpair(void *v, int b,
 	       	struct ptree_node[2]);
-#endif
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
@@ -1171,12 +1169,18 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
+#ifdef DEBUG
+		printf("ptree_next: go left\n");
+#endif
 		return w;
 	}
 	/* if the right child exits, go right */
 	if (v->child[1])
 	{
 		w = v->child[1];
+#ifdef DEBUG
+		printf("ptree_next: go right\n");
+#endif
 		return w;
 	}
 	/* else, go parent */
@@ -1185,6 +1189,9 @@ ptree_next (struct ptree_node *v)
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
+#ifdef DEBUG
+		printf("ptree_next: go parent, and go right\n");
+#endif
 		return w;
 	}
 
@@ -1193,6 +1200,9 @@ ptree_next (struct ptree_node *v)
 	{
 		u = t;
 		t = t->parent;
+#ifdef DEBUG
+		printf("ptree_next: go parent\n");
+#endif
 		if(u == t)
 			return (t);
 	}
@@ -1207,6 +1217,9 @@ ptree_next (struct ptree_node *v)
 	}
 
 	/* end of traverse */
+#ifdef DEBUG
+		printf("ptree_next: end of traverse\n");
+#endif
 	return NULL;
 }
 
@@ -1229,8 +1242,8 @@ ptree_walktree(h, f, w)
 		next = ptree_next(rn);
 #ifdef DEBUG
 		printf("ptree_walktree: base %p next %p\n",base->key,next->key);
-		printf("base: rn_flags & RNF_ROOT = %d\n",rn->rn_flags & RNF_ROOT);
-		printf("next: rn_flags & RNF_ROOT = %d\n",next->rn_flags & RNF_ROOT);
+		printf("base: flags = %d, flags&RNF_ROOT = %d\n",base->rn_flags, base->rn_flags & RNF_ROOT);
+		printf("next: flags = %d, flags&RNF_ROOT = %d\n",next->rn_flags, next->rn_flags & RNF_ROOT);
 #endif
 		if( next == NULL)
 			return (0);
@@ -1258,7 +1271,6 @@ ptree_walktree(h, f, w)
 	/* NOTREACHED */
 }
 
-#if 0
 	static struct ptree_node *
 ptree_newpair(v, b, nodes)
 	void *v;
@@ -1295,7 +1307,7 @@ ptree_newpair(v, b, nodes)
 #endif 
 	return t;
 }
-#endif
+
 	int
 ptree_inithead(head, off)
 	void **head;
@@ -1315,10 +1327,11 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
+#if 0
+	/* create empty tree */
 	t = rnh->rnh_nodes;
 	tt = t +1;
 	ttt = t + 2;
-	/* create empty tree */
 	t = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
 	tt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
 	ttt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
@@ -1331,8 +1344,8 @@ ptree_inithead(head, off)
 	t->rn_right = ttt;
 	tt->rn_parent = t;
 	ttt->rn_parent = t;
+#endif
 
-#if 0
 	t = ptree_newpair(rn_zeros, off, rnh->rnh_nodes);
 	ttt = rnh->rnh_nodes + 2;
 	t->rn_right = ttt;
@@ -1342,7 +1355,7 @@ ptree_inithead(head, off)
 	tt->rn_bit = -1 - off;
 	*ttt = *tt;
 	ttt->rn_key = rn_ones;
-#endif
+
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
 	rnh->rnh_matchaddr = ptree_matchaddr;
