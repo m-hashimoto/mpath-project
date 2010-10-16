@@ -37,8 +37,10 @@ static int ptree_satisfies_leaf(char *trial,
 		register struct ptree_node *leaf, int skip);
 static struct ptree_node *ptree_newpair(void *v, int b,
 	       	struct ptree_node[2]);
+#if 0
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
+#endif
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
 		int *dupentry, struct ptree_node nodes[2]);
 static int ptree_lexobetter(void *m_arg, void *n_arg);
@@ -448,6 +450,7 @@ ptree_addmask(n_arg, search, skip)
  *  * Same as above, but with an additional mask.
  *   * XXX note this function is used only once.
  *    */
+#if 0
 	static struct ptree_node *
 ptree_search_m(v_arg, head, m_arg)
 	struct ptree_node *head;
@@ -469,6 +472,7 @@ ptree_search_m(v_arg, head, m_arg)
 	}
 	return x;
 }
+#endif
 
 	int
 ptree_refines(m_arg, n_arg)
