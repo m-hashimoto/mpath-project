@@ -311,7 +311,8 @@ on1:
 			if (p)
 				ptree_link (p, x);
 			else{
-				head->top = x;
+				top->rn_key = v;
+				top->keylen = vlen;
 #ifdef DEBUG
 				printf("ptree_insert: insert in top\n");
 #endif
