@@ -1156,6 +1156,54 @@ ptree_walktree_from(h, a, m, f, w)
 	return 0;
 }
 
+	struct ptree_node *
+ptree_next (struct ptree_node *v)
+{
+	struct ptree_node *t;
+	struct ptree_node *u;
+	struct ptree_node *w;
+
+	/* if the left child exists, go left */
+	if (v->child[0])
+	{
+		w = v->child[0];
+		return w;
+	}
+	/* if the right child exits, go right */
+	if (v->child[1])
+	{
+		w = v->child[1];
+		return w;
+	}
+	/* else, go parent */
+	u = v->parent;
+
+	if (u->child[0] == v)
+	{
+		w = u->child[1];
+		return w;
+	}
+
+	t = u->parent;
+	while (t && (t->child[1] == u || ! t->child[1]))
+	{
+		u = t;
+		t = t->parent;
+	}
+
+	if (t)
+	{
+		/* return the not-yet-traversed right-child node */
+		w = t->child[1];
+		XRTASSERT (w, ("xrt: an impossible end of traverse"));
+
+		return w;
+	}
+
+	/* end of traverse */
+	return NULL;
+}
+
 	static int
 ptree_walktree(h, f, w)
 	struct ptree *h;
@@ -1165,7 +1213,6 @@ ptree_walktree(h, f, w)
 #ifdef DEBUG
 	printf("ptree_walktree\n");
 #endif
-	int error;
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
 
@@ -1174,11 +1221,16 @@ ptree_walktree(h, f, w)
 	for (;;) {  
 		base = rn;
 #ifdef DEBUG
-		printf("ptree_walktree: node %p\n",rn->key);
+		printf("ptree_walktree: node %p flags %d\n",rn->key,rn->rn_flags);
 #endif
+		if( (next = ptree_next(rn)) == NULL)
+			return (0);
+
+#if 0
 		/* If at right child go back up, otherwise, go right */
 		while (rn->rn_parent->rn_right == rn
-				&& (rn->rn_flags & RNF_ROOT) == 0)                        rn = rn->rn_parent;
+				&& (rn->rn_flags & RNF_ROOT) == 0)
+			rn = rn->rn_parent;
 		for (rn = rn->rn_parent->rn_right; rn->rn_bit >= 0;)
 			rn = rn->rn_left; 
 		next = rn;
@@ -1189,6 +1241,7 @@ ptree_walktree(h, f, w)
 					&& (error = (*f)(rn, w)))
 				return (error);
 		}
+#endif
 		rn = next;
 		if (rn->rn_flags & RNF_ROOT)
 			return (0);

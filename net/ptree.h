@@ -1,4 +1,3 @@
-
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
@@ -158,7 +157,7 @@ void     ptree_init(void);
 int      ptree_inithead(void **, int);
 int      ptree_refines(void *, void *);
 struct ptree_node
-*ptree_addmask(void *, int, int),
+	*ptree_addmask(void *, int, int),
 	*ptree_addroute (void *, void *, struct ptree *,	
 			struct ptree_node [2]),
 	*ptree_deladdr(void *, void *, struct ptree *),
@@ -167,14 +166,15 @@ struct ptree_node
 struct ptree_node *ptree_lookup (void *key, void *mask, 
 		int keylen, struct ptree *t);
 struct ptree_node *ptree_search (char *key, int keylen, struct ptree *t);
-struct ptree_node *ptree_add (char *key, int keylen, void *data, struct ptree *t);
-void ptree_remove (struct ptree_node *v);
-
-struct ptree_node *ptree_head (struct ptree *t);
+/* struct ptree_node 
+ * 	*ptree_add (char *key, int keylen, void *data, struct ptree *t);
+ * void ptree_remove (struct ptree_node *v); 
+ * struct ptree_node *ptree_head (struct ptree *t);
+ */
 struct ptree_node *ptree_next (struct ptree_node *v);
 
 struct ptree *ptree_create (void);
-void ptree_delete (struct ptree *t);
+/* void ptree_delete (struct ptree *t); */
 
 /*
  * Patricia trie API with multipath support
