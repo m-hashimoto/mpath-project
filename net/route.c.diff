@@ -1,5 +1,5 @@
 --- route.c.orig	2010-10-15 13:30:11.000000000 +0900
-+++ route.c	2010-10-16 21:21:42.000000000 +0900
++++ route.c	2010-10-16 21:44:46.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -726,7 +726,7 @@
  	struct ifaddr *ifa;
  	struct sockaddr *ndst;
  #define senderr(x) { error = x ; goto bad; }
-@@ -1029,229 +1109,247 @@
+@@ -1029,229 +1109,250 @@
  		netmask = NULL;
  
  	switch (req) {
@@ -1023,6 +1023,9 @@
 -					if (len == 0 || (*n < *m)) {
 +			if (dst->sa_family == AF_INET) {
 +				rn = rnh->rnh_matchaddr(dst, rnh);
++#ifdef DEBUG
++				printf("flags & RNF_ROOT = %d\n",rn->rn_flags & RNF_ROOT);
++#endif
 +				if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
 +					struct sockaddr *mask;
 +					u_char *m, *n;
@@ -1164,7 +1167,7 @@
  	}
  bad:
  	if (needlock)
-@@ -1267,20 +1365,23 @@
+@@ -1267,20 +1368,23 @@
  #undef ifpaddr
  #undef flags
  
@@ -1191,7 +1194,7 @@
  	/*
  	 * Prepare to store the gateway in rt->rt_gateway.
  	 * Both dst and gateway are stored one after the other in the same
-@@ -1315,9 +1416,12 @@
+@@ -1315,9 +1419,12 @@
  	return (0);
  }
  
@@ -1205,7 +1208,7 @@
  	register u_char *cp1 = (u_char *)src;
  	register u_char *cp2 = (u_char *)dst;
  	register u_char *cp3 = (u_char *)netmask;
-@@ -1339,9 +1443,12 @@
+@@ -1339,9 +1446,12 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -1219,7 +1222,7 @@
  	struct sockaddr *dst;
  	struct sockaddr *netmask;
  	struct rtentry *rt = NULL;
-@@ -1405,8 +1512,8 @@
+@@ -1405,8 +1515,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -1230,7 +1233,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1432,18 +1539,18 @@
+@@ -1432,18 +1542,18 @@
  					 * interface address
  					 */
  					rt = rt_mpath_matchgate(rt,
@@ -1254,7 +1257,7 @@
  			RADIX_NODE_HEAD_UNLOCK(rnh);
  			if (error) {
  				/* this is only an error if bad on ALL tables */
-@@ -1462,7 +1569,7 @@
+@@ -1462,7 +1572,7 @@
  		 */
  		if (cmd == RTM_ADD)
  			info.rti_info[RTAX_GATEWAY] =
@@ -1263,7 +1266,7 @@
  		else
  			info.rti_info[RTAX_GATEWAY] = ifa->ifa_addr;
  		info.rti_info[RTAX_NETMASK] = netmask;
-@@ -1481,7 +1588,7 @@
+@@ -1481,7 +1591,7 @@
  			 * so we need to replace it with 192.103.54.247
  			 */
  			if (memcmp(rt->rt_ifa->ifa_addr,
@@ -1272,7 +1275,7 @@
  				ifa_free(rt->rt_ifa);
  				ifa_ref(ifa);
  				rt->rt_ifp = ifa->ifa_ifp;
-@@ -1492,10 +1599,10 @@
+@@ -1492,10 +1602,10 @@
  			 * doing this for compatibility reasons
  			 */
  			if (cmd == RTM_ADD) {
@@ -1287,7 +1290,7 @@
  			}
  			rt_newaddrmsg(cmd, ifa, error, rt);
  			if (cmd == RTM_DELETE) {
-@@ -1526,7 +1633,7 @@
+@@ -1526,7 +1636,7 @@
  		} else {
  			/* we only give an error if it wasn't in any table */
  			error = ((flags & RTF_HOST) ?
@@ -1296,7 +1299,7 @@
  		}
  	} else {
  		if (a_failure) {
-@@ -1538,9 +1645,12 @@
+@@ -1538,9 +1648,12 @@
  }
  
  /* special one for inet internal use. may not use. */
@@ -1310,7 +1313,7 @@
  	return (rtinit1(ifa, cmd, flags, -1));
  }
  
-@@ -1548,9 +1658,12 @@
+@@ -1548,9 +1661,12 @@
   * Set up a routing table entry, normally
   * for an interface.
   */
