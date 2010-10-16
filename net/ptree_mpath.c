@@ -1244,6 +1244,9 @@ ptree_walktree(h, f, w)
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
 
+#ifdef DEBUG
+		printf("ptree_walktree: top %p\n",rn);
+#endif
 	while (rn->rn_bit >= 0) 
 		rn = rn->rn_left;
 	for (;;) {  
@@ -1254,7 +1257,7 @@ ptree_walktree(h, f, w)
 		printf("base: flags = %d, flags&RNF_ROOT = %d\n",base->rn_flags, base->rn_flags & RNF_ROOT);
 		printf("next: flags = %d, flags&RNF_ROOT = %d\n",next->rn_flags, next->rn_flags & RNF_ROOT);
 #endif
-		if( next == NULL)
+		if( next == base )
 			return (0);
 
 #if 0
