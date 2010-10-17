@@ -639,7 +639,7 @@ on1:
 		 * a route to a net.
 		 */
 #ifdef DEBUG
-		printf("t = %p t->rn_bit = %d rn_bit = %d",t,t->rn_bit,rn_bit);
+		printf("t = %p rn_bit = %d",t,rn_bit);
 #endif
 		if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
@@ -724,7 +724,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 	 */
 	saved_tt = tt = ptree_insert(v, head, &keyduplicated, treenodes);
 #ifdef DEBUG
-	printf("ptree_addroute: tt(ptree_insert)=%p\n",tt->rn_key);
+	printf("ptree_addroute: tt=%p keyduplicated = %d\n",tt->rn_key,keyduplicated);
 #endif
 	if (keyduplicated) {
 #ifdef DEBUG
@@ -1304,9 +1304,6 @@ ptree_walktree(h, f, w)
 	walktree_f_t *f;
 	void *w;
 {
-#ifdef DEBUG
-	printf("ptree_walktree\n");
-#endif
 	struct ptree_node *base, *next;
 	register struct ptree_node *rn = h->rnh_treetop;
 
