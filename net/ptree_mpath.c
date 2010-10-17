@@ -13,11 +13,12 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
-
 static char *rn_zeros, *rn_ones, *addmask_key;
 static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
+
+int printk( const char* format, ... );
 
 #define MKGet(m) {                                              \
 	if (rn_mkfreelist) {                                    \
@@ -873,11 +874,15 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 #ifdef DEBUG
 	printf("ptree_addroute: on2\n");
+	printf("netmask = %x\n",netmask);
 #endif
 	/* Add new route to highest possible ancestor's list */
 	if ((netmask == 0) || (b > t->rn_bit ))
 		return tt; /* can't lift at all */
 	b_leaf = tt->rn_bit;
+#ifdef DEBUG
+	printf("ptree_addroute: b_leaf = %d\n",b_leaf);
+#endif
 #if 0
 	do {
 		x = t;
@@ -891,6 +896,9 @@ on2:
 	 * double loop on deletion.
 	 */
 	x = t;
+#ifdef DEBUG
+	printf("ptree_addroute: saerch route with node(%p) to insert new route\n",x);
+#endif
 	for (mp = &x->rn_mklist; (m = *mp); mp = &m->rm_mklist) {
 		if (m->rm_bit < b_leaf)
 			continue;
