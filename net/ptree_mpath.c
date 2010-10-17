@@ -880,7 +880,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 #ifdef DEBUG
 	printf("ptree_addroute: on2\n");
-	printf("netmask = %x saved_tt = %p",(unsigned int)netmask,tt);
+	printf("netmask = %x saved_tt = %p t = %p\n",(unsigned int)netmask,tt,t);
 #endif
 	/* Add new route to highest possible ancestor's list */
 	if ((netmask == 0) || (b > t->rn_bit ))
