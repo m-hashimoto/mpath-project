@@ -172,7 +172,7 @@ ptree_node_create (void *key, int keylen)
   x->rn_flags = RNF_ACTIVE;
   x->data = NULL;
 #ifdef PTREE_MPATH
-  x->mpath_list[0] = NULL;
+  x->mpath_array[0] = NULL;
 #endif
 #ifdef RN_DEBUG
   x->rn_info = rn_nodenum++;
@@ -584,7 +584,7 @@ ptree_matchaddr(v_arg, head)
 	register struct ptree_node *t = head->top, *x;
 	register caddr_t cp = v, cp2;
 	caddr_t cplim;
-	struct ptree_node *saved_t, *top = t;
+	struct ptree_node *saved_t;
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
@@ -638,6 +638,9 @@ on1:
 		 * we may match if the leaf we wound up at is
 		 * a route to a net.
 		 */
+#ifdef DEBUG
+		printf("t = %p t->rn_bit = %d rn_bit = %d",t,t->rn_bit,rn_bit);
+#endif
 		if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
 #ifdef DEBUG
@@ -652,36 +655,32 @@ on1:
 			return t;
 		}
 	t = saved_t;
-	/* start searching up the tree */
-#ifdef DEBUG
-	printf("ptree_matchaddr: start searching up the tree\n");
-#endif
 
-	do {
-		register struct ptree_mask *m;
-		m = t->rn_mklist;
-		/*
-		 * If non-contiguous masks ever become important
-		 * we can restore the masking and open coding of
-		 * the search and satisfaction test and put the
-		 * calculation of "off" back before the "do".
-		 */
-		while (m) {
-			if (m->rm_flags & RNF_NORMAL) {
-				if (rn_bit <= m->rm_bit)
-					return (m->rm_leaf);
-			} else {
-				off = min(t->rn_offset, matched_off);
-				x = ptree_search_m(v, t, m->rm_mask);
-				while (x && x->rn_mask != m->rm_mask)
-					x = x->rn_dupedkey;
-				if (x && ptree_satisfies_leaf(v, x, off))
-					return x;
-			}
-			m = m->rm_mklist;
+	register struct ptree_mask *m;
+	m = t->rn_mklist;
+	/*
+	 * If non-contiguous masks ever become important
+	 * we can restore the masking and open coding of
+	 * the search and satisfaction test and put the
+	 * calculation of "off" back before the "do".
+	 */
+#ifdef DEBUG
+	printf("ptree_matchaddr: t->rn_mklist = %p\n",m);
+#endif
+	while (m) {
+		if (m->rm_flags & RNF_NORMAL) {
+			if (rn_bit <= m->rm_bit)
+				return (m->rm_leaf);
+		} else {
+			off = min(t->rn_offset, matched_off);
+			x = ptree_search_m(v, t, m->rm_mask);
+			while (x && x->rn_mask != m->rm_mask)
+				x = x->rn_dupedkey;
+			if (x && ptree_satisfies_leaf(v, x, off))
+				return x;
 		}
-		t = t->rn_parent;
-	} while (t != top);
+		m = m->rm_mklist;
+	}
 
 #ifdef DEBUG
 	printf("ptree_matchaddr: no match\n");
@@ -1294,7 +1293,7 @@ ptree_next (struct ptree_node *v)
 
 	/* end of traverse */
 #ifdef DEBUG
-		printf("ptree_next: end of traverse\n");
+	printf("ptree_next: end of traverse\n");
 #endif
 	return NULL;
 }
@@ -1312,7 +1311,7 @@ ptree_walktree(h, f, w)
 	register struct ptree_node *rn = h->rnh_treetop;
 
 #ifdef DEBUG
-		printf("ptree_walktree: top %p\n",rn);
+	printf("ptree_walktree: top %p\n",rn);
 #endif
 	while (rn->rn_bit >= 0) 
 		rn = rn->rn_left;
@@ -1379,7 +1378,7 @@ ptree_newpair(v, b, nodes)
 	tt->rn_parent = t;
 	tt->rn_flags = t->rn_flags = RNF_ACTIVE;
 #ifdef PTREE_MPATH
-	tt->mpath_list[0] = NULL;
+	tt->mpath_array[0] = NULL;
 #endif
 #ifdef RN_DEBUG
 	tt->rn_info = rn_nodenum++;
@@ -1408,24 +1407,6 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-#if 0
-	/* create empty tree */
-	t = rnh->rnh_nodes;
-	tt = t +1;
-	ttt = t + 2;
-	t = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
-	tt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
-	ttt = ptree_node_create(rn_zeros,(int)LEN(rn_zeros));
-
-	t->rn_flags = RNF_ROOT;
-	tt->rn_flags = RNF_NORMAL;
-	ttt->rn_flags = RNF_NORMAL;
-	t->rn_parent = t;
-	t->rn_left = tt;
-	t->rn_right = ttt;
-	tt->rn_parent = t;
-	ttt->rn_parent = t;
-#endif
 
 	t = ptree_newpair(rn_zeros, off, rnh->rnh_nodes);
 	ttt = rnh->rnh_nodes + 2;
