@@ -901,7 +901,7 @@ on2:
 	 * Need same criteria as when sorting dupedkeys to avoid
 	 * double loop on deletion.
 	 */
-	x = t;
+	x = saved_tt;
 #ifdef DEBUG
 	printf("ptree_addroute: saerch route with node(%p) to insert new route\n",x);
 #endif
