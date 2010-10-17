@@ -614,6 +614,9 @@ ptree_matchaddr(v_arg, head)
 	 * Never return the root node itself, it seems to cause a
 	 * lot of confusion.
 	 */
+#ifdef DEBUG
+	printf("t->rn_flags = %d\n",t->rn_flags);
+#endif
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
 	return t;
@@ -639,7 +642,7 @@ on1:
 		 * a route to a net.
 		 */
 #ifdef DEBUG
-		printf("t = %p rn_bit = %d",t,rn_bit);
+		printf("t = %p rn_bit = %d\n",t,rn_bit);
 #endif
 		if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
