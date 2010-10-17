@@ -760,6 +760,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 		if (tt == saved_tt) {
 			struct	ptree_node *xx = x;
 			/* link in at head of list */
+#ifdef DEBUG
+			printf("ptree_addroute: link in at head of list\n");
+#endif
 			(tt = treenodes)->rn_dupedkey = t;
 			tt->rn_flags = t->rn_flags;
 			tt->rn_parent = x = t->rn_parent;
@@ -858,6 +861,9 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 				*mp = m = ptree_new_mask(t, 0);
 				if (m)
 					mp = &m->rm_mklist;
+#ifdef DEBUG
+				printf("ptree_addroute: t->mklist = %p\n",mp);
+#endif
 			}
 	} else if (t->rn_mklist) {
 		/*
@@ -874,7 +880,7 @@ ptree_addroute(v_arg, n_arg, head, treenodes)
 on2:
 #ifdef DEBUG
 	printf("ptree_addroute: on2\n");
-	printf("netmask = %x\n",(unsigned int)netmask);
+	printf("netmask = %x\n saved_tt = %p",(unsigned int)netmask,tt);
 #endif
 	/* Add new route to highest possible ancestor's list */
 	if ((netmask == 0) || (b > t->rn_bit ))
