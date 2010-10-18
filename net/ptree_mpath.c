@@ -133,13 +133,13 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
 #ifdef DEBUG
-printf("goto right: x = %p, rn_bit = %d\n",x->key,x->rn_bit);
+printf("goto right: rn_offset = %d, rn_bit = %d\n",x->rn_offset,x->rn_bit);
 #endif
 		}
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
-printf("goto left: x = %p, rn_bit = %d\n",x->key,x->rn_bit);
+printf("goto left: rn_offset = %d, rn_bit = %d\n",x->rn_offset,x->rn_bit);
 #endif
 		}
 	}
@@ -603,7 +603,7 @@ ptree_matchaddr(v_arg, head)
 	int off = t->rn_offset, vlen = LEN(cp), matched_off;
 	register int test, b, rn_bit;
 
-	t = ptree_search(v, vlen, head);
+	t = saved_t = ptree_search(v, vlen, head);
 
 	/*
 	 * See if we match exactly as a host destination
@@ -630,7 +630,7 @@ ptree_matchaddr(v_arg, head)
 	 * lot of confusion.
 	 */
 #ifdef DEBUG
-	printf("t->rn_flags = %d\n",t->rn_flags);
+	printf("ptree_matchaddr: t and v is match, t is return node\n");
 #endif
 	if (t->rn_flags & RNF_ROOT)
 		t = t->rn_dupedkey;
@@ -645,6 +645,7 @@ on1:
 	matched_off = cp - v;
 	b += matched_off << 3;
 	rn_bit = -1 - b;
+#if 0
 	/*
 	 * If there is a host route in a duped-key chain, it will be first.
 	 */
@@ -669,6 +670,7 @@ on1:
 #endif
 			return t;
 		}
+#endif
 	t = saved_t;
 
 	register struct ptree_mask *m;
@@ -1325,8 +1327,10 @@ ptree_walktree(h, f, w)
 #ifdef DEBUG
 	printf("ptree_walktree: top %p\n",rn);
 #endif
+#if 0
 	while (rn->rn_bit >= 0) 
 		rn = rn->rn_left;
+#endif
 	for (;;) {  
 		base = rn;
 		next = ptree_next(rn);

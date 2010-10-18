@@ -1,5 +1,5 @@
 --- route.c.orig	2010-10-15 13:30:11.000000000 +0900
-+++ route.c	2010-10-18 07:13:55.000000000 +0900
++++ route.c	2010-10-18 11:03:03.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -293,7 +293,7 @@
 -	struct radix_node_head *rnh;
 +#ifdef DEBUG
 +	printf("rtalloc1_fib\n");
-+	printf("dst = %p report = %d ignflags = %d",dst,report,(int)ignflags);
++	printf("dst = %p report = %d ignflags = %d\n",dst,report,(int)ignflags);
 +#endif
 +	struct ptree *rnh;
  	struct rtentry *rt;
