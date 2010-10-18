@@ -642,7 +642,7 @@ on1:
 		 * a route to a net.
 		 */
 #ifdef DEBUG
-		printf("t = %p rn_bit = %d\n",t,rn_bit);
+		printf("rn_bit = %d\n",rn_bit);
 #endif
 		if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
