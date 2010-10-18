@@ -305,6 +305,10 @@ on1:
 #endif
 			if (p)
 				ptree_link (p, x);
+#ifdef DEBUG
+			printf("ptree_insert: set upper link to %p\n",p);
+#endif
+#if 0
 			else{
 				top->rn_key = v;
 				top->keylen = vlen;
@@ -312,12 +316,15 @@ on1:
 				printf("ptree_insert: insert in top\n");
 #endif
 			}
+#endif /* 0 */
 		}
 		else
 		{
 			/* we're going to insert between u and w (previously x) */
 			w = x;
-
+#ifdef DEBUG
+			printf("ptree_insert: insert between u and w\n");
+#endif
 			/* create branching node */
 			x = ptree_common (v_arg, vlen, w->key, w->keylen);
 			if (! x)
@@ -325,12 +332,20 @@ on1:
 
 			/* set lower link */
 			ptree_link (x, w);
+#ifdef DEBUG
+			printf("ptree_insert: set lower link to %p\n",w);
+#endif
 			/* set upper link */
-			if (p)
+			if (p){
 				ptree_link (p, x);
+#ifdef DEBUG
+				printf("ptree_insert: set upper link to %p\n",p);
+#endif
+			}
+#if 0
 			else
 				head->top = x;
-
+#endif
 			/* if the branching node is not the corresponding node, create the corresponding node to add */
 			if (x->keylen == vlen)
 				tt = x;
@@ -641,9 +656,6 @@ on1:
 		 * we may match if the leaf we wound up at is
 		 * a route to a net.
 		 */
-#ifdef DEBUG
-		printf("rn_bit = %d\n",rn_bit);
-#endif
 		if (t->rn_flags & RNF_NORMAL) {
 			if (rn_bit <= t->rn_bit){
 #ifdef DEBUG
