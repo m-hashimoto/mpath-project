@@ -124,7 +124,7 @@ ptree_search(key, keylen, t)
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
+printf("key = %s, keylen = %d, ptree = %p\n",key,keylen,t);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v;
@@ -144,7 +144,7 @@ printf("goto left: rn_offset = %d, rn_bit = %d\n",x->rn_offset,x->rn_bit);
 		}
 	}
 #ifdef DEBUG
-printf("return node: x = %p, rn_key = %p, flags = %d, rn_bit = %d\n",x,x->key,x->rn_flags,x->rn_bit);
+printf("return node: x = %p, rn_key = %s, flags = %d, rn_bit = %d\n",x,x->key,x->rn_flags,x->rn_bit);
 #endif
 	return (x);
 }
@@ -181,6 +181,7 @@ ptree_node_create (void *key, int keylen)
 
   return x;
 }
+
 
 	static void
 ptree_link (struct ptree_node *v, struct ptree_node *w)
@@ -952,6 +953,7 @@ on2:
 	return tt;
 }
 
+
 	struct ptree_node *
 ptree_deladdr(v_arg, netmask_arg, head)
 	void *v_arg, *netmask_arg;
@@ -1023,6 +1025,9 @@ ptree_deladdr(v_arg, netmask_arg, head)
 			return (0); /* Dangling ref to us */
 	}
 on1:
+#ifdef DEBUG
+	printf("ptree_delete: on1");
+#endif
 	/*
 	 * Eliminate us from tree
 	 */
