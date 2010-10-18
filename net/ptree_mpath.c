@@ -124,7 +124,7 @@ ptree_search(key, keylen, t)
 {
 #ifdef DEBUG
 printf("ptree_search\n");
-printf("key = %s, keylen = %d, ptree = %p\n",key,keylen,t);
+printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 #endif
 	register struct ptree_node *x;
 	register caddr_t v;
@@ -982,6 +982,9 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	/*
 	 * Delete our route from mask lists.
 	 */
+#ifdef DEBUG
+	printf("ptree_deladdr: delete our route from mask tree\n");
+#endif
 	if (netmask) {
 		if ((x = ptree_addmask(netmask, 1, head_off)) == 0)
 			return (0);
@@ -1009,6 +1012,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 	t = saved_tt->rn_parent;
 	if (b > t->rn_bit)
 		goto on1; /* Wasn't lifted at all */
+#if 0
 	do {
 		x = t;
 		t = t->rn_parent;
@@ -1024,6 +1028,7 @@ ptree_deladdr(v_arg, netmask_arg, head)
 		if (tt->rn_flags & RNF_NORMAL)
 			return (0); /* Dangling ref to us */
 	}
+#endif
 on1:
 #ifdef DEBUG
 	printf("ptree_delete: on1");
@@ -1140,6 +1145,9 @@ on1:
 			p->rn_right = t;
 	}
 out:
+#ifdef DEBUG
+	printf("ptree_deladdr: out\n");
+#endif
 	tt->rn_flags &= ~RNF_ACTIVE;
 	tt[1].rn_flags &= ~RNF_ACTIVE;
 	return (tt);
