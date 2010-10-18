@@ -1271,8 +1271,7 @@ ptree_next (struct ptree_node *v)
 	{
 		w = v->child[0];
 #ifdef DEBUG
-		printf("ptree_next: go left\n");
-		printf("w = %p\n",w);
+		printf("ptree_next: go left, %p\n",w);
 #endif
 		return w;
 	}
@@ -1281,41 +1280,47 @@ ptree_next (struct ptree_node *v)
 	{
 		w = v->child[1];
 #ifdef DEBUG
-		printf("ptree_next: go right\n");
-		printf("w = %p\n",w);
+		printf("ptree_next: go right, %p\n",w);
 #endif
 		return w;
 	}
 	/* else, go parent */
 	u = v->parent;
+#ifdef DEBUG
+	printf("ptree_next: go parent, %p\n",u);
+#endif
 
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
 #ifdef DEBUG
-		printf("ptree_next: go parent, and go right\n");
-		printf("w = %p\n",w);
+		printf("ptree_next: go right, %p\n",w);
 #endif
 		return w;
 	}
 
 	t = u->parent;
+#ifdef DEBUG
+	printf("ptree_next: go parent, %p\n",t);
+#endif
 	while (t && (t->child[1] == u || ! t->child[1]))
 	{
 		u = t;
 		t = t->parent;
 #ifdef DEBUG
-		printf("ptree_next: go parent\n");
-		printf("t = %p\n",t);
+		printf("ptree_next: go parent, %p\n",t);
 #endif
 		if(u == t)
-			return (t);
+			break;
 	}
 
 	if (t)
 	{
 		/* return the not-yet-traversed right-child node */
 		w = t->child[1];
+#ifdef DEBUG
+		printf("ptree_next: go right, %p\n",w);
+#endif
 		XRTASSERT (w, ("xrt: an impossible end of traverse"));
 
 		return w;
@@ -1340,10 +1345,9 @@ ptree_walktree(h, f, w)
 #ifdef DEBUG
 	printf("ptree_walktree: top %p\n",rn);
 #endif
-#if 0
+
 	while (rn->rn_bit >= 0) 
 		rn = rn->rn_left;
-#endif
 	for (;;) {  
 		base = rn;
 		next = ptree_next(rn);
@@ -1374,8 +1378,10 @@ ptree_walktree(h, f, w)
 #ifdef DEBUG
 		printf("next: flags = %d, flags&RNF_ROOT = %d\n",rn->rn_flags, rn->rn_flags & RNF_ROOT);
 #endif
+#if 0
 		if (rn->rn_flags & RNF_ROOT)
 			return (0);
+#endif
 	}
 	/* NOTREACHED */
 }
