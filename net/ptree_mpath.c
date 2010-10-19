@@ -1310,11 +1310,11 @@ ptree_next (struct ptree_node *v)
 #ifdef DEBUG
 		printf("ptree_next: go parent, %p\n",t);
 #endif
-		if(u == t)
+		if (u->rn_flags & RNF_ROOT)
 			break;
 	}
 
-	if (t)
+	if (t || !(t == u))
 	{
 		/* return the not-yet-traversed right-child node */
 		w = t->child[1];
