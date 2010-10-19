@@ -131,6 +131,9 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 	register caddr_t v;
 
 	for (x = t->top, v = key; x->keylen <= keylen && x->rn_bit >= 0;) {
+#ifdef DEBUG
+		printf("ptree_search: x = %p rn_bit = %d rn_offset = %d\n",x,x->rn_bit,x->rn_offset);
+#endif
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
 #ifdef DEBUG
