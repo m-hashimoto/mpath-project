@@ -250,7 +250,7 @@ ptree_common (void *keyi, int keyilen, void *keyj, int keyjlen)
 	struct ptree_node nodes[2];
 {
 #ifdef DEBUG
-	printf("ptree_insert\n");
+	printf("ptree_insert start\n");
 	printf("v_arg = %p, head = %p\n",v_arg,head);
 #endif
 	caddr_t v = v_arg;
@@ -291,10 +291,18 @@ on1:
 		cp = v;  
 		do {
 			p = x;
-			if (cp[x->rn_offset] & x->rn_bmask)
+			if (cp[x->rn_offset] & x->rn_bmask){
+#ifdef DEBUG
+				printf("ptree_insert: goto right\n");
+#endif
 				x = x->rn_right;
-			else     
+			}
+			else{
+#ifdef DEBUG
+				printf("ptree_insert: goto left\n");
+#endif
 				x = x->rn_left;
+			}
 #ifdef DEBUG
 			printf("ptree_insert: x = %p x->parent = %p\n",x,p);
 #endif
@@ -306,6 +314,9 @@ on1:
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
 #endif 
+#ifdef DEBUG
+		printf("ptree_insert: node insert to %p\n",x);
+#endif
 		if (! x)
 		{
 			x = ptree_node_create (v_arg, vlen);
