@@ -1314,7 +1314,7 @@ ptree_next (struct ptree_node *v)
 			break;
 	}
 
-	if (t || !(t == u))
+	if (t && !(t == u))
 	{
 		/* return the not-yet-traversed right-child node */
 		w = t->child[1];
