@@ -1442,7 +1442,10 @@ ptree_inithead(head, off)
 	RADIX_NODE_HEAD_LOCK_INIT(rnh);
 #endif
 	*head = rnh;
-
+	t = ptree_node_create(rn_zeros,off);
+	t->rn_parent = t;
+	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
+#if 0
 	t = ptree_newpair(rn_zeros, off, rnh->rnh_nodes);
 	ttt = rnh->rnh_nodes + 2;
 	t->rn_right = ttt;
@@ -1452,7 +1455,7 @@ ptree_inithead(head, off)
 	tt->rn_bit = -1 - off;
 	*ttt = *tt;
 	ttt->rn_key = rn_ones;
-
+#endif
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
 	rnh->rnh_matchaddr = ptree_matchaddr;
