@@ -18,7 +18,6 @@ static int      max_keylen;
 static struct ptree_mask *rn_mkfreelist;
 static struct ptree *mask_rnhead;
 
-int printk( const char* format, ... );
 
 #define MKGet(m) {                                              \
 	if (rn_mkfreelist) {                                    \
@@ -168,7 +167,6 @@ ptree_node_create (void *key, int keylen)
   x->rn_bit = -1;
   x->rn_key = (caddr_t)key;
   x->keylen = keylen;
-
   x->parent = NULL;
   x->child[0] = NULL;
   x->child[1] = NULL;
@@ -300,6 +298,8 @@ on1:
 #ifdef DEBUG
 			printf("ptree_insert: x = %p x->parent = %p\n",x,p);
 #endif
+			if (x == 0)
+				break;
 		}
 		while (b > (unsigned) x->rn_bit); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
@@ -309,9 +309,12 @@ on1:
 		if (! x)
 		{
 			x = ptree_node_create (v_arg, vlen);
+			p->rn_bit = b;
+			p->rn_bmask = 0x80 >> (b & 7);
+			p->rn_Off = b >> 3;
 #ifdef DEBUG
 			printf("ptree_insert: case of search NULL\n");
-			printf("ptree_insert: new node created %p\n",x->rn_key);
+			printf("ptree_insert: new node created %p\n",x);
 #endif
 			if (p){
 				ptree_link (p, x);
@@ -349,6 +352,9 @@ on1:
 			/* set upper link */
 			if (p){
 				ptree_link (p, x);
+				p->rn_bit = b;
+				p->rn_bmask = 0x80 >> (b & 7);
+				p->rn_Off = b >> 3;
 #ifdef DEBUG
 				printf("ptree_insert: set upper link to %p\n",p);
 #endif
@@ -357,7 +363,8 @@ on1:
 			else
 				head->top = x;
 #endif
-			/* if the branching node is not the corresponding node, create the corresponding node to add */
+			/* if the branching node is not the corresponding node, 
+			 * create the corresponding node to add */
 			if (x->keylen == vlen)
 				tt = x;
 			else
@@ -366,6 +373,9 @@ on1:
 				if (! tt)
 					return NULL;
 				ptree_link (x, tt);
+				x->rn_bit = b;
+				x->rn_bmask = 0x80 >> (b & 7);
+				x->rn_Off = b >> 3;
 #ifdef DEBUG
 				printf("ptree_insert: set lower link to %p\n",tt);
 #endif
