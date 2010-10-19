@@ -168,6 +168,7 @@ ptree_node_create (void *key, int keylen)
   x->rn_bit = -1;
   x->rn_key = (caddr_t)key;
   x->keylen = keylen;
+
   x->parent = NULL;
   x->child[0] = NULL;
   x->child[1] = NULL;
@@ -282,17 +283,23 @@ on1:
 		*dupentry = 0;  
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
-			cmp_res >>= 1;    
+			cmp_res >>= 1;
+#ifdef DEBUG
+		printf("ptree_insert: b = %d\n",b);
+#endif
 	}   
 	{
 		register struct ptree_node *p, *w, *x = top;
 		cp = v;  
-		do {  
-			p = x;    
+		do {
+			p = x;
 			if (cp[x->rn_offset] & x->rn_bmask)
 				x = x->rn_right;
 			else     
 				x = x->rn_left;
+#ifdef DEBUG
+			printf("ptree_insert: x = %p x->parent = %p\n",x,p);
+#endif
 		}
 		while (b > (unsigned) x->rn_bit); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
@@ -303,14 +310,15 @@ on1:
 		{
 			x = ptree_node_create (v_arg, vlen);
 #ifdef DEBUG
-			printf("ptree_insert: search NULL\n");
-			printf("ptree_insert: node create %p\n",x->rn_key);
+			printf("ptree_insert: case of search NULL\n");
+			printf("ptree_insert: new node created %p\n",x->rn_key);
 #endif
-			if (p)
+			if (p){
 				ptree_link (p, x);
 #ifdef DEBUG
-			printf("ptree_insert: set upper link to %p\n",p);
+				printf("ptree_insert: set upper link to %p\n",p);
 #endif
+			}
 #if 0
 			else{
 				top->rn_key = v;
@@ -357,14 +365,14 @@ on1:
 				tt = ptree_node_create (v_arg, vlen);
 				if (! tt)
 					return NULL;
-#ifdef DEBUG
-				printf("ptree_insert: node create %p\n",tt->rn_key);
-#endif
 				ptree_link (x, tt);
+#ifdef DEBUG
+				printf("ptree_insert: set lower link to %p\n",tt);
+#endif
 			}
 		}
 
-#if 0
+#if 0 /* origin program  */
 		t = ptree_newpair(v_arg, b, nodes);
 		tt = t->rn_left;
 		if ((cp[p->rn_offset] & p->rn_bmask) == 0)
@@ -1447,6 +1455,9 @@ ptree_inithead(head, off)
 #endif
 	*head = rnh;
 	t = ptree_node_create(rn_zeros,off);
+	t->rn_bmask = 0;
+	t->rn_mask = NULL;
+	t->rn_dupedkey = NULL;
 	t->rn_parent = t;
 	t->rn_flags = RNF_ROOT | RNF_ACTIVE;
 #if 0
@@ -1459,6 +1470,9 @@ ptree_inithead(head, off)
 	tt->rn_bit = -1 - off;
 	*ttt = *tt;
 	ttt->rn_key = rn_ones;
+#endif
+#ifdef PTREE_MPATH
+	rnh->rnh_multipath = 1;
 #endif
 	rnh->rnh_addaddr = ptree_addroute;
 	rnh->rnh_deladdr = ptree_deladdr;
