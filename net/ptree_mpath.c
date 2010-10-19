@@ -333,6 +333,8 @@ on1:
 				printf("ptree_insert: set upper link to %p\n",p);
 #endif
 			}
+
+			tt = x;
 #if 0
 			else{
 				top->rn_key = v;
@@ -414,6 +416,9 @@ on1:
 			log(LOG_DEBUG, "rn_insert: Coming Out:\n"), traverse(p);
 #endif
 	}
+#ifdef DEBUG
+	printf("ptree_insert: return %p\n",tt);
+#endif
 	return (tt);
 }
 
