@@ -36,8 +36,10 @@ static int ptree_walktree_from(struct ptree *h, void *a, void *m,
 static int ptree_walktree(struct ptree *h, walktree_f_t *f, void *w);
 static int ptree_satisfies_leaf(char *trial,
 		register struct ptree_node *leaf, int skip);
+#if 0
 static struct ptree_node *ptree_newpair(void *v, int b,
 	       	struct ptree_node[2]);
+#endif
 static struct ptree_node *ptree_search_m(void *v_arg,
 	       	struct ptree_node *head, void *m_arg);
 static struct ptree_node *ptree_insert(void *v_arg, struct ptree *head,
@@ -1386,6 +1388,7 @@ ptree_walktree(h, f, w)
 	/* NOTREACHED */
 }
 
+#if 0
 	static struct ptree_node *
 ptree_newpair(v, b, nodes)
 	void *v;
@@ -1422,6 +1425,7 @@ ptree_newpair(v, b, nodes)
 #endif 
 	return t;
 }
+#endif
 
 	int
 ptree_inithead(head, off)
@@ -1432,7 +1436,7 @@ ptree_inithead(head, off)
 	printf("ptree_inithead\n");
 #endif
 	register struct ptree *rnh;
-	register struct ptree_node *t, *tt, *ttt;
+	register struct ptree_node *t/*, *tt, *ttt*/;
 	if (*head)
 		return (1);
 	R_Zalloc(rnh, struct ptree *, sizeof (*rnh));
