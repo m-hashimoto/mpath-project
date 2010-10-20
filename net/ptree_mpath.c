@@ -133,7 +133,7 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 	for (v = key; x->keylen <= keylen && x->rn_bit >= 0;) {
 		base = x;
 #ifdef DEBUG
-		printf("ptree_search: base node = %p\n",base);
+		printf("ptree_search: base node = %p keylen = %d\n",base,base->keylen);
 #endif
 		if (base->rn_bmask & v[base->rn_offset]){
 			x = base->rn_right;
@@ -148,9 +148,9 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 #endif
 		}
 #ifdef DEBUG
-		printf("ptree_search: next node = %p\n",x);		
+		printf("ptree_search: next node = %p keylen = %d\n",x,x->keylen);
 #endif
-		if( !x || (x->rn_bit <= base->rn_bit) )
+		if( !x || (x->keylen <= base->keylen) )
 			break;
 	}
 #ifdef DEBUG
@@ -340,7 +340,6 @@ on1:
 		if (! x)
 		{
 			tt = x = ptree_node_create (v_arg, b);
-			x->rn_bit = b;
 			x->rn_bmask = 0x80 >> (b & 7);
 			x->rn_Off = b >> 3;
 #ifdef DEBUG
@@ -356,7 +355,6 @@ on1:
 			else if(p == top){
 				top->rn_key = v;
 				top->keylen = b;
-				top->rn_bit = b;
 				top->rn_bmask = 0x80 >> (b & 7);
 				top->rn_Off = b >> 3;
 #ifdef DEBUG
@@ -375,7 +373,6 @@ on1:
 			tt = x = ptree_common (v_arg, vlen, w->key, w->keylen);
 			if (! x)
 				return NULL;
-			x->rn_bit = b;
 			x->rn_bmask = 0x80 >> (b & 7);
 			x->rn_Off = b >> 3;
 
@@ -1337,7 +1334,7 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
-		if (v->rn_bit < w->rn_bit){
+		if (v->keylen < w->keylen){
 #ifdef DEBUG
 			printf("ptree_next: go left, w = %p\n",w);
 #endif
@@ -1348,7 +1345,7 @@ ptree_next (struct ptree_node *v)
 	if (v->child[1])
 	{
 		w = v->child[1];
-		if (v->rn_bit < w->rn_bit){
+		if (v->keylen < w->keylen){
 #ifdef DEBUG
 			printf("ptree_next: go right, w = %p\n",w);
 #endif
@@ -1364,7 +1361,7 @@ ptree_next (struct ptree_node *v)
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
-		if (u->rn_bit < w->rn_bit){
+		if (u->keylen < w->keylen){
 #ifdef DEBUG
 			printf("ptree_next: go right, w = %p\n",w);
 #endif
@@ -1394,7 +1391,7 @@ ptree_next (struct ptree_node *v)
 #ifdef DEBUG
 		printf("ptree_next: go right, w = %p\n",w);
 #endif
-		if (t->rn_bit < w->rn_bit){
+		if (t->keylen < w->keylen){
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));
 			return w;
 		}
@@ -1583,7 +1580,7 @@ ptree_init()
 /*
  *  functions for multi path routing.
  */
-#if PTREE_MPATH
+#ifdef PTREE_MPATH
 	int
 ptree_mpath_capable(struct ptree *rnh)
 {
