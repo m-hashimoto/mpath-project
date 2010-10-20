@@ -329,7 +329,7 @@ on1:
 			printf("ptree_insert: x->rn_bit = %d p->rn_bit = %d\n",x->rn_bit,p->rn_bit);
 #endif
 		}
-		while ((b > (unsigned) x->rn_bit) && (x->rn_bit < p->rn_bit)); /* x->rn_bit < b && x->rn_bit >= 0 */
+		while ((b > (unsigned) x->rn_bit) && (x->rn_bit > p->rn_bit)); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
@@ -1334,7 +1334,7 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
-		if (v->keylen < w->keylen){
+		if (v->keylen > w->keylen){
 #ifdef DEBUG
 			printf("ptree_next: go left, w = %p\n",w);
 #endif
@@ -1345,7 +1345,7 @@ ptree_next (struct ptree_node *v)
 	if (v->child[1])
 	{
 		w = v->child[1];
-		if (v->keylen < w->keylen){
+		if (v->keylen > w->keylen){
 #ifdef DEBUG
 			printf("ptree_next: go right, w = %p\n",w);
 #endif
@@ -1361,7 +1361,7 @@ ptree_next (struct ptree_node *v)
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
-		if (u->keylen < w->keylen){
+		if (u->keylen > w->keylen){
 #ifdef DEBUG
 			printf("ptree_next: go right, w = %p\n",w);
 #endif
@@ -1371,7 +1371,7 @@ ptree_next (struct ptree_node *v)
 
 	t = u->parent;
 #ifdef DEBUG
-	printf("ptree_next: go parent, %p\n",t);
+	printf("ptree_next: go parent, t = %p\n",t);
 #endif
 	while (t && (t->child[1] == u || t->child[1] == t))
 	{
@@ -1391,7 +1391,7 @@ ptree_next (struct ptree_node *v)
 #ifdef DEBUG
 		printf("ptree_next: go right, w = %p\n",w);
 #endif
-		if (t->keylen < w->keylen){
+		if (t->keylen > w->keylen){
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));
 			return w;
 		}
