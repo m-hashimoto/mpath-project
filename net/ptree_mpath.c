@@ -150,7 +150,7 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 #ifdef DEBUG
 		printf("ptree_search: next node = %p\n",x);		
 #endif
-		if( (x->rn_bit <= base->rn_bit) || !x )
+		if( !x || (x->rn_bit <= base->rn_bit) )
 			break;
 	}
 #ifdef DEBUG
