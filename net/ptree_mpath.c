@@ -1330,19 +1330,23 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
+		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
-		printf("ptree_next: go left, %p\n",w);
+			printf("ptree_next: go left, %p\n",w);
 #endif
-		return w;
+			return w;
+		}
 	}
 	/* if the right child exits, go right */
 	if (v->child[1])
 	{
 		w = v->child[1];
+		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
-		printf("ptree_next: go right, %p\n",w);
+			printf("ptree_next: go right, %p\n",w);
 #endif
-		return w;
+			return w;
+		}
 	}
 	/* else, go parent */
 	u = v->parent;
@@ -1353,17 +1357,19 @@ ptree_next (struct ptree_node *v)
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
+		if (u->rn_bit < w->rn_bit){
 #ifdef DEBUG
-		printf("ptree_next: go right, %p\n",w);
+			printf("ptree_next: go right, %p\n",w);
 #endif
-		return w;
+			return w;
+		}
 	}
 
 	t = u->parent;
 #ifdef DEBUG
 	printf("ptree_next: go parent, %p\n",t);
 #endif
-	while (t && (t->child[1] == u || ! t->child[1]))
+	while (t && (t->child[1] == u || t->child[1] == t))
 	{
 		u = t;
 		t = t->parent;
