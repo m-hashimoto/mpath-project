@@ -176,7 +176,7 @@ ptree_node_create (void *key, int keylen)
   if (! x)
     return NULL;
 
-  x->rn_bit = -1;
+  x->rn_bit = keylen;
   x->rn_key = (caddr_t)key;
   x->keylen = keylen;
   x->parent = NULL;
@@ -1336,7 +1336,7 @@ ptree_next (struct ptree_node *v)
 	if (v->child[0])
 	{
 		w = v->child[0];
-		if (v->keylen > w->keylen){
+		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
 			printf("ptree_next: go left, w = %p\n",w);
 #endif
@@ -1347,7 +1347,7 @@ ptree_next (struct ptree_node *v)
 	if (v->child[1])
 	{
 		w = v->child[1];
-		if (v->keylen > w->keylen){
+		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
 			printf("ptree_next: go right, w = %p\n",w);
 #endif
@@ -1363,7 +1363,7 @@ ptree_next (struct ptree_node *v)
 	if (u->child[0] == v)
 	{
 		w = u->child[1];
-		if (u->keylen > w->keylen){
+		if (u->rn_bit < w->rn_bit){
 #ifdef DEBUG
 			printf("ptree_next: go right, w = %p\n",w);
 #endif
@@ -1394,7 +1394,7 @@ ptree_next (struct ptree_node *v)
 #ifdef DEBUG
 		printf("ptree_next: go right, w = %p\n",w);
 #endif
-		if (t->keylen > w->keylen){
+		if (t->rn_bit < w->rn_bit){
 			XRTASSERT (w, ("xrt: an impossible end of traverse"));
 			return w;
 		}
@@ -1450,9 +1450,6 @@ ptree_walktree(h, f, w)
 		}
 #endif
 		rn = next;
-#if 0
-		printf("next: flags = %d, flags&RNF_ROOT = %d\n",rn->rn_flags, rn->rn_flags & RNF_ROOT);
-#endif
 #if 0
 		if (rn->rn_flags & RNF_ROOT)
 			return (0);
