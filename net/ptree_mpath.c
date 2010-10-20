@@ -1380,7 +1380,6 @@ ptree_next (struct ptree_node *v)
 #ifdef DEBUG
 		printf("ptree_next: go parent, t = %p rn_bit = %d keylen = %d\n",t,t->rn_bit,t->keylen);
 #endif
-#endif
 		if (u->rn_flags & RNF_ROOT)
 			break;
 	}
