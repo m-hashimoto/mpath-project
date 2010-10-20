@@ -130,7 +130,7 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 	register struct ptree_node *x = t->top, *base = NULL;
 	register caddr_t v;
 
-	for (v = key; x && x->keylen <= keylen && x->rn_bit >= 0;) {
+	for (v = key; x->keylen <= keylen && x->rn_bit >= 0;) {
 		base = x;
 #ifdef DEBUG
 		printf("ptree_search: base node = %p\n",base);
@@ -150,7 +150,7 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 #ifdef DEBUG
 		printf("ptree_search: next node = %p\n",x);		
 #endif
-		if(x->rn_bit <= base->rn_bit)
+		if( (x->rn_bit <= base->rn_bit) || !x )
 			break;
 	}
 #ifdef DEBUG
