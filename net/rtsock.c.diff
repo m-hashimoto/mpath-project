@@ -1,5 +1,5 @@
---- rtsock.c.org	2010-09-28 10:09:44.000000000 +0900
-+++ rtsock.c	2010-09-28 14:50:50.000000000 +0900
+--- rtsock.c.org	2010-10-21 01:20:49.000000000 +0900
++++ rtsock.c	2010-10-21 01:26:34.000000000 +0900
 @@ -105,7 +105,7 @@
  			caddr_t cp, struct walkarg *w);
  static int	rt_xaddrs(caddr_t cp, caddr_t cplim,
