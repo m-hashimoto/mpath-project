@@ -322,11 +322,12 @@ on1:
 #endif
 				x = x->rn_left;
 			}
-#ifdef DEBUG
-			printf("ptree_insert: x = %p x->parent = %p\n",x,p);
-#endif
 			if (!x)
 				break;
+#ifdef DEBUG
+			printf("ptree_insert: x = %p x->parent = %p\n",x,p);
+			printf("ptree_insert: x->rn_bit = %d p->rn_bit = %d\n",x->rn_bit,p->rn_bit);
+#endif
 		}
 		while ((b > (unsigned) x->rn_bit) && (x->rn_bit >= p->rn_bit)); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
