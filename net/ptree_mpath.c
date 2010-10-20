@@ -1339,7 +1339,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[0];
 		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
-			printf("ptree_next: go left, %p\n",w);
+			printf("ptree_next: go left, w = %p\n",w);
 #endif
 			return w;
 		}
@@ -1350,7 +1350,7 @@ ptree_next (struct ptree_node *v)
 		w = v->child[1];
 		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
-			printf("ptree_next: go right, %p\n",w);
+			printf("ptree_next: go right, w = %p\n",w);
 #endif
 			return w;
 		}
@@ -1358,7 +1358,7 @@ ptree_next (struct ptree_node *v)
 	/* else, go parent */
 	u = v->parent;
 #ifdef DEBUG
-	printf("ptree_next: go parent, %p\n",u);
+	printf("ptree_next: go parent, u = %p\n",u);
 #endif
 
 	if (u->child[0] == v)
@@ -1366,7 +1366,7 @@ ptree_next (struct ptree_node *v)
 		w = u->child[1];
 		if (u->rn_bit < w->rn_bit){
 #ifdef DEBUG
-			printf("ptree_next: go right, %p\n",w);
+			printf("ptree_next: go right, w = %p\n",w);
 #endif
 			return w;
 		}
@@ -1381,7 +1381,7 @@ ptree_next (struct ptree_node *v)
 		u = t;
 		t = t->parent;
 #ifdef DEBUG
-		printf("ptree_next: go parent, %p\n",t);
+		printf("ptree_next: go parent, t = %p\n",t);
 #endif
 		if (u->rn_flags & RNF_ROOT)
 			break;
@@ -1392,11 +1392,12 @@ ptree_next (struct ptree_node *v)
 		/* return the not-yet-traversed right-child node */
 		w = t->child[1];
 #ifdef DEBUG
-		printf("ptree_next: go right, %p\n",w);
+		printf("ptree_next: go right, w = %p\n",w);
 #endif
-		XRTASSERT (w, ("xrt: an impossible end of traverse"));
-
-		return w;
+		if (t->rn_bit < w->rn_bit){
+			XRTASSERT (w, ("xrt: an impossible end of traverse"));
+			return w;
+		}
 	}
 
 	/* end of traverse */
