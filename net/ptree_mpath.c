@@ -325,8 +325,10 @@ on1:
 #ifdef DEBUG
 			printf("ptree_insert: x = %p x->parent = %p\n",x,p);
 #endif
+			if (!x)
+				break;
 		}
-		while ((b > (unsigned) x->rn_bit) && (x->rn_bit >= p->rn_bit) && x); /* x->rn_bit < b && x->rn_bit >= 0 */
+		while ((b > (unsigned) x->rn_bit) && (x->rn_bit >= p->rn_bit)); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
