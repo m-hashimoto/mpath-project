@@ -31,38 +31,38 @@ cp ${cprg} /usr/src/sys/net/
 cp ${head} /usr/src/sys/net/
 
 cd /usr/src/sys/conf
-patch -N < files.diff
-patch -N < options.i386.diff
+patch < files.diff
+patch < options.i386.diff
 
 cd /usr/src/sys/net
-patch -N < if.c.diff
-patch -N < if_clone.c.diff
-patch -N < rtsock.c.diff
-patch -N < route.c.diff
-patch -N < route.h.diff
+patch < if.c.diff
+patch < if_clone.c.diff
+patch < rtsock.c.diff
+patch < route.c.diff
+patch < route.h.diff
 
 cd /usr/src/sys/netinet
-patch -N < in_rmx.c.diff
-patch -N < ip_fw.h.diff
+patch < in_rmx.c.diff
+patch < ip_fw.h.diff
 cd ipfw
-patch -N < ip_fw2.c.diff
+patch < ip_fw2.c.diff
 
 cd /usr/src/sys/netinet6
-patch -N < in6_ifattach.c.diff
-patch -N < in6_proto.c.diff
-patch -N < in6_rmx.c.diff
-patch -N < nd6_rtr.c.diff
+patch < in6_ifattach.c.diff
+patch < in6_proto.c.diff
+patch < in6_rmx.c.diff
+patch < nd6_rtr.c.diff
 
 cd /usr/src/sys/contrib/ipfilter/netinet/
-patch -N < ip_pool.h.diff
-patch -N < ip_pool.c.diff
+patch < ip_pool.h.diff
+patch < ip_pool.c.diff
 cd /usr/src/sys/contrib/pf/net
-patch -N < pf.c.diff
-patch -N < pf_table.c.diff
-patch -N < pfvar.h.diff
+patch < pf.c.diff
+patch < pf_table.c.diff
+patch < pfvar.h.diff
 
 cd /usr/src/sys/fs/nfs/
-patch -N < nfsport.h.diff
+patch < nfsport.h.diff
 
 
 while ( 1 );
