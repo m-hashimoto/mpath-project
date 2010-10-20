@@ -137,18 +137,18 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 		if (x->rn_bmask & v[x->rn_offset]){
 			x = x->rn_right;
 #ifdef DEBUG
-printf("goto right: rn_offset = %d, rn_bit = %d\n",x->rn_offset,x->rn_bit);
+			printf("ptree_search: goto right\n");
 #endif
 		}
 		else{
 			x = x->rn_left;
 #ifdef DEBUG
-printf("goto left: rn_offset = %d, rn_bit = %d\n",x->rn_offset,x->rn_bit);
+			printf("ptree_search: goto left\n");
 #endif
 		}
 	}
 #ifdef DEBUG
-printf("return node: x = %p, rn_key = %p, flags = %d, rn_bit = %d\n",x,x->key,x->rn_flags,x->rn_bit);
+printf("return node: x = %p\n",x);
 #endif
 	return (x);
 }
