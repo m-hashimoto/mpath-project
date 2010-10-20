@@ -147,11 +147,11 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 			printf("ptree_search: goto left\n");
 #endif
 		}
+		if( !x || (x->keylen <= base->keylen) )
+			break;
 #ifdef DEBUG
 		printf("ptree_search: next node = %p keylen = %d\n",x,x->keylen);
 #endif
-		if( !x || (x->keylen <= base->keylen) )
-			break;
 	}
 #ifdef DEBUG
 printf("return node: x = %p\n",x);
@@ -298,8 +298,6 @@ on1:
 		printf("ptree_insert: goto on1\n");
 #endif
 		*dupentry = 0;
-#ifdef DEBUG
-
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
@@ -331,7 +329,7 @@ on1:
 			printf("ptree_insert: x->rn_bit = %d p->rn_bit = %d\n",x->rn_bit,p->rn_bit);
 #endif
 		}
-		while ((b > (unsigned) x->rn_bit) && (x->keylen > p->keylen)); /* x->rn_bit < b && x->rn_bit >= 0 */
+		while ((b > (unsigned) x->rn_bit) && (x->rn_bit > p->rn_bit)); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
