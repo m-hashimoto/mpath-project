@@ -1344,6 +1344,7 @@ ptree_next (struct ptree_node *v)
 		if (v->rn_bit < w->rn_bit){
 #ifdef DEBUG
 			printf("ptree_next: go right, %p\n",w);
+			printf("v->rn_bit = %d w->rn_bit = %p\n",v->rn_bit,w->rn_bit);
 #endif
 			return w;
 		}
