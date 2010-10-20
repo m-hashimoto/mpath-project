@@ -545,8 +545,11 @@ ptree_search_m(v_arg, head, m_arg)
 			x = y->rn_right;
 		else
 			x = y->rn_left;
-		if ( !x || (x->rn_bit < y->rn_bit) )
+		if ( !x || (x->rn_bit <= y->rn_bit) )
 			break;
+#ifdef DEBUG
+		printf("ptree_search_m: x = %p next = %p\n",y,x);
+#endif
 	}
 	return x;
 }
