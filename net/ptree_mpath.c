@@ -148,8 +148,10 @@ printf("key = %p, keylen = %d, ptree = %p\n",key,keylen,t);
 #endif
 		}
 #ifdef DEBUG
-		printf("ptree_search: next node = %p\n",x);
+		printf("ptree_search: next node = %p\n",x);		
 #endif
+		if(x->rn_bit <= base->rn_bit)
+			break;
 	}
 #ifdef DEBUG
 printf("return node: x = %p\n",x);
@@ -179,7 +181,7 @@ ptree_node_create (void *key, int keylen)
   x->keylen = keylen;
   x->parent = NULL;
   x->child[0] = NULL;
-  x->child[1] = NULL;
+  x->child[1] = x;
   x->rn_flags = RNF_ACTIVE;
   x->data = NULL;
 #ifdef PTREE_MPATH
@@ -201,8 +203,15 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
 	int bit;
 
 	bit = check_bit (w->key, v->keylen);
-	v->child[bit] = w;
 	w->parent = v;
+	if (!bit){
+		w->rn_left = v->rn_left;
+		v->rn_left = w;
+	}
+	else{
+		w->rn_left = v->rn_right;
+		v->rn_right = w;
+	}
 }
 
 /* key_common_len() returns the bit length with which the keyi and
@@ -295,7 +304,7 @@ on1:
 #ifdef DEBUG
 		printf("ptree_insert: b = %d\n",b);
 #endif
-	}   
+	}
 	{
 		register struct ptree_node *p, *w, *x = top;
 		cp = v;  
@@ -329,31 +338,30 @@ on1:
 #endif
 		if (! x)
 		{
-			x = ptree_node_create (v_arg, vlen);
-			p->rn_bit = b;
-			p->rn_bmask = 0x80 >> (b & 7);
-			p->rn_Off = b >> 3;
+			tt = x = ptree_node_create (v_arg, b);
+			x->rn_bit = b;
+			x->rn_bmask = 0x80 >> (b & 7);
+			x->rn_Off = b >> 3;
 #ifdef DEBUG
 			printf("ptree_insert: case of search NULL\n");
 			printf("ptree_insert: new node created %p\n",x);
 #endif
-			if (p){
+			if (p != top){
 				ptree_link (p, x);
 #ifdef DEBUG
 				printf("ptree_insert: set upper link to %p\n",p);
 #endif
 			}
-
-			tt = x;
-#if 0
-			else{
+			else if(p == top){
 				top->rn_key = v;
-				top->keylen = vlen;
+				top->keylen = b;
+				top->rn_bit = b;
+				top->rn_bmask = 0x80 >> (b & 7);
+				top->rn_Off = b >> 3;
 #ifdef DEBUG
 				printf("ptree_insert: insert in top\n");
 #endif
 			}
-#endif /* 0 */
 		}
 		else
 		{
@@ -363,46 +371,52 @@ on1:
 			printf("ptree_insert: insert between u and w\n");
 #endif
 			/* create branching node */
-			x = ptree_common (v_arg, vlen, w->key, w->keylen);
+			tt = x = ptree_common (v_arg, vlen, w->key, w->keylen);
 			if (! x)
 				return NULL;
+			x->rn_bit = b;
+			x->rn_bmask = 0x80 >> (b & 7);
+			x->rn_Off = b >> 3;
 
 			/* set lower link */
-			ptree_link (x, w);
+			x->rn_left = w;
+			w->parent = x;
 #ifdef DEBUG
 			printf("ptree_insert: set lower link to %p\n",w);
 #endif
 			/* set upper link */
-			if (p){
-				ptree_link (p, x);
-				p->rn_bit = b;
-				p->rn_bmask = 0x80 >> (b & 7);
-				p->rn_Off = b >> 3;
+			x->rn_parent = p;
+			if (p->rn_left == w){
+				p->rn_left = x;
 #ifdef DEBUG
-				printf("ptree_insert: set upper link to %p\n",p);
+				printf("ptree_insert: set upper link to %p->rn_left\n",p);
+#endif
+			}
+			else{
+				p->rn_right = x;
+#ifdef DEBUG
+				printf("ptree_insert: set upper link to %p->rn_right\n",p);
 #endif
 			}
 #if 0
-			else
-				head->top = x;
-#endif
 			/* if the branching node is not the corresponding node, 
 			 * create the corresponding node to add */
 			if (x->keylen == vlen)
 				tt = x;
 			else
 			{
-				tt = ptree_node_create (v_arg, vlen);
+				tt = ptree_node_create (v_arg, b);
 				if (! tt)
 					return NULL;
 				ptree_link (x, tt);
-				x->rn_bit = b;
-				x->rn_bmask = 0x80 >> (b & 7);
-				x->rn_Off = b >> 3;
+				tt->rn_bit = b;
+				tt->rn_bmask = 0x80 >> (b & 7);
+				tt->rn_Off = b >> 3;
 #ifdef DEBUG
 				printf("ptree_insert: set lower link to %p\n",tt);
 #endif
 			}
+#endif
 		}
 
 #if 0 /* origin program  */
@@ -1391,15 +1405,16 @@ ptree_walktree(h, f, w)
 #ifdef DEBUG
 	printf("ptree_walktree: top %p\n",rn);
 #endif
-
+#if 0
 	while (rn->rn_bit >= 0) 
 		rn = rn->rn_left;
+#endif
 	for (;;) {  
 		base = rn;
 		next = ptree_next(rn);
 #ifdef DEBUG
 		printf("ptree_walktree: base %p next %p\n",base,next);
-		printf("base: flags = %d, flags&RNF_ROOT = %d\n",base->rn_flags, base->rn_flags & RNF_ROOT);
+		/*printf("base: flags = %d, flags&RNF_ROOT = %d\n",base->rn_flags, base->rn_flags & RNF_ROOT);*/
 #endif
 		if( !next )
 			return (0);
@@ -1421,7 +1436,7 @@ ptree_walktree(h, f, w)
 		}
 #endif
 		rn = next;
-#ifdef DEBUG
+#if 0
 		printf("next: flags = %d, flags&RNF_ROOT = %d\n",rn->rn_flags, rn->rn_flags & RNF_ROOT);
 #endif
 #if 0
