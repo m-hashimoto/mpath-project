@@ -535,15 +535,18 @@ ptree_search_m(v_arg, head, m_arg)
 	printf("ptree_seach_m\n");
 	printf("v_arg = %p, head = %p, m_arg = %p\n",v_arg,head,m_arg);
 #endif
-	register struct ptree_node *x;
+	register struct ptree_node *x, *y;
 	register caddr_t v = v_arg, m = m_arg;
 
 	for (x = head; x->rn_bit >= 0;) {
-		if ((x->rn_bmask & m[x->rn_offset]) &&
-				(x->rn_bmask & v[x->rn_offset]))
-			x = x->rn_right;
+		y = x;
+		if ((y->rn_bmask & m[y->rn_offset]) &&
+				(y->rn_bmask & v[y->rn_offset]))
+			x = y->rn_right;
 		else
-			x = x->rn_left;
+			x = y->rn_left;
+		if ( !x || (x->rn_bit < y->rn_bit) )
+			break;
 	}
 	return x;
 }
