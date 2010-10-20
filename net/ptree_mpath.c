@@ -297,7 +297,9 @@ on1:
 #ifdef DEBUG
 		printf("ptree_insert: goto on1\n");
 #endif
-		*dupentry = 0;  
+		*dupentry = 0;
+#ifdef DEBUG
+
 		cmp_res = (cp[-1] ^ cp2[-1]) & 0xff;  
 		for (b = (cp - v) << 3; cmp_res; b--) 
 			cmp_res >>= 1;
@@ -307,7 +309,7 @@ on1:
 	}
 	{
 		register struct ptree_node *p, *w, *x = top;
-		cp = v;  
+		cp = v;
 		do {
 			p = x;
 			if (cp[x->rn_offset] & x->rn_bmask){
@@ -329,7 +331,7 @@ on1:
 			printf("ptree_insert: x->rn_bit = %d p->rn_bit = %d\n",x->rn_bit,p->rn_bit);
 #endif
 		}
-		while ((b > (unsigned) x->rn_bit) && (x->rn_bit > p->rn_bit)); /* x->rn_bit < b && x->rn_bit >= 0 */
+		while ((b > (unsigned) x->rn_bit) && (x->keylen > p->keylen)); /* x->rn_bit < b && x->rn_bit >= 0 */
 #ifdef RN_DEBUG
 		if (rn_debug)
 			log(LOG_DEBUG, "rn_insert: Going In:\n"), traverse(p);
@@ -1355,7 +1357,7 @@ ptree_next (struct ptree_node *v)
 	/* else, go parent */
 	u = v->parent;
 #ifdef DEBUG
-	printf("ptree_next: go parent, u = %p\n",u);
+	printf("ptree_next: go parent, u = %p rn_bit = %d keylen = %d\n",u,u->rn_bit,u->keylen);
 #endif
 
 	if (u->child[0] == v)
@@ -1371,14 +1373,15 @@ ptree_next (struct ptree_node *v)
 
 	t = u->parent;
 #ifdef DEBUG
-	printf("ptree_next: go parent, t = %p\n",t);
+	printf("ptree_next: go parent, t = %p rn_bit = %d keylen = %d\n",t,t->rn_bit,t->keylen);
 #endif
 	while (t && (t->child[1] == u || t->child[1] == t))
 	{
 		u = t;
 		t = t->parent;
 #ifdef DEBUG
-		printf("ptree_next: go parent, t = %p\n",t);
+		printf("ptree_next: go parent, t = %p rn_bit = %d keylen = %d\n",t,t->rn_bit,t->keylen);
+#endif
 #endif
 		if (u->rn_flags & RNF_ROOT)
 			break;
