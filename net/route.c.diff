@@ -1,5 +1,5 @@
 --- route.c.org	2010-10-21 01:20:28.000000000 +0900
-+++ route.c	2010-10-21 02:30:36.000000000 +0900
++++ route.c	2010-10-21 02:52:12.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1066,15 +1066,15 @@
 +					struct sockaddr *mask;
 +					u_char *m, *n;
 +					int len;
-+
 +					/*
 +					 * compare mask to see if the new route is
 +					 * more specific than the existing one
 +					 */
 +#ifdef DEBUG
++					printf("rtreq_ADD: rn->rn_flags = %d\n",rn->rn_flags);
 +					printf("rtreq_ADD: compared mask\n");
-+#endif
 +					printf("rtreq_ADD: create rt0\n");
++#endif
 +					rt0 = RNTORT(rn);
 +					printf("rtreq_ADD: rt0 = RNTORT(rn)\n");
 +					RT_LOCK(rt0);
