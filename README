@@ -11,7 +11,7 @@ uninstall.sh	:Sell script for uninstall(unpacth).
 2010/10/11 Add rtentry array.
 debugging...
 
-...ptree_v2
+...ptree_v2.0
 2010/10/22 ptree debug restart.
 2010/10/26 rtinit debugged?
 ...ptree_v2.1
@@ -24,6 +24,5 @@ debugging...
 2010/10/31 ping <loopback_address>
 ...ptree_v2.5
 2010/11/03 reset debug print.
-
 ...ptree_v3
 2010/12/08 mpath debug start.
