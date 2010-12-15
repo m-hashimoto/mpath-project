@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-15 17:21:41.000000000 +0900
++++ route.c	2010-12-15 17:29:12.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1245,7 +1245,7 @@
  rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
  				u_int fibnum)
  {
-@@ -1000,262 +994,299 @@
+@@ -1000,262 +994,300 @@
  #ifdef FLOWTABLE
  	register struct rtentry *rt0;
  #endif
@@ -1459,6 +1459,7 @@
 +			RT_LOCK_ASSERT(rt);
 +			int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
 +			caddr_t new;
++#if 0
 +			R_Malloc(new, caddr_t, dlen + glen);
 +			if (new == NULL){
 +				RT_LOCK_DESTROY(rt);
@@ -1467,6 +1468,7 @@
 +				uma_zfree(V_rtzone, rt);
 +				senderr(ENOBUFS);
 +			}
++#endif
 +			bcopy(dst, new, dlen);
 +			if(rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway))
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
@@ -1654,7 +1656,6 @@
 +						   (struct ptree_node *)rt/*&rt->rt_nodes*/);
 +			rn->data = rt;
 +			rt->rt_nodes = rn;
-+			Free(new);
 +			/*
 +			 * If it still failed to go into the tree,
 +			 * then un-make it (this should be a function)
@@ -1739,7 +1740,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1267,20 +1298,19 @@
+@@ -1267,20 +1299,19 @@
  #undef ifpaddr
  #undef flags
  
@@ -1763,7 +1764,7 @@
  	/*
  	 * Prepare to store the gateway in rt->rt_gateway.
  	 * Both dst and gateway are stored one after the other in the same
-@@ -1289,33 +1319,32 @@
+@@ -1289,33 +1320,32 @@
  	 * Otherwise, malloc a new block and update the 'dst' address.
  	 */
  	if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
@@ -1814,7 +1815,7 @@
  rt_maskedcopy(struct sockaddr *src, struct sockaddr *dst, struct sockaddr *netmask)
  {
  	register u_char *cp1 = (u_char *)src;
-@@ -1327,11 +1356,11 @@
+@@ -1327,11 +1357,11 @@
  	*cp2++ = *cp1++; *cp2++ = *cp1++; /* copies sa_len & sa_family */
  	cp3 += 2;
  	if (cplim > cplim2)
@@ -1829,7 +1830,7 @@
  }
  
  /*
-@@ -1339,7 +1368,7 @@
+@@ -1339,7 +1369,7 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -1838,7 +1839,7 @@
  rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
  {
  	struct sockaddr *dst;
-@@ -1352,30 +1381,32 @@
+@@ -1352,30 +1382,32 @@
  	int didwork = 0;
  	int a_failure = 0;
  	static struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
@@ -1887,7 +1888,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1384,16 +1415,16 @@
+@@ -1384,16 +1416,16 @@
  	 * be confusing at best and possibly worse.
  	 */
  	if (cmd == RTM_DELETE) {
@@ -1914,7 +1915,7 @@
  	}
  	/*
  	 * Now go through all the requested tables (fibs) and do the
-@@ -1404,141 +1435,140 @@
+@@ -1404,141 +1436,140 @@
  	 * independent parts and protocol dependent parts.
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
@@ -2170,7 +2171,7 @@
  rtinit_fib(struct ifaddr *ifa, int cmd, int flags)
  {
  	return (rtinit1(ifa, cmd, flags, -1));
-@@ -1548,19 +1578,19 @@
+@@ -1548,19 +1579,19 @@
   * Set up a routing table entry, normally
   * for an interface.
   */
