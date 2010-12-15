@@ -206,7 +206,13 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
   //dprint(("--ptree_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
-  x = ptree_node_create (keyi, keylen);
+	char *new;
+  XRTMALLOC(new, char *, keylen);
+	if (!new)
+		return NULL;
+	bcopy(keyi, new, keylen);
+	
+  x = ptree_node_create (new, keylen);
   dprint(("--ptree_common: x[%p] x->key[%p] x->keylen[%d]\n",x,x->key,x->keylen));
   if (! x)
     return NULL;
