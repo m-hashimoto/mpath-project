@@ -79,13 +79,10 @@ check_bit (char *key, int keylen)
 {
   int offset;
   int shift;
-  //dprint(("--check_bit Start\n"));
   dprint(("--check_bit: key[%p] keylen[%d]\n",key,keylen));
   offset = keylen / 8;
   shift = 7 - keylen % 8;
 
-  //dprint(("--check_bit: key[%d] >> shift[%d] & 1 = %d\n",offset,shift,
-	//					  key[offset]>>shift & 1));
   return (key[offset] >> shift & 1);
 }
 
@@ -96,7 +93,6 @@ ptree_match (char *keyi, char *keyj, int keylen)
 {
   int bytes;
   int bits;
-  //dprint(("--ptree_match Start\n"));
   bytes = keylen / 8;
   bits = keylen % 8;
   dprint(("--ptree_match: keyi[%p] keyj[%p] keylen[%d]\n",keyi,keyj,keylen));
@@ -148,7 +144,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
     }
   if (match)
     ptree_node_lock (match);
-  //dprint(("--ptree_search End: match_node[%p]\n",match));
+  dprint(("--ptree_search End: match_node[%p]\n",match));
   return match;
 }
 
@@ -157,9 +153,9 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
 {
   /* check the w's key bit just after the v->key (keylen'th bit) */
   int bit;
-  dprint(("--ptree_link Start: v[%p] w[%p]\n",v,w));
-  dprint(("--ptree_link : v->key[%p] v->keylen[%d]\n",v->key,v->keylen));
-  dprint(("--ptree_link : w->key[%p] w->keylen[%d]\n",w->key,w->keylen));
+  //dprint(("--ptree_link Start: v[%p] w[%p]\n",v,w));
+  //dprint(("--ptree_link : v->key[%p] v->keylen[%d]\n",v->key,v->keylen));
+  //dprint(("--ptree_link : w->key[%p] w->keylen[%d]\n",w->key,w->keylen));
 
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
@@ -189,7 +185,6 @@ key_common_len (char *keyi, int keyilen, char *keyj, int keyjlen)
   keylen = nmatch * 8;
   bitmask = 0x80;
   diff = keyi[nmatch] ^ keyj[nmatch];
-  //dprint(("--key_common_len: diff[%d]\n",diff));
   while (keylen < minkeylen && ! (bitmask & diff))
     {
       keylen++;
@@ -206,11 +201,11 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
   int keylen;
   struct ptree_node *x;
-  //dprint(("--key_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
+  //dprint(("--ptree_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
   x = ptree_node_create (keyi, keylen);
-  dprint(("--key_common: x[%p] x->key[%p] x->keylen[%d]\n",x,x->key,x->keylen));
+  dprint(("--ptree_common: x[%p] x->key[%p] x->keylen[%d]\n",x,x->key,x->keylen));
   if (! x)
     return NULL;
 
@@ -221,10 +216,10 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
-	if(!x){
-		printf("error: ptree_node_lock x[%p]\n",x);
-		return;
-	}
+	//if(!x){
+	//	printf("error: ptree_node_lock x[%p]\n",x);
+	//	return;
+	//}
   x->lock++;
 }
 
@@ -249,15 +244,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
   x = t->top;
   dprint(("--ptree_get Start\n"));
 
-#if 0
-		struct sockaddr *sa = (struct sockaddr *)key;
-		struct ptree_node_head *pnh;
-		if (sa->sa_family == AF_INET) /* AF_INET */
-			pnh = rt_tables_get_rnh(0,AF_INET);
-		else /* AF_INET6 */
-			pnh = rt_tables_get_rnh(0,AF_INET6);
-		debug_tree_print(pnh);
-#endif
   while (x && x->key && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
     {
@@ -281,7 +267,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
     {
       /* we're going to insert between u and w (previously x) */
       w = x;
-  	  dprint(("--ptree_get: w[%p]\n",w));
       /* create branching node */
       x = ptree_common (key, keylen, w->key, w->keylen);
       if (! x)

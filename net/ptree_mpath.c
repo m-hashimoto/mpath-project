@@ -507,9 +507,6 @@ ptree_init()
 		cplim = pn_ones + max_keylen;
 		while (cp < cplim)
 				*cp++ = -1;
-	//if (ptree_inithead((void **)(void *)&rn_maskhead, 0) == 0)
-	//	panic("ptree_init 2");
-
 }
 
 /*
