@@ -408,6 +408,7 @@ ptree_walktree(h, f, w)
 		walktree_f_t *f;
 		void *w;
 {
+#if 0
 	struct ptree_node *base, *next;
 	register struct ptree_node *pn = h->pnh_top;
 	/*
@@ -434,7 +435,7 @@ ptree_walktree(h, f, w)
 			pn = pn->child[0];
 		next = pn;
 	}
-#if 0
+#endif
 		struct ptree_node *base, *next;
 		register struct ptree_node *rn = h->pnh_top;
 		if (!rn)
@@ -447,7 +448,6 @@ ptree_walktree(h, f, w)
 						return (0);
 				rn = next;
 		}
-#endif
 		/* NOTREACHED */
 }
 
