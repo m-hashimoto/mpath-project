@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-15 17:18:52.000000000 +0900
++++ route.c	2010-12-15 17:21:41.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1654,7 +1654,7 @@
 +						   (struct ptree_node *)rt/*&rt->rt_nodes*/);
 +			rn->data = rt;
 +			rt->rt_nodes = rn;
-+			free(new);
++			Free(new);
 +			/*
 +			 * If it still failed to go into the tree,
 +			 * then un-make it (this should be a function)
