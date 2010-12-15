@@ -56,7 +56,7 @@ patch -N < in6_ifattach.c.diff
 patch -N < in6_proto.c.diff
 patch -N < in6_rmx.c.diff
 patch -N < nd6_rtr.c.diff
-patch -N < in6.c.diff
+#patch -N < in6.c.diff
 # debug print
 
 cd /usr/src/sys/contrib/ipfilter/netinet/
