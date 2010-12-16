@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-17 04:01:19.000000000 +0900
-+++ route.c	2010-12-17 05:03:02.000000000 +0900
++++ route.c	2010-12-17 05:08:46.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -80,7 +80,7 @@
  {
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
-@@ -299,7 +299,7 @@
+@@ -299,26 +299,14 @@
  }
  
  static void
@@ -89,7 +89,29 @@
  {
  again:
  	if (kget(rn, rnode) != 0)
-@@ -435,43 +435,32 @@
+ 		return;
+-	if (!(rnode.rn_flags & RNF_ACTIVE))
+-		return;
+-	if (rnode.rn_bit < 0) {
+-		if ((rnode.rn_flags & RNF_ROOT) == 0) {
+-			if (kget(rn, rtentry) != 0)
+-				return;
+-			size_cols_rtentry(&rtentry);
+-		}
+-		if ((rn = rnode.rn_dupedkey))
+-			goto again;
+-	} else {
+-		rn = rnode.rn_right;
+-		size_cols_tree(rnode.rn_left);
+-		size_cols_tree(rn);
+-	}
++	rn = rnode.child[1];
++	size_cols_tree(rnode.child[0]);
++	size_cols_tree(rn);
+ }
+ 
+ static void
+@@ -435,43 +423,32 @@
  }
  
  static void
@@ -151,7 +173,7 @@
  }
  
  char	nbuf[20];
-@@ -479,41 +468,8 @@
+@@ -479,41 +456,8 @@
  static void
  p_rtnode(void)
  {
