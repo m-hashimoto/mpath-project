@@ -51,7 +51,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		sprint_inet_ntoa(AF_INET,pn->key);
 		printf("/%d ",pn->keylen-8*offset);
 	}
-	printf("data[%p]\n",pn->data);
+	printf("%p\n",pn->data);
 
 #ifdef PTREE_MPATH
 	if(pn->data){
@@ -62,11 +62,18 @@ debug_node_print(struct ptree_node *pn, int offset)
 		char *str, *gate;
 		int i;
 		str = pn->key;
+		gate = rt0->rt_gateway;
+
 		for(i=0;i <= pn->keylen/8 + 1;i++)
 			printf("%d.",str[i]);
 		printf("/%d\n",pn->keylen);
+		i = 0;
+		while(gate[i]){
+			printf("%d.",gate[i]);
+			i++;
+		}
+		printf("/%d\n",i*8);
 
-		printf("%12s ","gateway: ");
 		if(offset == 8){
 			sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
@@ -75,15 +82,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 
-		gate = rt0->rt_gateway;
-		i = 0;
-		while(gate[i]){
-			printf("%d.",gate[i]);
-			i++
-		}
-		printf("/%d\n",i*8);
-
 		while(mrt){
+			printf("%12s ","gateway: ");
 			printf("mrt[%p]\n",mrt);
 			rt = *mrt;	
 			if(offset == 8){
