@@ -57,6 +57,20 @@ rm *.diff
 cd /usr/src/usr.bin/netstat/
 patch -R < route.c.diff
 rm *.diff
+make
+while ( 1 );
+echo -n " Install Now?(netstat) [Yes/No] "
+set configure = $<
+switch ($configure)
+case [yY][eE][sS]:
+	make install;
+	break
+case [nN][oO]:
+	exit
+default:
+	echo "Type Yes/No."
+endsw
+end
 
 cd /usr/src/sys/i386/conf/
 rm PATRICIA
