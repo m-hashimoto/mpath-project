@@ -308,7 +308,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 #ifdef PTREE_MPATH /* multi path */
 		if (keyduplicated) {
 			int n;
-			struct rtentry *rt0, *rt, *rt_array[];
+			struct rtentry *rt0, *rt, **rt_array;
 			dprint(("-ptree_addroute: if keyduplicated.\n"));
 				
 			rt = (struct rtentry *)rt_node;
@@ -317,7 +317,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
 			n = ptree_mpath_count(rt0);
 			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
-			rt_array[n] = rt;
+			rt_array + n = rt;
 		}
 #endif /* mluti path */
 		return tt;
@@ -527,12 +527,12 @@ ptree_mpath_capable(struct ptree_node_head *pnh)
 ptree_mpath_count(struct rtentry *rt)
 {
 		dprint(("-ptree_mpath_count Start\n"));
-		struct rtentry *rt1[];
+		struct rtentry **rt1;
 		uint32_t i = 0;
 
 		rt1 = rt->mpath_array;
 		/* count mpath_array */
-		while (rt1[i] != NULL) {
+		while (rt1+i != NULL) {
 				//rt1++;
 				i++;
 		}
