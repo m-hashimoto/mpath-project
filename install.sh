@@ -28,7 +28,7 @@ cp ${diff_netinet6} /usr/src/sys/netinet6/
 cp ${diff_ipfilter} /usr/src/sys/contrib/ipfilter/netinet/
 cp ${diff_pf} /usr/src/sys/contrib/pf/net/
 cp ${diff_nfs} /usr/src/sys/fs/nfs/
-cp ${diff_netstat} /usr/src/usr.bin/
+cp ${diff_netstat} /usr/src/usr.bin/netstat/
 cp ${cprg} /usr/src/sys/net/
 cp ${head} /usr/src/sys/net/
 
@@ -72,7 +72,7 @@ patch -N < pfvar.h.diff
 cd /usr/src/sys/fs/nfs/
 patch -N < nfsport.h.diff
 
-cd /usr/src/usr.bin/
+cd /usr/src/usr.bin/netstat/
 patch -N < route.c.diff
 
 #while ( 1 );

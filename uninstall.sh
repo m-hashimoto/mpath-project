@@ -54,7 +54,7 @@ cd /usr/src/sys/fs/nfs/
 patch -R < nfsport.h.diff
 rm *.diff
 
-cd /usr/src/usr.bin/
+cd /usr/src/usr.bin/netstat/
 patch -R < route.c.diff
 rm *.diff
 
