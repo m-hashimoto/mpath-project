@@ -170,7 +170,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 #endif
 	}
 	if (!top){
-		dprint(("-ptree_insert: top is NULL\n"));
+		//dprint(("-ptree_insert: top is NULL\n"));
 		goto on1;
 	}
 	t = ptree_search(v, len, head->pnh_treetop);
@@ -193,7 +193,7 @@ on1:
 		int *data = NULL;
 		tt = ptree_add(v, len, data, head->pnh_treetop);
 	//}
-	dprint(("-ptree_insert End: insert tt[%p]\n",tt));
+	//dprint(("-ptree_insert End: insert tt[%p]\n",tt));
 	return (tt);
 }
 
@@ -309,11 +309,11 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		if (keyduplicated) {
 			int n;
 			struct rtentry *rt0, *rt, **rt_array;
-			rt_array = rt0->mpath_array;
 			dprint(("-ptree_addroute: if keyduplicated.\n"));
 				
 			rt = (struct rtentry *)rt_node;
 			rt0 = tt->data;
+			rt_array = rt0->mpath_array;
 			dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
 			n = ptree_mpath_count(rt0);
 			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
