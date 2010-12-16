@@ -69,7 +69,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		int i;
 		str = (unsigned char *)pn->key;
 		printf("key: ");
-		for(i=0;i <= pn->keylen/8 + 1;i++)
+		for(i=0;i < pn->keylen/8;i++)
 			printf("%d.",str[i]);
 		printf("/%d\n",pn->keylen);
 		
