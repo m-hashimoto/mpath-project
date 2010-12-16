@@ -62,7 +62,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		char *str, *gate;
 		int i;
 		str = pn->key;
-		gate = rt0->rt_gateway;
+		gate = (char *)rt0->rt_gateway;
 
 		for(i=0;i <= pn->keylen/8 + 1;i++)
 			printf("%d.",str[i]);
