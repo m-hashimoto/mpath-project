@@ -1,14 +1,16 @@
 --- route.c.org	2010-12-17 04:01:19.000000000 +0900
-+++ route.c	2010-12-17 04:05:06.000000000 +0900
-@@ -51,7 +51,6 @@
++++ route.c	2010-12-17 04:42:45.000000000 +0900
+@@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
  #include <net/if_types.h>
 -#include <net/radix.h>
++#include <net/ptree.h>
++#include <net/ptree_mpath.h>
  #include <net/route.h>
  
  #include <netinet/in.h>
-@@ -120,19 +119,18 @@
+@@ -120,19 +121,18 @@
  int	fibnum;
  int	do_rtent = 0;
  struct	rtentry rtentry;
@@ -33,7 +35,7 @@
  static void p_rtnode(void);
  static void ntreestuff(void);
  static void np_rtentry(struct rt_msghdr *);
-@@ -150,7 +148,7 @@
+@@ -150,7 +150,7 @@
  void
  routepr(u_long rtree)
  {
@@ -42,7 +44,7 @@
  	size_t intsize;
  	int i;
  	int numfibs;
-@@ -161,7 +159,7 @@
+@@ -161,7 +161,7 @@
  	if (sysctlbyname("net.fibs", &numfibs, &intsize, NULL, 0) == -1)
  		numfibs = 1;
  	rt_tables = calloc(numfibs * (AF_MAX+1),
@@ -51,7 +53,7 @@
  	if (rt_tables == NULL)
  		err(EX_OSERR, "memory allocation failed");
  	/*
-@@ -183,7 +181,7 @@
+@@ -183,7 +183,7 @@
  		}
  
  		if (kread((u_long)(rtree), (char *)(rt_tables), (numfibs *
@@ -60,7 +62,7 @@
  			return;
  		for (i = 0; i <= AF_MAX; i++) {
  			int tmpfib;
-@@ -191,7 +189,7 @@
+@@ -191,7 +191,7 @@
  				tmpfib = 0;
  			else
  				tmpfib = fibnum;
@@ -69,7 +71,7 @@
  			/* Calculate the in-kernel address. */
  			rnhp += tmpfib * (AF_MAX+1) + i;
  			/* Read the in kernel rhn pointer. */
-@@ -283,7 +281,7 @@
+@@ -283,7 +283,7 @@
  static int wid_expire;
  
  static void
@@ -78,7 +80,7 @@
  {
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
-@@ -299,7 +297,7 @@
+@@ -299,7 +299,7 @@
  }
  
  static void
@@ -87,7 +89,7 @@
  {
  again:
  	if (kget(rn, rnode) != 0)
-@@ -435,7 +433,7 @@
+@@ -435,7 +435,7 @@
  }
  
  static void
@@ -96,7 +98,7 @@
  {
  
  again:
-@@ -479,8 +477,6 @@
+@@ -479,8 +479,6 @@
  static void
  p_rtnode(void)
  {
@@ -105,7 +107,7 @@
  	if (rnode.rn_bit < 0) {
  		if (rnode.rn_mask) {
  			printf("\t  mask ");
-@@ -492,28 +488,6 @@
+@@ -492,28 +490,6 @@
  		sprintf(nbuf, "(%d)", rnode.rn_bit);
  		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_left, (u_long)rnode.rn_right);
  	}
