@@ -313,11 +313,17 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				
 			rt = (struct rtentry *)rt_node;
 			rt0 = tt->data;
-			rt_array = rt0->mpath_array;
 			dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
 			n = ptree_mpath_count(rt0);
 			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
-			rt_array + n = rt;
+			if(!n){
+				R_Malloc(rt_array, char *, 5);
+				rt_array[0] = rt0;
+				rt_array[1] = rt;
+			} else {
+			rt_array = rt0->mpath_array;
+			rt_array[n+1] = rt;
+			}
 		}
 #endif /* mluti path */
 		return tt;
