@@ -303,15 +303,18 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
+		dprint(("-ptree_addroute: keyduplicated[%d]\n",keyduplicated));
 #ifdef PTREE_MPATH /* multi path */
 		if (keyduplicated) {
 			int n;
 			struct rtentry *rt0, *rt, **rt_array;
+			dprint(("-ptree_addroute: if keyduplicated.\n"));
 				
 			rt = (struct rtentry *)rt_node;
 			rt0 = tt->data;
 			dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
 			n = ptree_mpath_count(rt0);
+			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
 			rt_array = rt0->mpath_array;
 			rt_array[n] = rt;
 		}

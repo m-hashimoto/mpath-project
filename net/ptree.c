@@ -162,7 +162,7 @@ ptree_link (struct ptree_node *v, struct ptree_node *w)
   bit = check_bit (w->key, v->keylen);
   v->child[bit] = w;
   w->parent = v;
-  dprint(("--ptree_link End: v[%p]->child[%d] = w[%p]\n",v,bit,w));
+  //dprint(("--ptree_link End: v[%p]->child[%d] = w[%p]\n",v,bit,w));
 }
 
 /* key_common_len() returns the bit length with which the keyi and
@@ -224,10 +224,6 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 void
 ptree_node_lock (struct ptree_node *x)
 {
-	//if(!x){
-	//	printf("error: ptree_node_lock x[%p]\n",x);
-	//	return;
-	//}
   x->lock++;
 }
 
@@ -250,7 +246,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
   struct ptree_node *u, *v, *w; /* u->v->w or u->x->{v, w}*/
   u = w = NULL;
   x = t->top;
-  dprint(("--ptree_get Start\n"));
+  //dprint(("--ptree_get Start\n"));
 
   while (x && x->key && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen))
@@ -264,7 +260,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
   if (! x || ! x->key)
     {
 	  if (x)
-	    dprint(("--ptree_get: x[%p] x->key[%p]\n",x,x->key));
+	    //dprint(("--ptree_get: x[%p] x->key[%p]\n",x,x->key));
       v = ptree_node_create (key, keylen);
       if (u)
         ptree_link (u, v);
@@ -293,8 +289,8 @@ ptree_get (char *key, int keylen, struct ptree *t)
       else
         t->top = x;
 
-			dprint(("--ptree_get: add branching node x[%p] key[%p] keylen[%d]\n",
-															x,x->key,x->keylen));
+			//dprint(("--ptree_get: add branching node x[%p] key[%p] keylen[%d]\n",
+			//												x,x->key,x->keylen));
 			
       /* if the branching node is not the corresponding node,
          create the corresponding node to add */
@@ -306,10 +302,10 @@ ptree_get (char *key, int keylen, struct ptree *t)
           ptree_node_lock (x);
 
           v = ptree_node_create (key, keylen);
-					dprint(("--ptree_get: add new node v[%p] key[%p] keylen[%d]\n",
-																	v,v->key,v->keylen));
-					dprint(("--ptree_get: branching node x[%p] key[%p] keylen[%d]\n",
-															x,x->key,x->keylen));
+					//dprint(("--ptree_get: add new node v[%p] key[%p] keylen[%d]\n",
+					//												v,v->key,v->keylen));
+					//dprint(("--ptree_get: branching node x[%p] key[%p] keylen[%d]\n",
+					//										x,x->key,x->keylen));
           if (! v)
             {
               XRTLOG (LOG_ERR, "ptree_get(%p,%d): "
@@ -323,7 +319,7 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
   /* locks for the tree holding */
   ptree_node_lock (v);
-  dprint(("--ptree_get: return[%p]\n",v));
+  //dprint(("--ptree_get: return[%p]\n",v));
   return v;
 }
 
