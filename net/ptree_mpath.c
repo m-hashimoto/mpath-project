@@ -58,18 +58,19 @@ debug_node_print(struct ptree_node *pn, int offset)
 	}
 	printf("data[%p] <%p, %p>\n",pn->data,pn->child[0],pn->child[1]);
 
-	char *str;
-	int i;
-	str = pn->key;
-	for(i=0;i<=pn->keylen/8;i++)
-		printf("%u.",str[i]);
-	printf("\n");
 #ifdef PTREE_MPATH
 	if(pn->data){
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 		//dprint(("-debug_node_print: mrt[%p]\n",mrt));
 	
+		char *str;
+		int i;
+		str = pn->key;
+		for(i=0;i <= pn->keylen/8 + 1;i++)
+			printf("%d.",str[i]);
+		printf("/%d\n",pn->keylen);
+
 		printf("%12s ","gateway");
 		if(offset == 8){
 			sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
