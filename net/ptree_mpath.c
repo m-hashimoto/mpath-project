@@ -79,7 +79,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
-		
+#if 0
 		gate = rt0->rt_gateway;
 		i = 0;
 		while(gate[i]){
@@ -87,7 +87,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			i++
 		}
 		printf("/%d\n",i*8);
-
+#endif
 		while(mrt){
 			printf("mrt[%p]\n",mrt);
 			rt = *mrt;	
