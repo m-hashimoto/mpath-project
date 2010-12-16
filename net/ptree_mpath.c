@@ -724,6 +724,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		RT_UNLOCK(ro->ro_rt);
 }
 
+#if 0
 	struct rtentry *
 multipath_nexthop (unsigned int seed, void *nexthops)
 {
@@ -731,6 +732,7 @@ multipath_nexthop (unsigned int seed, void *nexthops)
 	int n;
 	
 }
+#endif
 
 extern int	in6_inithead(void **head, int off);
 extern int	in_inithead(void **head, int off);
