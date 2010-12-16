@@ -40,21 +40,18 @@ sprint_inet_ntoa(int af, void *sa)
 	int
 debug_node_print(struct ptree_node *pn, int offset)
 {
-	if(!pn->key || !pn->keylen){
-		dprint(("-debug_node_print: pn[%p] key[%p] keylen[%d]\n",pn,pn->key,pn->keylen));
-		dprint(("-debug_node_print: pn->parent[%p] pn->left[%p] pn->rigth[%p]\n",
-														pn->parent,pn->child[0],pn->child[1]));
+	if(!pn->key || !pn->keylen)
 		return 1;
-	}
+	
+	printf("[%p] <%p, %p> ",pn,pn->child[0],pn->child[1]);
 	if(offset == 8){ /* IPv6 */
-		printf("[%p] <%p, %p> data[%p]\n",pn,pn->child[0],pn->child[1],pn->data);
-		printf("%12s ","key: ");
-		sprint_inet_ntoa(AF_INET6,pn->key); printf("/%d\n",pn->keylen-8*offset);
+		sprint_inet_ntoa(AF_INET6,pn->key);
+		printf("/%d ",pn->keylen-8*offset);
 	} else { /* IPv4 */
-		printf("[%p] <%p, %p> data[%p]\n",pn,pn->child[0],pn->child[1],pn->data);
-		printf("%12s ","key: ");
-		sprint_inet_ntoa(AF_INET,pn->key); printf("/%d\n",pn->keylen-8*offset);
+		sprint_inet_ntoa(AF_INET,pn->key);
+		printf("/%d ",pn->keylen-8*offset);
 	}
+	printf("data[%p]\n",pn->data);
 
 #ifdef PTREE_MPATH
 	if(pn->data){
@@ -114,7 +111,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		pn = pnh->pnh_top;
 		printf("\n pnh[%p] phn_top[%p] offset[%d]\n",pnh,pn,pnh->pnh_offset);
 		printf("----------------------------------------------------------\n");
-		printf("%12s %24s %12s %12s %12s %12s\n",
+		printf("%-12s %-24s %-12s %-12s %-12s %-12s\n",
 										"node","child","key","data","gateway","flags");
 		if(!pn)
 			return (0);
