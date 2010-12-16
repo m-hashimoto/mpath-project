@@ -71,8 +71,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 
-		while(mrt){
-			printf("mrt[%p]\n",mrt);
+		while(*mrt){
+			printf("mrt[%p]\n",*mrt);
 			rt = *mrt;	
 			if(offset == 8){
 				printf("%13s","+");
@@ -703,8 +703,9 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 
 		/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 		hash += hashjitter;
+		dprint(("-rtalloc_mpath_fib: hash[%u] hashjitter[%u]\n",hash,hashjitter));
 		hash %= n;
-		rt = rt0->mpath_array[n];
+		rt = rt0->mpath_array[hash];
 		/* XXX try filling rt_gwroute and avoid unreachable gw  */
 
 		/* gw selection has failed - there must be only zero weight routes */
@@ -721,6 +722,14 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 
 		} 
 		RT_UNLOCK(ro->ro_rt);
+}
+
+	struct rtentry *
+multipath_nexthop (unsigned int seed, void *nexthops)
+{
+	struct rtentry *rt0,*rt;
+	int n;
+	
 }
 
 extern int	in6_inithead(void **head, int off);
