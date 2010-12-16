@@ -1,0 +1,136 @@
+--- route.c.org	2010-12-17 04:01:19.000000000 +0900
++++ route.c	2010-12-17 04:05:06.000000000 +0900
+@@ -51,7 +51,6 @@
+ #include <net/if_var.h>
+ #include <net/if_dl.h>
+ #include <net/if_types.h>
+-#include <net/radix.h>
+ #include <net/route.h>
+ 
+ #include <netinet/in.h>
+@@ -120,19 +119,18 @@
+ int	fibnum;
+ int	do_rtent = 0;
+ struct	rtentry rtentry;
+-struct	radix_node rnode;
+-struct	radix_mask rmask;
+-struct	radix_node_head **rt_tables;
++struct	ptree_node rnode;
++struct	ptree_node_head **rt_tables;
+ 
+ int	NewTree = 0;
+ 
+ struct	timespec uptime;
+ 
+ static struct sockaddr *kgetsa(struct sockaddr *);
+-static void size_cols(int ef, struct radix_node *rn);
+-static void size_cols_tree(struct radix_node *rn);
++static void size_cols(int ef, struct ptree_node *rn);
++static void size_cols_tree(struct ptree_node *rn);
+ static void size_cols_rtentry(struct rtentry *rt);
+-static void p_tree(struct radix_node *);
++static void p_tree(struct ptree_node *);
+ static void p_rtnode(void);
+ static void ntreestuff(void);
+ static void np_rtentry(struct rt_msghdr *);
+@@ -150,7 +148,7 @@
+ void
+ routepr(u_long rtree)
+ {
+-	struct radix_node_head **rnhp, *rnh, head;
++	struct ptree_node_head **rnhp, *rnh, head;
+ 	size_t intsize;
+ 	int i;
+ 	int numfibs;
+@@ -161,7 +159,7 @@
+ 	if (sysctlbyname("net.fibs", &numfibs, &intsize, NULL, 0) == -1)
+ 		numfibs = 1;
+ 	rt_tables = calloc(numfibs * (AF_MAX+1),
+-	    sizeof(struct radix_node_head *));
++	    sizeof(struct ptree_node_head *));
+ 	if (rt_tables == NULL)
+ 		err(EX_OSERR, "memory allocation failed");
+ 	/*
+@@ -183,7 +181,7 @@
+ 		}
+ 
+ 		if (kread((u_long)(rtree), (char *)(rt_tables), (numfibs *
+-		    (AF_MAX+1) * sizeof(struct radix_node_head *))) != 0)
++		    (AF_MAX+1) * sizeof(struct ptree_node_head *))) != 0)
+ 			return;
+ 		for (i = 0; i <= AF_MAX; i++) {
+ 			int tmpfib;
+@@ -191,7 +189,7 @@
+ 				tmpfib = 0;
+ 			else
+ 				tmpfib = fibnum;
+-			rnhp = (struct radix_node_head **)*rt_tables;
++			rnhp = (struct ptree_node_head **)*rt_tables;
+ 			/* Calculate the in-kernel address. */
+ 			rnhp += tmpfib * (AF_MAX+1) + i;
+ 			/* Read the in kernel rhn pointer. */
+@@ -283,7 +281,7 @@
+ static int wid_expire;
+ 
+ static void
+-size_cols(int ef __unused, struct radix_node *rn)
++size_cols(int ef __unused, struct ptree_node *rn)
+ {
+ 	wid_dst = WID_DST_DEFAULT(ef);
+ 	wid_gw = WID_GW_DEFAULT(ef);
+@@ -299,7 +297,7 @@
+ }
+ 
+ static void
+-size_cols_tree(struct radix_node *rn)
++size_cols_tree(struct ptree_node *rn)
+ {
+ again:
+ 	if (kget(rn, rnode) != 0)
+@@ -435,7 +433,7 @@
+ }
+ 
+ static void
+-p_tree(struct radix_node *rn)
++p_tree(struct ptree_node *rn)
+ {
+ 
+ again:
+@@ -479,8 +477,6 @@
+ static void
+ p_rtnode(void)
+ {
+-	struct radix_mask *rm = rnode.rn_mklist;
+-
+ 	if (rnode.rn_bit < 0) {
+ 		if (rnode.rn_mask) {
+ 			printf("\t  mask ");
+@@ -492,28 +488,6 @@
+ 		sprintf(nbuf, "(%d)", rnode.rn_bit);
+ 		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_left, (u_long)rnode.rn_right);
+ 	}
+-	while (rm) {
+-		if (kget(rm, rmask) != 0)
+-			break;
+-		sprintf(nbuf, " %d refs, ", rmask.rm_refs);
+-		printf(" mk = %8.8lx {(%d),%s",
+-			(u_long)rm, -1 - rmask.rm_bit, rmask.rm_refs ? nbuf : " ");
+-		if (rmask.rm_flags & RNF_NORMAL) {
+-			struct radix_node rnode_aux;
+-			printf(" <normal>, ");
+-			if (kget(rmask.rm_leaf, rnode_aux) == 0)
+-				p_sockaddr(kgetsa((struct sockaddr *)rnode_aux.rn_mask),
+-				    NULL, 0, -1);
+-			else
+-				p_sockaddr(NULL, NULL, 0, -1);
+-		} else
+-		    p_sockaddr(kgetsa((struct sockaddr *)rmask.rm_mask),
+-				NULL, 0, -1);
+-		putchar('}');
+-		if ((rm = rmask.rm_mklist))
+-			printf(" ->");
+-	}
+-	putchar('\n');
+ }
+ 
+ static void

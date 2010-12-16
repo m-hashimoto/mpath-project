@@ -15,6 +15,7 @@ set diff_netinet6 = "./netinet6/*.diff"
 set diff_ipfilter = "./contrib/ipfilter/netinet/*.diff"
 set diff_pf = "./contrib/pf/net/*.diff"
 set diff_nfs = "./fs/nfs/*.diff"
+set diff_netstat = "./netstat/*.diff"
 set cprg = "./net/*.c"
 set head = "./net/*.h"
 
@@ -27,6 +28,7 @@ cp ${diff_netinet6} /usr/src/sys/netinet6/
 cp ${diff_ipfilter} /usr/src/sys/contrib/ipfilter/netinet/
 cp ${diff_pf} /usr/src/sys/contrib/pf/net/
 cp ${diff_nfs} /usr/src/sys/fs/nfs/
+cp ${diff_netstat} /usr/src/usr.bin/
 cp ${cprg} /usr/src/sys/net/
 cp ${head} /usr/src/sys/net/
 
@@ -70,6 +72,8 @@ patch -N < pfvar.h.diff
 cd /usr/src/sys/fs/nfs/
 patch -N < nfsport.h.diff
 
+cd /usr/src/usr.bin/
+patch -N < route.c.diff
 
 #while ( 1 );
 #echo -n " Configure Now? [Yes/No] "

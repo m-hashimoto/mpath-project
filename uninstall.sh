@@ -54,6 +54,10 @@ cd /usr/src/sys/fs/nfs/
 patch -R < nfsport.h.diff
 rm *.diff
 
+cd /usr/src/usr.bin/
+patch -R < route.c.diff
+rm *.diff
+
 cd /usr/src/sys/i386/conf/
 rm PATRICIA
 #config GENERIC
