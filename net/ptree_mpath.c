@@ -62,8 +62,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 	int i;
 	str = pn->key;
 	for(i=0;i<=pn->keylen;i++)
-		printf(" %d ",str[i]);
-	
+		printf("%d.",str[i]);
+	printf("\n");
 #ifdef PTREE_MPATH
 	if(pn->data){
 		struct rtentry *rt, *rt0 = pn->data;
