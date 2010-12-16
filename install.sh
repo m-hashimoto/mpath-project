@@ -91,7 +91,7 @@ cd ../compile/PATRICIA
 make cleandepend && make depend
 
 while ( 1 );
-echo -n " How much parallel processing for make? [0 - n] "
+echo -n " How much parallel processing for make? [2 - n] "
 set make = $<
 switch ($make)
 case $make == *:
@@ -107,10 +107,10 @@ while ( 1 );
 echo -n " Install Now? [Yes/No] "
 set configure = $<
 switch ($configure)
-case [yY][eE][sS]:
+case [yY]|[yY][eE][sS]:
 	make install;
 	break
-case [nN][oO]:
+case [nN]|[nN][oO]:
 	exit
 default:
 	echo "Type Yes/No."
