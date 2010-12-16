@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-17 04:01:19.000000000 +0900
-+++ route.c	2010-12-17 04:42:45.000000000 +0900
++++ route.c	2010-12-17 05:03:02.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -89,7 +89,7 @@
  {
  again:
  	if (kget(rn, rnode) != 0)
-@@ -435,7 +435,7 @@
+@@ -435,43 +435,32 @@
  }
  
  static void
@@ -98,19 +98,76 @@
  {
  
  again:
-@@ -479,8 +479,6 @@
+ 	if (kget(rn, rnode) != 0)
+ 		return;
+-	if (!(rnode.rn_flags & RNF_ACTIVE))
+-		return;
+-	if (rnode.rn_bit < 0) {
+-		if (Aflag)
+-			printf("%-8.8lx ", (u_long)rn);
+-		if (rnode.rn_flags & RNF_ROOT) {
++	if (Aflag)
++		printf("%-8.8lx ", (u_long)rn);
++	if (do_rtent) {
++		if (kget(rn, rtentry) == 0) {
++			p_rtentry(&rtentry);
+ 			if (Aflag)
+-				printf("(root node)%s",
+-				    rnode.rn_dupedkey ? " =>\n" : "\n");
+-		} else if (do_rtent) {
+-			if (kget(rn, rtentry) == 0) {
+-				p_rtentry(&rtentry);
+-				if (Aflag)
+-					p_rtnode();
+-			}
+-		} else {
+-			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
+-				   NULL, 0, 44);
+-			putchar('\n');
++				p_rtnode();
+ 		}
+-		if ((rn = rnode.rn_dupedkey))
+-			goto again;
+ 	} else {
+-		if (Aflag && do_rtent) {
+-			printf("%-8.8lx ", (u_long)rn);
+-			p_rtnode();
+-		}
+-		rn = rnode.rn_right;
+-		p_tree(rnode.rn_left);
+-		p_tree(rn);
+-	}
++		p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
++			   NULL, 0, 44);
++		putchar('\n');
++	}
++	if (Aflag && do_rtent) {
++		printf("%-8.8lx ", (u_long)rn);
++		p_rtnode();
++	}
++	rn = rnode.child[1];
++	p_tree(rnode.child[0]);
++	p_tree(rn);
+ }
+ 
+ char	nbuf[20];
+@@ -479,41 +468,8 @@
  static void
  p_rtnode(void)
  {
 -	struct radix_mask *rm = rnode.rn_mklist;
 -
- 	if (rnode.rn_bit < 0) {
- 		if (rnode.rn_mask) {
- 			printf("\t  mask ");
-@@ -492,28 +490,6 @@
- 		sprintf(nbuf, "(%d)", rnode.rn_bit);
- 		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_left, (u_long)rnode.rn_right);
- 	}
+-	if (rnode.rn_bit < 0) {
+-		if (rnode.rn_mask) {
+-			printf("\t  mask ");
+-			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_mask),
+-				   NULL, 0, -1);
+-		} else if (rm == 0)
+-			return;
+-	} else {
+-		sprintf(nbuf, "(%d)", rnode.rn_bit);
+-		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_left, (u_long)rnode.rn_right);
+-	}
 -	while (rm) {
 -		if (kget(rm, rmask) != 0)
 -			break;
@@ -133,6 +190,8 @@
 -			printf(" ->");
 -	}
 -	putchar('\n');
++		sprintf(nbuf, "(%d)", rnode.keylen);
++		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.child[0], (u_long)rnode.child[1]);
  }
  
  static void
