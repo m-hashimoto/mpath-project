@@ -107,10 +107,10 @@ while ( 1 );
 echo -n " Install Now? [Yes/No] "
 set configure = $<
 switch ($configure)
-case [yY]|[yY][eE][sS]:
+case [yY][eE][sS]:
 	make install;
 	break
-case [nN]|[nN][oO]:
+case [nN][oO]:
 	exit
 default:
 	echo "Type Yes/No."
