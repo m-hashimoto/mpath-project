@@ -95,10 +95,10 @@ cd ../compile/PATRICIA
 make cleandepend && make depend
 
 while ( 1 );
-echo -n " How much parallel processing for make? [2 - n] "
+echo -n " How much parallel processing for make? [1 - 8] "
 set make = $<
 switch ($make)
-case $make == *:
+case (1 <= $make <= 9):
 	make -j $make
 	break
 default:

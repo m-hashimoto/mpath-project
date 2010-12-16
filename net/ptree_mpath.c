@@ -43,7 +43,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	if(!pn->key || !pn->keylen)
 		return 1;
 	
-	printf("[%p] <0x%08p, 0x%08p> ",pn,pn->child[0],pn->child[1]);
+	printf("[%p] <0x%8p, 0x%8p> ",pn,pn->child[0],pn->child[1]);
 	if(offset == 8){ /* IPv6 */
 		sprint_inet_ntoa(AF_INET6,pn->key);
 		printf("/%d\n",pn->keylen-8*offset);
