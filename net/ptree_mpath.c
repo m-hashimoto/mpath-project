@@ -51,10 +51,10 @@ debug_node_print(struct ptree_node *pn, int offset)
 		sprint_inet_ntoa(AF_INET,pn->key);
 		printf("/%d\n",pn->keylen-8*offset);
 	}
-	printf("%p ",pn->data);
 
 #ifdef PTREE_MPATH
 	if(pn->data){
+		printf("%12s [%p] ","rtentry",pn->data);
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 #if 0
@@ -116,9 +116,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if(!pn)
 			return (0);
 		for (;;) {
-			if(pn->data)
-				debug_node_print(pn, pnh->pnh_offset);
-			
+			debug_node_print(pn, pnh->pnh_offset);
 			next = ptree_next(pn);
 			if( !next )
 				break;
