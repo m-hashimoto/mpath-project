@@ -58,7 +58,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 
-		char *str, *gate;
+		char *str;
 		int i;		
 		str = pn->key;
 		for(i=0;i <= pn->keylen/8 + 1;i++)
