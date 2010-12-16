@@ -81,8 +81,11 @@ debug_node_print(struct ptree_node *pn, int offset)
 		}
 		
 		gate = rt0->rt_gateway;
-		for(i=0;gate[i]==NULL;i++)
+		i = 0;
+		while(gate[i]){
 			printf("%d.",gate[i]);
+			i++
+		}
 		printf("/%d\n",i*8);
 
 		while(mrt){
