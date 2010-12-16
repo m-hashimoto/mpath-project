@@ -181,7 +181,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		//caddr_t cplim = v;
 		register char *cp2 = t->key;
 		char *cplim = v;
-		if ( !memcmp(cp2,cplim,len) ){
+		if ( !memcmp(cp2,cplim,len/8) ){
 			*dupentry = 1;
 			return t;
 		}
