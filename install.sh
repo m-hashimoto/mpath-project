@@ -95,9 +95,11 @@ echo -n " How much parallel processing for make? [0 - n] "
 set make = $<
 switch ($make)
 case $make == *:
-make -j $make
+	make -j $make
+	break
 default:
-make
+	make
+	break
 endsw
 end
 
@@ -105,10 +107,10 @@ while ( 1 );
 echo -n " Install Now? [Yes/No] "
 set configure = $<
 switch ($configure)
-case "y"|[yY][eE][sS]:
+case [yY][eE][sS]:
 	make install;
 	break
-case "n"|[nN][oO]:
+case [nN][oO]:
 	exit
 default:
 	echo "Type Yes/No."
