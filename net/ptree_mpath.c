@@ -317,12 +317,12 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			n = ptree_mpath_count(rt0);
 			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
 			if(!n){
-				R_Malloc(rt_array, struct rtentry *, 5);
+				R_Malloc(rt_array, struct rtentry **, 10*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 			} else {
 			rt_array = rt0->mpath_array;
-			rt_array[n+1] = rt;
+			rt_array[n] = rt;
 			}
 		}
 #endif /* mluti path */
