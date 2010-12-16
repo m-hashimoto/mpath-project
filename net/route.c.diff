@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-17 03:41:19.000000000 +0900
++++ route.c	2010-12-17 04:26:33.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1459,15 +1459,15 @@
 +			RT_LOCK_ASSERT(rt);
 +			int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
 +			dprint(("rtrequest1_fib: gateway len[%d]\n",glen));
-+		unsigned char *str;
-+		int i;
-+		str = (unsigned char *)dst;
-+		printf("dst: ");
-+		for(i=0;i <= pn->keylen/8 + 1;i++)
-+			printf("%d.",str[i]);
-+		printf("/%d\n",pn->keylen);
++	
++			unsigned char *str;
++			int i;
++			str = (unsigned char *)dst;
++			printf("dst: ");
++			for(i=0;i <= 16;i++)
++				printf("%d.",str[i]);
++		
 +			caddr_t new;
-+			//R_Malloc(new, caddr_t, dlen + glen);
 +			R_Zalloc(new, caddr_t, dlen + glen);
 +			if (new == NULL){
 +				RT_LOCK_DESTROY(rt);
