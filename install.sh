@@ -74,6 +74,20 @@ patch -N < nfsport.h.diff
 
 cd /usr/src/usr.bin/netstat/
 patch -N < route.c.diff
+make
+while ( 1 );
+echo -n " Install Now?(netstat) [Yes/No] "
+set configure = $<
+switch ($configure)
+case [yY][eE][sS]:
+	make install;
+	break
+case [nN][oO]:
+	exit
+default:
+	echo "Type Yes/No."
+endsw
+end
 
 #while ( 1 );
 #echo -n " Configure Now? [Yes/No] "
@@ -108,7 +122,7 @@ endsw
 end
 
 while ( 1 );
-echo -n " Install Now? [Yes/No] "
+echo -n " Install Now?(kernel) [Yes/No] "
 set configure = $<
 switch ($configure)
 case [yY][eE][sS]:
