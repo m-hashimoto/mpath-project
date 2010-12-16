@@ -71,18 +71,18 @@ cd /usr/src/sys/fs/nfs/
 patch -N < nfsport.h.diff
 
 
-while ( 1 );
-echo -n " Configure Now? [Yes/No] "
-set configure = $<
-switch ($configure)
-case [yY][eE][sS]:
-	break
-case [nN][oO]:
-	exit
-default:
-	echo "Type Yes/No."
-endsw
-end
+#while ( 1 );
+#echo -n " Configure Now? [Yes/No] "
+#set configure = $<
+#switch ($configure)
+#case [yY][eE][sS]:
+#	break
+#case [nN][oO]:
+#	exit
+#default:
+#	echo "Type Yes/No."
+#endsw
+#end
 
 cd /usr/src/sys/i386/conf/
 config PATRICIA
@@ -90,16 +90,16 @@ config PATRICIA
 cd ../compile/PATRICIA
 make cleandepend && make depend
 
-while ( 1 );
-echo -n " How much parallel processing for make? [0 - n] "
-set make = $<
-switch ($make)
-case 0:
+#while ( 1 );
+#echo -n " How much parallel processing for make? [0 - n] "
+#set make = $<
+#switch ($make)
+#case 0:
 make
-default:
-make -j $make
-endsw
-end
+#default:
+#make -j $make
+#endsw
+#end
 
 while ( 1 );
 echo -n " Install Now? [Yes/No] "
