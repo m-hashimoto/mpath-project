@@ -61,6 +61,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	if(pn->data){
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
+		dprint(("-debug_node_print: mrt[%p]\n",mrt));
 	
 		printf("%12s ","gateway");
 		if(offset == 8){
@@ -71,7 +72,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 
-		while(*mrt){
+		while(mrt){
 			printf("mrt[%p]\n",*mrt);
 			rt = *mrt;	
 			if(offset == 8){
