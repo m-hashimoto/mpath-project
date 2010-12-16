@@ -17,19 +17,6 @@
 #include "ptree.h"
 #endif /*_KERNEL*/
 
-#if 0
-#include "opt_inet.h"
-#include "opt_inet6.h"
-#include <sys/socket.h>
-#include <sys/domain.h>
-#include <net/ptree_mpath.h>
-#include <net/route.h>
-#include <net/if.h>
-#include <net/if_var.h>
-
-#include <sys/types.h>
-#include <netinet/in.h>
-#endif
 
 char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 

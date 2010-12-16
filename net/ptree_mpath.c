@@ -62,7 +62,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 	int i;
 	str = pn->key;
 	for(i=0;i<=pn->keylen;i++)
-		printf(" %s ",str[i]);
+		printf(" %d ",str[i]);
 	
 #ifdef PTREE_MPATH
 	if(pn->data){
