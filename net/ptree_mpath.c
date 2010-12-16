@@ -64,7 +64,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		struct rtentry **mrt = rt0->mpath_array;
 		//dprint(("-debug_node_print: mrt[%p]\n",mrt));
 	
-		char *str;
+		char *str, *gate;
 		int i;
 		str = pn->key;
 		for(i=0;i <= pn->keylen/8 + 1;i++)
@@ -79,6 +79,10 @@ debug_node_print(struct ptree_node *pn, int offset)
 			sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
+		gate = rt0->rt_gateway;
+		for(i=0;gate[i]==NULL;i++)
+			printf("%d.",gate[i]);
+		printf("/%d\n",i*8);
 
 		while(mrt){
 			printf("mrt[%p]\n",mrt);
