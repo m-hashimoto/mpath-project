@@ -259,8 +259,6 @@ ptree_get (char *key, int keylen, struct ptree *t)
 
   if (! x || ! x->key)
     {
-	  if (x)
-	    //dprint(("--ptree_get: x[%p] x->key[%p]\n",x,x->key));
       v = ptree_node_create (key, keylen);
       if (u)
         ptree_link (u, v);
