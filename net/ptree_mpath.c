@@ -128,6 +128,8 @@ debug_tree_print(struct ptree_node_head *pnh)
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
 #define LEN(x) (*(const u_char *)(x))
+#define INET_OFFSET 4
+#define INET6_OFFSET 8
 
 static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 			   	struct ptree_node_head *head, int *dupentry);
@@ -147,8 +149,10 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len = (int)8*LEN(v);
 	
+	//if(head->pnh_offset == INET_OFFSET)
+	//	len = 8*(len - 8);
 #ifdef DEBUG
-	if(head->pnh_offset == 4){
+	if(head->pnh_offset == INET_OFFSET){
 		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET, v);
 		printf("/%d\n",len);
