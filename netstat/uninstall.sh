@@ -6,6 +6,10 @@ endif
 
 echo mpath netstat uninstall...
 
+# remove include file
+rm /usr/include/net/ptree.h
+rm /usr/include/net/ptree_mpath.h
+
 cd /usr/src/usr.bin/netstat/
 patch -R < route.c.diff
 make

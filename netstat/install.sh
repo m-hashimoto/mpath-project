@@ -8,6 +8,9 @@ echo mpath netstat install...
 
 set diff_netstat = "./*.diff"
 cp ${diff_netstat} /usr/src/usr.bin/netstat/
+# cp include file
+set head = "../net/*.h"
+cp ${head} /usr/include/net/
 
 cd /usr/src/usr.bin/netstat/
 patch -N < route.c.diff
