@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-17 19:29:45.000000000 +0900
++++ route.c	2010-12-17 19:32:42.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1492,12 +1492,12 @@
 +				printf("%d.",str[i]);
 +			printf("/%d\n",glen*8);
 +			
-+			char host[1024];
-+			int ecode = getnameinfo(&gate, glen, host, sizeof(host), NULL, 0, 0);
-+			if (ecode != 0) {
-+				warnx ("%s", gai_strerror(ecode) );
-+			}
-+			printf ("%s\n", host);
++			//char host[1024];
++			//int ecode = getnameinfo(&gate, glen, host, sizeof(host), NULL, 0, 0);
++			//if (ecode != 0) {
++			//	warnx ("%s", gai_strerror(ecode) );
++			//}
++			//printf ("%s\n", host);
 +#endif	
 +			
 +#if 0
@@ -1615,6 +1615,10 @@
 -							break;
 -						n++;
 -						m++;
+-					}
+-					if (len == 0 || (*n < *m)) {
+-						RTFREE(rt0);
+-						rt0 = NULL;
 +			if (dst->sa_family == AF_INET) {
 +					rn = rnh->rnh_matchaddr(dst, rnh);
 +					if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
@@ -1653,10 +1657,6 @@
 +									}
 +							}
  					}
--					if (len == 0 || (*n < *m)) {
--						RTFREE(rt0);
--						rt0 = NULL;
--					}
 -				}
  			}
 -		}
