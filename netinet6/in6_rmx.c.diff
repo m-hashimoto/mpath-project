@@ -1,6 +1,6 @@
 --- in6_rmx.c.orig	2005-01-19 12:54:14.000000000 +0900
-+++ in6_rmx.c	2010-12-15 14:25:25.000000000 +0900
-@@ -113,21 +113,22 @@
++++ in6_rmx.c	2010-12-17 19:02:31.000000000 +0900
+@@ -113,21 +113,21 @@
  
  #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
  
@@ -20,7 +20,6 @@
 -	struct radix_node *ret;
 -
 +	struct rtentry *rt = (struct rtentry *)(rt_node);
-+	dprint(("in6_addroute Start: rt[%p]\n",rt));
 +	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
 +	struct ptree_node *ret;
  	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
@@ -31,7 +30,7 @@
  	/*
  	 * A little bit of help for both IPv6 output and input:
  	 *   For local addresses, we make sure that RTF_LOCAL is set,
-@@ -153,7 +154,7 @@
+@@ -153,7 +153,7 @@
  	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
  		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
  
@@ -40,7 +39,7 @@
  	if (ret == NULL) {
  		struct rtentry *rt2;
  		/*
-@@ -187,11 +188,16 @@
+@@ -187,11 +187,16 @@
   * were managing the route, stop doing so and set the expiration timer
   * back off again.
   */
@@ -61,7 +60,7 @@
  
  	if (rt && rt->rt_refcnt == 0) { /* this is first reference */
  		if (rt->rt_flags & RTPRF_OURS) {
-@@ -222,7 +228,7 @@
+@@ -222,7 +227,7 @@
      &VNET_NAME(rtq_toomany6) , 0, "");
  
  struct rtqk_arg {
@@ -70,7 +69,7 @@
  	int mode;
  	int updating;
  	int draining;
-@@ -237,7 +243,7 @@
+@@ -237,7 +242,7 @@
   * nothing has a timeout longer than the current value of rtq_reallyold6.
   */
  static int
@@ -79,7 +78,7 @@
  {
  	struct rtqk_arg *ap = rock;
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -272,7 +278,6 @@
+@@ -272,7 +277,6 @@
  					    rt->rt_rmx.rmx_expire);
  		}
  	}
@@ -87,7 +86,7 @@
  	return 0;
  }
  
-@@ -287,7 +292,7 @@
+@@ -287,7 +291,7 @@
  in6_rtqtimo(void *rock)
  {
  	CURVNET_SET_QUIET((struct vnet *) rock);
@@ -96,7 +95,7 @@
  	struct rtqk_arg arg;
  	struct timeval atv;
  	static time_t last_adjusted_timeout = 0;
-@@ -343,7 +348,7 @@
+@@ -343,7 +347,7 @@
   * Age old PMTUs.
   */
  struct mtuex_arg {
@@ -105,7 +104,7 @@
  	time_t nextstop;
  };
  
-@@ -351,7 +356,7 @@
+@@ -351,7 +355,7 @@
  #define	V_rtq_mtutimer			VNET(rtq_mtutimer)
  
  static int
@@ -114,7 +113,7 @@
  {
  	struct rtentry *rt = (struct rtentry *)rn;
  	struct mtuex_arg *ap = rock;
-@@ -378,7 +383,7 @@
+@@ -378,7 +382,7 @@
  in6_mtutimo(void *rock)
  {
  	CURVNET_SET_QUIET((struct vnet *) rock);
@@ -123,7 +122,7 @@
  	struct mtuex_arg arg;
  	struct timeval atv;
  
-@@ -414,9 +419,9 @@
+@@ -414,9 +418,9 @@
  int
  in6_inithead(void **head, int off)
  {

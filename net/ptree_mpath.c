@@ -57,7 +57,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 
 #ifdef PTREE_MPATH
 	if(pn->data){
-		printf("%21s [%p] ","gateway",pn->data);
+		printf("%24s [%p] ","gateway",pn->data);
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 
@@ -69,6 +69,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 		
+#if 0
 		unsigned char *str;
 		int i;
 		str = (unsigned char *)pn->key;
@@ -76,6 +77,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		for(i=0;i < pn->keylen/8;i++)
 			printf("%d.",str[i]);
 		printf("/%d\n",pn->keylen);
+#endif
 		
 		while(mrt){
 			printf("%21s [%p] ","malutipath",mrt);

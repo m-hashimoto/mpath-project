@@ -1,15 +1,14 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2010-12-15 14:48:45.000000000 +0900
-@@ -688,7 +688,7 @@
++++ in6.c	2010-12-17 19:04:33.000000000 +0900
+@@ -688,7 +688,6 @@
  	struct rtentry *rt;
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
 -
-+	dprint(("in6_update_ifa Start: ifp[%p]\n",ifp));
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -896,6 +896,7 @@
+@@ -896,6 +895,7 @@
  	/* reset the interface and routing table appropriately. */
  	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
  		goto unlink;
@@ -17,16 +16,7 @@
  
  	/*
  	 * configure address flags.
-@@ -960,6 +961,8 @@
- 			delay = arc4random() %
- 			    (MAX_RTR_SOLICITATION_DELAY * hz);
- 		}
-+		dprint(("in6_update_ifa: in6_joingroup(ifp[%p],&llsol[%p],&error,delay[%d])\n",
-+														ifp,&llsol,delay));
- 		imm = in6_joingroup(ifp, &llsol, &error, delay);
- 		if (imm == NULL) {
- 			nd6log((LOG_WARNING,
-@@ -1766,6 +1769,7 @@
+@@ -1766,6 +1766,7 @@
  		struct rtentry rt;
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
@@ -34,7 +24,7 @@
  
  		IF_AFDATA_LOCK(ifp);
  		ia->ia_ifa.ifa_rtrequest = NULL;
-@@ -1793,6 +1797,8 @@
+@@ -1793,6 +1794,8 @@
  		}
  
  		bzero(&rt, sizeof(rt));

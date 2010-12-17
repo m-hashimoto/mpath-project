@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-17 18:27:43.000000000 +0900
++++ route.c	2010-12-17 19:06:03.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1474,7 +1474,7 @@
 +			bcopy(gateway, rt->rt_gateway, glen);
 +			
 +			struct sockaddr *gate = (struct sockaddr *)rt->rt_gateway;
-+			printf("gateway: ");
++			printf("rtrequest1_fib: gateway ");
 +			for(i=0;i < glen;i++)
 +				printf("%d.",(unsigned char *)str[i]);
 +			printf("/%d\n",glen*8);
