@@ -73,11 +73,12 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf("%d.",str[i]);
 		printf("/%d\n",pn->keylen);
 		
-		str = (unsigned char *)rt0->rt_gateway;
+		struct sockaddr *gate = (struct sockaddr *)rt0->rt_gateway;
+		str = (unsigned char *)gate;
 		printf("gateway: ");
-		for(i=0;i < 16;i++)
+		for(i=0;i < gate->sa_len;i++)
 			printf("%d.",str[i]);
-		printf("/128\n");
+		printf("/%d\n",gate->sa_len);
 
 		while(mrt){
 			printf("%12s ","gateway: ");
