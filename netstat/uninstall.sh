@@ -12,4 +12,4 @@ rm /usr/include/net/ptree_mpath.h
 
 cd /usr/src/usr.bin/netstat/
 patch -R < route.c.diff
-make deinstall && make && make reinstall
+make && make reinstall

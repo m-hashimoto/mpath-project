@@ -19,13 +19,13 @@ patch -N < route.h.diff
 
 cd /usr/src/usr.bin/netstat/
 patch -N < route.c.diff
-make deinstall && make
+make
 while ( 1 );
 echo -n " Install Now?(netstat) [Yes/No] "
 set configure = $<
 switch ($configure)
 case [yY][eE][sS]:
-	make reinstall
+	make install
 	break
 case [nN][oO]:
 	exit
