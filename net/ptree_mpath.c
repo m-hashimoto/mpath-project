@@ -209,6 +209,8 @@ on1:
 	return (tt);
 }
 
+#undef SIN_ZERO
+#undef SIN6_ZERO
 
 	int
 ptree_refines(m_arg, n_arg)
