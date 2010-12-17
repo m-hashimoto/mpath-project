@@ -77,7 +77,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 		printf("gateway: ");
 		for(i=0;i < 16;i++)
 			printf("%d.",str[i]);
-		printf("/128\n",);
+		printf("/128\n");
 
 		while(mrt){
 			printf("%12s ","gateway: ");
