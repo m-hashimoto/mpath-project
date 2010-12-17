@@ -120,7 +120,7 @@ struct ptree_node *
 ptree_search (char *key, int keylen, struct ptree *t)
 {
   struct ptree_node *x, *match;
-  dprint(("--ptree_search Start\n"));
+  //dprint(("--ptree_search Start\n"));
 
   match = NULL;
   x = t->top;
@@ -133,7 +133,7 @@ ptree_search (char *key, int keylen, struct ptree *t)
     }
   if (match)
     ptree_node_lock (match);
-  dprint(("--ptree_search End: match_node[%p]\n",match));
+  //dprint(("--ptree_search End: match_node[%p]\n",match));
   return match;
 }
 

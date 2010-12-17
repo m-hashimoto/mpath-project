@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-17 04:01:19.000000000 +0900
-+++ route.c	2010-12-17 17:28:55.000000000 +0900
++++ route.c	2010-12-17 17:37:01.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -27,10 +27,11 @@
  static struct sockaddr *kgetsa(struct sockaddr *);
 -static void size_cols(int ef, struct radix_node *rn);
 -static void size_cols_tree(struct radix_node *rn);
+-static void size_cols_rtentry(struct rtentry *rt);
+-static void p_tree(struct radix_node *);
 +static void size_cols(int ef, struct ptree_node *rn);
 +static void size_cols_tree(struct ptree_node *rn);
- static void size_cols_rtentry(struct rtentry *rt);
--static void p_tree(struct radix_node *);
++//static void size_cols_rtentry(struct rtentry *rt);
 +static void p_tree(struct ptree_node *);
  static void p_rtnode(void);
  static void ntreestuff(void);
@@ -98,7 +99,7 @@
  {
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
-@@ -299,26 +299,13 @@
+@@ -299,28 +299,15 @@
  }
  
  static void
@@ -127,8 +128,20 @@
 +	size_cols_tree(rnode.child[0]);
 +	size_cols_tree(rn);
  }
- 
+-
++#if 0
  static void
+ size_cols_rtentry(struct rtentry *rt)
+ {
+@@ -381,7 +368,7 @@
+ 		}
+ 	}
+ }
+-
++#endif
+ 
+ /*
+  * Print header for routing table columns.
 @@ -435,43 +422,30 @@
  }
  
