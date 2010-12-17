@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-17 04:01:19.000000000 +0900
-+++ route.c	2010-12-17 16:54:29.000000000 +0900
++++ route.c	2010-12-17 17:28:55.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -235,3 +235,12 @@
  }
  
  static void
+@@ -801,8 +742,6 @@
+ 			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
+ 				printf(" %*d", wid_expire, (int)expire_time);
+ 		}
+-		if (rt->rt_nodes[0].rn_dupedkey)
+-			printf(" =>");
+ 	}
+ 	putchar('\n');
+ }
