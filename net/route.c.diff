@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-17 19:21:12.000000000 +0900
++++ route.c	2010-12-17 19:23:52.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -8,7 +8,7 @@
  
  #include <sys/param.h>
  #include <sys/systm.h>
-@@ -58,15 +59,15 @@
+@@ -58,15 +59,16 @@
  #include <net/vnet.h>
  #include <net/flowtable.h>
  
@@ -22,13 +22,14 @@
  #include <vm/uma.h>
  
 +#ifdef DEBUG
-+#include <netdb.h>
++#include <sys/types.h>
++//#include <netdb.h>
 +#endif
 +
  u_int rt_numfibs = RT_NUMFIBS;
  SYSCTL_INT(_net, OID_AUTO, fibs, CTLFLAG_RD, &rt_numfibs, 0, "");
  /*
-@@ -85,10 +86,10 @@
+@@ -85,10 +87,10 @@
   */
  u_int rt_add_addr_allfibs = 1;
  SYSCTL_INT(_net, OID_AUTO, add_addr_allfibs, CTLFLAG_RW,
@@ -41,7 +42,7 @@
  static VNET_DEFINE(uma_zone_t, rtzone);		/* Routing table UMA zone. */
  VNET_DEFINE(int, rttrash);		/* routes not in table but not freed */
  VNET_DEFINE(struct rtstat, rtstat);
-@@ -99,7 +100,7 @@
+@@ -99,7 +101,7 @@
  #define	V_rtstat	VNET(rtstat)
  
  static void rt_maskedcopy(struct sockaddr *,
@@ -50,7 +51,7 @@
  
  /* compare two sockaddr structures */
  #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
-@@ -114,7 +115,7 @@
+@@ -114,7 +116,7 @@
   * But because there are a lot of assumptions in this conversion,
   * do not cast explicitly, but always use the macro below.
   */
@@ -59,7 +60,7 @@
  
  #if 0
  /* default fib for tunnels to use */
-@@ -125,42 +126,40 @@
+@@ -125,42 +127,40 @@
  /*
   * handler for net.my_fibnum
   */
@@ -116,7 +117,7 @@
  	return (*rt_tables_get_rnh_ptr(table, fam));
  }
  
-@@ -168,89 +167,88 @@
+@@ -168,89 +168,88 @@
   * route initialization must occur before ip6_init2(), which happenas at
   * SI_ORDER_MIDDLE.
   */
@@ -253,7 +254,7 @@
  #endif
  
  #ifndef _SYS_SYSPROTO_H_
-@@ -258,11 +256,11 @@
+@@ -258,11 +257,11 @@
  	int     fibnum;
  };
  #endif
@@ -267,7 +268,7 @@
  	td->td_proc->p_fibnum = uap->fibnum;
  	return (0);
  }
-@@ -270,48 +268,48 @@
+@@ -270,48 +269,48 @@
  /*
   * Packet routing routines.
   */
@@ -330,7 +331,7 @@
  }
  
  /*
-@@ -320,55 +318,55 @@
+@@ -320,55 +319,55 @@
   *
   * The returned route, if any, is locked.
   */
@@ -405,7 +406,7 @@
  	/*
  	 * Either we hit the root or couldn't find any match,
  	 * Which basically means
-@@ -377,18 +375,19 @@
+@@ -377,18 +376,19 @@
  	V_rtstat.rts_unreach++;
  miss:
  	if (report) {
@@ -434,7 +435,7 @@
  	return (newrt);
  }
  
-@@ -396,10 +395,11 @@
+@@ -396,10 +396,11 @@
   * Remove a reference count from an rtentry.
   * If the count gets low enough, take it out of the routing table
   */
@@ -448,7 +449,7 @@
  
  	KASSERT(rt != NULL,("%s: NULL rt", __func__));
  	rnh = rt_tables_get_rnh(rt->rt_fibnum, rt_key(rt)->sa_family);
-@@ -413,8 +413,8 @@
+@@ -413,8 +414,8 @@
  	 */
  	RT_REMREF(rt);
  	if (rt->rt_refcnt > 0) {
@@ -459,7 +460,7 @@
  	}
  
  	/*
-@@ -427,7 +427,7 @@
+@@ -427,7 +428,7 @@
  	 * on the entry so that the code below reclaims the storage.
  	 */
  	if (rt->rt_refcnt == 0 && rnh->rnh_close)
@@ -468,7 +469,7 @@
  
  	/*
  	 * If we are no longer "up" (and ref == 0)
-@@ -435,41 +435,40 @@
+@@ -435,41 +436,40 @@
  	 * with the route.
  	 */
  	if ((rt->rt_flags & RTF_UP) == 0) {
@@ -538,7 +539,7 @@
  }
  
  
-@@ -479,42 +478,42 @@
+@@ -479,42 +479,42 @@
   * Normally called as a result of a routing redirect
   * message from the network layer.
   */
@@ -597,7 +598,7 @@
  	}
  	rt = rtalloc1_fib(dst, 0, 0UL, fibnum);	/* NB: rt is locked */
  	/*
-@@ -524,12 +523,12 @@
+@@ -524,12 +524,12 @@
  	 * going down recently.
  	 */
  	if (!(flags & RTF_DONE) && rt &&
@@ -614,7 +615,7 @@
  	/*
  	 * Create a new entry if we just got back a wildcard entry
  	 * or the the lookup failed.  This is necessary for hosts
-@@ -537,73 +536,73 @@
+@@ -537,73 +537,73 @@
  	 * to dynamically build the routing tables.
  	 */
  	if (rt == NULL || (rt_mask(rt) && rt_mask(rt)->sa_len < 2))
@@ -743,7 +744,7 @@
  	bzero((caddr_t)&info, sizeof(info));
  	info.rti_info[RTAX_DST] = dst;
  	info.rti_info[RTAX_GATEWAY] = gateway;
-@@ -611,10 +610,10 @@
+@@ -611,10 +611,10 @@
  	info.rti_info[RTAX_AUTHOR] = src;
  	rt_missmsg(RTM_REDIRECT, &info, flags, error);
  	if (ifa != NULL)
@@ -756,7 +757,7 @@
  rtioctl(u_long req, caddr_t data)
  {
  	return (rtioctl_fib(req, data, 0));
-@@ -623,10 +622,9 @@
+@@ -623,10 +623,9 @@
  /*
   * Routing table ioctl interface.
   */
@@ -768,7 +769,7 @@
  	/*
  	 * If more ioctl commands are added here, make sure the proper
  	 * super-user checks are being performed because it is possible for
-@@ -644,13 +642,13 @@
+@@ -644,13 +643,13 @@
  /*
   * For both ifa_ifwithroute() routines, 'ifa' is returned referenced.
   */
@@ -784,7 +785,7 @@
  ifa_ifwithroute_fib(int flags, struct sockaddr *dst, struct sockaddr *gateway,
  				u_int fibnum)
  {
-@@ -658,64 +656,64 @@
+@@ -658,64 +657,64 @@
  	int not_found = 0;
  
  	if ((flags & RTF_GATEWAY) == 0) {
@@ -901,7 +902,7 @@
  	}
  	return (ifa);
  }
-@@ -724,30 +722,30 @@
+@@ -724,30 +723,30 @@
   * Do appropriate manipulations of a routing tree given
   * all the bits of info needed
   */
@@ -946,7 +947,7 @@
  
  	bzero((caddr_t)&info, sizeof(info));
  	info.rti_flags = flags;
-@@ -768,7 +766,7 @@
+@@ -768,7 +767,7 @@
  #define	ifpaddr	info->rti_info[RTAX_IFP]
  #define	flags	info->rti_flags
  
@@ -955,7 +956,7 @@
  rt_getifa(struct rt_addrinfo *info)
  {
  	return (rt_getifa_fib(info, 0));
-@@ -778,7 +776,7 @@
+@@ -778,7 +777,7 @@
   * Look up rt_addrinfo for a specific fib.  Note that if rti_ifa is defined,
   * it will be referenced so the caller must free it.
   */
@@ -964,7 +965,7 @@
  rt_getifa_fib(struct rt_addrinfo *info, u_int fibnum)
  {
  	struct ifaddr *ifa;
-@@ -789,32 +787,32 @@
+@@ -789,32 +788,32 @@
  	 * when protocol address is ambiguous.
  	 */
  	if (info->rti_ifp == NULL && ifpaddr != NULL &&
@@ -1016,7 +1017,7 @@
  	return (error);
  }
  
-@@ -822,11 +820,11 @@
+@@ -822,11 +821,11 @@
   * Expunges references to a route that's about to be reclaimed.
   * The route must be locked.
   */
@@ -1031,7 +1032,7 @@
  	struct ifaddr *ifa;
  	int error = 0;
  
-@@ -836,7 +834,7 @@
+@@ -836,7 +835,7 @@
  	rnh = rt_tables_get_rnh(rt->rt_fibnum, rt_key(rt)->sa_family);
  	RT_LOCK_ASSERT(rt);
  	if (rnh == NULL)
@@ -1040,7 +1041,7 @@
  	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  #if 0
  	/*
-@@ -852,13 +850,13 @@
+@@ -852,13 +851,13 @@
  	 */
  	rn = rnh->rnh_deladdr(rt_key(rt), rt_mask(rt), rnh);
  	if (rn == NULL) {
@@ -1058,7 +1059,7 @@
  
  	rt->rt_flags &= ~RTF_UP;
  
-@@ -866,14 +864,14 @@
+@@ -866,14 +865,14 @@
  	 * Give the protocol a chance to keep things in sync.
  	 */
  	if ((ifa = rt->rt_ifa) && ifa->ifa_rtrequest) {
@@ -1080,7 +1081,7 @@
  	}
  
  	/*
-@@ -886,95 +884,95 @@
+@@ -886,95 +885,95 @@
  }
  
  #ifdef RADIX_MPATH
@@ -1233,7 +1234,7 @@
  
  	/*
  	 * If the caller wants it, then it can have it,
-@@ -982,16 +980,16 @@
+@@ -982,16 +981,16 @@
  	 * doing it.
  	 */
  	if (ret_nrt) {
@@ -1254,7 +1255,7 @@
  rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
  				u_int fibnum)
  {
-@@ -1000,262 +998,318 @@
+@@ -1000,262 +999,318 @@
  #ifdef FLOWTABLE
  	register struct rtentry *rt0;
  #endif
@@ -1767,7 +1768,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1267,20 +1321,19 @@
+@@ -1267,20 +1322,19 @@
  #undef ifpaddr
  #undef flags
  
@@ -1791,7 +1792,7 @@
  	/*
  	 * Prepare to store the gateway in rt->rt_gateway.
  	 * Both dst and gateway are stored one after the other in the same
-@@ -1289,33 +1342,32 @@
+@@ -1289,33 +1343,32 @@
  	 * Otherwise, malloc a new block and update the 'dst' address.
  	 */
  	if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
@@ -1842,7 +1843,7 @@
  rt_maskedcopy(struct sockaddr *src, struct sockaddr *dst, struct sockaddr *netmask)
  {
  	register u_char *cp1 = (u_char *)src;
-@@ -1327,11 +1379,11 @@
+@@ -1327,11 +1380,11 @@
  	*cp2++ = *cp1++; *cp2++ = *cp1++; /* copies sa_len & sa_family */
  	cp3 += 2;
  	if (cplim > cplim2)
@@ -1857,7 +1858,7 @@
  }
  
  /*
-@@ -1339,7 +1391,7 @@
+@@ -1339,7 +1392,7 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -1866,7 +1867,7 @@
  rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
  {
  	struct sockaddr *dst;
-@@ -1352,30 +1404,32 @@
+@@ -1352,30 +1405,32 @@
  	int didwork = 0;
  	int a_failure = 0;
  	static struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
@@ -1915,7 +1916,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1384,16 +1438,16 @@
+@@ -1384,16 +1439,16 @@
  	 * be confusing at best and possibly worse.
  	 */
  	if (cmd == RTM_DELETE) {
@@ -1942,7 +1943,7 @@
  	}
  	/*
  	 * Now go through all the requested tables (fibs) and do the
-@@ -1404,141 +1458,140 @@
+@@ -1404,141 +1459,140 @@
  	 * independent parts and protocol dependent parts.
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
@@ -2198,7 +2199,7 @@
  rtinit_fib(struct ifaddr *ifa, int cmd, int flags)
  {
  	return (rtinit1(ifa, cmd, flags, -1));
-@@ -1548,19 +1601,19 @@
+@@ -1548,19 +1602,19 @@
   * Set up a routing table entry, normally
   * for an interface.
   */
