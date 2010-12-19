@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-20 03:21:10.000000000 +0900
++++ route.c	2010-12-20 08:27:52.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -444,7 +444,7 @@
  rtfree(struct rtentry *rt)
  {
 -	struct radix_node_head *rnh;
-+	dprint(("rtfree Start\n"));
++	dprint(("rtfree Start: rt[%p]\n",rt));
 +	struct ptree_node_head *rnh;
  
  	KASSERT(rt != NULL,("%s: NULL rt", __func__));
@@ -535,7 +535,7 @@
  	}
  done:
  	RT_UNLOCK(rt);
-+	dprint(("rtfree End\n"));
++	dprint(("rtfree End: done\n"));
  }
  
  
@@ -1464,7 +1464,6 @@
 -			uma_zfree(V_rtzone, rt);
 -			senderr(error);
 -		}
--
 +			RT_LOCK(rt);
 +			RT_LOCK_ASSERT(rt);
 +			int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
@@ -1482,8 +1481,8 @@
 +			if(rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway))
 +				rt->rt_gateway = (struct sockaddr *)(new + dlen);
 +			bcopy(gateway, rt->rt_gateway, glen);
-+
-+#ifdef DEBUG		
+ 
++#if 0
 +			struct sockaddr *gate = (struct sockaddr *)rt->rt_gateway;
 +			unsigned char *str = (unsigned char *)gate;
 +			int i;
@@ -1662,16 +1661,16 @@
 -		}
 +#endif /* INET */
 +#endif /* FLOWTABLE */
-+#ifdef DEBUG
++#if 0
 +			printf("rtrequest1_fib: rt[%p] gateway(before add) ",rt);
 +			debug_tree_print(rnh);
  #endif
 +	/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh,
 +						   (struct ptree_node *)rt/*&rt->rt_nodes*/);
-+			rn->data = rt;
-+			rt->rt_nodes = rn;
-+#ifdef DEBUG
++			//rn->data = rt;
++			//rt->rt_nodes = rn;
++#if 0
 +			printf("rtrequest1_fib: rt[%p] gateway(end add) ",rt);
 +			debug_tree_print(rnh);
  #endif
