@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-20 03:00:57.000000000 +0900
++++ route.c	2010-12-20 03:21:10.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1255,7 +1255,7 @@
  rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
  				u_int fibnum)
  {
-@@ -1000,262 +999,332 @@
+@@ -1000,262 +999,324 @@
  #ifdef FLOWTABLE
  	register struct rtentry *rt0;
  #endif
@@ -1660,9 +1660,12 @@
 -				}
  			}
 -		}
--#endif
 +#endif /* INET */
 +#endif /* FLOWTABLE */
++#ifdef DEBUG
++			printf("rtrequest1_fib: rt[%p] gateway(before add) ",rt);
++			debug_tree_print(rnh);
+ #endif
 +	/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh,
 +						   (struct ptree_node *)rt/*&rt->rt_nodes*/);
@@ -1742,10 +1745,6 @@
 +			if (ifa->ifa_rtrequest){
 +					dprint(("rtrequest1_fib: ifa_rtrequest\n"));
 +					ifa->ifa_rtrequest(req, rt, info);
-+#ifdef DEBUG
-+					printf("rtrequest1_fib: rt[%p] gateway(end ifa_rtrequest) ",rt);
-+				debug_tree_print(rnh);
-+#endif
 +			}
 +			/*
 +			 * actually return a resultant rtentry and
@@ -1754,16 +1753,8 @@
 +			if (ret_nrt) {
 +				*ret_nrt = rt;
 +				RT_ADDREF(rt);
-+#ifdef DEBUG
-+				printf("rtrequest1_fib: rt[%p] gateway(end ADDREF) ",rt);
-+				debug_tree_print(rnh);
-+#endif
 +			}
 +			RT_UNLOCK(rt);
-+#ifdef DEBUG
-+			printf("rtrequest1_fib: rt[%p] gateway(end UNLOCK) ",rt);
-+			debug_tree_print(rnh);
-+#endif
 +			break;
  	default:
 -		error = EOPNOTSUPP;
@@ -1781,7 +1772,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1267,20 +1336,19 @@
+@@ -1267,20 +1328,19 @@
  #undef ifpaddr
  #undef flags
  
@@ -1805,7 +1796,7 @@
  	/*
  	 * Prepare to store the gateway in rt->rt_gateway.
  	 * Both dst and gateway are stored one after the other in the same
-@@ -1289,33 +1357,32 @@
+@@ -1289,33 +1349,32 @@
  	 * Otherwise, malloc a new block and update the 'dst' address.
  	 */
  	if (rt->rt_gateway == NULL || glen > SA_SIZE(rt->rt_gateway)) {
@@ -1856,7 +1847,7 @@
  rt_maskedcopy(struct sockaddr *src, struct sockaddr *dst, struct sockaddr *netmask)
  {
  	register u_char *cp1 = (u_char *)src;
-@@ -1327,11 +1394,11 @@
+@@ -1327,11 +1386,11 @@
  	*cp2++ = *cp1++; *cp2++ = *cp1++; /* copies sa_len & sa_family */
  	cp3 += 2;
  	if (cplim > cplim2)
@@ -1871,7 +1862,7 @@
  }
  
  /*
-@@ -1339,7 +1406,7 @@
+@@ -1339,7 +1398,7 @@
   * for an interface.
   */
  #define _SOCKADDR_TMPSIZE 128 /* Not too big.. kernel stack size is limited */
@@ -1880,7 +1871,7 @@
  rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
  {
  	struct sockaddr *dst;
-@@ -1352,30 +1419,32 @@
+@@ -1352,30 +1411,32 @@
  	int didwork = 0;
  	int a_failure = 0;
  	static struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
@@ -1929,7 +1920,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1384,16 +1453,16 @@
+@@ -1384,16 +1445,16 @@
  	 * be confusing at best and possibly worse.
  	 */
  	if (cmd == RTM_DELETE) {
@@ -1956,7 +1947,7 @@
  	}
  	/*
  	 * Now go through all the requested tables (fibs) and do the
-@@ -1404,141 +1473,140 @@
+@@ -1404,141 +1465,140 @@
  	 * independent parts and protocol dependent parts.
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
@@ -2212,7 +2203,7 @@
  rtinit_fib(struct ifaddr *ifa, int cmd, int flags)
  {
  	return (rtinit1(ifa, cmd, flags, -1));
-@@ -1548,19 +1616,19 @@
+@@ -1548,19 +1608,19 @@
   * Set up a routing table entry, normally
   * for an interface.
   */
