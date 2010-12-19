@@ -330,6 +330,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			rt = (struct rtentry *)rt_node;
 			rt0 = tt->data;
 			dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
+				dprint(("-ptree_addroute: mpath_array[%p]\n",rt0->mpath_array));
 			n = ptree_mpath_count(rt0);
 			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
 			if(!n){
@@ -340,7 +341,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				dprint(("-ptree_addroute: array[0] = %p array[1] = %p\n",rt_array[0],rt_array[1]));
-				rt0->mpath_array = rt_array;
+				rt0->mpath_array = &rt_array;
+				dprint(("-ptree_addroute: rt0[%p] mpath_array[%p]\n",rt0,rt0->mpath_array));
 			} else {
 				dprint(("-ptree_addroute: add new rt in array[%d]\n",n));
 				rt_array = rt0->mpath_array;
