@@ -334,7 +334,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
 			if(!n){
 				dprint(("-ptree_addroute: add new mpath_array\n"));
-				R_Malloc(rt_array, struct rtentry **, 10*sizeof(struct rtentry *));
+				R_Malloc(rt_array, struct rtentry *, 10*sizeof(struct rtentry *));
 				rt_array = rt0;
 				++rt_array = rt;
 				rt0->mpath_array = rt_array;
