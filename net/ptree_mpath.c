@@ -559,7 +559,7 @@ ptree_mpath_count(struct rtentry *rt)
 		dprint(("-ptree_mpath_count: rt1[%p]\n",rt1));
 		/* count mpath_array */
 		while (rt1[i] != NULL) {
-				dprint(("-ptree_mpath_count: rt1[%d] = %p\n",rt1[i]));
+				dprint(("-ptree_mpath_count: rt1[%d] = %p\n",i,rt1[i]));
 				i++;
 		}
 		dprint(("-ptree_mpath_count End: count = %d\n",i));
