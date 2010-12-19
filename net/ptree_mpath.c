@@ -69,15 +69,15 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf(" flags[0x%x]\n",rt0->rt_flags);
 		}
 		
-#if 0
+
 		unsigned char *str;
 		int i;
-		str = (unsigned char *)pn->key;
-		printf("key: ");
-		for(i=0;i < pn->keylen/8;i++)
+		str = (unsigned char *)rt0->rt_gateway;
+		printf("gateway: ");
+		for(i=0;i < 16;i++)
 			printf("%d.",str[i]);
-		printf("/%d\n",pn->keylen);
-#endif
+		printf("/16\n");
+
 		
 		while(mrt){
 			printf("%21s [%p] ","malutipath",mrt);
@@ -335,13 +335,13 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			if(!n){
 				dprint(("-ptree_addroute: add new mpath_array\n"));
 				R_Malloc(rt_array, struct rtentry **, 10*sizeof(struct rtentry *));
-				rt_array[0] = rt0;
-				rt_array[1] = rt;
+				rt_array = rt0;
+				++rt_array = rt;
 				rt0->mpath_array = rt_array;
 			} else {
 				dprint(("-ptree_addroute: add new rt in array[%d]\n",n));
 				rt_array = rt0->mpath_array;
-				rt_array[n] = rt;
+				rt_array+n = rt;
 			}
 		}
 #endif /* mluti path */
