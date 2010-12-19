@@ -56,33 +56,34 @@ debug_node_print(struct ptree_node *pn, int offset)
 	}
 
 #ifdef PTREE_MPATH
-		printf("%24s [%p] ","gateway",pn->data);
+	if(pn->data){
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
 
-	if(mrt){
-		while(mrt){
-			printf("%24s [%p] ","malutipath",mrt);
-			rt = *mrt;	
-			if(offset == INET6_HEADOFF){
-				sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
-				printf(" flags[0x%x]\n",rt->rt_flags);
-			} else {
-				sprint_inet_ntoa(AF_INET,rt->rt_gateway);
-				printf(" flags[0x%x]\n",rt->rt_flags);
+		if(mrt){ /* muluti path */
+			while(mrt){
+				printf("%24s [%p] ","malutipath",mrt);
+				rt = *mrt;	
+				if(offset == INET6_HEADOFF){
+					sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
+					printf(" flags[0x%x]\n",rt->rt_flags);
+				} else {
+					sprint_inet_ntoa(AF_INET,rt->rt_gateway);
+					printf(" flags[0x%x]\n",rt->rt_flags);
+				}
+				mrt++;
 			}
-			mrt++;
 		}
-	}
-	else{
-		if(offset == INET6_HEADOFF){
-			sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
-			printf(" flags[0x%x]\n",rt0->rt_flags);
-		} else {
-			sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
-			printf(" flags[0x%x]\n",rt0->rt_flags);
+		else{ /* single path */
+			printf("%24s [%p] ","gateway",pn->data);
+			if(offset == INET6_HEADOFF){
+				sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
+				printf(" flags[0x%x]\n",rt0->rt_flags);
+			} else {
+				sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
+				printf(" flags[0x%x]\n",rt0->rt_flags);
+			}
 		}
-	}
 #if 0
 		unsigned char *str;
 		int i;
@@ -92,6 +93,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 			printf("%d.",str[i]);
 		printf("/16\n");
 #endif
+	}
 #endif /* PTREE_MPATH */
 	return 0;
 }
