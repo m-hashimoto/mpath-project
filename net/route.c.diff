@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-20 01:32:59.000000000 +0900
++++ route.c	2010-12-20 02:08:41.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -1487,7 +1487,7 @@
 +			struct sockaddr *gate = (struct sockaddr *)rt->rt_gateway;
 +			unsigned char *str = (unsigned char *)gate;
 +			int i;
-+			printf("rtrequest1_fib: gateway ");
++			printf("rtrequest1_fib: rt[%p] gateway ",rt);
 +			for(i=0;i < glen;i++)
 +				printf("%d.",str[i]);
 +			printf("/%d\n",glen);
@@ -1669,7 +1669,7 @@
 +			rn->data = rt;
 +			rt->rt_nodes = rn;
 +#ifdef DEBUG
-+			printf("rtrequest1_fib: gateway(end add) ");
++			printf("rtrequest1_fib: rt[%p] gateway(end add) ",rt);
 +			str = (unsigned char *)rt->rt_gateway;
 +			for(i=0;i < glen;i++)
 +				printf("%d.",str[i]);
@@ -1746,7 +1746,7 @@
 +					dprint(("rtrequest1_fib: ifa_rtrequest\n"));
 +					ifa->ifa_rtrequest(req, rt, info);
 +#ifdef DEBUG
-+					printf("rtrequest1_fib: gateway(end ifa_rtrequest) ");
++					printf("rtrequest1_fib: rt[%p] gateway(end ifa_rtrequest) ",rt);
 +					str = (unsigned char *)rt->rt_gateway;
 +					for(i=0;i < glen;i++)
 +						printf("%d.",str[i]);
