@@ -183,7 +183,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		len = 8*len;
 
 		/* default gateway "0.0.0.0/0" */
-		char zero[len/8] = {0};
+		char zero[len/8];
+		memset(zero,0,sizeof(zero));
 		if(memcmp(v+head->pnh_offset,zero,len/8) == NULL)
 			len = 0;
 #ifdef DEBUG
