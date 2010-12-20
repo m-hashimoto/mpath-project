@@ -680,7 +680,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
-		int len = 8*LEN(dst);
+		int len = 8*LEN(dst), i, n;
 		char *cp,*cplim;
 		
 		dprint(("-rt_mpath_conflict Start\n"));
@@ -744,22 +744,25 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				return EEXIST;
 		}
 		/* key/mask were the same.  compare gateway for all multipaths */
+		n = mpath_count(rt0);
+		i = 0;
 		do {
-				if ((*rt1)->rt_gateway->sa_family == AF_LINK) {
-						if ((*rt1)->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
-										bcmp((*rt1)->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
-												(*rt1)->rt_ifa->ifa_addr->sa_len))
+				dprint(("-rt_mpath_conflict: rt1[%d]=[%p]\n",i,rt1[i]));
+				if (rt1[i]->rt_gateway->sa_family == AF_LINK) {
+						if (rt1[i]->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
+										bcmp(rt1[i]->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
+												rt1[i]->rt_ifa->ifa_addr->sa_len))
 								continue;
 				} else {
-						if ((*rt1)->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
-										bcmp((*rt1)->rt_gateway, rt->rt_gateway,
-												(*rt1)->rt_gateway->sa_len))
+						if (rt1[i]->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
+										bcmp(rt1[i]->rt_gateway, rt->rt_gateway,
+												rt1[i]->rt_gateway->sa_len))
 								continue;
 				}
 
 				/* all key/mask/gateway are the same.  conflicting entry. */
 				return EEXIST;
-		} while ((rt1++) != NULL);
+		} while ((++i) < n);
 
 different:
 		dprint(("-rt_mpath_conflict: different\n"));
