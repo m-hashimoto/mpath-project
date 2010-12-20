@@ -119,12 +119,11 @@ debug_tree_print(struct ptree_node_head *pnh)
 		pn = pnh->pnh_top;
 		printf("\n pnh[%p] phn_top[%p] offset[%d]\n",pnh,pn,pnh->pnh_offset);
 		printf("----------------------------------------------------------\n");
-		//printf("%-12s %-12s %-12s %-12s %-12s\n",
-		//								"node","key","data","gateway","flags");
 		if(!pn)
 			return (0);
 		for (;;) {
 			debug_node_print(pn, pnh->pnh_offset);
+			pritnf("\n");
 			next = ptree_next(pn);
 			if( !next )
 				break;
@@ -659,6 +658,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
 				sa1 = rt1[i]->rt_gateway;
 				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
+						dprint(("-rt_mpath_delete: match gate\n"));
 						rt1[i] = rt1[n-1];
 						rt1[n-1] = NULL;
 						if(n == 1)
