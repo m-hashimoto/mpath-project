@@ -340,7 +340,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				dprint(("-ptree_addroute: add new mpath_array\n"));
 				dprint(("-ptree_addroute: rt0 = %p rt = %p\n",rt0,rt));
 				R_Malloc(rt_array, struct rtentry **, 10*sizeof(struct rtentry *));
-				memset(&rt_array, 0, 10*sizeof(struct rtentry *));
+				memset(rt_array, 0, 10*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				dprint(("-ptree_addroute: array[0] = %p array[1] = %p\n",rt_array[0],rt_array[1]));
