@@ -744,7 +744,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				return EEXIST;
 		}
 		/* key/mask were the same.  compare gateway for all multipaths */
-		n = mpath_count(rt0);
+		n = ptree_mpath_count(rt0);
 		i = 0;
 		do {
 				dprint(("-rt_mpath_conflict: rt1[%d]=[%p]\n",i,rt1[i]));
