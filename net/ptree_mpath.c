@@ -433,6 +433,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 #endif
 		if(headrt->mpath_array){
 			rt = rt_mpath_matchgate(headrt,gate);
+			dprint(("-ptree_deladdr: rt[%p]\n",rt));
 			if( ! rt_mpath_delete(headrt,rt) )
 				return (0);
 			return (tt);
@@ -641,10 +642,13 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
 		
-		while (*rt1) {
-				if (*rt1 == rt) {
+		while (rt1 && i < n) {
+				dprint(("-rt_mpath_delete: rt1[%p] rt[%p]\n",rt1,rt));
+				if (rt1 == rt) {
 						rt0->mpath_array[i] = rt0->mpath_array[n-1];
 						rt0->mpath_array[n-1] = NULL;
+						if(n == 1)
+							Free(rt0->mpath_array);
 						return (1);
 				}
 				rt1++;
