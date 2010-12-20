@@ -654,7 +654,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		rt1 = rt0->mpath_array;
 		
 		int l = 0;
-		unsigned char *str = sa0;
+		unsigned char *str = (unsigned char *)sa0;
 		for(l=0;l<16;i++)
 			dprint(("%d.",str[l]));
 		dprint(("/16\n"));
@@ -663,7 +663,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
 				sa1 = rt1[i]->rt_gateway;
 				
-				str = sa1;
+				str = (unsigned char *)sa1;
 				for(l=0;l<16;i++)
 					dprint(("%d.",str[l]));
 				dprint(("/16\n"));
