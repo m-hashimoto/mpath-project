@@ -218,7 +218,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 on1:
 	*dupentry = 0;
 	/* default gateway "0.0.0.0/0" */
-	if(memcmp(v+head->pnh_offset,pn_zeros,sizeof(tmp)) == 0){
+	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
 		tt->keylen = 8*head->pnh_offset;
 		dprint(("-ptree_insert: default gateway len[%d]\n",tt->keylen));
 	}
