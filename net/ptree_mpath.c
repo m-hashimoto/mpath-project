@@ -821,17 +821,19 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 }
 
 	struct rtentry *
-multipath_nexthop (unsigned int seed, struct rtentry **nexthops)
+multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 {
+	struct rtentry **rt_array;
 	unsigned int hash;
 	int n;
 	
-	n = ptree_mpath_count(nexthops[0]);
+	n = ptree_mpath_count(nexthops);
+	rt_array = nexthop->mpath_array;
 	hash = seed + hashjitter;
 	
 	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
 	hash %= n;
-	rt = nexthops[hash];
+	rt = rt_array[hash];
 	dprint(("-multipath_nexthop: rt[%p]\n",rt));
 	return rt;
 }

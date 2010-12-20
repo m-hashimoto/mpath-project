@@ -115,7 +115,7 @@ int rt_mpath_delete(struct rtentry *, struct rtentry *);
 int     ptree4_mpath_inithead(void **, int);
 int     ptree6_mpath_inithead(void **, int);
 
-struct rtentry *multipath_nexthop(unsigned int seed, void *nexthops);
+struct rtentry *multipath_nexthop(unsigned int seed, struct rtentry *nexthops);
 #endif /* _KERNEL */
 #endif /* PTREE_MPATH */
 
