@@ -658,20 +658,36 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
  */
 		int
 rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
-				struct sockaddr *dst /**netmask*/)
+								struct sockaddr *dst)
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
 		struct sockaddr *sa0, *sa;
-		//char *p, *q, *eq;
+		int len = LEN(dst);
+		char *cp,*cplim;
 		//int same, l, skip;
-		int l;
 		dprint(("-rt_mpath_conflict Start\n"));
-		l = (int)LEN(dst);
 
-		rn = pnh->rnh_lookup((char *)dst, l, pnh->pnh_treetop);
+		//rn = pnh->rnh_lookup((char *)dst, len, pnh->pnh_treetop);
+		rn = ptree_search(dst, len, pnh->pnh_treetop);
 		if (!rn)
 				return 0;
+
+		cp = rn->key; cplim = dst; len = rn->keylen;
+#ifdef DEBUG
+		if(pnh->pnh_offset == 4){
+			printf("-rt_mpath_conflict: rn ");
+			sprint_inet_ntoa(AF_INET, cp);
+			printf("/%d\n",len);
+		}else{
+			printf("-rt_mpath_conflict: rn ");
+			sprint_inet_ntoa(AF_INET6, cp);
+			printf("/%d\n",len);
+		}
+#endif
+		if ( memcmp(cp,cplim,len/8) != 0 )
+			return 0;
+		dprint(("-rt_mpath_conflict: match exactly as a host\n"));
 
 		/*
 		 * unlike other functions we have in this file, we have to check
