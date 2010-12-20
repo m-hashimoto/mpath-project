@@ -653,15 +653,17 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		
 		int l = 0;
 		unsigned char *str = (unsigned char *)sa0;
+		dprint(("headrt->rt_gateway[%p] ",sa0));
 		for(l=0;l<16;l++)
 			dprint(("%d.",str[l]));
 		dprint(("/16\n"));
 		
 		while (rt1[i] && i < n) {
-				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
+				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1[i],rt));
 				sa1 = rt1[i]->rt_gateway;
 				
 				str = (unsigned char *)sa1;
+				dprint(("rt1[%d]->rt_gateway[%p] ",i,sa1));
 				for(l=0;l<16;l++)
 					dprint(("%d.",str[l]));
 				dprint(("/16\n"));
@@ -669,13 +671,16 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 						dprint(("-rt_mpath_delete: match gate\n"));
+						while (rt1[i] && i < n)
+							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",i,rt1[i]));
 						rt1[i] = rt1[n-1];
 						rt1[n-1] = NULL;
+						while (rt1[i] && i < n-1)
+							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",i,rt1[i]));
 						if(n == 1)
 							Free(rt1);
 						return (1);
 				}
-				rt1++;
 				i++;
 		}
 		return (0);
