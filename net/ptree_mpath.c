@@ -154,7 +154,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	//caddr_t v = v_arg, m = m_arg;
 	//register caddr_t cp;
 	char *v = v_arg, *m = m_arg;
-	register char *cp;
+	//register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	
@@ -183,7 +183,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		len = 8*len;
 
 		/* default gateway "0.0.0.0/0" */
-		char zero[len/8];
+		char zero[len/8], *cp;
 		memset(zero,0,sizeof(zero));
 		cp = v + head->pnh_offset;
 		if(memcmp(cp,zero,len/8-head->pnh_offset) == NULL)
