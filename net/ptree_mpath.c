@@ -669,10 +669,9 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
-		struct sockaddr *sa0, *sa;
 		int len = 8*LEN(dst);
 		char *cp,*cplim;
-		//int same, l, skip;
+		
 		dprint(("-rt_mpath_conflict Start\n"));
 #ifdef DEBUG
 		if(pnh->pnh_offset == 4){
@@ -704,8 +703,9 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 			printf("/%d\n",len);
 		}
 #endif
+		/* compare key. */
 		if ( memcmp(cp,cplim,len/8) != 0 )
-			return 0;
+			goto different;
 		dprint(("-rt_mpath_conflict: match exactly as a host\n"));
 
 		/*
@@ -713,20 +713,9 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		 * all key/mask/gateway as rnh_lookup can match less specific entry.
 		 */
 		rt0 = rn->data;
-		dprint(("-rt_mpath_conflict: rt0[%p]\n",rt0));
-		sa0 = (struct sockaddr *)rt_key(rt0);
-		sa = (struct sockaddr *)rt_key(rt);
-
-		/* compare key. */
-		if (sa0->sa_len != sa->sa_len ||
-						bcmp(rt_key(rt0), rt_key(rt), sa0->sa_len))
-				goto different;
-#if 0
-		if (rt_key(rt0)->sa_len != rt_key(rt)->sa_len ||
-						bcmp(rt_key(rt0), rt_key(rt), rt_key(rt0)->sa_len))
-				goto different;
-#endif
+		
 		rt1 = rt0->mpath_array;
+		dprint(("-rt_mpath_conflict: rt0[%p] rt1[%p]\n",rt0,rt1));
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
 				if ((*rt1)->rt_gateway->sa_family == AF_LINK) {
