@@ -633,18 +633,21 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 		uint32_t i = 0, n;
 		struct rtentry *rt0,**rt1;
+		struct sockaddr *sa0, *sa1;
 		dprint(("-rt_mpath_delete Start\n"));
 
 		if (!headrt || !rt)
 				return (0);
 		
 		rt0 = headrt;
+		sa0 = headrt->rt_gateway;
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
 		
 		while (rt1[i] && i < n) {
 				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
-				if (rt1[i] == rt) {
+				sa1 = rt1[i]->rt_gateway;
+				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 						rt1[i] = rt1[n-1];
 						rt1[n-1] = NULL;
 						if(n == 1)
@@ -671,9 +674,21 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		char *cp,*cplim;
 		//int same, l, skip;
 		dprint(("-rt_mpath_conflict Start\n"));
+#ifdef DEBUG
+		if(pnh->pnh_offset == 4){
+			printf("-rt_mpath_conflict: dst ");
+			sprint_inet_ntoa(AF_INET, dst);
+			printf("/%d\n",len);
+		}else{
+			printf("-rt_mpath_conflict: dst ");
+			sprint_inet_ntoa(AF_INET6, dst);
+			printf("/%d\n",len);
+		}
+#endif
 
 		//rn = pnh->rnh_lookup((char *)dst, len, pnh->pnh_treetop);
 		rn = ptree_search((char *)dst, len, pnh->pnh_treetop);
+		dprint(("-rt_mpath_conflict: rn[%p]\n",rn));
 		if (!rn)
 				return 0;
 
