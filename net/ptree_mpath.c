@@ -360,7 +360,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			}
 			rt->rt_nodes = tt;
 			if(n == MAX_MULTIPATH){
-				struct rtentry **tmp
+				struct rtentry **tmp;
+				
 				if(R_Realloc(tmp, struct rtentry **, 
 												10*MAX_MULTIPATH*sizeof(struct rtentry *))==NULL){
 					printf("realloc fault\n");
