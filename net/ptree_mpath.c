@@ -61,9 +61,10 @@ debug_node_print(struct ptree_node *pn, int offset)
 		struct rtentry **mrt = rt0->mpath_array;
 
 		if(mrt){ /* muluti path */
-			while(mrt){
-				printf("%24s [%p] ","malutipath",mrt);
-				rt = *mrt;	
+			int i = 0;
+			while(mrt[i]){
+				printf("%24s [%p] ","malutipath",mrt[i]);
+				rt = mrt[i];
 				if(offset == INET6_HEADOFF){
 					sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
 					printf(" flags[0x%x]\n",rt->rt_flags);
@@ -71,7 +72,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 					sprint_inet_ntoa(AF_INET,rt->rt_gateway);
 					printf(" flags[0x%x]\n",rt->rt_flags);
 				}
-				mrt++;
+				i++;
 			}
 		}
 		else{ /* single path */
@@ -339,7 +340,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				dprint(("-ptree_addroute: add new mpath_array\n"));
 				dprint(("-ptree_addroute: rt0 = %p rt = %p\n",rt0,rt));
 				R_Malloc(rt_array, struct rtentry **, 10*sizeof(struct rtentry *));
-				bzero(rt_array, 10*sizeof(struct rtentry *));
+				memset(&rt_array, 0, 10*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				dprint(("-ptree_addroute: array[0] = %p array[1] = %p\n",rt_array[0],rt_array[1]));
