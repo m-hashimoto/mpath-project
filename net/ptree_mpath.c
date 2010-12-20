@@ -196,15 +196,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 #endif
 	}
 	
-	/* default gateway "0.0.0.0/0" */
-	char zero[len/8], *tmp;
-	memset(zero,0,sizeof(zero));
-	tmp = v+head->pnh_offset;
-	//dprint(("-ptree_insert: memcmp[%d]\n",memcmp(tmp,zero,sizeof(tmp))));
-	if(memcmp(tmp,zero,sizeof(tmp)) == 0){
-		len = 8*head->pnh_offset;
-		dprint(("-ptree_insert: default gateway len[%d]\n",len));
-	}
 	
 	if (!top){
 		//dprint(("-ptree_insert: top is NULL\n"));
@@ -346,6 +337,18 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 * Deal with duplicated keys: attach node to previous instance
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
+		
+		/* default gateway "0.0.0.0/0" */
+		char zero[len/8], *tmp;
+		char *v = v_arg;
+
+		memset(zero,0,sizeof(zero));
+		tmp = v + head->pnh_offset;
+		if(memcmp(tmp,zero,sizeof(tmp)) == 0){
+			tt->keylen = 8*head->pnh_offset;
+			dprint(("-ptree_insert: default gateway len[%d]\n",tt->keylen));
+		}
+		
 		dprint(("-ptree_addroute: keyduplicated[%d]\n",keyduplicated));
 #ifdef PTREE_MPATH /* multi path */
 		if (keyduplicated) {
