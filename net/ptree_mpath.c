@@ -823,12 +823,12 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 	struct rtentry *
 multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 {
-	struct rtentry **rt_array;
+	struct rtentry *rt, **rt_array;
 	unsigned int hash;
 	int n;
 	
 	n = ptree_mpath_count(nexthops);
-	rt_array = nexthop->mpath_array;
+	rt_array = nexthops->mpath_array;
 	hash = seed + hashjitter;
 	
 	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
