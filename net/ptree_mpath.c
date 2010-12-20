@@ -174,6 +174,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		printf("/%d\n",len);
 	}
 #endif
+	dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 	if(m && (LEN(m) > head->pnh_offset)){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
@@ -200,7 +201,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	tmp = v+head->pnh_offset;
 	dprint(("-ptree_insert: memcmp[%d]\n",memcmp(tmp,zero,sizeof(tmp))));
 	if(memcmp(tmp,zero,sizeof(tmp)) == 0)
-		len = 0;
+		len = 8*head->offset;
 	
 	if (!top){
 		//dprint(("-ptree_insert: top is NULL\n"));
