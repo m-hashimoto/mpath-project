@@ -359,6 +359,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[n] = rt;
 			}
 			rt->rt_nodes = tt;
+#if 0 /* Realloc */
 			if(n == MAX_MULTIPATH){
 				struct rtentry **tmp;
 				
@@ -366,13 +367,14 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 												10*MAX_MULTIPATH*sizeof(struct rtentry *));
 				if(tmp==NULL){
 					printf("realloc fault\n");
-					return EEXIST;
+					return NULL;
 				}
 				else{
 					rt_array = tmp;
 					dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
 				}
 			}
+#endif
 			rt->mpath_array = rt_array;
 			return tt;
 		}
@@ -691,7 +693,6 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 							l++;
 						}
 						
-						Free(rt[i]);
 						rt1[i] = rt1[n-1];
 						rt1[n-1] = NULL;
 
