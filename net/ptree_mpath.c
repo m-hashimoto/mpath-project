@@ -669,11 +669,11 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		dprint(("-rt_mpath_conflict Start\n"));
 
 		//rn = pnh->rnh_lookup((char *)dst, len, pnh->pnh_treetop);
-		rn = ptree_search(dst, len, pnh->pnh_treetop);
+		rn = ptree_search((char *)dst, len, pnh->pnh_treetop);
 		if (!rn)
 				return 0;
 
-		cp = rn->key; cplim = dst; len = rn->keylen;
+		cp = rn->key; cplim = (char *)dst; len = rn->keylen;
 #ifdef DEBUG
 		if(pnh->pnh_offset == 4){
 			printf("-rt_mpath_conflict: rn ");
