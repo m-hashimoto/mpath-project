@@ -339,7 +339,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
 		
 		/* default gateway "0.0.0.0/0" */
-		char zero[len/8], *tmp;
+		char zero[LEN(v_arg)/8], *tmp;
 		char *v = v_arg;
 
 		memset(zero,0,sizeof(zero));
