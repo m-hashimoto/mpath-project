@@ -352,9 +352,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				memset(rt_array, 0, 10*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
-				dprint(("-ptree_addroute: array[0] = %p array[1] = %p\n",rt_array[0],rt_array[1]));
 				rt0->mpath_array = rt_array;
-				dprint(("-ptree_addroute: rt0[%p] mpath_array[%p]\n",rt0,rt0->mpath_array));
 			} else {
 				dprint(("-ptree_addroute: add new rt in array[%d]\n",n));
 				rt_array = rt0->mpath_array;
@@ -655,7 +653,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		
 		int l = 0;
 		unsigned char *str = (unsigned char *)sa0;
-		for(l=0;l<16;i++)
+		for(l=0;l<16;l++)
 			dprint(("%d.",str[l]));
 		dprint(("/16\n"));
 		
@@ -664,10 +662,11 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				sa1 = rt1[i]->rt_gateway;
 				
 				str = (unsigned char *)sa1;
-				for(l=0;l<16;i++)
+				for(l=0;l<16;l++)
 					dprint(("%d.",str[l]));
 				dprint(("/16\n"));
 				
+				dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 						dprint(("-rt_mpath_delete: match gate\n"));
 						rt1[i] = rt1[n-1];
@@ -783,7 +782,7 @@ different:
 		void
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
-		u_int32_t n;
+		//u_int32_t n;
 		struct rtentry *rt, *rt0;
 		//struct ptree_node *rn;
 		dprint(("-rtallc_mpath_fib Start\n"));
@@ -804,7 +803,7 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 				RT_UNLOCK(ro->ro_rt);
 				return;
 		}
-
+#if 0
 		/* beyond here, we use rn as the master copy */
 		n = ptree_mpath_count(rt0);
 
@@ -814,6 +813,8 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		hash %= n;
 		rt = rt0->mpath_array[hash];
 		/* XXX try filling rt_gwroute and avoid unreachable gw  */
+#endif
+		rt = multipath_nexthop(hash,rt0);
 
 		/* gw selection has failed - there must be only zero weight routes */
 		if (!rt) {
