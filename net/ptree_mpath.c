@@ -687,14 +687,14 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				}
 				dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
 				match = rt1[i];
+				rt1[i] = rt1[n-1];
+				rt1[n-1] = NULL;
 				
 				RT_LOCK(match);
 				RT_ADDREF(match);
 				match->rt_flags &= ~RTF_UP;
 				RTFREE_LOCKED(match);
 				
-				rt1[i] = rt1[n-1];
-				rt1[n-1] = NULL;
 				dprint(("-rt_mpath_delete: change rt1[%d] and rt1[%d]\n",i,n-1));
 				return (0);
 			}
