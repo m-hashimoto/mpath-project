@@ -123,7 +123,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 			return (0);
 		for (;;) {
 			debug_node_print(pn, pnh->pnh_offset);
-			printf("\n");
 			next = ptree_next(pn);
 			if( !next )
 				break;
@@ -657,6 +656,13 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		while (rt1[i] && i < n) {
 				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
 				sa1 = rt1[i]->rt_gateway;
+				
+				int l = 0;
+				unsigned char *str = sa1;
+				for(l=0;l<16;i++)
+					dprint(("%d.",str[l]));
+				dprint(("/16\n"));
+				
 				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 						dprint(("-rt_mpath_delete: match gate\n"));
 						rt1[i] = rt1[n-1];
