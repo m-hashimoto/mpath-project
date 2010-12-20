@@ -174,7 +174,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		printf("/%d\n",len);
 	}
 #endif
-	dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
+	if(m)
+		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 	if(m && (LEN(m) > head->pnh_offset)){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
