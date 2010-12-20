@@ -183,7 +183,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		len = 8*len;
 
 		/* default gateway "0.0.0.0/0" */
-		if(memcmp(v+head->pnh_offset,0,len/8) == NULL)
+		char zero[len/8] = {0};
+		if(memcmp(v+head->pnh_offset,zero,len/8) == NULL)
 			len = 0;
 #ifdef DEBUG
 		if(head->pnh_offset == INET_HEADOFF){
