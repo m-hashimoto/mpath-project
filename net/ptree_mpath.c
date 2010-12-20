@@ -198,6 +198,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	/* default gateway "0.0.0.0/0" */
 	char zero[len/8], *tmp;
 	memset(zero,0,sizeof(zero));
+	dprint(("-ptree_insert:memset 0\n",));
 	tmp = v+head->pnh_offset;
 	//dprint(("-ptree_insert: memcmp[%d]\n",memcmp(tmp,zero,sizeof(tmp))));
 	if(memcmp(tmp,zero,sizeof(tmp)) == 0)
