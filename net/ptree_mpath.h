@@ -102,7 +102,7 @@ struct route;
 struct rtentry;
 struct sockaddr;
 
-#define MAX_MULTIPATH 1
+#define MAX_MULTIPATH 10
 
 /*
  * Patricia trie with multipath support
