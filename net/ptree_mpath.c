@@ -679,7 +679,8 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		 */
 		rt0 = rn->data;
 		dprint(("-rt_mpath_conflict: rt0[%p]\n",rt0));
-		sa0 = *rt_key(rt0); sa = *rt_key(rt);
+		sa0 = (struct sockaddr *)rt_key(rt0);
+		sa = (struct sockaddr *)rt_key(rt);
 
 		/* compare key. */
 		if (sa0->sa_len != sa->sa_len ||
