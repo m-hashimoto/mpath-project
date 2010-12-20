@@ -466,6 +466,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 			rt = rt_mpath_matchgate(headrt,gate);
 			dprint(("-ptree_deladdr: rt[%p]\n",rt));
 			if( ! rt_mpath_delete(headrt,rt) )
+				return (0);
 		}
 #endif
 		ptree_remove(tt);
@@ -681,7 +682,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 			dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 				if(n == 1){ /* case: single path */
-					free(rt1);
+					RTFREE(rt1,);
 					return (1);
 				}
 				dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
