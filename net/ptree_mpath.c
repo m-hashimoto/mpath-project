@@ -663,7 +663,7 @@ static uint32_t hashjitter;
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 		uint32_t i = 0, n;
-		struct rtentry *rt0,**rt1, *rt;
+		struct rtentry *rt0,**rt1, *match;
 		struct sockaddr *sa0, *sa1;
 		dprint(("-rt_mpath_delete Start\n"));
 
@@ -686,12 +686,12 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					return (1);
 				}
 				dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
-				rt = rt1[i];
+				match = rt1[i];
 				
-				RT_LOCK(rt);
-				RT_ADDREF(rt);
-				rt->rt_flags &= ~RTF_UP;
-				RTFREE_LOCKED(rt);
+				RT_LOCK(match);
+				RT_ADDREF(match);
+				match->rt_flags &= ~RTF_UP;
+				RTFREE_LOCKED(match);
 				
 				rt1[i] = rt1[n-1];
 				rt1[n-1] = NULL;
