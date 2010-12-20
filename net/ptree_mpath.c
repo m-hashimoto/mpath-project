@@ -670,7 +670,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
 		struct sockaddr *sa0, *sa;
-		int len = LEN(dst);
+		int len = 8*LEN(dst);
 		char *cp,*cplim;
 		//int same, l, skip;
 		dprint(("-rt_mpath_conflict Start\n"));
