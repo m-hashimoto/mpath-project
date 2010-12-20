@@ -186,7 +186,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		char zero[len/8], *cp;
 		memset(zero,0,sizeof(zero));
 		cp = v + head->pnh_offset;
-		if(memcmp(cp,zero,len/8-head->pnh_offset) == NULL)
+		if(memcmp(cp,zero,sizeof(cp)) == NULL)
 			len = 0;
 #ifdef DEBUG
 		if(head->pnh_offset == INET_HEADOFF){
