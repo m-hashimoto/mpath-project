@@ -662,7 +662,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
-		//struct sockaddr *sa0, *sa;
+		struct sockaddr *sa0, *sa;
 		//char *p, *q, *eq;
 		//int same, l, skip;
 		int l;
@@ -678,17 +678,18 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		 * all key/mask/gateway as rnh_lookup can match less specific entry.
 		 */
 		rt0 = rn->data;
-		//sa0 = *rt_key(rt0); sa = *rt_key(rt);
+		dprint(("-rt_mpath_conflict: rt0[%p]\n",rt0));
+		sa0 = *rt_key(rt0); sa = *rt_key(rt);
 
 		/* compare key. */
-#if 0
 		if (sa0->sa_len != sa->sa_len ||
 						bcmp(rt_key(rt0), rt_key(rt), sa0->sa_len))
 				goto different;
-#endif
+#if 0
 		if (rt_key(rt0)->sa_len != rt_key(rt)->sa_len ||
 						bcmp(rt_key(rt0), rt_key(rt), rt_key(rt0)->sa_len))
 				goto different;
+#endif
 		rt1 = rt0->mpath_array;
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
