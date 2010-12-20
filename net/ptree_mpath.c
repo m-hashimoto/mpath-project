@@ -181,6 +181,9 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
+
+		if(memcmp(v,0,len/8) == NULL)
+			len = 0;
 #ifdef DEBUG
 		if(head->pnh_offset == INET_HEADOFF){
 			printf("-ptree_insert: mask ");
@@ -624,7 +627,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 
 		/* beyond here, we use rn as the master copy */
 		do {
-				rt = *match;
+				rt = match[i];
 				/*
 				 * we are removing an address alias that has 
 				 * the same prefix as another address
@@ -640,9 +643,10 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 								break;
 				}
 				i++;
-		} while ( (match++) != NULL);
+		} while ( match[i] );
 
-		return *match;
+		dprint(("-rt_mpath_matchgate End: rt[%p]\n",rt));
+		return rt;
 }
 
 /* 
