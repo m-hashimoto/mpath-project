@@ -76,13 +76,24 @@ debug_node_print(struct ptree_node *pn, int offset)
 			}
 		}
 		else{ /* single path */
-			printf("%24s [%p] ","gateway",pn->data);
-			if(offset == INET6_HEADOFF){
-				sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
-				printf(" flags[0x%x]\n",rt0->rt_flags);
+			if (rt0->rt_gateway->sa_family == AF_LINK) {
+				printf("%24s [%p] ","link",pn->data);
+				if(offset == INET6_HEADOFF){
+					sprint_inet_ntoa(AF_INET6,rt0->rt_ifa->ifa_addr);
+					printf(" flags[0x%x]\n",rt0->rt_flags);
+				} else {
+					sprint_inet_ntoa(AF_INET,rt0->rt_ifa->ifa_addr);
+					printf(" flags[0x%x]\n",rt0->rt_flags);
+				}
 			} else {
-				sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
-				printf(" flags[0x%x]\n",rt0->rt_flags);
+				printf("%24s [%p] ","gateway",pn->data);
+				if(offset == INET6_HEADOFF){
+					sprint_inet_ntoa(AF_INET6,rt0->rt_gateway);
+					printf(" flags[0x%x]\n",rt0->rt_flags);
+				} else {
+					sprint_inet_ntoa(AF_INET,rt0->rt_gateway);
+					printf(" flags[0x%x]\n",rt0->rt_flags);
+				}
 			}
 		}
 #if 0
@@ -716,6 +727,22 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		
 		rt1 = rt0->mpath_array;
 		dprint(("-rt_mpath_conflict: rt0[%p] rt1[%p]\n",rt0,rt1));
+		if(!rt1){
+				if (rt0->rt_gateway->sa_family == AF_LINK) {
+						if (rt0->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
+										bcmp(rt0->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
+												rt0->rt_ifa->ifa_addr->sa_len))
+								goto different;
+				} else {
+						if (rt0->rt_gateway->sa_len != rt->rt_gateway->sa_len ||
+										bcmp(rt0->rt_gateway, rt->rt_gateway,
+												rt0->rt_gateway->sa_len))
+								goto different;
+				}
+
+				/* all key/mask/gateway are the same.  conflicting entry. */
+				return EEXIST;
+		}
 		/* key/mask were the same.  compare gateway for all multipaths */
 		do {
 				if ((*rt1)->rt_gateway->sa_family == AF_LINK) {
