@@ -217,10 +217,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 on1:
 	*dupentry = 0;
-	//{
-		int *data = NULL;
-		tt = ptree_add(v, len, data, head->pnh_treetop);
-	//}
+	/* default gateway "0.0.0.0/0" */
+	tmp = v + head->pnh_offset;
+	if(memcmp(tmp,pn_zeros,sizeof(tmp)) == 0){
+		tt->keylen = 8*head->pnh_offset;
+		dprint(("-ptree_insert: default gateway len[%d]\n",tt->keylen));
+	}
+	int *data = NULL;
+	tt = ptree_add(v, len, data, head->pnh_treetop);
 	//dprint(("-ptree_insert End: insert tt[%p]\n",tt));
 	return (tt);
 }
@@ -338,16 +342,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
 		
-		/* default gateway "0.0.0.0/0" */
-		char zero[LEN(v_arg)/8], *tmp;
-		char *v = v_arg;
-
-		memset(zero,0,sizeof(zero));
-		tmp = v + head->pnh_offset;
-		if(memcmp(tmp,zero,sizeof(tmp)) == 0){
-			tt->keylen = 8*head->pnh_offset;
-			dprint(("-ptree_insert: default gateway len[%d]\n",tt->keylen));
-		}
 		
 		dprint(("-ptree_addroute: keyduplicated[%d]\n",keyduplicated));
 #ifdef PTREE_MPATH /* multi path */
