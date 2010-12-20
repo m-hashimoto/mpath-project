@@ -201,7 +201,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	tmp = v+head->pnh_offset;
 	dprint(("-ptree_insert: memcmp[%d]\n",memcmp(tmp,zero,sizeof(tmp))));
 	if(memcmp(tmp,zero,sizeof(tmp)) == 0)
-		len = 8*head->offset;
+		len = 8*head->pnh_offset;
 	
 	if (!top){
 		//dprint(("-ptree_insert: top is NULL\n"));
