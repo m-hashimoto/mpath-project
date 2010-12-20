@@ -672,7 +672,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				return (0);
 		
 		rt0 = headrt;
-		sa0 = headrt->rt_gateway;
+		sa0 = rt->rt_gateway;
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
 		
@@ -695,21 +695,9 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				
 				dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
-						dprint(("-rt_mpath_delete: match gate\n"));
-						l=0;
-						while (rt1[l] && l < n){
-							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",l,rt1[l]));
-							l++;
-						}
-						
+						dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
 						rt1[i] = rt1[n-1];
 						rt1[n-1] = NULL;
-
-						l=0;
-						while (rt1[l] && l < n-1){
-							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",l,rt1[l]));
-							l++;
-						}
 						
 						if(n == 1)
 							Free(rt1);
