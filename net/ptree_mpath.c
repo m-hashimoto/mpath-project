@@ -348,8 +348,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			if(!n){
 				dprint(("-ptree_addroute: add new mpath_array\n"));
 				dprint(("-ptree_addroute: rt0 = %p rt = %p\n",rt0,rt));
-				R_Malloc(rt_array, struct rtentry **, 10*sizeof(struct rtentry *));
-				memset(rt_array, 0, 10*sizeof(struct rtentry *));
+				R_Malloc(rt_array, struct rtentry **, MAX_MULTIPATH*sizeof(struct rtentry *));
+				memset(rt_array, 0, MAX_MULTIPATH*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				rt0->mpath_array = rt_array;
@@ -359,6 +359,18 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[n] = rt;
 			}
 			rt->rt_nodes = tt;
+			if(n == MAX_MULTIPATH){
+				struct rtentry **tmp
+				if(R_Realloc(tmp, struct rtentry **, 
+												10*MAX_MULTIPATH*sizeof(struct rtentry *))){
+					printf("realloc fault\n");
+					return EEXIST;
+				}
+				else{
+					rt_array = tmp;
+					dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
+				}
+			}
 			rt->mpath_array = rt_array;
 			return tt;
 		}
@@ -671,12 +683,22 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 				if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 						dprint(("-rt_mpath_delete: match gate\n"));
-						while (rt1[i] && i < n)
-							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",i,rt1[i]));
+						l=0;
+						while (rt1[l] && l < n){
+							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",l,rt1[l]));
+							l++;
+						}
+						
+						Free(rt[i]);
 						rt1[i] = rt1[n-1];
 						rt1[n-1] = NULL;
-						while (rt1[i] && i < n-1)
-							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",i,rt1[i]));
+
+						l=0;
+						while (rt1[l] && l < n-1){
+							dprint(("-rt_mpath_delete: rt1[%d]=[%p]\n",l,rt1[l]));
+							l++;
+						}
+						
 						if(n == 1)
 							Free(rt1);
 						return (1);

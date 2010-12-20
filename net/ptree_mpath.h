@@ -61,6 +61,7 @@ struct ptree_node_head {
 #ifndef _KERNEL
 #define R_Malloc(p, t, n) (p = (t) malloc((unsigned int)(n)))
 #define R_Zalloc(p, t, n) (p = (t) calloc(1,(unsigned int)(n)))
+#define R_Realloc(p, t, n) (p = (t) realloc(p,(unsigned int)(n)))
 #define Free(p) free((char *)p);
 #else /* ifdef _KERNEL */
 #define R_Malloc(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT))
@@ -100,8 +101,11 @@ int debug_tree_print(struct ptree_node_head *);
 struct route;
 struct rtentry;
 struct sockaddr;
+
+#define MAX_MULTIPATH 1
+
 /*
- * Patricia trie API with multipath support
+ * Patricia trie with multipath support
  */
 int     ptree_mpath_capable(struct ptree_node_head *);
 u_int32_t ptree_mpath_count(struct rtentry *);
