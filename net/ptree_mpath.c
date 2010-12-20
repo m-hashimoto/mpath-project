@@ -123,7 +123,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			return (0);
 		for (;;) {
 			debug_node_print(pn, pnh->pnh_offset);
-			pritnf("\n");
+			printf("\n");
 			next = ptree_next(pn);
 			if( !next )
 				break;
@@ -820,15 +820,21 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		RT_UNLOCK(ro->ro_rt);
 }
 
-#if 0
 	struct rtentry *
-multipath_nexthop (unsigned int seed, void *nexthops)
+multipath_nexthop (unsigned int seed, struct rtentry **nexthops)
 {
-	struct rtentry *rt0,*rt;
+	unsigned int hash;
 	int n;
 	
+	n = ptree_mpath_count(nexthops[0]);
+	hash = seed + hashjitter;
+	
+	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
+	hash %= n;
+	rt = nexthops[hash];
+	dprint(("-multipath_nexthop: rt[%p]\n",rt));
+	return rt;
 }
-#endif
 
 extern int	in6_inithead(void **head, int off);
 extern int	in_inithead(void **head, int off);
