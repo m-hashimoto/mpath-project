@@ -653,12 +653,17 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
 		
+		int l = 0;
+		unsigned char *str = sa0;
+		for(l=0;l<16;i++)
+			dprint(("%d.",str[l]));
+		dprint(("/16\n"));
+		
 		while (rt1[i] && i < n) {
 				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
 				sa1 = rt1[i]->rt_gateway;
 				
-				int l = 0;
-				unsigned char *str = sa1;
+				str = sa1;
 				for(l=0;l<16;i++)
 					dprint(("%d.",str[l]));
 				dprint(("/16\n"));
