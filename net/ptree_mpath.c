@@ -642,13 +642,13 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
 		
-		while (rt1 && i < n) {
-				dprint(("-rt_mpath_delete: rt1[%p] rt[%p]\n",rt1,rt));
-				if (rt1 == rt) {
-						rt0->mpath_array[i] = rt0->mpath_array[n-1];
-						rt0->mpath_array[n-1] = NULL;
+		while (rt1[i] && i < n) {
+				dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1,rt));
+				if (rt1[i] == rt) {
+						rt1[i] = rt1[n-1];
+						rt1[n-1] = NULL;
 						if(n == 1)
-							Free(rt0->mpath_array);
+							Free(rt1);
 						return (1);
 				}
 				rt1++;
