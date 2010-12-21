@@ -360,6 +360,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			/* if number of path is over MAX_MULTIPATH */
 			if(n == MAX_MULTIPATH){
 				struct rtentry **tmp;
+				tmp = rt_array;
 				
 				R_Realloc(tmp, struct rtentry **, 
 												10*MAX_MULTIPATH*sizeof(struct rtentry *));

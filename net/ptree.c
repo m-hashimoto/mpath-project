@@ -180,6 +180,7 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
   dprint(("--ptree_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
+  dprint(("--ptree_common: keylen[%d]\n",keylen));
 	char *new;
   XRTMALLOC(new, char *, keylen);
 	if (!new)
