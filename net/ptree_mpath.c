@@ -454,7 +454,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		if(headrt->mpath_array){
 			struct ptree_node *tmprn;
 			
-  		XRTMALLOC(x, struct ptree_node *, sizeof(struct ptree_node));
+  		XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
 			rt = rt_mpath_matchgate(headrt,gate);
 			tmprn->data = rt;
 			dprint(("-ptree_deladdr: rt[%p]\n",rt));
