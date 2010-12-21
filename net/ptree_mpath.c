@@ -163,7 +163,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	else
 		len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#if 0
+#ifdef DEBUG
 	if(head->pnh_offset == INET_HEADOFF){
 		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET, v);
@@ -181,7 +181,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
-#if 0
+#ifdef DEBUG
 		if(head->pnh_offset == INET_HEADOFF){
 			printf("-ptree_insert: mask ");
 			sprint_inet_ntoa(AF_INET, m);
@@ -339,41 +339,40 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			dprint(("-ptree_addroute: if keyduplicated.\n"));
 				
 			rt0 = tt->data;
-			//dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
-			//dprint(("-ptree_addroute: mpath_array[%p]\n",rt0->mpath_array));
 			n = ptree_mpath_count(rt0);
-			//dprint(("-ptree_addroute: mpat_count[%d]\n",n));
+			
 			if(!n){
+				/* if it is first multipath */
 				dprint(("-ptree_addroute: add new mpath_array\n"));
-				//dprint(("-ptree_addroute: rt0 = %p rt = %p\n",rt0,rt));
-				R_Malloc(rt_array, struct rtentry **, MAX_MULTIPATH*sizeof(struct rtentry *));
+				R_Malloc(rt_array, struct rtentry **,
+											 	MAX_MULTIPATH*sizeof(struct rtentry *));
 				memset(rt_array, 0, MAX_MULTIPATH*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				rt0->mpath_array = rt_array;
+			} else if(n == MAX_MULTIPATH) {
+				/* if number of path is over MAX_MULTIPATH */
+				struct rtentry **tmp;
+				tmp = rt0->mpath_array;
+				
+				R_Realloc(tmp, struct rtentry **, 
+												10*MAX_MULTIPATH*sizeof(struct rtentry *));
+				if(tmp == NULL){
+					printf("realloc fault\n");
+					return NULL;
+				}
+				else
+					rt_array = tmp;
+				rt_array[n] = rt;
+				rt0->mpath_array = rt_array;
+				dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
 			} else {
 				dprint(("-ptree_addroute: add new rt in array[%d]\n",n));
 				rt_array = rt0->mpath_array;
 				rt_array[n] = rt;
 			}
+
 			rt->rt_nodes = tt;
-			/* if number of path is over MAX_MULTIPATH */
-			if(n == MAX_MULTIPATH){
-				struct rtentry **tmp;
-				tmp = rt_array;
-				
-				R_Realloc(tmp, struct rtentry **, 
-												10*MAX_MULTIPATH*sizeof(struct rtentry *));
-				if(tmp==NULL){
-					printf("realloc fault\n");
-					return NULL;
-				}
-				else{
-					rt_array = tmp;
-					dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
-				}
-			}
-			rt->mpath_array = rt_array;
 			return tt;
 		}
 #endif /* mluti path */
