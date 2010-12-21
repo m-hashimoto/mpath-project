@@ -224,11 +224,11 @@ on1:
 	char *add_key;
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	add_key = tt->key;
-	dprint(("-ptree_insert: memset0 [%d - %d] %d bytes\n",
-													(unsigned int)add_key+len,
+	dprint(("-ptree_insert: memset0 [%u - %u] %d bytes\n",
+													(unsigned int)add_key+len+1,
 													(unsigned int)add_key+(salen-len),
 													salen-len));
-	memset(add_key+len,0,LEN(add_key)-len);
+	memset(add_key+len+1,0,salen-len);
 	return (tt);
 }
 
