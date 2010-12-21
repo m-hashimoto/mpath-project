@@ -318,7 +318,7 @@ ptree_matchaddr(v_arg, head)
 	/*
 	 * match exactly as a host.
 	 */
-	dprint(("-ptree_matchaddr End: return t[%p]\n",t));
+	//dprint(("-ptree_matchaddr End: return t[%p]\n",t));
 	return t;
 }
 
@@ -373,6 +373,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				else
 					rt_array = tmp;
 				rt_array[n] = rt;
+				rt_array[n+1] = NULL;
 				rt0->mpath_array = rt_array;
 				dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
 			} else {
