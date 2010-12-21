@@ -452,7 +452,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		}
 #endif
 		if(headrt->mpath_array){
-			if ( rt = rt_mpath_matchgate(headrt,gate) != NULL ){
+			if ( (rt = rt_mpath_matchgate(headrt,gate)) != NULL ){
 				struct ptree_node *tmprn;
 			
   			XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
