@@ -156,12 +156,12 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	char *v = v_arg, *m = m_arg;
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
-	int len;
+	int salen,len;
 	
 	if(head->pnh_offset == INET_HEADOFF )
-		len = (int)8*LEN(v) - SIN_ZERO;
+		salen = len = (int)8*LEN(v) - SIN_ZERO;
 	else
-		len = (int)8*LEN(v) - SIN6_ZERO;
+		salen = len = (int)8*LEN(v) - SIN6_ZERO;
 	
 #ifdef DEBUG
 	if(head->pnh_offset == INET_HEADOFF){
@@ -213,14 +213,16 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 on1:
 	*dupentry = 0;
-	
+#if 0
 	/* default gateway "0.0.0.0/0" */
 	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
 		len = 8*head->pnh_offset;
 		dprint(("-ptree_insert: default gateway len[%d]\n",len));
 	}
-	int *data = NULL;
+#endif
+	void *data = NULL;
 	tt = ptree_add(v, len, data, head->pnh_treetop);
+	memset(tt+len,0,salen-len);
 	return (tt);
 }
 

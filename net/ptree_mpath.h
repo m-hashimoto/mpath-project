@@ -12,10 +12,6 @@
 #include <net/ptree.h>
 #endif /* _KERNEL */
 
-#ifdef PTREE_MPATH
-#define MAX_MPATH 3
-#endif /* PTREE_MPATH */
-
 typedef int walktree_f_t(struct ptree_node *, void *);
 
 struct ptree_node_head {
@@ -103,7 +99,7 @@ struct route;
 struct rtentry;
 struct sockaddr;
 
-#define MAX_MULTIPATH 10
+#define MAX_MULTIPATH 3
 
 /*
  * Patricia trie with multipath support
