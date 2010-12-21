@@ -174,7 +174,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		printf("/%d\n",len);
 	}
 #endif
-	if(m && (LEN(m) > head->pnh_offset)){
+	if(m /*&& (LEN(m) > head->pnh_offset)*/){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
@@ -261,7 +261,7 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree_node_head *head;
 {
-	dprint(("-ptree_matchaddr Start: pnh[%p]\n",head));
+	//dprint(("-ptree_matchaddr Start: pnh[%p]\n",head));
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 	if(!t){
@@ -357,7 +357,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[n] = rt;
 			}
 			rt->rt_nodes = tt;
-#if 0 /* Realloc */
+			/* if number of path is over MAX_MULTIPATH */
 			if(n == MAX_MULTIPATH){
 				struct rtentry **tmp;
 				
@@ -372,7 +372,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 					dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
 				}
 			}
-#endif
 			rt->mpath_array = rt_array;
 			return tt;
 		}

@@ -13,7 +13,7 @@
 #endif /* _KERNEL */
 
 #ifdef PTREE_MPATH
-#define MAX_MPATH 5
+#define MAX_MPATH 3
 #endif /* PTREE_MPATH */
 
 typedef int walktree_f_t(struct ptree_node *, void *);
