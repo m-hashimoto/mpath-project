@@ -66,6 +66,7 @@ struct ptree_node_head {
 #else /* ifdef _KERNEL */
 #define R_Malloc(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT))
 #define R_Zalloc(p, t, n) (p = (t) malloc((unsigned long)(n), M_RTABLE, M_NOWAIT | M_ZERO))
+#define R_Realloc(p, t, n) (p = (t) realloc(p,(unsigned int)(n), M_RTABLE, M_NOWAIT))
 #define Free(p) free((caddr_t)p, M_RTABLE);
 
 #define	RADIX_NODE_HEAD_LOCK_INIT(rnh)	\
