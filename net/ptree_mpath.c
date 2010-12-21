@@ -452,14 +452,16 @@ ptree_deladdr(v_arg, gate_arg, head)
 		}
 #endif
 		if(headrt->mpath_array){
-			struct ptree_node *tmprn;
+			if ( rt = rt_mpath_matchgate(headrt,gate) != NULL ){
+				struct ptree_node *tmprn;
 			
-  		XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
-			rt = rt_mpath_matchgate(headrt,gate);
-			tmprn->data = rt;
-			dprint(("-ptree_deladdr: rt[%p]\n",rt));
-			if( ! rt_mpath_delete(headrt,rt) )
-				return (tmprn);
+  			XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
+
+				tmprn->data = rt;
+				dprint(("-ptree_deladdr: rt[%p]\n",rt));
+				if( ! rt_mpath_delete(headrt,rt) )
+					return (tmprn);
+			}
 		}
 #endif
 		ptree_remove(tt);
