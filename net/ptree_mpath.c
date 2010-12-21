@@ -163,7 +163,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	else
 		len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#ifdef DEBUG
+#if 0
 	if(head->pnh_offset == INET_HEADOFF){
 		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET, v);
@@ -174,8 +174,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		printf("/%d\n",len);
 	}
 #endif
-	if(m)
-		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 	if(m && (LEN(m) > head->pnh_offset)){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
@@ -183,7 +181,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
-#ifdef DEBUG
+#if 0
 		if(head->pnh_offset == INET_HEADOFF){
 			printf("-ptree_insert: mask ");
 			sprint_inet_ntoa(AF_INET, m);
@@ -197,17 +195,15 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 	
 	
-	if (!top){
-		//dprint(("-ptree_insert: top is NULL\n"));
+	if (!top)
 		goto on1;
-	}
+
 	t = ptree_search(v, len, head->pnh_treetop);
 	if (!t)
 		goto on1;
+
 	cp = v;
 	{
-		//register caddr_t cp2 = t->key;
-		//caddr_t cplim = v;
 		register char *cp2 = t->key;
 		char *cplim = v;
 		if ( !memcmp(cp2,cplim,len/8) ){
@@ -217,6 +213,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	}
 on1:
 	*dupentry = 0;
+	
 	/* default gateway "0.0.0.0/0" */
 	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
 		len = 8*head->pnh_offset;
@@ -224,7 +221,6 @@ on1:
 	}
 	int *data = NULL;
 	tt = ptree_add(v, len, data, head->pnh_treetop);
-	//dprint(("-ptree_insert End: insert tt[%p]\n",tt));
 	return (tt);
 }
 
@@ -235,8 +231,6 @@ on1:
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
 {
-	//register caddr_t m = m_arg, n = n_arg;
-	//register caddr_t lim, lim2 = lim = n + LEN(n);
 	register char *m = m_arg, *n = n_arg;
 	register char *lim, *lim2 = lim = n + LEN(n);
 	int longer = LEN(n++) - (int)LEN(m++);
@@ -268,7 +262,6 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node_head *head;
 {
 	dprint(("-ptree_matchaddr Start: pnh[%p]\n",head));
-	//caddr_t v = v_arg;
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 	if(!t){
@@ -276,15 +269,13 @@ ptree_matchaddr(v_arg, head)
 		return 0;
 	}
 	
-	//register caddr_t cp;
-	//caddr_t cplim;
 	register char *cp;
 	char *cplim;
 	struct ptree_node *saved_t;
 	int vlen;
 	
 	vlen = (int)8*LEN(v);
-#ifdef DEBUG
+#if 0
 		if(head->pnh_offset == 4){
 			printf("-ptree_matchaddr: addr ");
 			sprint_inet_ntoa(AF_INET, v);
@@ -302,7 +293,7 @@ ptree_matchaddr(v_arg, head)
 	}
 
 	cp = t->key; cplim = v; vlen = t->keylen;
-#ifdef DEBUG
+#if 0
 		if(head->pnh_offset == 4){
 			printf("-ptree_matchaddr: save_t ");
 			sprint_inet_ntoa(AF_INET, cp);
@@ -315,7 +306,6 @@ ptree_matchaddr(v_arg, head)
 #endif
 	if ( memcmp(cp,cplim,vlen/8) != 0 )
 		return 0;
-	dprint(("-ptree_matchaddr: match exactly as a host\n"));
 	/*
 	 * match exactly as a host.
 	 */
@@ -341,7 +331,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
 		
-		dprint(("-ptree_addroute: keyduplicated[%d]\n",keyduplicated));
+		//dprint(("-ptree_addroute: keyduplicated[%d]\n",keyduplicated));
 #ifdef PTREE_MPATH /* multi path */
 		if (keyduplicated) {
 			int n;
@@ -349,13 +339,13 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			dprint(("-ptree_addroute: if keyduplicated.\n"));
 				
 			rt0 = tt->data;
-			dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
-				dprint(("-ptree_addroute: mpath_array[%p]\n",rt0->mpath_array));
+			//dprint(("-ptree_addroute: rt0[%p] rt[%p]\n",rt0,rt));
+			//dprint(("-ptree_addroute: mpath_array[%p]\n",rt0->mpath_array));
 			n = ptree_mpath_count(rt0);
-			dprint(("-ptree_addroute: mpat_count[%d]\n",n));
+			//dprint(("-ptree_addroute: mpat_count[%d]\n",n));
 			if(!n){
 				dprint(("-ptree_addroute: add new mpath_array\n"));
-				dprint(("-ptree_addroute: rt0 = %p rt = %p\n",rt0,rt));
+				//dprint(("-ptree_addroute: rt0 = %p rt = %p\n",rt0,rt));
 				R_Malloc(rt_array, struct rtentry **, MAX_MULTIPATH*sizeof(struct rtentry *));
 				memset(rt_array, 0, MAX_MULTIPATH*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
@@ -400,11 +390,10 @@ ptree_deladdr(v_arg, gate_arg, head)
 {
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
-		//caddr_t v;
 		char *v;
 		struct sockaddr *gate;
 		unsigned int len;
-		dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
+		//dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 
 		v = v_arg;
 		gate = gate_arg;
@@ -412,7 +401,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
-#ifdef DEBUG
+#if 0
 		if(head->pnh_offset == 4){
 			printf("-ptree_deladdr: addr[%p] ",v);
 			sprint_inet_ntoa(AF_INET, v);
@@ -433,7 +422,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		//register caddr_t cp, cplim;
 		register char *cp, *cplim;
 		cp = tt->key; cplim = v; len = tt->keylen;
-#ifdef DEBUG
+#if 0
 		if(head->pnh_offset == 4){
 			printf("-ptree_deladdr: match ");
 			sprint_inet_ntoa(AF_INET, cp);
@@ -451,7 +440,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
 		headrt = tt->data;
-#ifdef DEBUG
+#if 0
 		if(head->pnh_offset == 4){
 			printf("-ptree_deladdr: gate[%p] ",gate);
 			sprint_inet_ntoa(AF_INET, gate);
@@ -463,10 +452,12 @@ ptree_deladdr(v_arg, gate_arg, head)
 		}
 #endif
 		if(headrt->mpath_array){
+			struct ptree_node *tmprn;
 			rt = rt_mpath_matchgate(headrt,gate);
+			tmprn->data = rt;
 			dprint(("-ptree_deladdr: rt[%p]\n",rt));
 			if( ! rt_mpath_delete(headrt,rt) )
-				return (0);
+				return (tmprn);
 		}
 #endif
 		ptree_remove(tt);
@@ -481,34 +472,11 @@ ptree_walktree(h, f, w)
 		walktree_f_t *f;
 		void *w;
 {
-#if 0
-	struct ptree_node *base, *next;
-	register struct ptree_node *pn = h->pnh_top;
 	/*
 	 * This gets complicated because we may delete the node
 	 * while applying the function f to it, so we need to calculate
 	 * the successor node in advance.
 	 */
-
-	if(!pn)
-		return (0);
-	/* First time through node, go left */
-	while (pn && pn->child[0])
-		pn = pn->child[0];
-	for (;;) {
-		base = pn;
-		if(!pn->parent)
-			return (0);
-		/* If at right child go back up, otherwise, go right */
-		pn = pn->parent;
-		while (pn && pn->parent && pn->child[1] == pn)
-			pn = pn->parent;
-		/* Find the next *leaf* since next node might vanish, too */
-		for (pn = pn->parent->child[1]; !pn;)
-			pn = pn->child[0];
-		next = pn;
-	}
-#endif
 		struct ptree_node *base, *next;
 		register struct ptree_node *rn = h->pnh_top;
 		if (!rn)
@@ -530,7 +498,6 @@ ptree_inithead(void **head, int off)
 		register struct ptree_node_head *pnh;
 		register struct ptree *top;
 		register struct ptree_node *t;
-		dprint(("-ptree_inithead Start: pnh[%p]\n",head));
 
 		if (*head)
 				return (1);
@@ -559,7 +526,6 @@ ptree_inithead(void **head, int off)
 ptree_init()
 {
 		char *cp, *cplim;
-		dprint(("-ptree_init Start\n"));
 #ifdef _KERNEL
 		struct domain *dom;
 
@@ -595,17 +561,13 @@ ptree_mpath_capable(struct ptree_node_head *pnh)
 		uint32_t
 ptree_mpath_count(struct rtentry *rt)
 {
-		dprint(("-ptree_mpath_count Start\n"));
 		struct rtentry **rt1;
 		uint32_t i = 0;
 
 		rt1 = rt->mpath_array;
-		dprint(("-ptree_mpath_count: rt1[%p]\n",rt1));
 		/* count mpath_array */
-		while (rt1 && rt1[i]) {
-				dprint(("-ptree_mpath_count: rt1[%d] = %p\n",i,rt1[i]));
+		while (rt1 && rt1[i])
 				i++;
-		}
 		dprint(("-ptree_mpath_count End: count = %d\n",i));
 		return (i);
 }
@@ -616,7 +578,7 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 		uint32_t	i = 0;
 		//struct ptree_node *rn, **match;
 		struct rtentry **match;
-		dprint(("-rt_mpath_matchgate Start: rt[%p]\n",rt));
+		//dprint(("-rt_mpath_matchgate Start: rt[%p]\n",rt));
 
 		//rn = (struct ptree_node *)rt;
 		if (!rt->mpath_array){
@@ -665,10 +627,12 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		uint32_t i = 0, n;
 		struct rtentry *rt0,**rt1, *match;
 		struct sockaddr *sa0, *sa1;
-		dprint(("-rt_mpath_delete Start\n"));
+		//dprint(("-rt_mpath_delete Start\n"));
 
-		if (!headrt || !rt)
+		if (!headrt || !rt){
+				dprint(("-rt_mpath_delete: fault at headrt[%p] rt[%p]\n",headrt,rt));
 				return (0);
+		}
 		
 		rt0 = headrt;
 		sa0 = rt->rt_gateway;
@@ -676,16 +640,17 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		rt1 = rt0->mpath_array;
 		
 		while (rt1[i] && i < n) {
-			dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1[i],rt));
+			//dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1[i],rt));
 			sa1 = rt1[i]->rt_gateway;
 			
-			dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
+			//dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 				if(n == 1){ /* case: single path */
 					rt1 = NULL;
+					dprint(("-rt_mpath_delete: delete mpath_array\n"));
 					return (1);
 				}
-				dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
+				//dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
 				match = rt1[i];
 				rt1[i] = rt1[n-1];
 				rt1[n-1] = NULL;
@@ -695,11 +660,12 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				match->rt_flags &= ~RTF_UP;
 				RTFREE_LOCKED(match);
 				
-				dprint(("-rt_mpath_delete: change rt1[%d] and rt1[%d]\n",i,n-1));
+				dprint(("-rt_mpath_delete: delete rt1[%d]\n",i));
 				return (0);
 			}
 			i++;
 		}
+		dprint(("-rt_mpath_delete: delete fault\n"));
 		return (0);
 }
 
@@ -715,8 +681,8 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		int len = 8*LEN(dst), i, n;
 		char *cp,*cplim;
 		
-		dprint(("-rt_mpath_conflict Start\n"));
-#ifdef DEBUG
+		//dprint(("-rt_mpath_conflict Start\n"));
+#if 0
 		if(pnh->pnh_offset == 4){
 			printf("-rt_mpath_conflict: dst ");
 			sprint_inet_ntoa(AF_INET, dst);
@@ -730,12 +696,12 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 
 		//rn = pnh->rnh_lookup((char *)dst, len, pnh->pnh_treetop);
 		rn = ptree_search((char *)dst, len, pnh->pnh_treetop);
-		dprint(("-rt_mpath_conflict: rn[%p]\n",rn));
+		//dprint(("-rt_mpath_conflict: rn[%p]\n",rn));
 		if (!rn)
 				return 0;
 
 		cp = rn->key; cplim = (char *)dst; len = rn->keylen;
-#ifdef DEBUG
+#if 0
 		if(pnh->pnh_offset == 4){
 			printf("-rt_mpath_conflict: rn ");
 			sprint_inet_ntoa(AF_INET, cp);
@@ -749,7 +715,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		/* compare key. */
 		if ( memcmp(cp,cplim,len/8) != 0 )
 			goto different;
-		dprint(("-rt_mpath_conflict: match exactly as a host\n"));
+		dprint(("-rt_mpath_conflict: match exactly\n"));
 
 		/*
 		 * unlike other functions we have in this file, we have to check
@@ -758,7 +724,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		rt0 = rn->data;
 		
 		rt1 = rt0->mpath_array;
-		dprint(("-rt_mpath_conflict: rt0[%p] rt1[%p]\n",rt0,rt1));
+		//dprint(("-rt_mpath_conflict: rt0[%p] rt1[%p]\n",rt0,rt1));
 		if(!rt1){
 				if (rt0->rt_gateway->sa_family == AF_LINK) {
 						if (rt0->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
@@ -779,7 +745,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		n = ptree_mpath_count(rt0);
 		i = 0;
 		do {
-				dprint(("-rt_mpath_conflict: rt1[%d]=[%p]\n",i,rt1[i]));
+				//dprint(("-rt_mpath_conflict: rt1[%d]=[%p]\n",i,rt1[i]));
 				if (rt1[i]->rt_gateway->sa_family == AF_LINK) {
 						if (rt1[i]->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 										bcmp(rt1[i]->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
@@ -880,7 +846,7 @@ extern int	in_inithead(void **head, int off);
 ptree4_mpath_inithead(void **head, int off)
 {
 		struct ptree_node_head *rnh;
-		dprint(("-ptree4_mpath_inithead Start\n"));
+		//dprint(("-ptree4_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
 		if (in_inithead(head, off) == 1) {
@@ -897,7 +863,7 @@ ptree4_mpath_inithead(void **head, int off)
 ptree6_mpath_inithead(void **head, int off)
 {
 		struct ptree_node_head *rnh;
-		dprint(("-ptree6_mpath_inithead Start\n"));
+		//dprint(("-ptree6_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
 		if (in6_inithead(head, off) == 1) {
