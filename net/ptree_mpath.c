@@ -236,7 +236,7 @@ on1:
 
 #undef SIN_ZERO
 #undef SIN6_ZERO
-#if 0
+
 	int
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
@@ -264,7 +264,6 @@ ptree_refines(m_arg, n_arg)
 				return 1;
 	return (!masks_are_equal);
 }
-#endif
 
 	struct ptree_node *
 ptree_matchaddr(v_arg, head)
