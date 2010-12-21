@@ -221,14 +221,14 @@ on1:
 	}
 #endif
 	void *data = NULL;
-	char *add_key;
+
 	tt = ptree_add(v, len, data, head->pnh_treetop);
-	add_key = tt->key + len/8;
-	dprint(("-ptree_insert: memset0 [%u - %u] %d bytes\n",
-													(unsigned int)add_key,
-													(unsigned int)add_key+(salen-len)/8,
-													(salen-len)/8));
-	memset(add_key,0,(salen-len)/8);
+	/* default gateway "0.0.0.0/0" */
+	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
+		char *dgate_key = tt->key + len/8;
+		memset(dgate_key,0,(salen-len)/8);
+		dprint(("-ptree_insert: insert default gateway\n"));
+	}
 	return (tt);
 }
 
