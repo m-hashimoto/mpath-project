@@ -223,7 +223,9 @@ on1:
 	void *data = NULL;
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	dprint(("-ptree_insert: memset0 [%d - %d] %d bytes\n",
-													tt->key+len,tt->key+(salen-len),salen-len));
+													(unsigned int)tt->key+len,
+													(unsigned int)tt->key+(salen-len),
+													salen-len));
 	memset(tt->key+len,0,sizeof(tt->key)-len);
 	return (tt);
 }
