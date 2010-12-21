@@ -453,6 +453,8 @@ ptree_deladdr(v_arg, gate_arg, head)
 #endif
 		if(headrt->mpath_array){
 			struct ptree_node *tmprn;
+			
+  		XRTMALLOC(x, struct ptree_node *, sizeof(struct ptree_node));
 			rt = rt_mpath_matchgate(headrt,gate);
 			tmprn->data = rt;
 			dprint(("-ptree_deladdr: rt[%p]\n",rt));
@@ -655,11 +657,12 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 				rt1[i] = rt1[n-1];
 				rt1[n-1] = NULL;
 				
+#if 0
 				RT_LOCK(match);
 				RT_ADDREF(match);
 				match->rt_flags &= ~RTF_UP;
 				RTFREE_LOCKED(match);
-				
+#endif		
 				dprint(("-rt_mpath_delete: delete rt1[%d]\n",i));
 				return (0);
 			}
