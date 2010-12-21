@@ -80,8 +80,8 @@ struct ptree_node_head {
 #endif /* _KERNEL */
 
 void     ptree_init(void);
-int      ptree_inithead(void **, int),
-		 ptree_refines(void *, void *);
+int      ptree_inithead(void **, int);
+//		 ptree_refines(void *, void *);
 struct ptree_node
 		*ptree_addroute(void *, void *, struct ptree_node_head *,
 					   	struct ptree_node *),

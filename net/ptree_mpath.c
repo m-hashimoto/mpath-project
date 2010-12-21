@@ -223,18 +223,20 @@ on1:
 	void *data = NULL;
 
 	tt = ptree_add(v, len, data, head->pnh_treetop);
+#if 0
 	/* default gateway "0.0.0.0/0" */
 	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
 		char *dgate_key = tt->key + len/8;
 		memset(dgate_key,0,(salen-len)/8);
 		dprint(("-ptree_insert: insert default gateway\n"));
 	}
+#endif
 	return (tt);
 }
 
 #undef SIN_ZERO
 #undef SIN6_ZERO
-
+#if 0
 	int
 ptree_refines(m_arg, n_arg)
 	void *m_arg, *n_arg;
@@ -262,7 +264,7 @@ ptree_refines(m_arg, n_arg)
 				return 1;
 	return (!masks_are_equal);
 }
-
+#endif
 
 	struct ptree_node *
 ptree_matchaddr(v_arg, head)
