@@ -583,7 +583,6 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 				if(n == 1){ /* case: single path */
 					rt1 = NULL;
-					free((struct rtentry **)rt1);
 					dprint(("-rt_mpath_delete: delete mpath_array\n"));
 					return (1);
 				}
