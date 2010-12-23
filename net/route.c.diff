@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-24 02:19:38.000000000 +0900
++++ route.c	2010-12-24 04:03:06.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -247,15 +247,7 @@
  
  	KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
  	if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
-@@ -1030,6 +1026,7 @@
- 
- 	switch (req) {
- 	case RTM_DELETE:
-+			dprint(("rtrequest1_fib case RTM_DELETE\n"));
- #ifdef RADIX_MPATH
- 		if (rn_mpath_capable(rnh)) {
- 			error = rn_mpath_update(req, info, rnh, ret_nrt);
-@@ -1045,11 +1042,13 @@
+@@ -1045,11 +1041,13 @@
  		 * Remove the item from the tree and return it.
  		 * Complain if it is not there and do no more processing.
  		 */
@@ -270,15 +262,7 @@
  		rt = RNTORT(rn);
  		RT_LOCK(rt);
  		RT_ADDREF(rt);
-@@ -1086,6 +1082,7 @@
- 		 */
- 		break;
- 	case RTM_ADD:
-+			dprint(("rtrequest1_fib case RTM_ADD\n"));
- 		if ((flags & RTF_GATEWAY) && !gateway)
- 			senderr(EINVAL);
- 		if (dst && gateway && (dst->sa_family != gateway->sa_family) && 
-@@ -1113,6 +1110,24 @@
+@@ -1113,6 +1108,24 @@
  		 * 
  		 */
  		RT_LOCK(rt);
@@ -303,7 +287,7 @@
  		if ((error = rt_setgate(rt, dst, gateway)) != 0) {
  			RT_LOCK_DESTROY(rt);
  			if (ifa != NULL)
-@@ -1120,12 +1135,11 @@
+@@ -1120,12 +1133,11 @@
  			uma_zfree(V_rtzone, rt);
  			senderr(error);
  		}
@@ -318,7 +302,7 @@
  		/*
  		 * make sure it contains the value we want (masked if needed).
  		 */
-@@ -1156,7 +1168,20 @@
+@@ -1156,7 +1166,20 @@
  			senderr(EEXIST);
  		}
  #endif
@@ -340,7 +324,7 @@
  #ifdef FLOWTABLE
  		rt0 = NULL;
  		/* XXX
-@@ -1205,9 +1229,9 @@
+@@ -1205,9 +1227,9 @@
  		}
  #endif
  #endif
@@ -352,7 +336,7 @@
  		/*
  		 * If it still failed to go into the tree,
  		 * then un-make it (this should be a function)
-@@ -1256,6 +1278,8 @@
+@@ -1256,6 +1276,8 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
@@ -361,7 +345,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1273,7 +1297,7 @@
+@@ -1273,7 +1295,7 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -370,15 +354,7 @@
  
  	rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
  #endif
-@@ -1352,6 +1374,7 @@
- 	int didwork = 0;
- 	int a_failure = 0;
- 	static struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
-+	dprint(("rtinit1 Start\n"));
- 
- 	if (flags & RTF_HOST) {
- 		dst = ifa->ifa_dstaddr;
-@@ -1374,8 +1397,9 @@
+@@ -1374,8 +1394,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -389,7 +365,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1429,8 @@
+@@ -1405,8 +1426,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -400,7 +376,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,11 +1463,10 @@
+@@ -1439,11 +1460,10 @@
  			}
  			else
  #endif

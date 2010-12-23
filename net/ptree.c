@@ -47,8 +47,6 @@ ptree_node_create (char *key, int keylen)
   /* fill in the key */
   //memcpy (x->key, key, keylen);
   //x->key[keylen / 8] = key[keylen / 8] & mask[keylen % 8];
-	dprint(("--ptree_node_create: x[%p] x->key[%p] x->keylen[%d]\n",
-													x,x->key,x->keylen));
   return x;
 }
 
@@ -177,10 +175,8 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 {
   int keylen;
   struct ptree_node *x;
-  dprint(("--ptree_common Start: keyi[%p] keyj[%p]\n",keyi,keyj));
 
   keylen = key_common_len (keyi, keyilen, keyj, keyjlen);
-  dprint(("--ptree_common: keylen[%d]\n",keylen));
 	char *new;
   XRTMALLOC(new, char *, keylen);
 	if (!new)
@@ -188,7 +184,6 @@ ptree_common (char *keyi, int keyilen, char *keyj, int keyjlen)
 	bcopy(keyi, new, keylen);
 	
   x = ptree_node_create (new, keylen);
-  dprint(("--ptree_common: x[%p] x->key[%p] x->keylen[%d]\n",x,x->key,x->keylen));
   if (! x)
     return NULL;
 
@@ -292,7 +287,6 @@ struct ptree_node *
 ptree_add (char *key, int keylen, void *data, struct ptree *t)
 {
   struct ptree_node *x;
-  //dprint(("--ptree_add Start\n"));
   x = ptree_get (key, keylen, t);
   if (! x)
     {
@@ -310,7 +304,6 @@ void
 ptree_remove (struct ptree_node *v)
 {
   struct ptree_node *w;
-  dprint(("--ptree_remove Start\n"));
 
   XRTASSERT (! v->data, ("ptree: attempt to remove a node with data"));
 
@@ -412,7 +405,6 @@ ptree_next (struct ptree_node *v)
 struct ptree *
 ptree_create ()
 {
-  dprint(("--ptree_create Start\n"));
   struct ptree *t;
 
   XRTMALLOC(t, struct ptree *, sizeof (struct ptree));
@@ -427,7 +419,6 @@ void
 ptree_delete (struct ptree *t)
 {
   struct ptree_node *x;
-  dprint(("--ptree_delete Start\n"));
 
   for (x = ptree_head (t); x; x = ptree_next (x))
     {
