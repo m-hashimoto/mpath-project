@@ -511,7 +511,6 @@ ptree_mpath_count(struct rtentry *rt)
 		while (rt1 && rt1[i])
 				i++;
 
-		dprint(("-ptree_mpath_count: nexthops_count[%d]\n",i));
 		return (i);
 }
 
@@ -519,11 +518,8 @@ ptree_mpath_count(struct rtentry *rt)
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
 		uint32_t	i = 0;
-		//struct ptree_node *rn, **match;
 		struct rtentry **match;
-		//dprint(("-rt_mpath_matchgate Start: rt[%p]\n",rt));
 
-		//rn = (struct ptree_node *)rt;
 		if (!rt->mpath_array){
 				dprint(("-rt_mpath_matchgate: not have multipath\n"));
 				return rt;
@@ -570,7 +566,6 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		uint32_t i = 0, n;
 		struct rtentry *rt0,**rt1, *match;
 		struct sockaddr *sa0, *sa1;
-		//dprint(("-rt_mpath_delete Start\n"));
 
 		if (!headrt || !rt){
 				dprint(("-rt_mpath_delete: fault at headrt[%p] rt[%p]\n",headrt,rt));
@@ -583,27 +578,19 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		rt1 = rt0->mpath_array;
 		
 		while (rt1[i] && i < n) {
-			//dprint(("-rt_mpath_delete: rt1[%d]=[%p] rt[%p]\n",i,rt1[i],rt));
 			sa1 = rt1[i]->rt_gateway;
 			
-			//dprint(("-rt_mpath_delete: memcmp[%d]\n",memcmp(sa0,sa1,sa0->sa_len) ));
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 				if(n == 1){ /* case: single path */
 					rt1 = NULL;
+					free((struct rtentry **)rt1);
 					dprint(("-rt_mpath_delete: delete mpath_array\n"));
 					return (1);
 				}
-				//dprint(("-rt_mpath_delete: match gate rt1[%d]\n",i));
 				match = rt1[i];
 				rt1[i] = rt1[n-1];
 				rt1[n-1] = NULL;
 				
-#if 0
-				RT_LOCK(match);
-				RT_ADDREF(match);
-				match->rt_flags &= ~RTF_UP;
-				RTFREE_LOCKED(match);
-#endif		
 				dprint(("-rt_mpath_delete: delete rt1[%d]\n",i));
 				return (0);
 			}
@@ -625,37 +612,11 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		int len = 8*LEN(dst), i, n;
 		char *cp,*cplim;
 		
-		//dprint(("-rt_mpath_conflict Start\n"));
-#if 0
-		if(pnh->pnh_offset == 4){
-			printf("-rt_mpath_conflict: dst ");
-			sprint_inet_ntoa(AF_INET, dst);
-			printf("/%d\n",len);
-		}else{
-			printf("-rt_mpath_conflict: dst ");
-			sprint_inet_ntoa(AF_INET6, dst);
-			printf("/%d\n",len);
-		}
-#endif
-
-		//rn = pnh->rnh_lookup((char *)dst, len, pnh->pnh_treetop);
 		rn = ptree_search((char *)dst, len, pnh->pnh_treetop);
-		//dprint(("-rt_mpath_conflict: rn[%p]\n",rn));
 		if (!rn)
 				return 0;
 
 		cp = rn->key; cplim = (char *)dst; len = rn->keylen;
-#if 0
-		if(pnh->pnh_offset == 4){
-			printf("-rt_mpath_conflict: rn ");
-			sprint_inet_ntoa(AF_INET, cp);
-			printf("/%d\n",len);
-		}else{
-			printf("-rt_mpath_conflict: rn ");
-			sprint_inet_ntoa(AF_INET6, cp);
-			printf("/%d\n",len);
-		}
-#endif
 		/* compare key. */
 		if ( memcmp(cp,cplim,len/8) != 0 )
 			goto different;
@@ -668,7 +629,6 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		rt0 = rn->data;
 		
 		rt1 = rt0->mpath_array;
-		//dprint(("-rt_mpath_conflict: rt0[%p] rt1[%p]\n",rt0,rt1));
 		if(!rt1){
 				if (rt0->rt_gateway->sa_family == AF_LINK) {
 						if (rt0->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
@@ -689,7 +649,6 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		n = ptree_mpath_count(rt0);
 		i = 0;
 		do {
-				//dprint(("-rt_mpath_conflict: rt1[%d]=[%p]\n",i,rt1[i]));
 				if (rt1[i]->rt_gateway->sa_family == AF_LINK) {
 						if (rt1[i]->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 										bcmp(rt1[i]->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
@@ -716,7 +675,6 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 		u_int32_t n;
 		struct rtentry *rt, *rt0;
-		//struct ptree_node *rn;
 		dprint(("-rtallc_mpath_fib Start\n"));
 
 		/*
@@ -726,7 +684,6 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		if (ro->ro_rt && ro->ro_rt->rt_ifp && (ro->ro_rt->rt_flags & RTF_UP))
 				return;				 
 		ro->ro_rt = rtalloc1_fib(&ro->ro_dst, 1, 0, fibnum);
-		//rn = (struct ptree_node *)ro->ro_rt;
 		/* if the route does not exist or it is not multipath, don't care */
 		if (ro->ro_rt == NULL)
 				return;
@@ -776,7 +733,6 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	hash = seed + hashjitter;
 	
 	hash %= n;
-	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
 	rt = rt_array[hash];
 	dprint(("-multipath_nexthop: rt[%d]=%p\n",hash,rt));
 	return rt;
@@ -790,7 +746,6 @@ extern int	in_inithead(void **head, int off);
 ptree4_mpath_inithead(void **head, int off)
 {
 		struct ptree_node_head *rnh;
-		//dprint(("-ptree4_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
 		max_multipath = 2;
@@ -808,7 +763,6 @@ ptree4_mpath_inithead(void **head, int off)
 ptree6_mpath_inithead(void **head, int off)
 {
 		struct ptree_node_head *rnh;
-		//dprint(("-ptree6_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
 		max_multipath = 2;
