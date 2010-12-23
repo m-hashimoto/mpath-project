@@ -24,6 +24,10 @@
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
+#define   RUSAGE_SELF     0
+#define   RUSAGE_CHILDREN     -1
+
+int getrusage(int who, struct rusage *rusage);
 int gettimeofday(struct timeval *tv, struct timezone *tz);
 #endif
 
