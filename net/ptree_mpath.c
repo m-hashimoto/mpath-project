@@ -335,6 +335,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				else
 					rt_array = tmp;
 				
+				max_multipath *= 5;
 				rt_array[n] = rt;
 				//rt_array[n+1] = NULL;
 				rt0->mpath_array = rt_array;
