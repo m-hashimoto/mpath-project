@@ -17,13 +17,13 @@
 #ifdef DEBUG
 #include <sys/types.h>
 #include <sys/time.h>
-#include <time.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
+int gettimeofday(struct timeval *tv, struct timezone *tz);
 #endif
 
 static int  max_keylen;
