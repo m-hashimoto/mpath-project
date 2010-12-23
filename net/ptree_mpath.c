@@ -405,7 +405,6 @@ ptree_deladdr(v_arg, gate_arg, head)
 
 		v = v_arg;
 		gate = gate_arg;
-		//netmask = netmask_arg;
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
