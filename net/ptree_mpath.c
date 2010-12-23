@@ -837,7 +837,7 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	int n;
 	
 	rt = nexthops;
-	if(n = ptree_mpath_count(rt) == 0)
+	if((n = ptree_mpath_count(rt)) == 0)
 		return rt;
 	
 	rt_array = rt->mpath_array;
