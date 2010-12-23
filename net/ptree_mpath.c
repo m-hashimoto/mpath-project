@@ -320,6 +320,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				rt0->mpath_array = rt_array;
+				dprint(("-ptree_addroute: Malloc mpath_array[%d]\n",max_multipath));
 			} else if(n == max_multipath) {
 				/* if number of path is over MAX_MULTIPATH */
 				struct rtentry **tmp;
@@ -509,6 +510,7 @@ ptree_mpath_count(struct rtentry *rt)
 		while (rt1 && rt1[i])
 				i++;
 
+		dprint(("-ptree_mpath_count: nexthops_count[%d]\n",i));
 		return (i);
 }
 
