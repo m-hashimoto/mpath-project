@@ -500,7 +500,7 @@ ptree_mpath_count(struct rtentry *rt)
 
 		rt1 = rt->mpath_array;
 		/* count mpath_array */
-		while (rt1 && rt1[i])
+		while (rt1 && rt1[i] && i < max_multipath)
 				i++;
 
 		return (i);
