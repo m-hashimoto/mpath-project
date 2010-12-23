@@ -62,7 +62,7 @@ debug_node_print(struct ptree_node *pn, int offset)
 
 		if(mrt){ /* muluti path */
 			int i = 0;
-			while(mrt[i]){
+			while(mrt[i] && mrt[i]->rt_gateway){
 				printf("%24s [%p] ","malutipath",mrt[i]);
 				rt = mrt[i];
 				if(offset == INET6_HEADOFF){
