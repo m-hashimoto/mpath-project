@@ -782,7 +782,7 @@ different:
 		void
 rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
-		//u_int32_t n;
+		u_int32_t n;
 		struct rtentry *rt, *rt0;
 		//struct ptree_node *rn;
 		dprint(("-rtallc_mpath_fib Start\n"));
@@ -837,8 +837,7 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	int n;
 	
 	rt = nexthops;
-	n = ptree_mpath_count(rt);
-	if(n== 0)
+	if(n = ptree_mpath_count(rt) == 0)
 		return rt;
 	
 	rt_array = rt->mpath_array;
