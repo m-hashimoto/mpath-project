@@ -14,13 +14,16 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
+#ifdef DEBUG
 #include <sys/types.h>
+#include <sys/time.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
+#endif
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
@@ -37,6 +40,12 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 			   	struct ptree_node_head *head, int *dupentry);
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
+double gettimeofday_sec()
+{
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return tv.tv_sec + (double)tv.tv_usec*1e-6;
+}
 
  void
 sprint_inet_ntoa(int af, void *sa)
@@ -649,7 +658,6 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		i = 0;
 		do {
 				/* check all entry */
-				dprint(("-rt_mpath_conflict: check rt[%d]\n",i));
 				if (rt1[i]->rt_gateway->sa_family == AF_LINK) {
 						if (rt1[i]->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 										bcmp(rt1[i]->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 

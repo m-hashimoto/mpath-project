@@ -88,6 +88,7 @@ struct ptree_node
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 #ifdef DEBUG
+double gettimeofday_sec(void)
 void sprint_inet_ntoa(int af, void *sa);
 int debug_node_print(struct ptree_node *, int );
 int debug_tree_print(struct ptree_node_head *);
