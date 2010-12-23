@@ -169,7 +169,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		printf("/%d\n",len - 8*INET6_HEADOFF);
 	}
 #endif
-	if(m /*&& (LEN(m) > head->pnh_offset)*/){
+	if(m && (LEN(m) > head->pnh_offset)){
 		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
@@ -177,7 +177,9 @@ debug_tree_print(struct ptree_node_head *pnh)
 			len++;
 		len = 8*len;
 		printf("-ptree_insert: mask_len[%d]\n ",len);
-	}
+	} 
+	else if(m && (LEN(m) <= head->pnh_offset)){
+		len = 8*head->pnh_offset;
 	
 	
 	if (!top)
