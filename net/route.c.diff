@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-24 04:41:48.000000000 +0900
++++ route.c	2010-12-24 05:12:46.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -332,9 +332,9 @@
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 +			double t1,t2;
-+			t1 = gettimeofday_sec();
++			t1 = getrusage_sec();
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh, (struct ptree_node *)rt);
-+			t2 = gettimeofday_sec();
++			t2 = getrusage_sec();
 +			printf("ptree_addroute: Start[%10.30f]-End[%10.30f] Runtime[%10.30f]\n",
 +											t1,t2,t2-t1);
  		/*
