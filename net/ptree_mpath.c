@@ -803,7 +803,6 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 				RT_UNLOCK(ro->ro_rt);
 				return;
 		}
-#if 0
 		/* beyond here, we use rn as the master copy */
 		n = ptree_mpath_count(rt0);
 
@@ -813,8 +812,6 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 		hash %= n;
 		rt = rt0->mpath_array[hash];
 		/* XXX try filling rt_gwroute and avoid unreachable gw  */
-#endif
-		rt = multipath_nexthop(hash,rt0);
 
 		/* gw selection has failed - there must be only zero weight routes */
 		if (!rt) {
@@ -839,8 +836,11 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	unsigned int hash;
 	int n;
 	
-	n = ptree_mpath_count(nexthops);
-	rt_array = nexthops->mpath_array;
+	rt = nexthops;
+	if((n = ptree_mpath_count(rt)) == 0)
+		return rt;
+	
+	rt_array = rt->mpath_array;
 	hash = seed + hashjitter;
 	
 	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
