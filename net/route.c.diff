@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-24 05:12:46.000000000 +0900
++++ route.c	2010-12-24 05:50:09.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -324,23 +324,18 @@
  #ifdef FLOWTABLE
  		rt0 = NULL;
  		/* XXX
-@@ -1205,9 +1227,13 @@
+@@ -1205,9 +1227,8 @@
  		}
  #endif
  #endif
 -
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+			double t1,t2;
-+			t1 = getrusage_sec();
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh, (struct ptree_node *)rt);
-+			t2 = getrusage_sec();
-+			printf("ptree_addroute: Start[%10.30f]-End[%10.30f] Runtime[%10.30f]\n",
-+											t1,t2,t2-t1);
  		/*
  		 * If it still failed to go into the tree,
  		 * then un-make it (this should be a function)
-@@ -1256,6 +1280,8 @@
+@@ -1256,6 +1275,8 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
@@ -349,7 +344,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1273,7 +1299,7 @@
+@@ -1273,7 +1294,7 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -358,7 +353,7 @@
  
  	rnh = rt_tables_get_rnh(rt->rt_fibnum, dst->sa_family);
  #endif
-@@ -1374,8 +1398,9 @@
+@@ -1374,8 +1393,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -369,7 +364,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1430,8 @@
+@@ -1405,8 +1425,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -380,7 +375,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,11 +1464,10 @@
+@@ -1439,11 +1459,10 @@
  			}
  			else
  #endif

@@ -14,37 +14,22 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
-#ifdef DEBUG
 #include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
+#if 0
+#include <sys/time.h>
+#include <sys/resource.h>
+
 #define   RUSAGE_SELF     0
 #define   RUSAGE_CHILDREN     -1
 
 int getrusage(int who, struct rusage *rusage);
 int gettimeofday(struct timeval *tv, struct timezone *tz);
-#endif
-
-static int  max_keylen;
-static char *pn_zeros, *pn_ones;
-#ifdef PTREE_MPATH
-static uint32_t max_multipath;
-#endif
-
-#define LEN(x) (*(const u_char *)(x))
-
-#define SIN_ZERO 64
-#define SIN6_ZERO 32
-
-static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
-			   	struct ptree_node_head *head, int *dupentry);
-static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 double getrusage_sec()
 {
@@ -61,6 +46,22 @@ double gettimeofday_sec()
   gettimeofday(&tv, NULL);
   return tv.tv_sec + (double)tv.tv_usec*1e-6;
 }
+#endif
+
+static int  max_keylen;
+static char *pn_zeros, *pn_ones;
+#ifdef PTREE_MPATH
+static uint32_t max_multipath;
+#endif
+
+#define LEN(x) (*(const u_char *)(x))
+
+#define SIN_ZERO 64
+#define SIN6_ZERO 32
+
+static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
+			   	struct ptree_node_head *head, int *dupentry);
+static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
  void
 sprint_inet_ntoa(int af, void *sa)
