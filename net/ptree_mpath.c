@@ -340,7 +340,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		 */
 		saved_tt = tt = ptree_insert(v_arg, n_arg, head, &keyduplicated);
 		
-		//dprint(("-ptree_addroute: keyduplicated[%d]\n",keyduplicated));
 #ifdef PTREE_MPATH /* multi path */
 		if (keyduplicated) {
 			int n;
