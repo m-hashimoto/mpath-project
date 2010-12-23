@@ -17,6 +17,7 @@
 #ifdef DEBUG
 #include <sys/types.h>
 #include <sys/time.h>
+#include <time.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
