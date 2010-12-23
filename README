@@ -26,3 +26,5 @@ debugging...
 2010/11/03 reset debug print.
 ...ptree_v3
 2010/12/08 mpath debug start.
+...ptree_v3.2
+2010/12/08 mpath add and delete worked.
