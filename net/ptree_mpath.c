@@ -183,7 +183,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	else
 		len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#ifdef DEBUG
+#if 0
 	if(head->pnh_offset == INET_HEADOFF){
 		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET, v);
@@ -195,13 +195,11 @@ debug_tree_print(struct ptree_node_head *pnh)
 	}
 #endif
 	if(m && (LEN(m) > head->pnh_offset)){
-		dprint(("-ptree_insert: LEN(m)=%d\n",LEN(m)));
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
-		printf("-ptree_insert: mask_len[%d]\n ",len);
 	} 
 	else if(m && (LEN(m) <= head->pnh_offset))
 		len = 8*head->pnh_offset;
@@ -224,25 +222,9 @@ debug_tree_print(struct ptree_node_head *pnh)
 	}
 on1:
 	*dupentry = 0;
-#if 0
-	/* default gateway "0.0.0.0/0" */
-	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
-		len = 8*head->pnh_offset;
-		dprint(("-ptree_insert: default gateway len[%d]\n",len));
-	}
-#endif
 	void *data = NULL;
 
 	tt = ptree_add(v, len, data, head->pnh_treetop);
-#if 0
-	/* default gateway "0.0.0.0/0" */
-	if(memcmp(v+head->pnh_offset,pn_zeros,len/8-head->pnh_offset) == 0){
-		char *dgate_key = tt->key + len/8;
-		memset(dgate_key,0,(salen-len)/8);
-		dprint(("-ptree_insert: insert default gateway\n"));
-	}
-#endif
-	printf("-ptree_insert: return[%p]\n",tt);
 	return (tt);
 }
 
@@ -257,7 +239,6 @@ ptree_refines(m_arg, n_arg)
 	register char *lim, *lim2 = lim = n + LEN(n);
 	int longer = LEN(n++) - (int)LEN(m++);
 	int masks_are_equal = 1;
-	dprint(("-ptree_refines Start\n"));
 
 	if (longer > 0)
 		lim -= longer;
@@ -284,10 +265,8 @@ ptree_matchaddr(v_arg, head)
 {
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
-	if(!t){
-		dprint(("-ptree_matchaddr: top = NULL\n"));
+	if(!t)
 		return 0;
-	}
 	
 	register char *cp;
 	char *cplim;
@@ -296,10 +275,8 @@ ptree_matchaddr(v_arg, head)
 	
 	vlen = (int)8*LEN(v);
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
-	if( !saved_t ){
-		dprint(("-ptree_matchaddr: not match\n"));
+	if( !saved_t )
 		return 0;
-	}
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	if ( memcmp(cp,cplim,vlen/8) != 0 )
@@ -338,14 +315,12 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			
 			if(!n){
 				/* if it is first multipath */
-				dprint(("-ptree_addroute: add new mpath_array\n"));
 				R_Malloc(rt_array, struct rtentry **,
 											 	max_multipath*sizeof(struct rtentry *));
 				memset(rt_array, 0, max_multipath*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				rt0->mpath_array = rt_array;
-				dprint(("-ptree_addroute: Malloc mpath_array[%d]\n",max_multipath));
 			} else if(n == max_multipath) {
 				/* if number of path is over MAX_MULTIPATH */
 				struct rtentry **tmp;
@@ -362,14 +337,11 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				
 				max_multipath *= 5;
 				rt_array[n] = rt;
-				//rt_array[n+1] = NULL;
 				rt0->mpath_array = rt_array;
-				dprint(("-ptree_addroute: Realloc mpath_array[%d]\n",max_multipath));
 			} else {
 				rt_array = rt0->mpath_array;
 				rt_array[n] = rt;
 			}
-			dprint(("-ptree_addroute: add new rt in array[%d]=%p\n",n,rt));
 
 			rt->rt_nodes = tt;
 			return tt;
@@ -377,7 +349,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
-		dprint(("-ptree_addroute: add new rt=%p\n",rt));
 		return tt;
 }
 
@@ -400,16 +371,14 @@ ptree_deladdr(v_arg, gate_arg, head)
 
 		tt = saved_tt = ptree_search(v, len, head->pnh_treetop);
 
-		if (!saved_tt){
-				dprint(("-ptree_deladdr End: ptree_node nothing\n"));
+		if (!saved_tt)
 				return (0);
-		}
+		
 		register char *cp, *cplim;
 		cp = tt->key; cplim = v; len = tt->keylen;
-		if ( memcmp(cp, v, len/8) != 0 ){
-				dprint(("-ptree_deladdr End: not match\n"));
+		if ( memcmp(cp, v, len/8) != 0 )
 				return (0);
-		}
+		
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
 		headrt = tt->data;
@@ -421,14 +390,12 @@ ptree_deladdr(v_arg, gate_arg, head)
   			XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
 
 				tmprn->data = rt;
-				dprint(("-ptree_deladdr: rt[%p]\n",rt));
 				if( ! rt_mpath_delete(headrt,rt) )
 					return (tmprn);
 			}
 		}
 #endif
 		ptree_remove(tt);
-		dprint(("-ptree_deladdr End: tt = %p\n",saved_tt));
 		return (tt);
 }
 
@@ -592,10 +559,8 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		struct rtentry *rt0,**rt1, *match;
 		struct sockaddr *sa0, *sa1;
 
-		if (!headrt || !rt){
-				dprint(("-rt_mpath_delete: fault at headrt[%p] rt[%p]\n",headrt,rt));
+		if (!headrt || !rt)
 				return (0);
-		}
 		
 		rt0 = headrt;
 		sa0 = rt->rt_gateway;
@@ -608,19 +573,17 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 				if(n == 1){ /* case: single path */
 					rt1 = NULL;
-					dprint(("-rt_mpath_delete: delete mpath_array\n"));
 					return (1);
 				}
 				match = rt1[i];
 				rt1[i] = rt1[n-1];
 				rt1[n-1] = NULL;
 				
-				dprint(("-rt_mpath_delete: delete rt1[%d]\n",i));
 				return (0);
 			}
 			i++;
 		}
-		dprint(("-rt_mpath_delete: delete fault\n"));
+
 		return (0);
 }
 
@@ -644,7 +607,6 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		/* compare key. */
 		if ( memcmp(cp,cplim,len/8) != 0 )
 			goto different;
-		dprint(("-rt_mpath_conflict: match exactly\n"));
 
 		/*
 		 * unlike other functions we have in this file, we have to check
@@ -689,10 +651,8 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				/* all key/mask/gateway are the same.  conflicting entry. */
 				return EEXIST;
 		} while ((++i) < n);
-		dprint(("-rt_mpath_conflict: 3\n"));
 
 different:
-		dprint(("-rt_mpath_conflict: different\n"));
 		return 0;
 }
 
@@ -701,7 +661,6 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 {
 		u_int32_t n;
 		struct rtentry *rt, *rt0;
-		dprint(("-rtallc_mpath_fib Start\n"));
 
 		/*
 		 * XXX we don't attempt to lookup cached route again; what should
@@ -723,7 +682,6 @@ rtalloc_mpath_fib(struct route *ro, uint32_t hash, u_int fibnum)
 
 		/* gw selection by Modulo-N Hash (RFC2991) XXX need improvement? */
 		hash += hashjitter;
-		dprint(("-rtalloc_mpath_fib: hash[%u] hashjitter[%u]\n",hash,hashjitter));
 		hash %= n;
 		rt = rt0->mpath_array[hash];
 		/* XXX try filling rt_gwroute and avoid unreachable gw  */
