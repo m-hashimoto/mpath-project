@@ -178,9 +178,8 @@ debug_tree_print(struct ptree_node_head *pnh)
 		len = 8*len;
 		printf("-ptree_insert: mask_len[%d]\n ",len);
 	} 
-	else if(m && (LEN(m) <= head->pnh_offset)){
+	else if(m && (LEN(m) <= head->pnh_offset))
 		len = 8*head->pnh_offset;
-	
 	
 	if (!top)
 		goto on1;
