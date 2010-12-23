@@ -135,6 +135,8 @@ debug_tree_print(struct ptree_node_head *pnh)
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
+static uint32_t max_multipath;
+
 #define LEN(x) (*(const u_char *)(x))
 
 #define SIN_ZERO 64
@@ -355,33 +357,34 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				/* if it is first multipath */
 				dprint(("-ptree_addroute: add new mpath_array\n"));
 				R_Malloc(rt_array, struct rtentry **,
-											 	MAX_MULTIPATH*sizeof(struct rtentry *));
-				memset(rt_array, 0, MAX_MULTIPATH*sizeof(struct rtentry *));
+											 	max_multipath*sizeof(struct rtentry *));
+				memset(rt_array, 0, max_multipath*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				rt0->mpath_array = rt_array;
-			} else if(n == MAX_MULTIPATH) {
+			} else if(n == max_multipath) {
 				/* if number of path is over MAX_MULTIPATH */
 				struct rtentry **tmp;
 				tmp = rt0->mpath_array;
 				
 				R_Realloc(tmp, struct rtentry **, 
-												10*MAX_MULTIPATH*sizeof(struct rtentry *));
+												5*max_multipath*sizeof(struct rtentry *));
 				if(tmp == NULL){
 					printf("realloc fault\n");
 					return NULL;
 				}
 				else
 					rt_array = tmp;
+				
 				rt_array[n] = rt;
-				rt_array[n+1] = NULL;
+				//rt_array[n+1] = NULL;
 				rt0->mpath_array = rt_array;
-				dprint(("-ptree_addroute: Realloc mpath_array[%p]\n",rt_array));
+				dprint(("-ptree_addroute: Realloc mpath_array[%d]\n",max_multipath));
 			} else {
-				dprint(("-ptree_addroute: add new rt in array[%d]\n",n));
 				rt_array = rt0->mpath_array;
 				rt_array[n] = rt;
 			}
+			dprint(("-ptree_addroute: add new rt in array[%d]=%p\n",n,rt));
 
 			rt->rt_nodes = tt;
 			return tt;
@@ -581,7 +584,7 @@ ptree_mpath_count(struct rtentry *rt)
 		/* count mpath_array */
 		while (rt1 && rt1[i])
 				i++;
-		dprint(("-ptree_mpath_count End: count = %d\n",i));
+
 		return (i);
 }
 
@@ -845,10 +848,10 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	rt_array = rt->mpath_array;
 	hash = seed + hashjitter;
 	
-	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
 	hash %= n;
+	dprint(("-multipath_nexthop: hash[%u] seed[%u]\n",hash,seed));
 	rt = rt_array[hash];
-	dprint(("-multipath_nexthop: rt[%p]\n",rt));
+	dprint(("-multipath_nexthop: rt[%d]=%p\n",hash,rt));
 	return rt;
 }
 
@@ -863,6 +866,7 @@ ptree4_mpath_inithead(void **head, int off)
 		//dprint(("-ptree4_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
+		max_multipath = 2;
 		if (in_inithead(head, off) == 1) {
 				rnh = (struct ptree_node_head *)*head;
 				rnh->pnh_multipath = 1;
@@ -880,6 +884,7 @@ ptree6_mpath_inithead(void **head, int off)
 		//dprint(("-ptree6_mpath_inithead Start\n"));
 
 		hashjitter = arc4random();
+		max_multipath = 2;
 		if (in6_inithead(head, off) == 1) {
 				rnh = (struct ptree_node_head *)*head;
 				rnh->pnh_multipath = 1;
