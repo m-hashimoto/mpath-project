@@ -156,22 +156,22 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	char *v = v_arg, *m = m_arg;
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
-	int salen,len;
+	int len;
 	
 	if(head->pnh_offset == INET_HEADOFF )
-		salen = len = (int)8*LEN(v) - SIN_ZERO;
+		len = (int)8*LEN(v) - SIN_ZERO;
 	else
-		salen = len = (int)8*LEN(v) - SIN6_ZERO;
+		len = (int)8*LEN(v) - SIN6_ZERO;
 	
 #ifdef DEBUG
 	if(head->pnh_offset == INET_HEADOFF){
 		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET, v);
-		printf("/%d\n",len);
+		printf("/%d\n",len - 8*INET_HEADOFF);
 	} else {
 		printf("-ptree_insert: addr ");
 		sprint_inet_ntoa(AF_INET6, v);
-		printf("/%d\n",len);
+		printf("/%d\n",len - 8*INET6_HEADOFF);
 	}
 #endif
 	if(m /*&& (LEN(m) > head->pnh_offset)*/){
@@ -181,7 +181,8 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 		while(m[len] & bitmask)
 			len++;
 		len = 8*len;
-#ifdef DEBUG
+		printf("-ptree_insert: mask_len[%d]\n ",len);
+#if 0
 		if(head->pnh_offset == INET_HEADOFF){
 			printf("-ptree_insert: mask ");
 			sprint_inet_ntoa(AF_INET, m);
@@ -231,6 +232,7 @@ on1:
 		dprint(("-ptree_insert: insert default gateway\n"));
 	}
 #endif
+	printf("-ptree_insert: return[%p]\n",tt);
 	return (tt);
 }
 
