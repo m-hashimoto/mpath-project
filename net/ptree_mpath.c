@@ -628,7 +628,6 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		rt0 = rn->data;
 		
 		rt1 = rt0->mpath_array;
-		dprint(("-rt_mpath_conflict: 1\n"));
 		if(!rt1){
 				if (rt0->rt_gateway->sa_family == AF_LINK) {
 						if (rt0->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
@@ -646,10 +645,11 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				return EEXIST;
 		}
 		/* key/mask were the same.  compare gateway for all multipaths */
-		dprint(("-rt_mpath_conflict: 2\n"));
 		n = ptree_mpath_count(rt0);
 		i = 0;
 		do {
+				/* check all entry */
+				dprint(("-rt_mpath_conflict: check rt[%d]\n",i));
 				if (rt1[i]->rt_gateway->sa_family == AF_LINK) {
 						if (rt1[i]->rt_ifa->ifa_addr->sa_len != rt->rt_ifa->ifa_addr->sa_len ||
 										bcmp(rt1[i]->rt_ifa->ifa_addr, rt->rt_ifa->ifa_addr, 
