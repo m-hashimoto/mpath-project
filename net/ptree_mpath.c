@@ -21,6 +21,23 @@
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
+
+static int  max_keylen;
+static char *pn_zeros, *pn_ones;
+#ifdef PTREE_MPATH
+static uint32_t max_multipath;
+#endif
+
+#define LEN(x) (*(const u_char *)(x))
+
+#define SIN_ZERO 64
+#define SIN6_ZERO 32
+
+static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
+			   	struct ptree_node_head *head, int *dupentry);
+static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
+
+
  void
 sprint_inet_ntoa(int af, void *sa)
 {
@@ -62,8 +79,8 @@ debug_node_print(struct ptree_node *pn, int offset)
 
 		if(mrt){ /* muluti path */
 			int i = 0;
-			while(mrt[i] && mrt[i]->rt_gateway){
-				printf("%24s [%p] ","malutipath",mrt[i]);
+			while(mrt[i] && i < max_multipath){
+				printf("%24s [%p] ","multipath",mrt[i]);
 				rt = mrt[i];
 				if(offset == INET6_HEADOFF){
 					sprint_inet_ntoa(AF_INET6,rt->rt_gateway);
@@ -96,15 +113,6 @@ debug_node_print(struct ptree_node *pn, int offset)
 				}
 			}
 		}
-#if 0
-		unsigned char *str;
-		int i;
-		str = (unsigned char *)rt0->rt_gateway;
-		printf("gateway: ");
-		for(i=0;i < 16;i++)
-			printf("%d.",str[i]);
-		printf("/16\n");
-#endif
 	}
 #endif /* PTREE_MPATH */
 	return 0;
@@ -133,19 +141,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 		return (0);
 }
 
-static int  max_keylen;
-static char *pn_zeros, *pn_ones;
-static uint32_t max_multipath;
-
-#define LEN(x) (*(const u_char *)(x))
-
-#define SIN_ZERO 64
-#define SIN6_ZERO 32
-
-static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
-			   	struct ptree_node_head *head, int *dupentry);
-static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
-
 
 	static struct ptree_node 
 *ptree_insert(v_arg, m_arg, head, dupentry)  
@@ -153,8 +148,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 	struct ptree_node_head *head;
 	int *dupentry;
 {
-	//caddr_t v = v_arg, m = m_arg;
-	//register caddr_t cp;
 	char *v = v_arg, *m = m_arg;
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
@@ -184,17 +177,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 			len++;
 		len = 8*len;
 		printf("-ptree_insert: mask_len[%d]\n ",len);
-#if 0
-		if(head->pnh_offset == INET_HEADOFF){
-			printf("-ptree_insert: mask ");
-			sprint_inet_ntoa(AF_INET, m);
-			printf("/%d\n",len);
-		} else {
-			printf("-ptree_insert: mask ");
-			sprint_inet_ntoa(AF_INET6, m);
-			printf("/%d\n",len);
-		}
-#endif
 	}
 	
 	
@@ -274,7 +256,6 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree_node_head *head;
 {
-	//dprint(("-ptree_matchaddr Start: pnh[%p]\n",head));
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 	if(!t){
@@ -288,17 +269,6 @@ ptree_matchaddr(v_arg, head)
 	int vlen;
 	
 	vlen = (int)8*LEN(v);
-#if 0
-		if(head->pnh_offset == 4){
-			printf("-ptree_matchaddr: addr ");
-			sprint_inet_ntoa(AF_INET, v);
-			printf("/%d\n",vlen);
-		} else {
-			printf("-ptree_matchaddr: addr ");
-			sprint_inet_ntoa(AF_INET6, v);
-			printf("/%d\n",vlen);
-		}
-#endif
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("-ptree_matchaddr: not match\n"));
@@ -306,23 +276,11 @@ ptree_matchaddr(v_arg, head)
 	}
 
 	cp = t->key; cplim = v; vlen = t->keylen;
-#if 0
-		if(head->pnh_offset == 4){
-			printf("-ptree_matchaddr: save_t ");
-			sprint_inet_ntoa(AF_INET, cp);
-			printf("/%d\n",vlen);
-		}else{
-			printf("-ptree_matchaddr: save_t ");
-			sprint_inet_ntoa(AF_INET6, cp);
-			printf("/%d\n",vlen);
-		}
-#endif
 	if ( memcmp(cp,cplim,vlen/8) != 0 )
 		return 0;
 	/*
 	 * match exactly as a host.
 	 */
-	//dprint(("-ptree_matchaddr End: return t[%p]\n",t));
 	return t;
 }
 
@@ -348,7 +306,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		if (keyduplicated) {
 			int n;
 			struct rtentry *rt0, **rt_array;
-			dprint(("-ptree_addroute: if keyduplicated.\n"));
 				
 			rt0 = tt->data;
 			n = ptree_mpath_count(rt0);
@@ -392,6 +349,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
+		dprint(("-ptree_addroute: add new rt=%p\n",rt));
 		return tt;
 }
 
@@ -406,45 +364,20 @@ ptree_deladdr(v_arg, gate_arg, head)
 		char *v;
 		struct sockaddr *gate;
 		unsigned int len;
-		//dprint(("-ptree_deladdr Start: pnh[%p]\n",head));
 
 		v = v_arg;
 		gate = gate_arg;
 		top = head->pnh_top;
 		len = (int)8*LEN(v);
 
-#if 0
-		if(head->pnh_offset == 4){
-			printf("-ptree_deladdr: addr[%p] ",v);
-			sprint_inet_ntoa(AF_INET, v);
-			printf("/%d\n",len);
-		} else {
-			printf("-ptree_deladdr: addr[%p] ",v);
-			sprint_inet_ntoa(AF_INET6, v);
-			printf("/%d\n",len);
-		}
-#endif
-		
 		tt = saved_tt = ptree_search(v, len, head->pnh_treetop);
 
 		if (!saved_tt){
 				dprint(("-ptree_deladdr End: ptree_node nothing\n"));
 				return (0);
 		}
-		//register caddr_t cp, cplim;
 		register char *cp, *cplim;
 		cp = tt->key; cplim = v; len = tt->keylen;
-#if 0
-		if(head->pnh_offset == 4){
-			printf("-ptree_deladdr: match ");
-			sprint_inet_ntoa(AF_INET, cp);
-			printf("/%d\n",len);
-		} else {
-			printf("-ptree_deladdr: match ");
-			sprint_inet_ntoa(AF_INET6, cp);
-			printf("/%d\n",len);
-		}
-#endif
 		if ( memcmp(cp, v, len/8) != 0 ){
 				dprint(("-ptree_deladdr End: not match\n"));
 				return (0);
@@ -452,17 +385,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
 		headrt = tt->data;
-#if 0
-		if(head->pnh_offset == 4){
-			printf("-ptree_deladdr: gate[%p] ",gate);
-			sprint_inet_ntoa(AF_INET, gate);
-			printf("/%d\n",len);
-		} else {
-			printf("-ptree_deladdr: gate[%p] ",gate);
-			sprint_inet_ntoa(AF_INET6, gate);
-			printf("/%d\n",len);
-		}
-#endif
+		
 		if(headrt->mpath_array){
 			if ( (rt = rt_mpath_matchgate(headrt,gate)) != NULL ){
 				struct ptree_node *tmprn;
