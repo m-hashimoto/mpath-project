@@ -17,6 +17,7 @@
 #ifdef DEBUG
 #include <sys/types.h>
 #include <sys/time.h>
+#include <sys/resource.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
@@ -40,6 +41,15 @@ static uint32_t max_multipath;
 static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 			   	struct ptree_node_head *head, int *dupentry);
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
+
+double getrusage_sec()
+{
+   struct rusage t;
+   struct timeval tv;
+   getrusage(RUSAGE_SELF, &t);
+   tv = t.ru_utime;
+   return tv.tv_sec + (double)tv.tv_usec*1e-6;
+}
 
 double gettimeofday_sec()
 {
