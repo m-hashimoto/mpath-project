@@ -155,6 +155,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
+	unsigned long c0,c1,c2;
 	
 	if(head->pnh_offset == INET_HEADOFF )
 		len = (int)8*LEN(v) - SIN_ZERO;
@@ -476,13 +477,8 @@ ptree_init()
 				*cp++ = -1;
 
 #ifdef DEBUG
-		unsigned long c0,c1;
-	
-		RDTSC(c0);
-		sleep(1);
-		RDTSC(c1);
-		cpu_frequency = c1 - c0;
-		printf("RDTSC test: sleep(1) = %lu clk\n",cpu_frequency);
+		cpu_frequency = 1200;
+		printf("RDTSC: %lu clk\n",cpu_frequency);
 #endif
 }
 
