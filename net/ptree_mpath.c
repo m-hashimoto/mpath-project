@@ -577,13 +577,13 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					rt1 = NULL;
 					return (1);
 				}
-				if(rt0 == rt[i]){ /* delete entry is array's top */
+				if(rt0 == rt1[i]){ /* delete entry is array's top */
 					/* move mpath_array pointer */
-					rn->data = rt[n-1];
-					rt[n-1]->mpath_array = rt1;
-					/* delete rt[i] */
-					rt1[i] = rt[n-1];
-					rt[n-1] = NULL;
+					rn->data = rt1[n-1];
+					rt1[n-1]->mpath_array = rt1;
+					/* delete rt1[i] */
+					rt1[i] = rt1[n-1];
+					rt1[n-1] = NULL;
 				}
 				else if(n == 2) { /* entry became single path, after delete */
 					rt1[i] = NULL;
