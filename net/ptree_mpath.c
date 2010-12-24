@@ -392,6 +392,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 				tmprn->data = rt;
 				if( ! rt_mpath_delete(headrt,rt) )
 					return (tmprn);
+				XRTFREE(tmprn);
 			}
 		}
 #endif
@@ -556,8 +557,9 @@ static uint32_t hashjitter;
 rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 		uint32_t i = 0, n;
-		struct rtentry *rt0,**rt1, *match;
+		struct rtentry *rt0,**rt1;
 		struct sockaddr *sa0, *sa1;
+		struct ptree_node *rn = headrt->rt_nodes;
 
 		if (!headrt || !rt)
 				return (0);
@@ -575,9 +577,21 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					rt1 = NULL;
 					return (1);
 				}
-				match = rt1[i];
-				rt1[i] = rt1[n-1];
-				rt1[n-1] = NULL;
+				if(rt0 == rt[i]){ /* delete entry is array's top */
+					/* move mpath_array pointer */
+					rn->data = rt[n-1];
+					rt[n-1]->mpath_array = rt1;
+					/* delete rt[i] */
+					rt1[i] = rt[n-1];
+					rt[n-1] = NULL;
+				}
+				else if(n == 2) { /* entry became single path, after delete */
+					rt1[i] = NULL;
+				}
+				else {
+					rt1[i] = rt1[n-1];
+					rt1[n-1] = NULL;
+				}
 				
 				return (0);
 			}
