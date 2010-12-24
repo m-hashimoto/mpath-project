@@ -14,38 +14,13 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
+#ifdef DEBUG
 #include <sys/types.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
-
-#if 0
-#include <sys/time.h>
-#include <sys/resource.h>
-
-#define   RUSAGE_SELF     0
-#define   RUSAGE_CHILDREN     -1
-
-int getrusage(int who, struct rusage *rusage);
-int gettimeofday(struct timeval *tv, struct timezone *tz);
-
-double getrusage_sec()
-{
-   struct rusage t;
-   struct timeval tv;
-   getrusage(RUSAGE_SELF, &t);
-   tv = t.ru_utime;
-   return tv.tv_sec + (double)tv.tv_usec*1e-6;
-}
-
-double gettimeofday_sec()
-{
-  struct timeval tv;
-  gettimeofday(&tv, NULL);
-  return tv.tv_sec + (double)tv.tv_usec*1e-6;
-}
 #endif
 
 static int  max_keylen;
@@ -55,7 +30,10 @@ static uint32_t max_multipath;
 #endif
 
 #define LEN(x) (*(const u_char *)(x))
+#define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 
+#define INET_HEADOFF 4
+#define INET6_HEADOFF 8
 #define SIN_ZERO 64
 #define SIN6_ZERO 32
 
@@ -63,6 +41,7 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 			   	struct ptree_node_head *head, int *dupentry);
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
+#ifdef DEBUG
  void
 sprint_inet_ntoa(int af, void *sa)
 {
@@ -79,8 +58,6 @@ sprint_inet_ntoa(int af, void *sa)
 	}
 }
 
-#define INET_HEADOFF 4
-#define INET6_HEADOFF 8
 
 	int
 debug_node_print(struct ptree_node *pn, int offset)
@@ -165,7 +142,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		printf("----------------------------------------------------------\n\n");
 		return (0);
 }
-
+#endif
 
 	static struct ptree_node 
 *ptree_insert(v_arg, m_arg, head, dupentry)  
@@ -177,23 +154,13 @@ debug_tree_print(struct ptree_node_head *pnh)
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
+	unsigned long c0,c1;
 	
 	if(head->pnh_offset == INET_HEADOFF )
 		len = (int)8*LEN(v) - SIN_ZERO;
 	else
 		len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#if 0
-	if(head->pnh_offset == INET_HEADOFF){
-		printf("-ptree_insert: addr ");
-		sprint_inet_ntoa(AF_INET, v);
-		printf("/%d\n",len - 8*INET_HEADOFF);
-	} else {
-		printf("-ptree_insert: addr ");
-		sprint_inet_ntoa(AF_INET6, v);
-		printf("/%d\n",len - 8*INET6_HEADOFF);
-	}
-#endif
 	if(m && (LEN(m) > head->pnh_offset)){
 		unsigned char bitmask = 0xff;
 		len = head->pnh_offset;
@@ -206,8 +173,12 @@ debug_tree_print(struct ptree_node_head *pnh)
 	
 	if (!top)
 		goto on1;
-
+	
+	RDTSC(c0);
 	t = ptree_search(v, len, head->pnh_treetop);
+	RDTSC(c1);
+	printf("-ptree_insert: ptree_search  %u clk\n",c1-c0);
+	
 	if (!t)
 		goto on1;
 
@@ -513,10 +484,9 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 		uint32_t	i = 0;
 		struct rtentry **match;
 
-		if (!rt->mpath_array){
-				dprint(("-rt_mpath_matchgate: not have multipath\n"));
+		if (!rt->mpath_array)
 				return rt;
-		}
+		
 		else
 				match = rt->mpath_array;
 
@@ -543,7 +513,6 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				i++;
 		} while ( match[i] );
 
-		dprint(("-rt_mpath_matchgate End: rt[%p]\n",rt));
 		return rt;
 }
 
