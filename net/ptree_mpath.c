@@ -481,7 +481,7 @@ ptree_init()
 
 #ifdef DEBUG
 		cpu_frequency = 1999.78;
-		printf("RDTSC: CPU %4.2lu MHz\n",cpu_frequency);
+		printf("RDTSC: CPU %4.2f MHz\n",cpu_frequency);
 #endif
 }
 
