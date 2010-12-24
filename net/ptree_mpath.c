@@ -162,7 +162,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		len = (int)8*LEN(v) - SIN6_ZERO;
 	
 #ifdef DEBUG
-	struct sockaddr *sa = v, *sa_m = m;
+	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
 	sprint_inet_ntoa(sa->sa_family, sa);
 	if(m)
 		sprint_inet_ntoa(sa_m->sa_family, sa_m);
