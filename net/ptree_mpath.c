@@ -180,7 +180,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			len++;
 		len = 8*len;
 	} 
-	else if(m && (LEN(m) <= head->pnh_offset))
+	else if(m && (LEN(m) <= head->pnh_offset) || !m)
 		len = 8*head->pnh_offset;
 	
 	if (!top)
