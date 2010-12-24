@@ -30,8 +30,6 @@ static uint32_t max_multipath;
 #endif
 
 #define LEN(x) (*(const u_char *)(x))
-#define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
-
 #define INET_HEADOFF 4
 #define INET6_HEADOFF 8
 #define SIN_ZERO 64
@@ -42,6 +40,9 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
+#define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
+static unsigned long cpu_frequency;
+
  void
 sprint_inet_ntoa(int af, void *sa)
 {
@@ -154,7 +155,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
-	unsigned long c0,c1,c2;
 	
 	if(head->pnh_offset == INET_HEADOFF )
 		len = (int)8*LEN(v) - SIN_ZERO;
@@ -193,8 +193,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	printf("-ptree_insert: RDTSC  %lu clk\n",c0);
 	printf("-ptree_insert: search Start %lu clk\n",c1);
 	printf("-ptree_insert: search End   %lu clk\n",c2);
-	printf("-ptree_insert: search interval %lu clk\n",c2-c1);
-	
+	printf("-ptree_insert: search interval %lu clk %lu s\n",c2-c1, (c2-c1)/cpu_frequency);
 	if (!t)
 		goto on1;
 
@@ -218,7 +217,7 @@ on1:
 	printf("-ptree_insert: RDTSC  %lu clk\n",c0);
 	printf("-ptree_insert: add Start %lu clk\n",c1);
 	printf("-ptree_insert: add End   %lu clk\n",c2);
-	printf("-ptree_insert: add interval %lu clk\n",c2-c1);
+	printf("-ptree_insert: add interval %lu clk %lu s\n",c2-c1,(c2-c1)/cpu_frequency);
 	return (tt);
 }
 
@@ -475,6 +474,16 @@ ptree_init()
 		cplim = pn_ones + max_keylen;
 		while (cp < cplim)
 				*cp++ = -1;
+
+#ifdef DEBUG
+		unsigned long c0,c1;
+	
+		RDTSC(c0);
+		sleep(1);
+		RDTSC(c1);
+		cpu_frequency = c1 - c0;
+		printf("RDTSC test: sleep(1) = %lu clk\n",cpu_frequency);
+#endif
 }
 
 /*
