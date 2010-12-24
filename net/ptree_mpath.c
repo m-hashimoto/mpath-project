@@ -41,7 +41,7 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
-static double cpu_frequency;
+static float cpu_frequency;
 
  void
 sprint_inet_ntoa(int af, void *sa)
@@ -481,7 +481,7 @@ ptree_init()
 
 #ifdef DEBUG
 		cpu_frequency = 1999.78;
-		printf("RDTSC: CPU %f MHz\n",cpu_frequency);
+		printf("-ptree_init: CPU %f MHz\n",cpu_frequency);
 #endif
 }
 
