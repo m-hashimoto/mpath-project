@@ -177,7 +177,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	RDTSC(c0);
 	t = ptree_search(v, len, head->pnh_treetop);
 	RDTSC(c1);
-	printf("-ptree_insert: ptree_search  %u clk\n",c1-c0);
+	printf("-ptree_insert: ptree_search  %lu clk\n",c1-c0);
 	
 	if (!t)
 		goto on1;
