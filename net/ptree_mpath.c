@@ -181,7 +181,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			len++;
 		len = 8*len;
 	} 
-	else if( (m && (LEN(m) <= head->pnh_offset)) || !m )
+	else if( (m && (LEN(m) <= head->pnh_offset)) )
 		len = 8*head->pnh_offset;
 	
 	if (!top)
@@ -194,7 +194,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	printf("-ptree_insert: RDTSC  %lu clk\n",c0);
 	printf("-ptree_insert: search Start %lu clk\n",c1);
 	printf("-ptree_insert: search End   %lu clk\n",c2);
-	printf("-ptree_insert: search interval %lu clk %lu s\n",c2-c1, (c2-c1)/cpu_frequency);
+	printf("-ptree_insert: search interval %lu clk %1.10lu s\n",c2-c1, (c2-c1)/cpu_frequency);
 	if (!t)
 		goto on1;
 
@@ -477,8 +477,8 @@ ptree_init()
 				*cp++ = -1;
 
 #ifdef DEBUG
-		cpu_frequency = 1200;
-		printf("RDTSC: %lu clk\n",cpu_frequency);
+		cpu_frequency = 1999.78;
+		printf("RDTSC: CPU %4.2lu MHz\n",cpu_frequency);
 #endif
 }
 
