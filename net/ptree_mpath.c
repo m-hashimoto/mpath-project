@@ -192,11 +192,11 @@ debug_tree_print(struct ptree_node_head *pnh)
 	RDTSC(c1);
 	t = ptree_search(v, len, head->pnh_treetop);
 	RDTSC(c2);
-	//printf("-ptree_insert: RDTSC  %lu clk\n",c0);
+	printf("-ptree_insert: RDTSC  %lu clk\n",c0);
 	printf("-ptree_insert: search Start %lu clk\n",c1);
 	printf("-ptree_insert: search End   %lu clk\n",c2);
 	td = (c2 - c1)/cpu_frequency;
-	printf("-ptree_insert: search interval %lu clk %2.10f s\n",c2-c1, td);
+	printf("-ptree_insert: search interval %lu clk %12.10f s\n",c2-c1, td);
 	if (!t)
 		goto on1;
 
@@ -217,11 +217,11 @@ on1:
 	RDTSC(c1);
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	RDTSC(c2);
-	//printf("-ptree_insert: RDTSC  %lu clk\n",c0);
+	printf("-ptree_insert: RDTSC  %lu clk\n",c0);
 	printf("-ptree_insert: add Start %lu clk\n",c1);
 	printf("-ptree_insert: add End   %lu clk\n",c2);
 	td = (c2 - c1)/cpu_frequency;
-	printf("-ptree_insert: add interval %lu clk %2.10f s\n",c2-c1,td);
+	printf("-ptree_insert: add interval %lu clk %12.10f s\n",c2-c1,td);
 	return (tt);
 }
 
@@ -481,7 +481,7 @@ ptree_init()
 
 #ifdef DEBUG
 		cpu_frequency = 1999.78;
-		printf("RDTSC: CPU %4.2f MHz\n",cpu_frequency);
+		printf("RDTSC: CPU %6.2f MHz\n",cpu_frequency);
 #endif
 }
 
