@@ -154,12 +154,19 @@ debug_tree_print(struct ptree_node_head *pnh)
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
-	unsigned long c0,c1;
+	unsigned long c0,c1,c2,cd;
 	
 	if(head->pnh_offset == INET_HEADOFF )
 		len = (int)8*LEN(v) - SIN_ZERO;
 	else
 		len = (int)8*LEN(v) - SIN6_ZERO;
+	
+#ifdef DEBUG
+	struct sockaddr *sa = v, *sa_m = m;
+	sprint_inet_ntoa(sa->sa_family, sa);
+	if(m)
+		sprint_inet_ntoa(sa_m->sa_family, sa_m);
+#endif
 	
 	if(m && (LEN(m) > head->pnh_offset)){
 		unsigned char bitmask = 0xff;
@@ -175,9 +182,14 @@ debug_tree_print(struct ptree_node_head *pnh)
 		goto on1;
 	
 	RDTSC(c0);
-	t = ptree_search(v, len, head->pnh_treetop);
 	RDTSC(c1);
-	printf("-ptree_insert: ptree_search  %lu clk\n",c1-c0);
+	t = ptree_search(v, len, head->pnh_treetop);
+	RDTSC(c2);
+	printf("-ptree_insert: search Start %lu clk\n",c0);
+	cd = c1-c0;
+	printf("-ptree_insert: RDTSC clks   %lu clk\n",cd);
+	printf("-ptree_insert: search End   %lu clk\n",c2);
+	printf("-ptree_insert: search interval %lu clk\n",c2-c1-cd);
 	
 	if (!t)
 		goto on1;
@@ -195,7 +207,15 @@ on1:
 	*dupentry = 0;
 	void *data = NULL;
 
+	RDTSC(c0);
+	RDTSC(c1);
 	tt = ptree_add(v, len, data, head->pnh_treetop);
+	RDTSC(c2);
+	printf("-ptree_insert: add Start %lu clk\n",c0);
+	cd = c1-c0;
+	printf("-ptree_insert: RDTSC clks   %lu clk\n",cd);
+	printf("-ptree_insert: add End   %lu clk\n",c2);
+	printf("-ptree_insert: add interval %lu clk\n",c2-c1-cd);
 	return (tt);
 }
 
