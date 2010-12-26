@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:28:07.000000000 +0900
++++ route.c	2010-12-26 15:28:43.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -220,7 +220,7 @@
 -		} else if (do_rtent) {
 -			if (kget(rn, rtentry) == 0) {
 +	if (do_rtent) {
-+		if (kget(rnnode.data, rtentry) == 0) {
++		if (kget(rnode.data, rtentry) == 0) {
  				p_rtentry(&rtentry);
  				if (Aflag)
  					p_rtnode();
