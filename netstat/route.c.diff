@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:42:53.000000000 +0900
++++ route.c	2010-12-26 15:44:14.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -346,10 +346,11 @@
 +	printf("p_rtenty: get addr_sa\n");
 +	printf("p_rtenty: rt->rt_nodes[%p]\n",rt->rt_nodes);
  	bzero(&addr, sizeof(addr));
+-	if ((sa = kgetsa(rt_key(rt))))
 +	if (kget(rt->rt_nodes,rn) != 0)
 +		return;
 +	printf("p_rtenty: rn.key[%p]\n",rn.key);
- 	if ((sa = kgetsa(rt_key(rt))))
++	if ((sa = kgetsa(rn.key)))
  		bcopy(sa, &addr, sa->sa_len);
 +	printf("p_rtenty: get mask_sa\n");
  	bzero(&mask, sizeof(mask));
