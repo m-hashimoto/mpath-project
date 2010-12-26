@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:16:55.000000000 +0900
++++ route.c	2010-12-26 15:17:53.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -80,6 +80,7 @@
  			/* Read the rnh data. */
  			if (kget(rnh, head) != 0)
  				continue;
++			pnh_head = head.pnh_treetop;
 +			printf("routepr: i[%d]\n",i);
  			if (i == AF_UNSPEC) {
 +				printf("routepr: i == AF_UNSPEC\n");
@@ -92,7 +93,6 @@
 -				size_cols(i, head.rnh_treetop);
 +				printf("routepr: af == AF_UNSPEC || af == i\n");
 +				printf("routepr: rnh[%p]\n",rnh);
-+				phn_head = head.pnh_treetop;
 +				printf("routepr: head.pnh_treetop[%p]\n",head.pnh_treetop);
 +				printf("routepr: pnh_head->top[%p]\n",pnh_head->top);
 +				size_cols(i, pnh_head->top);
