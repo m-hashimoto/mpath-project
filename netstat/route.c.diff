@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:08:28.000000000 +0900
++++ route.c	2010-12-26 15:09:18.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -66,7 +66,7 @@
  			return;
  		for (i = 0; i <= AF_MAX; i++) {
  			int tmpfib;
-@@ -191,31 +192,37 @@
+@@ -191,7 +192,7 @@
  				tmpfib = 0;
  			else
  				tmpfib = fibnum;
@@ -75,11 +75,7 @@
  			/* Calculate the in-kernel address. */
  			rnhp += tmpfib * (AF_MAX+1) + i;
  			/* Read the in kernel rhn pointer. */
- 			if (kget(rnhp, rnh) != 0)
- 				continue;
-+			printf("routepr: rnh[%p]\n",rnh);
- 			if (rnh == NULL)
- 				continue;
+@@ -202,20 +203,26 @@
  			/* Read the rnh data. */
  			if (kget(rnh, head) != 0)
  				continue;
@@ -94,6 +90,7 @@
  			} else if (af == AF_UNSPEC || af == i) {
 -				size_cols(i, head.rnh_treetop);
 +				printf("routepr: af == AF_UNSPEC || af == i\n");
++				printf("routepr: rnh[%p]\n",rnh);
 +				printf("routepr: rnh->pnh_treetop[%p]\n",rnh->pnh_treetop);
 +				size_cols(i, rnh->pnh_treetop->top);
  				pr_family(i);
