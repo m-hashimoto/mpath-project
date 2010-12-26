@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 16:23:20.000000000 +0900
++++ route.c	2010-12-26 16:26:46.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -35,17 +35,18 @@
  static void p_rtnode(void);
  static void ntreestuff(void);
  static void np_rtentry(struct rt_msghdr *);
-@@ -150,7 +150,8 @@
+@@ -150,7 +150,9 @@
  void
  routepr(u_long rtree)
  {
 -	struct radix_node_head **rnhp, *rnh, head;
++	printf("routepr\n");
 +	struct ptree_node_head **rnhp, *rnh, head;
 +	struct ptree *pnhp, pnh_head;
  	size_t intsize;
  	int i;
  	int numfibs;
-@@ -161,7 +162,7 @@
+@@ -161,7 +163,7 @@
  	if (sysctlbyname("net.fibs", &numfibs, &intsize, NULL, 0) == -1)
  		numfibs = 1;
  	rt_tables = calloc(numfibs * (AF_MAX+1),
@@ -54,7 +55,7 @@
  	if (rt_tables == NULL)
  		err(EX_OSERR, "memory allocation failed");
  	/*
-@@ -183,7 +184,7 @@
+@@ -183,7 +185,7 @@
  		}
  
  		if (kread((u_long)(rtree), (char *)(rt_tables), (numfibs *
@@ -63,7 +64,7 @@
  			return;
  		for (i = 0; i <= AF_MAX; i++) {
  			int tmpfib;
-@@ -191,7 +192,7 @@
+@@ -191,7 +193,7 @@
  				tmpfib = 0;
  			else
  				tmpfib = fibnum;
@@ -72,7 +73,7 @@
  			/* Calculate the in-kernel address. */
  			rnhp += tmpfib * (AF_MAX+1) + i;
  			/* Read the in kernel rhn pointer. */
-@@ -202,17 +203,22 @@
+@@ -202,17 +204,22 @@
  			/* Read the rnh data. */
  			if (kget(rnh, head) != 0)
  				continue;
@@ -98,16 +99,18 @@
  			}
  		}
  	}
-@@ -283,7 +289,7 @@
+@@ -283,8 +290,9 @@
  static int wid_expire;
  
  static void
 -size_cols(int ef __unused, struct radix_node *rn)
 +size_cols(int ef __unused, struct ptree_node *rn)
  {
++	printf("size_cols\n");
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
-@@ -299,27 +305,21 @@
+ 	wid_flags = 6;
+@@ -299,40 +307,40 @@
  }
  
  static void
@@ -115,6 +118,7 @@
 +size_cols_tree(struct ptree_node *rn)
  {
 -again:
++	printf("size_cols_tree\n");
  	if (kget(rn, rnode) != 0)
  		return;
 -	if (!(rnode.rn_flags & RNF_ACTIVE))
@@ -141,7 +145,11 @@
  
  static void
  size_cols_rtentry(struct rtentry *rt)
-@@ -330,9 +330,13 @@
+ {
++	printf("size_cols_rtentry\n");
+ 	static struct ifnet ifnet, *lastif;
+ 	static char buffer[100];
+ 	const char *bp;
  	struct sockaddr *sa;
  	sa_u addr, mask;
  	int len;
@@ -156,7 +164,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -382,7 +386,6 @@
+@@ -382,14 +390,13 @@
  	}
  }
  
@@ -164,7 +172,24 @@
  /*
   * Print header for routing table columns.
   */
-@@ -435,85 +438,49 @@
+ void
+ pr_rthdr(int af1)
+ {
+-
++	printf("pr_rthdr\n");
+ 	if (Aflag)
+ 		printf("%-8.8s ","Address");
+ 	if (af1 == AF_INET || Wflag) {
+@@ -426,7 +433,7 @@
+ static struct sockaddr *
+ kgetsa(struct sockaddr *dst)
+ {
+-
++	printf("kgetsa\n");
+ 	if (kget(dst, pt_u.u_sa) != 0)
+ 		return (NULL);
+ 	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
+@@ -435,85 +442,52 @@
  }
  
  static void
@@ -173,6 +198,7 @@
  {
 +	int i;
 +	struct rtentry **rt0;
++	printf("p_tree\n");
  
 -again:
  	if (kget(rn, rnode) != 0)
@@ -194,6 +220,7 @@
  				if (Aflag)
  					p_rtnode();
  			}
++#if 0
 +		/* multipath */
 +		if(rtentry.mpath_array){
 +			if (kget(rtentry.mpath_array, rt0) == 0) {
@@ -201,6 +228,7 @@
 +					p_rtentry(rt0[i]);
 +			}
 +		}
++#endif
  		} else {
 -			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
 +		p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
@@ -267,7 +295,7 @@
  }
  
  static void
-@@ -763,9 +730,12 @@
+@@ -763,9 +737,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -281,7 +309,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +771,6 @@
+@@ -801,8 +778,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
