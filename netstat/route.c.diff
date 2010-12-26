@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 16:53:28.000000000 +0900
++++ route.c	2010-12-26 16:56:57.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -179,20 +179,17 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +436,54 @@
+@@ -435,85 +436,51 @@
  }
  
  static void
 -p_tree(struct radix_node *rn)
 +p_tree(struct ptree_node *rn)
  {
-+#if 0
 +	int i;
-+	struct rtentry **rt0;
-+#endif
++	struct rtentry **rt0, *rt;
  
 -again:
-+	printf("p_tree: get rn[%p]\n",rn);
  	if (kget(rn, rnode) != 0)
  		return;
 -	if (!(rnode.rn_flags & RNF_ACTIVE))
@@ -212,15 +209,15 @@
  				if (Aflag)
  					p_rtnode();
  			}
-+#if 0
 +		/* multipath */
-+		if(rtentry.mpath_array){
-+			if (kget(rtentry.mpath_array, rt0) == 0) {
-+				for(i=1;rt0[i]==NULL;i++)
-+					p_rtentry(rt0[i]);
++		rt0 = rtentry.mpath_array;
++		printf("p_tree: rt0[%p]\n",rt0);
++		if(rt0){
++			for(i=1;rt0[i]==NULL;i++){
++				if (kget(rt0[i], rt) == 0)
++					p_rtentry(&rt);
 +			}
 +		}
-+#endif
  		} else {
 -			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
 +		p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
@@ -287,7 +284,7 @@
  }
  
  static void
-@@ -763,9 +733,12 @@
+@@ -763,9 +730,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -301,7 +298,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +774,6 @@
+@@ -801,8 +771,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
