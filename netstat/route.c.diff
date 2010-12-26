@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:56:56.000000000 +0900
++++ route.c	2010-12-26 16:14:58.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -164,14 +164,16 @@
  /*
   * Print header for routing table columns.
   */
-@@ -435,85 +438,39 @@
+@@ -435,85 +438,49 @@
  }
  
  static void
 -p_tree(struct radix_node *rn)
 +p_tree(struct ptree_node *rn)
  {
--
++	int i;
++	struct rtentry **rt0;
+ 
 -again:
  	if (kget(rn, rnode) != 0)
  		return;
@@ -192,6 +194,13 @@
  				if (Aflag)
  					p_rtnode();
  			}
++		/* multipath */
++		if(rtentry.mpath_array){
++			if (kget(rtentry.mpath_array, rt0) == 0) {
++				for(i=1,rt0[i]==NULL;i++)
++					p_rtentry(rt0[i]);
++			}
++		}
  		} else {
 -			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
 +		p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
@@ -258,7 +267,7 @@
  }
  
  static void
-@@ -763,9 +720,12 @@
+@@ -763,9 +730,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -272,7 +281,15 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +761,6 @@
+@@ -788,6 +758,7 @@
+ 		if (rt->rt_ifp != lastif) {
+ 			if (kget(rt->rt_ifp, ifnet) == 0)
+ 				strlcpy(prettyname, ifnet.if_xname,
++		bcopy(sa, &addr, sa->sa_len);
+ 				    sizeof(prettyname));
+ 			else
+ 				strlcpy(prettyname, "---", sizeof(prettyname));
+@@ -801,8 +772,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
