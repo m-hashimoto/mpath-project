@@ -10,7 +10,7 @@ set diff_netstat = "./*.diff"
 cp ${diff_netstat} /usr/src/usr.bin/netstat/
 # cp include file
 set head = "../net/*.h"
-set head_diff = "../net/route.h.diff"
+set head_diff = "./route.h.diff"
 cp ${head} /usr/include/net/
 cp ${head_diff} /usr/include/net/
 

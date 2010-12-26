@@ -7,7 +7,9 @@ endif
 echo mpath netstat uninstall...
 
 # remove include file
-patch -N < route.h.diff
+cd /usr/include/net
+patch -R < route.h.diff
+rm /usr/include/net/route.h.diff
 rm /usr/include/net/ptree.h
 rm /usr/include/net/ptree_mpath.h
 
