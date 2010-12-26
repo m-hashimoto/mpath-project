@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 16:14:58.000000000 +0900
++++ route.c	2010-12-26 16:20:19.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -195,8 +195,8 @@
  					p_rtnode();
  			}
 +		/* multipath */
-+		if(rtentry.mpath_array){
-+			if (kget(rtentry.mpath_array, rt0) == 0) {
++		if(rtentry->mpath_array){
++			if (kget(rtentry->mpath_array, rt0) == 0) {
 +				for(i=1,rt0[i]==NULL;i++)
 +					p_rtentry(rt0[i]);
 +			}
@@ -281,15 +281,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -788,6 +758,7 @@
- 		if (rt->rt_ifp != lastif) {
- 			if (kget(rt->rt_ifp, ifnet) == 0)
- 				strlcpy(prettyname, ifnet.if_xname,
-+		bcopy(sa, &addr, sa->sa_len);
- 				    sizeof(prettyname));
- 			else
- 				strlcpy(prettyname, "---", sizeof(prettyname));
-@@ -801,8 +772,6 @@
+@@ -801,8 +771,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
