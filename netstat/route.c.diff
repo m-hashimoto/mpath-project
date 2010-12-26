@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:14:33.000000000 +0900
++++ route.c	2010-12-26 15:16:55.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -35,12 +35,13 @@
  static void p_rtnode(void);
  static void ntreestuff(void);
  static void np_rtentry(struct rt_msghdr *);
-@@ -150,10 +150,11 @@
+@@ -150,10 +150,12 @@
  void
  routepr(u_long rtree)
  {
 -	struct radix_node_head **rnhp, *rnh, head;
 +	struct ptree_node_head **rnhp, *rnh, head;
++	struct ptree *pnh_head;
  	size_t intsize;
  	int i;
  	int numfibs;
@@ -48,7 +49,7 @@
  
  	intsize = sizeof(int);
  	if (sysctlbyname("net.my_fibnum", &fibnum, &intsize, NULL, 0) == -1)
-@@ -161,7 +162,7 @@
+@@ -161,7 +163,7 @@
  	if (sysctlbyname("net.fibs", &numfibs, &intsize, NULL, 0) == -1)
  		numfibs = 1;
  	rt_tables = calloc(numfibs * (AF_MAX+1),
@@ -57,7 +58,7 @@
  	if (rt_tables == NULL)
  		err(EX_OSERR, "memory allocation failed");
  	/*
-@@ -183,7 +184,7 @@
+@@ -183,7 +185,7 @@
  		}
  
  		if (kread((u_long)(rtree), (char *)(rt_tables), (numfibs *
@@ -66,7 +67,7 @@
  			return;
  		for (i = 0; i <= AF_MAX; i++) {
  			int tmpfib;
-@@ -191,7 +192,7 @@
+@@ -191,7 +193,7 @@
  				tmpfib = 0;
  			else
  				tmpfib = fibnum;
@@ -75,7 +76,7 @@
  			/* Calculate the in-kernel address. */
  			rnhp += tmpfib * (AF_MAX+1) + i;
  			/* Read the in kernel rhn pointer. */
-@@ -202,20 +203,27 @@
+@@ -202,20 +204,28 @@
  			/* Read the rnh data. */
  			if (kget(rnh, head) != 0)
  				continue;
@@ -91,9 +92,10 @@
 -				size_cols(i, head.rnh_treetop);
 +				printf("routepr: af == AF_UNSPEC || af == i\n");
 +				printf("routepr: rnh[%p]\n",rnh);
++				phn_head = head.pnh_treetop;
 +				printf("routepr: head.pnh_treetop[%p]\n",head.pnh_treetop);
-+				printf("routepr: head.pnh_treetop->top[%p]\n",head.pnh_treetop.top);
-+				size_cols(i, head.pnh_treetop.top);
++				printf("routepr: pnh_head->top[%p]\n",pnh_head->top);
++				size_cols(i, pnh_head->top);
  				pr_family(i);
  				do_rtent = 1;
  				pr_rthdr(i);
@@ -106,7 +108,7 @@
  }
  
  /*
-@@ -225,6 +233,7 @@
+@@ -225,6 +235,7 @@
  pr_family(int af1)
  {
  	const char *afname;
@@ -114,7 +116,7 @@
  
  	switch (af1) {
  	case AF_INET:
-@@ -283,8 +292,9 @@
+@@ -283,8 +294,9 @@
  static int wid_expire;
  
  static void
@@ -125,7 +127,7 @@
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
  	wid_flags = 6;
-@@ -299,27 +309,22 @@
+@@ -299,27 +311,22 @@
  }
  
  static void
@@ -160,7 +162,7 @@
  
  static void
  size_cols_rtentry(struct rtentry *rt)
-@@ -330,6 +335,7 @@
+@@ -330,6 +337,7 @@
  	struct sockaddr *sa;
  	sa_u addr, mask;
  	int len;
@@ -168,7 +170,7 @@
  
  	bzero(&addr, sizeof(addr));
  	if ((sa = kgetsa(rt_key(rt))))
-@@ -382,13 +388,13 @@
+@@ -382,13 +390,13 @@
  	}
  }
  
@@ -183,7 +185,7 @@
  
  	if (Aflag)
  		printf("%-8.8s ","Address");
-@@ -426,6 +432,7 @@
+@@ -426,6 +434,7 @@
  static struct sockaddr *
  kgetsa(struct sockaddr *dst)
  {
@@ -191,7 +193,7 @@
  
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
-@@ -435,85 +442,40 @@
+@@ -435,85 +444,40 @@
  }
  
  static void
@@ -285,7 +287,7 @@
  }
  
  static void
-@@ -523,6 +485,7 @@
+@@ -523,6 +487,7 @@
  	int mib[6];
  	char *buf, *next, *lim;
  	struct rt_msghdr *rtm;
@@ -293,7 +295,7 @@
  
  	mib[0] = CTL_NET;
  	mib[1] = PF_ROUTE;
-@@ -550,6 +513,7 @@
+@@ -550,6 +515,7 @@
  static void
  np_rtentry(struct rt_msghdr *rtm)
  {
@@ -301,7 +303,7 @@
  	struct sockaddr *sa = (struct sockaddr *)(rtm + 1);
  #ifdef notdef
  	static int masks_done, banner_printed;
-@@ -589,6 +553,7 @@
+@@ -589,6 +555,7 @@
  static void
  p_sockaddr(struct sockaddr *sa, struct sockaddr *mask, int flags, int width)
  {
@@ -309,7 +311,7 @@
  	const char *cp;
  
  	cp = fmt_sockaddr(sa, mask, flags);
-@@ -606,6 +571,7 @@
+@@ -606,6 +573,7 @@
  static const char *
  fmt_sockaddr(struct sockaddr *sa, struct sockaddr *mask, int flags)
  {
@@ -317,7 +319,7 @@
  	static char workbuf[128];
  	const char *cp;
  
-@@ -744,6 +710,7 @@
+@@ -744,6 +712,7 @@
  static const char *
  fmt_flags(int f)
  {
@@ -325,7 +327,7 @@
  	static char name[33];
  	char *flags;
  	struct bits *p = bits;
-@@ -758,6 +725,7 @@
+@@ -758,6 +727,7 @@
  static void
  p_rtentry(struct rtentry *rt)
  {
@@ -333,7 +335,7 @@
  	static struct ifnet ifnet, *lastif;
  	static char buffer[128];
  	static char prettyname[128];
-@@ -801,8 +769,6 @@
+@@ -801,8 +771,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
@@ -342,7 +344,7 @@
  	}
  	putchar('\n');
  }
-@@ -810,6 +776,7 @@
+@@ -810,6 +778,7 @@
  char *
  routename(in_addr_t in)
  {
@@ -350,7 +352,7 @@
  	char *cp;
  	static char line[MAXHOSTNAMELEN];
  	struct hostent *hp;
-@@ -842,6 +809,7 @@
+@@ -842,6 +811,7 @@
  static void
  domask(char *dst, in_addr_t addr __unused, u_long mask)
  {
@@ -358,7 +360,7 @@
  	int b, i;
  
  	if (mask == 0 || (!numeric_addr && NSHIFT(mask) != 0)) {
-@@ -874,6 +842,7 @@
+@@ -874,6 +844,7 @@
  char *
  netname(in_addr_t in, u_long mask)
  {
@@ -366,7 +368,7 @@
  	char *cp = 0;
  	static char line[MAXHOSTNAMELEN];
  	struct netent *np = 0;
-@@ -902,6 +871,7 @@
+@@ -902,6 +873,7 @@
  const char *
  netname6(struct sockaddr_in6 *sa6, struct in6_addr *mask)
  {
@@ -374,7 +376,7 @@
  	static char line[MAXHOSTNAMELEN];
  	u_char *p = (u_char *)mask;
  	u_char *lim;
-@@ -964,6 +934,7 @@
+@@ -964,6 +936,7 @@
  char *
  routename6(struct sockaddr_in6 *sa6)
  {
@@ -382,7 +384,7 @@
  	static char line[MAXHOSTNAMELEN];
  	int flag = 0;
  	/* use local variable for safety */
-@@ -990,6 +961,7 @@
+@@ -990,6 +963,7 @@
  void
  rt_stats(u_long rtsaddr, u_long rttaddr)
  {
@@ -390,7 +392,7 @@
  	struct rtstat rtstat;
  	int rttrash;
  
-@@ -1023,6 +995,7 @@
+@@ -1023,6 +997,7 @@
  char *
  ipx_print(struct sockaddr *sa)
  {
@@ -398,7 +400,7 @@
  	u_short port;
  	struct servent *sp = 0;
  	const char *net = "", *host = "";
-@@ -1092,6 +1065,7 @@
+@@ -1092,6 +1067,7 @@
  char *
  ipx_phost(struct sockaddr *sa)
  {
