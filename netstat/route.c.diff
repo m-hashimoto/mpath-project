@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:25:20.000000000 +0900
++++ route.c	2010-12-26 15:26:59.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -218,8 +218,9 @@
 -				printf("(root node)%s",
 -				    rnode.rn_dupedkey ? " =>\n" : "\n");
 -		} else if (do_rtent) {
+-			if (kget(rn, rtentry) == 0) {
 +	if (do_rtent) {
- 			if (kget(rn, rtentry) == 0) {
++		if (kget(rn->data, rtentry) == 0) {
  				p_rtentry(&rtentry);
  				if (Aflag)
  					p_rtnode();
