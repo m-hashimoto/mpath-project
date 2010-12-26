@@ -223,7 +223,7 @@ on1:
 	printf("-ptree_insert: add Start      :%lld clk\n",c1);
 	printf("-ptree_insert: add End        :%lld clk\n",c2);
 	td = (c2 - c1)/cpu_frequency;
-	printf("-ptree_insert: add interval :%lld clk %e s\n",c2-c1,td);
+	printf("-ptree_insert: add interval 	:%lld clk %e s\n",c2-c1,td);
 	return (tt);
 }
 

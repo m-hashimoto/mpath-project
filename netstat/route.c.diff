@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:49:38.000000000 +0900
++++ route.c	2010-12-26 15:56:56.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -72,7 +72,7 @@
  			/* Calculate the in-kernel address. */
  			rnhp += tmpfib * (AF_MAX+1) + i;
  			/* Read the in kernel rhn pointer. */
-@@ -202,17 +203,24 @@
+@@ -202,17 +203,22 @@
  			/* Read the rnh data. */
  			if (kget(rnh, head) != 0)
  				continue;
@@ -81,9 +81,7 @@
 +			/* Read the pnh_head data. */
 +			if (kget(pnhp,pnh_head) != 0)
 +				continue;
-+			printf("routepr: i[%d]\n",i);
  			if (i == AF_UNSPEC) {
-+				printf("routepr: i == AF_UNSPEC\n");
  				if (Aflag && af == 0) {
  					printf("Netmasks:\n");
 -					p_tree(head.rnh_treetop);
@@ -100,7 +98,7 @@
  			}
  		}
  	}
-@@ -283,7 +291,7 @@
+@@ -283,7 +289,7 @@
  static int wid_expire;
  
  static void
@@ -109,7 +107,7 @@
  {
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
-@@ -299,27 +307,21 @@
+@@ -299,27 +305,21 @@
  }
  
  static void
@@ -143,7 +141,22 @@
  
  static void
  size_cols_rtentry(struct rtentry *rt)
-@@ -382,7 +384,6 @@
+@@ -330,9 +330,13 @@
+ 	struct sockaddr *sa;
+ 	sa_u addr, mask;
+ 	int len;
++	struct ptree_node rn;
++
+ 
+ 	bzero(&addr, sizeof(addr));
+-	if ((sa = kgetsa(rt_key(rt))))
++	if (kget(rt->rt_nodes,rn) != 0)
++		return;
++	if ((sa = kgetsa((struct sockaddr *)rn.key)))
+ 		bcopy(sa, &addr, sa->sa_len);
+ 	bzero(&mask, sizeof(mask));
+ 	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
+@@ -382,7 +386,6 @@
  	}
  }
  
@@ -151,7 +164,7 @@
  /*
   * Print header for routing table columns.
   */
-@@ -435,85 +436,39 @@
+@@ -435,85 +438,39 @@
  }
  
  static void
@@ -245,7 +258,7 @@
  }
  
  static void
-@@ -763,9 +718,12 @@
+@@ -763,9 +720,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -259,7 +272,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +759,6 @@
+@@ -801,8 +761,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
