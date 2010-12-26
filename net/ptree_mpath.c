@@ -157,7 +157,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 	struct ptree_node *top = head->pnh_top, *t, *tt;
 	int len;
 	long long int c0,c1,c2;
-	double td;
 	
 	if(head->pnh_offset == INET_HEADOFF )
 		len = (int)8*LEN(v) - SIN_ZERO;
@@ -263,6 +262,8 @@ ptree_matchaddr(v_arg, head)
 {
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
+	long long int c0,c1,c2;
+	
 	if(!t)
 		return 0;
 	
