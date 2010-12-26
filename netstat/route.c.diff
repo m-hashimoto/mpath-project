@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 15:07:53.000000000 +0900
++++ route.c	2010-12-26 15:08:28.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -95,7 +95,7 @@
 -				size_cols(i, head.rnh_treetop);
 +				printf("routepr: af == AF_UNSPEC || af == i\n");
 +				printf("routepr: rnh->pnh_treetop[%p]\n",rnh->pnh_treetop);
-+				size_cols(i, &rnh->pnh_treetop->top);
++				size_cols(i, rnh->pnh_treetop->top);
  				pr_family(i);
  				do_rtent = 1;
  				pr_rthdr(i);
