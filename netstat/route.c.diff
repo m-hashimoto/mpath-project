@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 16:56:57.000000000 +0900
++++ route.c	2010-12-26 17:57:11.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -187,13 +187,14 @@
 +p_tree(struct ptree_node *rn)
  {
 +	int i;
-+	struct rtentry **rt0, *rt;
++	struct rtentry **rt0, rt;
  
 -again:
- 	if (kget(rn, rnode) != 0)
- 		return;
--	if (!(rnode.rn_flags & RNF_ACTIVE))
+-	if (kget(rn, rnode) != 0)
 -		return;
+-	if (!(rnode.rn_flags & RNF_ACTIVE))
++	if (!rn && kget(rn, rnode) != 0)
+ 		return;
 -	if (rnode.rn_bit < 0) {
  		if (Aflag)
  			printf("%-8.8lx ", (u_long)rn);

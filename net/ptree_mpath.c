@@ -40,10 +40,6 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
-#define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
-//static double cpu_frequency = 1999.78;
-
-
  void
 sprint_inet_ntoa(int af, void *sa)
 {
