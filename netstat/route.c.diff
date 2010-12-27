@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-26 17:57:11.000000000 +0900
++++ route.c	2010-12-27 15:10:23.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -190,11 +190,10 @@
 +	struct rtentry **rt0, rt;
  
 -again:
--	if (kget(rn, rnode) != 0)
--		return;
--	if (!(rnode.rn_flags & RNF_ACTIVE))
-+	if (!rn && kget(rn, rnode) != 0)
+ 	if (kget(rn, rnode) != 0)
  		return;
+-	if (!(rnode.rn_flags & RNF_ACTIVE))
+-		return;
 -	if (rnode.rn_bit < 0) {
  		if (Aflag)
  			printf("%-8.8lx ", (u_long)rn);
@@ -205,7 +204,7 @@
 -		} else if (do_rtent) {
 -			if (kget(rn, rtentry) == 0) {
 +	if (do_rtent) {
-+		if (kget(rnode.data, rtentry) == 0) {
++		if (rnode.data && kget(rnode.data, rtentry) == 0) {
  				p_rtentry(&rtentry);
  				if (Aflag)
  					p_rtnode();
