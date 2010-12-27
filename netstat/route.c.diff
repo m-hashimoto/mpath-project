@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-27 15:18:53.000000000 +0900
++++ route.c	2010-12-27 15:20:18.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -211,7 +211,7 @@
  			}
 +		/* multipath */
 +		rt0 = rtentry.mpath_array;
-+		printf("p_tree: rt0[%p]\n",rt0);
++		printf("p_tree: rt0[%p]\n",rt0[0]);
 +		if(rt0){
 +			while(rt0[i]){
 +				if (kget(rt0[i], rt) == 0)
