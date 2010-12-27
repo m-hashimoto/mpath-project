@@ -6,7 +6,7 @@ endif
 
 echo mpath netstat install...
 
-set diff_netstat = "./*.diff"
+set diff_netstat = "./route.c.diff"
 cp ${diff_netstat} /usr/src/usr.bin/netstat/
 # cp include file
 set head = "../net/*.h"
