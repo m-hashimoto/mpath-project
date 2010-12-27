@@ -159,7 +159,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	else
 		len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#ifdef DEBUG
+#if 0
 	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
 	printf("addr: ");
 	sprint_inet_ntoa(sa->sa_family, sa);
@@ -192,7 +192,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_insert: search Start   :%lld clk\n",c1);
 	//printf("-ptree_insert: search End     :%lld clk\n",c2);
-	printf("-ptree_insert: search Interval:%lld clk\n",c2-c1-(c1-c0));
+	printf("-ptree_insert: ptree_search %lld[clk]\n",c2-c1-(c1-c0));
 	if (!t)
 		goto on1;
 
@@ -217,7 +217,7 @@ on1:
 	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_insert: add Start      :%lld clk\n",c1);
 	//printf("-ptree_insert: add End        :%lld clk\n",c2);
-	printf("-ptree_insert: add interval 	:%lld clk\n",c2-c1-(c1-c0));
+	printf("-ptree_insert: ptree_add %lld[clk]\n",c2-c1-(c1-c0));
 	return (tt);
 }
 
@@ -258,7 +258,6 @@ ptree_matchaddr(v_arg, head)
 {
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
-	long long int c0,c1,c2;
 	
 	if(!t)
 		return 0;
@@ -269,15 +268,7 @@ ptree_matchaddr(v_arg, head)
 	int vlen;
 	
 	vlen = (int)8*LEN(v);
-	RDTSC(c0);
-	RDTSC(c1);
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
-	RDTSC(c2);
-	//printf("-ptree_matchaddr: RDTSC Start    :%lld clk\n",c0);
-	//printf("-ptree_matchaddr: RDTSC Interval :%lld clk\n",c1-c0);
-	//printf("-ptree_matchaddr: search Start   :%lld clk\n",c1);
-	//printf("-ptree_matchaddr: search End     :%lld clk\n",c2);
-	printf("-ptree_matchaddr: search interval:%lld clk\n",c2-c1-(c1-c0));
 	if( !saved_t )
 		return 0;
 
