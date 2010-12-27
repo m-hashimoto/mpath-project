@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-27 15:24:03.000000000 +0900
++++ route.c	2010-12-27 15:25:48.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -209,7 +209,7 @@
  				if (Aflag)
  					p_rtnode();
  			}
-+		/* multipath print*/
++#if 0			/* multipath print*/
 +		rt0 = rtentry.mpath_array;
 +		printf("p_tree: rt0[%p]\n",rt0);
 +		if(rt0){
@@ -219,7 +219,7 @@
 +				i++;
 +			}
 +		}
-+		/* multipath End */
++#endif		/* multipath End */
  		} else {
 -			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
 +		p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
