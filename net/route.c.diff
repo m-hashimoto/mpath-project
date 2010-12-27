@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-26 17:52:26.000000000 +0900
++++ route.c	2010-12-28 08:11:57.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -149,8 +149,8 @@
  	rn = rnh->rnh_matchaddr(dst, rnh);
 -	if (rn && ((rn->rn_flags & RNF_ROOT) == 0)) {
 +	RDTSC(c2);
-+	printf("-rtalloc: RDTSC Interval	   :%lld clk\n",c1-c0);
-+	printf("-rtalloc: matchaddr Interval :%lld clk\n",c2-c1);
++	//printf("-rtalloc: RDTSC Interval	   :%lld clk\n",c1-c0);
++	printf("-rtalloc: ptree_matchaddr Interval :%lld clk\n",c2-c1-(c1-c0));
 +	if (rn) {
  		newrt = rt = RNTORT(rn);
 +#ifdef PTREE_MPATH
@@ -259,7 +259,7 @@
  		/*
  		 * there is another entry, now it's active
  		 */
-@@ -1000,11 +1002,12 @@
+@@ -1000,10 +1002,11 @@
  #ifdef FLOWTABLE
  	register struct rtentry *rt0;
  #endif
@@ -269,12 +269,10 @@
 +	register struct ptree_node_head *rnh;
  	struct ifaddr *ifa;
  	struct sockaddr *ndst;
--#define senderr(x) { error = x ; goto bad; }
 +	long long int c0,c1,c2;
-+#define senderr(x) { error = x ; dprint(("goto bad %d\n",x)); goto bad; }
+ #define senderr(x) { error = x ; goto bad; }
  
  	KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
- 	if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
 @@ -1045,29 +1048,33 @@
  		 * Remove the item from the tree and return it.
  		 * Complain if it is not there and do no more processing.
@@ -284,8 +282,8 @@
 +			RDTSC(c1);
 +			rn = rnh->rnh_deladdr(dst, info->rti_info[RTAX_GATEWAY], rnh);
 +			RDTSC(c2);
-+			printf("-rtrequest: RDTSC Interva    :%lld clk\n",c1-c0);
-+			printf("-rtrequest: deladdr Interval :%lld clk\n",c2-c1);
++			//printf("-rtrequest: RDTSC Interva    :%lld clk\n",c1-c0);
++			printf("-rtrequest: ptree_deladdr Interval :%lld clk\n",c2-c1-(c1-c0));
  		if (rn == NULL)
  			senderr(ESRCH);
 +#if 0
@@ -425,8 +423,8 @@
 +			RDTSC(c1);
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh, (struct ptree_node *)rt);
 +			RDTSC(c2);
-+			printf("-rtrequest: RDTSC Interval   :%lld clk\n",c1-c0);
-+			printf("-rtrequest: addaddr Interval :%lld clk\n",c2-c1);
++			//printf("-rtrequest: RDTSC Interval   :%lld clk\n",c1-c0);
++			printf("-rtrequest: ptree_addroute Interval :%lld clk\n",c2-c1-(c1-c0));
  		/*
  		 * If it still failed to go into the tree,
  		 * then un-make it (this should be a function)

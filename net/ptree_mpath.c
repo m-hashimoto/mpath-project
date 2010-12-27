@@ -189,10 +189,10 @@ debug_tree_print(struct ptree_node_head *pnh)
 	t = ptree_search(v, len, head->pnh_treetop);
 	RDTSC(c2);
 	//printf("-ptree_insert: RDTSC Start    :%lld clk\n",c0);
-	printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
+	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_insert: search Start   :%lld clk\n",c1);
 	//printf("-ptree_insert: search End     :%lld clk\n",c2);
-	printf("-ptree_insert: search Interval:%lld clk\n",c2-c1);
+	printf("-ptree_insert: search Interval:%lld clk\n",c2-c1-(c1-c0));
 	if (!t)
 		goto on1;
 
@@ -214,10 +214,10 @@ on1:
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	RDTSC(c2);
 	//printf("-ptree_insert: RDTSC Start    :%lld clk\n",c0);
-	printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
+	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_insert: add Start      :%lld clk\n",c1);
 	//printf("-ptree_insert: add End        :%lld clk\n",c2);
-	printf("-ptree_insert: add interval 	:%lld clk\n",c2-c1);
+	printf("-ptree_insert: add interval 	:%lld clk\n",c2-c1-(c1-c0));
 	return (tt);
 }
 
@@ -274,10 +274,10 @@ ptree_matchaddr(v_arg, head)
 	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
 	RDTSC(c2);
 	//printf("-ptree_matchaddr: RDTSC Start    :%lld clk\n",c0);
-	printf("-ptree_matchaddr: RDTSC Interval :%lld clk\n",c1-c0);
+	//printf("-ptree_matchaddr: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_matchaddr: search Start   :%lld clk\n",c1);
 	//printf("-ptree_matchaddr: search End     :%lld clk\n",c2);
-	printf("-ptree_matchaddr: search interval:%lld clk\n",c2-c1);
+	printf("-ptree_matchaddr: search interval:%lld clk\n",c2-c1-(c1-c0));
 	if( !saved_t )
 		return 0;
 
