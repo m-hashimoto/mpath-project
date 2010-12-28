@@ -108,8 +108,8 @@ struct sockaddr;
 /*
  * Patricia trie with multipath support
  */
-int     ptree_mpath_capable(struct ptree_node_head *);
-u_int32_t ptree_mpath_count(struct rtentry *);
+int ptree_mpath_capable(struct ptree_node_head *);
+unsigned int ptree_mpath_count(struct rtentry *);
 struct rtentry *rt_mpath_matchgate(struct rtentry *, struct sockaddr *);
 int rt_mpath_conflict(struct ptree_node_head *, struct rtentry *,
 				struct sockaddr *);

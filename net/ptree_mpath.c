@@ -496,7 +496,7 @@ ptree_mpath_capable(struct ptree_node_head *pnh)
 		return pnh->pnh_multipath;
 }
 
-		uint32_t
+		unsigned int
 ptree_mpath_count(struct rtentry *rt)
 {
 #if 0
