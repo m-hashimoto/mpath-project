@@ -337,6 +337,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[n] = rt;
 			}
 
+			rt0->mpath_array = ++n;
 			rt->rt_nodes = tt;
 			return tt;
 		}
@@ -494,6 +495,7 @@ ptree_mpath_capable(struct ptree_node_head *pnh)
 		uint32_t
 ptree_mpath_count(struct rtentry *rt)
 {
+#if 0
 		struct rtentry **rt1;
 		uint32_t i = 0;
 
@@ -501,8 +503,8 @@ ptree_mpath_count(struct rtentry *rt)
 		/* count mpath_array */
 		while (rt1 && rt1[i] && i < max_multipath)
 				i++;
-
-		return (i);
+#endif
+		return (rt->mpath_counter);
 }
 
 		struct rtentry *
@@ -571,15 +573,17 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
 				if(n == 1){ /* case: single path */
 					rt1 = NULL;
+					rt0->mpath_counter = 0;
 					return (1);
 				}
-				if(rt0 == rt1[i]){ /* delete entry is array's top */
+				if(rt0 == rt1[i] && i == 0){ /* delete entry is array's top */
 					/* move mpath_array pointer */
 					rn->data = rt1[n-1];
 					rt1[n-1]->mpath_array = rt1;
 					/* delete rt1[i] */
 					rt1[i] = rt1[n-1];
 					rt1[n-1] = NULL;
+					rt0 = rt1[0];
 				}
 				else if(n == 2) { /* entry became single path, after delete */
 					rt1[i] = NULL;
@@ -589,6 +593,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					rt1[n-1] = NULL;
 				}
 				
+				rt0->mpath_counter = n - 1;
 				return (0);
 			}
 			i++;

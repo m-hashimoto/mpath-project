@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2010-12-26 17:04:58.000000000 +0900
++++ route.h	2010-12-29 03:42:43.000000000 +0900
 @@ -33,6 +33,7 @@
  #ifndef _NET_ROUTE_H_
  #define _NET_ROUTE_H_
@@ -40,11 +40,12 @@
  	int	rt_flags;		/* up/down?, host/net */
  	int	rt_refcnt;		/* # held references */
  	struct	ifnet *rt_ifp;		/* the answer: interface to use */
-@@ -149,8 +155,12 @@
+@@ -149,8 +155,13 @@
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
  #endif
 +#ifdef PTREE_MPATH
++	uint32_t mpath_counter;
 +	struct rtentry **mpath_array;
 +#endif
  };
@@ -53,7 +54,7 @@
  /*
   * Following structure necessary for 4.3 compatibility;
   * We should eventually move it to a compat file.
-@@ -373,7 +383,7 @@
+@@ -373,7 +384,7 @@
  	}							\
  } while (0)
  
