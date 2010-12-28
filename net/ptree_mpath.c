@@ -344,6 +344,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
+		rt->mpath_counter = 0;
 		return tt;
 }
 

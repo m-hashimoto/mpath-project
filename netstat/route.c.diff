@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 05:07:28.000000000 +0900
++++ route.c	2010-12-29 05:09:13.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -186,7 +186,7 @@
 -p_tree(struct radix_node *rn)
 +p_tree(struct ptree_node *rn)
  {
-+	uint32_t n, i = 0;
++	int n, i = 0;
 +	struct rtentry rt, **rt0;
  
 -again:
@@ -213,7 +213,7 @@
  			}
 +		/* multipath print*/
 +		n = rtentry.mpath_counter;
-+		printf("p_tree: mpath_counter[%lu]\n",n);
++		printf("p_tree: mpath_counter[%d]\n",n);
 +		if(n){
 +			rt0 = rtentry.mpath_array;
 +			while( i <= n ){
