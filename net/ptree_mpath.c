@@ -152,13 +152,13 @@ debug_tree_print(struct ptree_node_head *pnh)
 	char *v = v_arg, *m = m_arg;
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
-	int len;
+	int len, salen;
 	long long int c0,c1,c2;
 	
 	if(head->pnh_offset == INET_HEADOFF )
-		len = (int)8*LEN(v) - SIN_ZERO;
+		salen = len = (int)8*LEN(v) - SIN_ZERO;
 	else
-		len = (int)8*LEN(v) - SIN6_ZERO;
+		salen = len = (int)8*LEN(v) - SIN6_ZERO;
 	
 #if 0
 	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
@@ -197,7 +197,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	if (!t)
 		goto on1;
 
-	cp = v;
+	//cp = v;
 	{
 		register char *cp2 = t->key;
 		char *cplim = v;
@@ -219,6 +219,9 @@ on1:
 	//printf("-ptree_insert: add Start      :%lld clk\n",c1);
 	//printf("-ptree_insert: add End        :%lld clk\n",c2);
 	printf("-ptree_insert: ptree_add %lld[clk]\n",c2-c1-(c1-c0));
+	/* set netmask */
+	cp = tt->key + len/8;
+	memset(cp,0,(salen-len)/8);
 	return (tt);
 }
 
