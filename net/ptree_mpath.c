@@ -316,7 +316,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
 				rt0->mpath_array = rt_array;
-			} else if(n == max_multipath) {
+			} else if(n+1 == max_multipath) {
 				/* if number of path is over MAX_MULTIPATH */
 				struct rtentry **tmp;
 				tmp = rt0->mpath_array;
@@ -331,11 +331,11 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 					rt_array = tmp;
 				
 				max_multipath *= 5;
-				rt_array[n] = rt;
+				rt_array[n+1] = rt;
 				rt0->mpath_array = rt_array;
 			} else {
 				rt_array = rt0->mpath_array;
-				rt_array[n] = rt;
+				rt_array[n+1] = rt;
 			}
 
 			rt0->mpath_counter = n + 1;
