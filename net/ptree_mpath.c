@@ -76,10 +76,11 @@ debug_node_print(struct ptree_node *pn, int offset)
 	if(pn->data){
 		struct rtentry *rt, *rt0 = pn->data;
 		struct rtentry **mrt = rt0->mpath_array;
+		int max = rt0->mpath_counter;
 
 		if(mrt){ /* muluti path */
 			int i = 0;
-			while(mrt[i] && i < max_multipath){
+			while(mrt[i] && i <= max){
 				printf("%24s [%p] ","multipath",mrt[i]);
 				rt = mrt[i];
 				if(offset == INET6_HEADOFF){
