@@ -1,5 +1,5 @@
 --- route.h.orig	2005-01-11 01:52:56.000000000 +0900
-+++ route.h	2010-12-29 06:53:16.000000000 +0900
++++ route.h	2010-12-29 07:31:58.000000000 +0900
 @@ -33,6 +33,7 @@
  #ifndef _NET_ROUTE_H_
  #define _NET_ROUTE_H_
@@ -8,7 +8,7 @@
  /*
   * Kernel resident routing tables.
   *
-@@ -123,34 +124,45 @@
+@@ -123,34 +124,43 @@
   * gateways are marked so that the output routines know to address the
   * gateway rather than the ultimate destination.
   */
@@ -56,7 +56,7 @@
  /*
   * Following structure necessary for 4.3 compatibility;
   * We should eventually move it to a compat file.
-@@ -373,7 +385,7 @@
+@@ -373,7 +383,7 @@
  	}							\
  } while (0)
  
