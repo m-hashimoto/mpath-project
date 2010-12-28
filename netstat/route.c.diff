@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 06:49:37.000000000 +0900
++++ route.c	2010-12-29 06:50:29.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -179,15 +179,17 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +436,59 @@
+@@ -435,85 +436,61 @@
  }
  
  static void
 -p_tree(struct radix_node *rn)
 +p_tree(struct ptree_node *rn)
  {
++#if 0
 +	unsigned int n, i = 0;
 +	struct rtentry rt, **rt0;
++#endif
  
 -again:
 -	if (kget(rn, rnode) != 0)
@@ -292,7 +294,7 @@
  }
  
  static void
-@@ -763,9 +738,12 @@
+@@ -763,9 +740,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -306,7 +308,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +779,6 @@
+@@ -801,8 +781,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
