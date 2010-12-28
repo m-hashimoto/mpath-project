@@ -44,7 +44,7 @@
  	/* XXX ugly, user apps use this definition but don't have a mtx def */
  	struct	mtx rt_mtx;		/* mutex for routing entry */
  #endif
-+	int mpath_counter;
++	unsigned int mpath_counter;
 +	struct rtentry **mpath_array;
  };
  

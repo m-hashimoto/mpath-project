@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 06:24:56.000000000 +0900
++++ route.c	2010-12-29 06:36:01.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -179,14 +179,15 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +436,56 @@
+@@ -435,85 +436,57 @@
  }
  
  static void
 -p_tree(struct radix_node *rn)
 +p_tree(struct ptree_node *rn)
  {
-+	int n, i = 0;
++	int i = 0;
++	unsigned int n;
 +	struct rtentry rt, **rt0;
  
 -again:
@@ -212,8 +213,8 @@
  					p_rtnode();
  			}
 +		/* multipath print*/
-+		n = (&rtentry)->mpath_counter;
-+		printf("mpath_counter[%d]\n",n);
++		n = rtentry.mpath_counter;
++		printf("multipath counter %u\n",n);
 +		if(n != 0){
 +			rt0 = rtentry.mpath_array;
 +			while( i <= n && rt0+i ){
@@ -289,7 +290,7 @@
  }
  
  static void
-@@ -763,9 +735,12 @@
+@@ -763,9 +736,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -303,7 +304,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +776,6 @@
+@@ -801,8 +777,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
