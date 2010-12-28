@@ -754,7 +754,7 @@ ptree4_mpath_inithead(void **head, int off)
 		struct ptree_node_head *rnh;
 
 		hashjitter = arc4random();
-		max_multipath = 2;
+		max_multipath = 20;
 		if (in_inithead(head, off) == 1) {
 				rnh = (struct ptree_node_head *)*head;
 				rnh->pnh_multipath = 1;
@@ -771,7 +771,7 @@ ptree6_mpath_inithead(void **head, int off)
 		struct ptree_node_head *rnh;
 
 		hashjitter = arc4random();
-		max_multipath = 2;
+		max_multipath = 20;
 		if (in6_inithead(head, off) == 1) {
 				rnh = (struct ptree_node_head *)*head;
 				rnh->pnh_multipath = 1;
