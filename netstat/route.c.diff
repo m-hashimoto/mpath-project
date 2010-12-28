@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 07:41:35.000000000 +0900
++++ route.c	2010-12-29 07:42:26.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -216,7 +216,7 @@
 +				struct rtentry *rt0[n];
 +				
 +				printf("multipath counter %u\n",n);
-+				if (kget(rtentry.mpath, rt0) == 0){
++				if (kget(rtentry.mpath_array, rt0) == 0){
 +					while( i <= n && rt0+i ){
 +						printf("rtentry[%u] %p\n",i,rt0[i]);
 +						if (kget(rt0[i], rt) == 0)
