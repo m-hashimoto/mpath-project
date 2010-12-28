@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 05:09:13.000000000 +0900
++++ route.c	2010-12-29 05:24:34.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -179,7 +179,7 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +436,56 @@
+@@ -435,85 +436,55 @@
  }
  
  static void
@@ -213,7 +213,6 @@
  			}
 +		/* multipath print*/
 +		n = rtentry.mpath_counter;
-+		printf("p_tree: mpath_counter[%d]\n",n);
 +		if(n){
 +			rt0 = rtentry.mpath_array;
 +			while( i <= n ){
@@ -289,7 +288,7 @@
  }
  
  static void
-@@ -763,9 +735,12 @@
+@@ -763,9 +734,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -303,7 +302,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +776,6 @@
+@@ -801,8 +775,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
