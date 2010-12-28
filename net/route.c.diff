@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-29 03:33:14.000000000 +0900
++++ route.c	2010-12-29 05:27:09.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -447,8 +447,8 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
-+	//if (DEBUG)
-+	//	debug_tree_print(rnh);
++	if (DEBUG)
++		debug_tree_print(rnh);
  	return (error);
  #undef senderr
  }

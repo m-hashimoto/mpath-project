@@ -337,14 +337,16 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				rt_array[n] = rt;
 			}
 
-			rt0->mpath_counter = ++n;
+			rt0->mpath_counter = n + 1;
 			rt->rt_nodes = tt;
+			dprint(("ptree_addroute: mpath_counter[%d]\n",rt0->mpath_counter));
 			return tt;
 		}
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
 		rt->mpath_counter = 0;
+		dprint(("ptree_addroute: mpath_counter[%d]\n",rt->mpath_counter));
 		return tt;
 }
 
