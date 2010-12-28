@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 06:45:12.000000000 +0900
++++ route.c	2010-12-29 06:47:30.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -212,10 +212,10 @@
  					p_rtnode();
  			}
 +		/* multipath print*/
-+		printf("multipath counter[%p]\n",&rtentry.mpath_counter);
-+		n = rtentry.mpath_counter;
-+		printf("multipath counter %u\n",n);
-+		if(n != 0){
++		printf("head entry[%p]\n",&rtentry);
++		if(rtentry.mpath_array){
++			n = rtentry.mpath_counter;
++			printf("multipath counter %u\n",n);
 +			rt0 = rtentry.mpath_array;
 +			while( i <= n && rt0+i ){
 +				if (kget(rt0+i, rt) == 0)
