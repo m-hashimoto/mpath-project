@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 06:56:05.000000000 +0900
++++ route.c	2010-12-29 07:41:35.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -179,7 +179,7 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +436,56 @@
+@@ -435,85 +436,59 @@
  }
  
  static void
@@ -187,7 +187,7 @@
 +p_tree(struct ptree_node *rn)
  {
 +	unsigned int n, i = 0;
-+	struct rtentry rt, **rt0;
++	struct rtentry rt;
  
 -again:
 -	if (kget(rn, rnode) != 0)
@@ -211,15 +211,18 @@
  				if (Aflag)
  					p_rtnode();
 +			/* multipath print*/
-+			printf("head entry[%p]\n",&rtentry);
 +			if(rtentry.mpath_array){
 +				n = rtentry.mpath_counter;
++				struct rtentry *rt0[n];
++				
 +				printf("multipath counter %u\n",n);
-+				rt0 = rtentry.mpath_array;
-+				while( i <= n && rt0+i ){
-+					if (kget(rt0+i, rt) == 0)
-+						p_rtentry(&rt);
-+					i++;
++				if (kget(rtentry.mpath, rt0) == 0){
++					while( i <= n && rt0+i ){
++						printf("rtentry[%u] %p\n",i,rt0[i]);
++						if (kget(rt0[i], rt) == 0)
++							p_rtentry(&rt);
++						i++;
++					}
 +				}
 +			}	/* multipath End */
  			}
@@ -289,7 +292,7 @@
  }
  
  static void
-@@ -763,9 +735,12 @@
+@@ -763,9 +738,12 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -303,7 +306,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +776,6 @@
+@@ -801,8 +779,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
