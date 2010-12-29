@@ -396,6 +396,8 @@ ptree_deladdr(v_arg, gate_arg, head)
 					return (tmprn);
 				XRTFREE(tmprn);
 			}
+			else
+				return (0);
 		}
 #endif
 		ptree_remove(tt);
