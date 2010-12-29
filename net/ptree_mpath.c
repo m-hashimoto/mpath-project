@@ -579,26 +579,26 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 			sa1 = rt1[i]->rt_gateway;
 			
 			if (memcmp(sa0,sa1,sa0->sa_len) == 0) {
-				if(n == 1){ /* case: single path */
+				if(n == 0){ /* case: single path */
 					rt1 = NULL;
-					rt0->mpath_counter = 0;
 					return (1);
 				}
-				if(rt0 == rt1[i] && i == 0){ /* delete entry is array's top */
+				if(rt0 == rt1[i] && i == 0){ /* case: delete entry is array's top */
 					/* move mpath_array pointer */
-					rn->data = rt1[n-1];
-					rt1[n-1]->mpath_array = rt1;
-					/* delete rt1[i] */
-					rt1[i] = rt1[n-1];
-					rt1[n-1] = NULL;
+					rn->data = rt1[n];
+					rt1[n]->mpath_array = rt1;
+					/* swap match entry and tail's entry */
+					rt1[i] = rt1[n];
+					rt1[n] = NULL;
 					rt0 = rt1[0];
 				}
-				else if(n == 2) { /* entry became single path, after delete */
+				else if(n == i) { /* case: delete entry is array's tail */
 					rt1[i] = NULL;
 				}
 				else {
-					rt1[i] = rt1[n-1];
-					rt1[n-1] = NULL;
+					/* swap match entry and tail's entry */
+					rt1[i] = rt1[n];
+					rt1[n] = NULL;
 				}
 				
 				rt0->mpath_counter = n - 1;
