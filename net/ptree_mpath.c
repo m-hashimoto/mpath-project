@@ -565,20 +565,19 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 {
 		uint32_t i = 0, n;
 		struct rtentry *rt0,**rt1;
-		struct sockaddr *sa0, *sa1;
+		//struct sockaddr *sa0, *sa1;
 		struct ptree_node *rn = headrt->rt_nodes;
 
 		if (!headrt || !rt)
 				return (0);
 		
 		rt0 = headrt;
-		sa0 = rt->rt_gateway;
+		//sa0 = rt->rt_gateway;
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
 		
-		while (rt1[i] && i < n) {
-			sa1 = rt1[i]->rt_gateway;
-			printf("debug: sa_len[%d]\n",sa1->sa_len/8);
+		while (rt1[i] && i <= n) {
+			//sa1 = rt1[i]->rt_gateway;
 			printf("debug: rt=%p rt[%d]=%p\n",rt,i,rt1[i]);
 			//if (memcmp(sa0,sa1,sa1->sa_len/8) == 0) {
 			if (rt1[i] == rt) {
