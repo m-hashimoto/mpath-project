@@ -743,7 +743,7 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	rt_array = rt->mpath_array;
 	hash = seed + hashjitter;
 	
-	hash %= n;
+	hash %= n+1;
 	rt = rt_array[hash];
 	dprint(("-multipath_nexthop: rt[%d]=%p\n",hash,rt));
 	return rt;
