@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2010-12-29 11:42:07.000000000 +0900
++++ route.c	2010-12-29 11:58:44.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -449,18 +449,16 @@
  		/*
  		 * actually return a resultant rtentry and
  		 * give the caller a single reference.
-@@ -1256,6 +1296,10 @@
+@@ -1256,6 +1296,8 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
-+#if 0
 +	if (DEBUG)
 +		debug_tree_print(rnh);
-+#endif
  	return (error);
  #undef senderr
  }
-@@ -1273,11 +1317,10 @@
+@@ -1273,11 +1315,10 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -473,7 +471,7 @@
  	RT_LOCK_ASSERT(rt);
  	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  	
-@@ -1311,7 +1354,6 @@
+@@ -1311,7 +1352,6 @@
  	 * Copy the new gateway value into the memory chunk.
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
@@ -481,7 +479,7 @@
  	return (0);
  }
  
-@@ -1374,8 +1416,9 @@
+@@ -1374,8 +1414,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -492,7 +490,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1448,8 @@
+@@ -1405,8 +1446,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -503,7 +501,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,11 +1482,10 @@
+@@ -1439,11 +1480,10 @@
  			}
  			else
  #endif
