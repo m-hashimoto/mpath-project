@@ -193,7 +193,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_insert: search Start   :%lld clk\n",c1);
 	//printf("-ptree_insert: search End     :%lld clk\n",c2);
-	printf("-ptree_insert: ptree_search %lld[clk]\n",c2-c1-(c1-c0));
+	//printf("-ptree_insert: ptree_search %lld[clk]\n",c2-c1-(c1-c0));
 	if (!t)
 		goto on1;
 
@@ -218,7 +218,7 @@ on1:
 	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
 	//printf("-ptree_insert: add Start      :%lld clk\n",c1);
 	//printf("-ptree_insert: add End        :%lld clk\n",c2);
-	printf("-ptree_insert: ptree_add %lld[clk]\n",c2-c1-(c1-c0));
+	//printf("-ptree_insert: ptree_add %lld[clk]\n",c2-c1-(c1-c0));
 	/* set netmask */
 	cp = tt->key + len/8;
 	memset(cp,0,(salen-len)/8);
@@ -578,7 +578,6 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		
 		while (rt1[i] && i <= n) {
 			//sa1 = rt1[i]->rt_gateway;
-			printf("debug: rt=%p rt[%d]=%p\n",rt,i,rt1[i]);
 			//if (memcmp(sa0,sa1,sa1->sa_len/8) == 0) {
 			if (rt1[i] == rt) {
 				if(n == 0){ /* case: single path */
@@ -586,7 +585,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					return (1);
 				}
 				if(rt0 == rt1[i] && i == 0){ /* case: delete entry is array's top */
-					printf("debug: case array's top\n");
+					//printf("debug: case array's top\n");
 					/* move mpath_array pointer */
 					rn->data = rt1[n];
 					rt1[n]->mpath_array = rt1;
@@ -596,7 +595,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					rt0 = rt1[0];
 				}
 				else if(n == i) { /* case: delete entry is array's tail */
-					printf("debug: case array's tail\n");
+					//printf("debug: case array's tail\n");
 					rt1[i] = NULL;
 				}
 				else {
