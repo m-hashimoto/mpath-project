@@ -390,8 +390,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 				struct ptree_node *tmprn;
 			
   			XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
-
-				tmprn->data = rt;
+				memcpy(tmprn,tt,sizeof(struct ptree_node));
 				if( ! rt_mpath_delete(headrt,rt) )
 					return (tmprn);
 				XRTFREE(tmprn);
