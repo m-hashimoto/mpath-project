@@ -541,11 +541,11 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				 * rt_gateway is a special sockadd_dl structure
 				 */
 				if (rt->rt_gateway->sa_family == AF_LINK) {
-						if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len))
+						if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len/8))
 								break;
 				} else {
 						if (rt->rt_gateway->sa_len == gate->sa_len &&
-										!memcmp(rt->rt_gateway, gate, gate->sa_len))
+										!memcmp(rt->rt_gateway, gate, gate->sa_len/8))
 								break;
 				}
 				i++;
