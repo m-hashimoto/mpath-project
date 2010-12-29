@@ -578,8 +578,10 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		
 		while (rt1[i] && i < n) {
 			sa1 = rt1[i]->rt_gateway;
-			
-			if (memcmp(sa0,sa1,(sa1->sa_len)/8) == 0) {
+			printf("debug: sa_len[%d]\n",sa1->sa_len/8);
+			printf("debug: rt=%p rt[%d]=%p\n",rt,i,rt[i]);
+			//if (memcmp(sa0,sa1,sa1->sa_len/8) == 0) {
+			if (rt[i] == rt) {
 				if(n == 0){ /* case: single path */
 					rt1 = NULL;
 					return (1);
