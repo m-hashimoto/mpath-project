@@ -584,6 +584,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					return (1);
 				}
 				if(rt0 == rt1[i] && i == 0){ /* case: delete entry is array's top */
+					printf("debug: case array's top\n");
 					/* move mpath_array pointer */
 					rn->data = rt1[n];
 					rt1[n]->mpath_array = rt1;
@@ -593,6 +594,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					rt0 = rt1[0];
 				}
 				else if(n == i) { /* case: delete entry is array's tail */
+					printf("debug: case array's tail\n");
 					rt1[i] = NULL;
 				}
 				else {
