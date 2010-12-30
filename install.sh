@@ -88,19 +88,20 @@ config PATRICIA
 
 cd ../compile/PATRICIA
 make cleandepend && make depend
+make
 
-while ( 1 );
-echo -n " How much parallel processing for make? [1 - 8] "
-set make = $<
-switch ($make)
-case (1 <= $make <= 9):
-	make -j $make
-	break
-default:
-	make
-	break
-endsw
-end
+#while ( 1 );
+#echo -n " How much parallel processing for make? [1 - 8] "
+#set make = $<
+#switch ($make)
+#case (1 <= $make <= 9):
+#	make -j $make
+#	break
+#default:
+#	make
+#	break
+#endsw
+#end
 
 while ( 1 );
 echo -n " Install Now?(kernel) [Yes/No] "
