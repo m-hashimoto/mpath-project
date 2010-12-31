@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2010-12-29 07:45:44.000000000 +0900
++++ route.c	2011-01-01 04:07:09.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -10,7 +10,12 @@
  #include <net/route.h>
  
  #include <netinet/in.h>
-@@ -120,19 +121,18 @@
+@@ -116,23 +117,23 @@
+ } sa_u;
+ 
+ static sa_u pt_u;
++static int p_multipath = 0;
+ 
  int	fibnum;
  int	do_rtent = 0;
  struct	rtentry rtentry;
@@ -35,7 +40,7 @@
  static void p_rtnode(void);
  static void ntreestuff(void);
  static void np_rtentry(struct rt_msghdr *);
-@@ -150,7 +150,8 @@
+@@ -150,7 +151,8 @@
  void
  routepr(u_long rtree)
  {
@@ -45,7 +50,7 @@
  	size_t intsize;
  	int i;
  	int numfibs;
-@@ -161,7 +162,7 @@
+@@ -161,7 +163,7 @@
  	if (sysctlbyname("net.fibs", &numfibs, &intsize, NULL, 0) == -1)
  		numfibs = 1;
  	rt_tables = calloc(numfibs * (AF_MAX+1),
@@ -54,7 +59,7 @@
  	if (rt_tables == NULL)
  		err(EX_OSERR, "memory allocation failed");
  	/*
-@@ -183,7 +184,7 @@
+@@ -183,7 +185,7 @@
  		}
  
  		if (kread((u_long)(rtree), (char *)(rt_tables), (numfibs *
@@ -63,7 +68,7 @@
  			return;
  		for (i = 0; i <= AF_MAX; i++) {
  			int tmpfib;
-@@ -191,7 +192,7 @@
+@@ -191,7 +193,7 @@
  				tmpfib = 0;
  			else
  				tmpfib = fibnum;
@@ -72,7 +77,7 @@
  			/* Calculate the in-kernel address. */
  			rnhp += tmpfib * (AF_MAX+1) + i;
  			/* Read the in kernel rhn pointer. */
-@@ -202,17 +203,22 @@
+@@ -202,17 +204,22 @@
  			/* Read the rnh data. */
  			if (kget(rnh, head) != 0)
  				continue;
@@ -98,7 +103,7 @@
  			}
  		}
  	}
-@@ -283,7 +289,7 @@
+@@ -283,7 +290,7 @@
  static int wid_expire;
  
  static void
@@ -107,7 +112,7 @@
  {
  	wid_dst = WID_DST_DEFAULT(ef);
  	wid_gw = WID_GW_DEFAULT(ef);
-@@ -299,27 +305,21 @@
+@@ -299,27 +306,21 @@
  }
  
  static void
@@ -141,7 +146,7 @@
  
  static void
  size_cols_rtentry(struct rtentry *rt)
-@@ -330,9 +330,13 @@
+@@ -330,9 +331,13 @@
  	struct sockaddr *sa;
  	sa_u addr, mask;
  	int len;
@@ -156,7 +161,7 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -382,14 +386,12 @@
+@@ -382,14 +387,12 @@
  	}
  }
  
@@ -171,7 +176,7 @@
  	if (Aflag)
  		printf("%-8.8s ","Address");
  	if (af1 == AF_INET || Wflag) {
-@@ -426,7 +428,6 @@
+@@ -426,7 +429,6 @@
  static struct sockaddr *
  kgetsa(struct sockaddr *dst)
  {
@@ -179,7 +184,7 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +436,57 @@
+@@ -435,85 +437,60 @@
  }
  
  static void
@@ -211,10 +216,12 @@
  				if (Aflag)
  					p_rtnode();
 +			/* multipath print*/
++			p_multipath = 1;
 +			if(rtentry.mpath_array){
 +				n = rtentry.mpath_counter;
 +				struct rtentry *rt0[n+1];
 +				
++			trintf("debug: rt=%p rt[%d]=%p\n",rt,i,rt1[i]);
 +				if (kget(rtentry.mpath_array, rt0) == 0){
 +					while( i <= n && rt0+i ){
 +						if (kget(rt0[i], rt) == 0)
@@ -223,6 +230,7 @@
 +					}
 +				}
 +			}	/* multipath End */
++			p_multipath = 0;
  			}
  		} else {
 -			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
@@ -290,7 +298,7 @@
  }
  
  static void
-@@ -763,9 +736,12 @@
+@@ -763,13 +740,19 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -304,7 +312,14 @@
  		bcopy(sa, &addr, sa->sa_len);
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
-@@ -801,8 +777,6 @@
+ 		bcopy(sa, &mask, sa->sa_len);
++	if(p_multipath)
++		printf("%-15s"," ");
++	else
+ 	p_sockaddr(&addr.u_sa, &mask.u_sa, rt->rt_flags, wid_dst);
+ 	p_sockaddr(kgetsa(rt->rt_gateway), NULL, RTF_HOST, wid_gw);
+ 	snprintf(buffer, sizeof(buffer), "%%-%d.%ds ", wid_flags, wid_flags);
+@@ -801,8 +784,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
