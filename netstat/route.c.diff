@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2011-01-01 04:09:28.000000000 +0900
++++ route.c	2011-01-01 04:20:57.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -297,7 +297,7 @@
  }
  
  static void
-@@ -763,13 +739,19 @@
+@@ -763,13 +739,23 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -312,13 +312,17 @@
  	bzero(&mask, sizeof(mask));
  	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
  		bcopy(sa, &mask, sa->sa_len);
-+	if(p_multipath)
-+		printf("%-15s"," ");
++	if(p_multipath){
++		if(sa->sa_family == AF_INET)
++			printf("%-19s"," ");
++		else if(sa->sa_family == AF_INET6)
++			printf("%-33s"," ");
++	}
 +	else
  	p_sockaddr(&addr.u_sa, &mask.u_sa, rt->rt_flags, wid_dst);
  	p_sockaddr(kgetsa(rt->rt_gateway), NULL, RTF_HOST, wid_gw);
  	snprintf(buffer, sizeof(buffer), "%%-%d.%ds ", wid_flags, wid_flags);
-@@ -801,8 +783,6 @@
+@@ -801,8 +787,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
