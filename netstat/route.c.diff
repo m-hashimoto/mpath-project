@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2011-01-01 04:07:09.000000000 +0900
++++ route.c	2011-01-01 04:09:28.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -184,7 +184,7 @@
  	if (kget(dst, pt_u.u_sa) != 0)
  		return (NULL);
  	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
-@@ -435,85 +437,60 @@
+@@ -435,85 +437,59 @@
  }
  
  static void
@@ -221,7 +221,6 @@
 +				n = rtentry.mpath_counter;
 +				struct rtentry *rt0[n+1];
 +				
-+			trintf("debug: rt=%p rt[%d]=%p\n",rt,i,rt1[i]);
 +				if (kget(rtentry.mpath_array, rt0) == 0){
 +					while( i <= n && rt0+i ){
 +						if (kget(rt0[i], rt) == 0)
@@ -298,7 +297,7 @@
  }
  
  static void
-@@ -763,13 +740,19 @@
+@@ -763,13 +739,19 @@
  	static char prettyname[128];
  	struct sockaddr *sa;
  	sa_u addr, mask;
@@ -319,7 +318,7 @@
  	p_sockaddr(&addr.u_sa, &mask.u_sa, rt->rt_flags, wid_dst);
  	p_sockaddr(kgetsa(rt->rt_gateway), NULL, RTF_HOST, wid_gw);
  	snprintf(buffer, sizeof(buffer), "%%-%d.%ds ", wid_flags, wid_flags);
-@@ -801,8 +784,6 @@
+@@ -801,8 +783,6 @@
  			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
  				printf(" %*d", wid_expire, (int)expire_time);
  		}
