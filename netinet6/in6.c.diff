@@ -1,6 +1,14 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2010-12-17 19:04:33.000000000 +0900
-@@ -688,7 +688,6 @@
++++ in6.c	2011-01-03 13:19:41.000000000 +0900
+@@ -680,6 +680,7 @@
+ in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
+     struct in6_ifaddr *ia, int flags)
+ {
++	dprint(("in6_update_ifa Start\n"));
+ 	int error = 0, hostIsNew = 0, plen = -1;
+ 	struct sockaddr_in6 dst6;
+ 	struct in6_addrlifetime *lt;
+@@ -688,7 +689,6 @@
  	struct rtentry *rt;
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
@@ -8,28 +16,64 @@
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -896,6 +895,7 @@
- 	/* reset the interface and routing table appropriately. */
+@@ -733,6 +733,7 @@
+ 	 * and the address is a scoped one, validate/set the scope
+ 	 * zone identifier.
+ 	 */
++	dprint(("in6_update_ifa set dst6\n"));
+ 	dst6 = ifra->ifra_dstaddr;
+ 	if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) != 0 &&
+ 	    (dst6.sin6_family == AF_INET6)) {
+@@ -792,6 +793,7 @@
+ 	 * If this is a new address, allocate a new ifaddr and link it
+ 	 * into chains.
+ 	 */
++	dprint(("in6_update_ifa: allocate a new ifaddr\n"));
+ 	if (ia == NULL) {
+ 		hostIsNew = 1;
+ 		/*
+@@ -835,6 +837,7 @@
+ 	}
+ 
+ 	/* update timestamp */
++	dprint(("in6_update_ifa: update timestap\n"));
+ 	ia->ia6_updatetime = time_second;
+ 
+ 	/* set prefix mask */
+@@ -897,9 +900,11 @@
  	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
  		goto unlink;
-+	
  
++
  	/*
  	 * configure address flags.
-@@ -1766,6 +1766,7 @@
+ 	 */
++	dprint(("in6_update_ifa: configure flag\n"));
+ 	ia->ia6_flags = ifra->ifra_flags;
+ 	/*
+ 	 * backward compatibility - if IN6_IFF_DEPRECATED is set from the
+@@ -1102,6 +1107,7 @@
+ 	 * XXX It may be of use, if we can administratively
+ 	 * disable DAD.
+ 	 */
++	dprint(("in6_update_ifa: perform DAD\n"));
+ 	if (in6if_do_dad(ifp) && ((ifra->ifra_flags & IN6_IFF_NODAD) == 0) &&
+ 	    (ia->ia6_flags & IN6_IFF_TENTATIVE))
+ 	{
+@@ -1766,6 +1772,7 @@
  		struct rtentry rt;
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
-+		struct ptree_node rn;
++		//struct ptree_node rn;
  
  		IF_AFDATA_LOCK(ifp);
  		ia->ia_ifa.ifa_rtrequest = NULL;
-@@ -1793,6 +1794,8 @@
+@@ -1793,6 +1800,8 @@
  		}
  
  		bzero(&rt, sizeof(rt));
-+		bzero(&rn, sizeof(rn));
-+		rt.rt_nodes = &rn;
++		//bzero(&rn, sizeof(rn));
++		//rt.rt_nodes = &rn;
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
