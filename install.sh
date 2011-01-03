@@ -56,7 +56,7 @@ patch -N < in6_ifattach.c.diff
 patch -N < in6_proto.c.diff
 patch -N < in6_rmx.c.diff
 patch -N < nd6_rtr.c.diff
-patch -N < in6.c.diff
+#patch -N < in6.c.diff
 # debug print
 
 cd /usr/src/sys/contrib/ipfilter/netinet/
@@ -88,20 +88,19 @@ config PATRICIA
 
 cd ../compile/PATRICIA
 make cleandepend && make depend
-make
 
-#while ( 1 );
-#echo -n " How much parallel processing for make? [1 - 8] "
-#set make = $<
-#switch ($make)
-#case (1 <= $make <= 9):
-#	make -j $make
-#	break
-#default:
-#	make
-#	break
-#endsw
-#end
+while ( 1 );
+echo -n " How much parallel processing for make? [1 - 8] "
+set make = $<
+switch ($make)
+case (1 <= $make <= 9):
+	make -j $make
+	break
+default:
+	make
+	break
+endsw
+end
 
 while ( 1 );
 echo -n " Install Now?(kernel) [Yes/No] "
