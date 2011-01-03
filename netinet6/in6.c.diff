@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2011-01-03 14:05:29.000000000 +0900
++++ in6.c	2011-01-03 14:19:04.000000000 +0900
 @@ -680,6 +680,7 @@
  in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
      struct in6_ifaddr *ia, int flags)
@@ -116,7 +116,7 @@
  		struct rtentry rt;
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
-+		//struct ptree_node rn;
++		struct ptree_node rn;
  
  		IF_AFDATA_LOCK(ifp);
  		ia->ia_ifa.ifa_rtrequest = NULL;
@@ -142,8 +142,8 @@
  
 +		dprint(("in6_ifinit: set rt for rt_newaddrmsg\n"));
  		bzero(&rt, sizeof(rt));
-+		//bzero(&rn, sizeof(rn));
-+		//rt.rt_nodes = &rn;
++		bzero(&rn, sizeof(rn));
++		rt.rt_nodes = &rn;
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
