@@ -1,14 +1,6 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2011-01-03 14:19:04.000000000 +0900
-@@ -680,6 +680,7 @@
- in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
-     struct in6_ifaddr *ia, int flags)
- {
-+	dprint(("in6_update_ifa Start\n"));
- 	int error = 0, hostIsNew = 0, plen = -1;
- 	struct sockaddr_in6 dst6;
- 	struct in6_addrlifetime *lt;
-@@ -688,7 +689,6 @@
++++ in6.c	2011-01-03 14:46:43.000000000 +0900
+@@ -688,7 +688,6 @@
  	struct rtentry *rt;
  	int delay;
  	char ip6buf[INET6_ADDRSTRLEN];
@@ -16,53 +8,7 @@
  	/* Validate parameters */
  	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
  		return (EINVAL);
-@@ -733,6 +733,7 @@
- 	 * and the address is a scoped one, validate/set the scope
- 	 * zone identifier.
- 	 */
-+	dprint(("in6_update_ifa set dst6\n"));
- 	dst6 = ifra->ifra_dstaddr;
- 	if ((ifp->if_flags & (IFF_POINTOPOINT|IFF_LOOPBACK)) != 0 &&
- 	    (dst6.sin6_family == AF_INET6)) {
-@@ -792,6 +793,7 @@
- 	 * If this is a new address, allocate a new ifaddr and link it
- 	 * into chains.
- 	 */
-+	dprint(("in6_update_ifa: allocate a new ifaddr\n"));
- 	if (ia == NULL) {
- 		hostIsNew = 1;
- 		/*
-@@ -835,6 +837,7 @@
- 	}
- 
- 	/* update timestamp */
-+	dprint(("in6_update_ifa: update timestap\n"));
- 	ia->ia6_updatetime = time_second;
- 
- 	/* set prefix mask */
-@@ -861,6 +864,7 @@
- 	 * install the new destination.  Note that the interface must be
- 	 * p2p or loopback (see the check above.)
- 	 */
-+	dprint(("in6_update_ifa: IN6_ARE_ADDR_EQUAL\n"));
- 	if (dst6.sin6_family == AF_INET6 &&
- 	    !IN6_ARE_ADDR_EQUAL(&dst6.sin6_addr, &ia->ia_dstaddr.sin6_addr)) {
- 		int e;
-@@ -881,6 +885,7 @@
- 	 * to see if the address is deprecated or invalidated, but initialize
- 	 * these members for applications.
- 	 */
-+	dprint(("in6_update_ifa: set lifetimes\n"));
- 	ia->ia6_lifetime = ifra->ifra_lifetime;
- 	if (ia->ia6_lifetime.ia6t_vltime != ND6_INFINITE_LIFETIME) {
- 		ia->ia6_lifetime.ia6t_expire =
-@@ -894,12 +899,17 @@
- 		ia->ia6_lifetime.ia6t_preferred = 0;
- 
- 	/* reset the interface and routing table appropriately. */
-+	dprint(("in6_update_ifa: reset the interface\n"));
-+	dprint(("in6_update_ifa: ifp[%p] ia[%p] ifra_addr[%p]\n",
-+													ifp,ia,&ifra->ifra_addr));
+@@ -897,6 +896,7 @@
  	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
  		goto unlink;
  
@@ -70,49 +16,7 @@
  	/*
  	 * configure address flags.
  	 */
-+	dprint(("in6_update_ifa: configure flag\n"));
- 	ia->ia6_flags = ifra->ifra_flags;
- 	/*
- 	 * backward compatibility - if IN6_IFF_DEPRECATED is set from the
-@@ -1102,6 +1112,7 @@
- 	 * XXX It may be of use, if we can administratively
- 	 * disable DAD.
- 	 */
-+	dprint(("in6_update_ifa: perform DAD\n"));
- 	if (in6if_do_dad(ifp) && ((ifra->ifra_flags & IN6_IFF_NODAD) == 0) &&
- 	    (ia->ia6_flags & IN6_IFF_TENTATIVE))
- 	{
-@@ -1698,6 +1709,7 @@
- 	int	error = 0, plen, ifacount = 0;
- 	int	s = splimp();
- 	struct ifaddr *ifa;
-+	dprint(("in6_ifinit Start\n"));
- 
- 	/*
- 	 * Give the interface a chance to initialize
-@@ -1735,6 +1747,7 @@
- 	 * XXX: the logic below rejects assigning multiple addresses on a p2p
- 	 * interface that share the same destination.
- 	 */
-+	dprint(("in6_ifinit: add new dest\n"));
- 	plen = in6_mask2len(&ia->ia_prefixmask.sin6_addr, NULL); /* XXX */
- 	if (!(ia->ia_flags & IFA_ROUTE) && plen == 128 &&
- 	    ia->ia_dstaddr.sin6_family == AF_INET6) {
-@@ -1753,6 +1766,7 @@
- 	/*
- 	 * add a loopback route to self
- 	 */
-+	dprint(("in6_ifinit: aad a loopback\n"));
- 	if (!(ia->ia_flags & IFA_ROUTE)
- 	    && (V_nd6_useloopback
- 		|| (ifp->if_flags & IFF_LOOPBACK))) {
-@@ -1761,11 +1775,13 @@
- 	}
- 
- 	/* Add ownaddr as loopback rtentry, if necessary (ex. on p2p link). */
-+	dprint(("in6_ifinit: add ownaddr\n"));
- 	if (newhost) {
- 		struct llentry *ln;
+@@ -1766,6 +1766,7 @@
  		struct rtentry rt;
  		struct sockaddr_dl gateway;
  		struct sockaddr_in6 mask, addr;
@@ -120,27 +24,9 @@
  
  		IF_AFDATA_LOCK(ifp);
  		ia->ia_ifa.ifa_rtrequest = NULL;
-@@ -1773,6 +1789,7 @@
- 		/* XXX QL
- 		 * we need to report rt_newaddrmsg
- 		 */
-+		dprint(("in6_ifinit: report rt_newaddrmsg\n"));
- 		ln = lla_lookup(LLTABLE6(ifp), (LLE_CREATE | LLE_IFADDR | LLE_EXCLUSIVE),
- 		    (struct sockaddr *)&ia->ia_addr);
- 		IF_AFDATA_UNLOCK(ifp);
-@@ -1782,6 +1799,7 @@
- 			/*
- 			 * initialize for rtmsg generation
- 			 */
-+			dprint(("in6_ifinit: iniialize for rtmsg\n"));
- 			bzero(&gateway, sizeof(gateway));
- 			gateway.sdl_len = sizeof(gateway);
- 			gateway.sdl_family = AF_LINK;
-@@ -1792,7 +1810,10 @@
- 			LLE_WUNLOCK(ln);
+@@ -1793,6 +1794,8 @@
  		}
  
-+		dprint(("in6_ifinit: set rt for rt_newaddrmsg\n"));
  		bzero(&rt, sizeof(rt));
 +		bzero(&rn, sizeof(rn));
 +		rt.rt_nodes = &rn;

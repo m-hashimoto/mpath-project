@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2011-01-03 12:53:16.000000000 +0900
++++ route.c	2011-01-03 15:43:27.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -313,13 +313,7 @@
  		/*
  		 * If the caller wants it, then it can have it,
  		 * but it's up to it to free the rtentry as we won't be
-@@ -1086,18 +1093,20 @@
- 		 */
- 		break;
- 	case RTM_ADD:
-+			dprint(("rtrequest1_fib: RTM_ADD Start\n"));
- 		if ((flags & RTF_GATEWAY) && !gateway)
- 			senderr(EINVAL);
+@@ -1091,13 +1098,13 @@
  		if (dst && gateway && (dst->sa_family != gateway->sa_family) && 
  		    (gateway->sa_family != AF_UNSPEC) && (gateway->sa_family != AF_LINK))
  			senderr(EINVAL);
@@ -331,15 +325,12 @@
  		} else
  			ifa_ref(info->rti_ifa);
 +				
-+			dprint(("rtrequest1_fib: RTM_ADD rt zalloc\n"));
  		ifa = info->rti_ifa;
  		rt = uma_zalloc(V_rtzone, M_NOWAIT | M_ZERO);
  		if (rt == NULL) {
-@@ -1112,7 +1121,26 @@
- 		 * Add the gateway. Possibly re-malloc-ing the storage for it
+@@ -1113,6 +1120,24 @@
  		 * 
  		 */
-+			dprint(("rtrequest1_fib: RTM_ADD add the gateway\n"));
  		RT_LOCK(rt);
 +			RT_LOCK_ASSERT(rt);
 +			int dlen = SA_SIZE(dst), glen = SA_SIZE(gateway);
@@ -362,7 +353,7 @@
  		if ((error = rt_setgate(rt, dst, gateway)) != 0) {
  			RT_LOCK_DESTROY(rt);
  			if (ifa != NULL)
-@@ -1120,12 +1148,11 @@
+@@ -1120,12 +1145,11 @@
  			uma_zfree(V_rtzone, rt);
  			senderr(error);
  		}
@@ -377,7 +368,7 @@
  		/*
  		 * make sure it contains the value we want (masked if needed).
  		 */
-@@ -1133,7 +1160,6 @@
+@@ -1133,7 +1157,6 @@
  			rt_maskedcopy(dst, ndst, netmask);
  		} else
  			bcopy(dst, ndst, dst->sa_len);
@@ -385,7 +376,7 @@
  		/*
  		 * We use the ifa reference returned by rt_getifa_fib().
  		 * This moved from below so that rnh->rnh_addaddr() can
-@@ -1142,7 +1168,6 @@
+@@ -1142,7 +1165,6 @@
  		rt->rt_ifa = ifa;
  		rt->rt_ifp = ifa->ifa_ifp;
  		rt->rt_rmx.rmx_weight = 1;
@@ -393,7 +384,7 @@
  #ifdef RADIX_MPATH
  		/* do not permit exactly the same dst/mask/gw pair */
  		if (rn_mpath_capable(rnh) &&
-@@ -1156,7 +1181,20 @@
+@@ -1156,7 +1178,20 @@
  			senderr(EEXIST);
  		}
  #endif
@@ -415,7 +406,7 @@
  #ifdef FLOWTABLE
  		rt0 = NULL;
  		/* XXX
-@@ -1169,7 +1207,6 @@
+@@ -1169,7 +1204,6 @@
  				struct sockaddr *mask;
  				u_char *m, *n;
  				int len;
@@ -423,7 +414,7 @@
  				/*
  				 * compare mask to see if the new route is
  				 * more specific than the existing one
-@@ -1205,9 +1242,13 @@
+@@ -1205,9 +1239,13 @@
  		}
  #endif
  #endif
@@ -434,12 +425,12 @@
 +			RDTSC(c1);
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh, (struct ptree_node *)rt);
 +			RDTSC(c2);
-+			printf("-rtrequest: RDTSC Interval   :%lld clk\n",c1-c0);
-+			printf("-rtrequest1_fib RTM_ADD: pnh_addaddr %lld[clk]\n",c2-c1-(c1-c0));
++			//printf("-rtrequest: RDTSC Interval   :%lld clk\n",c1-c0);
++			//printf("-rtrequest1_fib RTM_ADD: pnh_addaddr %lld[clk]\n",c2-c1-(c1-c0));
  		/*
  		 * If it still failed to go into the tree,
  		 * then un-make it (this should be a function)
-@@ -1232,14 +1273,12 @@
+@@ -1232,14 +1270,12 @@
  			RTFREE(rt0);
  		}
  #endif
@@ -454,7 +445,7 @@
  		/*
  		 * actually return a resultant rtentry and
  		 * give the caller a single reference.
-@@ -1256,6 +1295,10 @@
+@@ -1256,6 +1292,10 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
@@ -465,7 +456,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1273,11 +1316,10 @@
+@@ -1273,11 +1313,10 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -478,7 +469,7 @@
  	RT_LOCK_ASSERT(rt);
  	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  	
-@@ -1311,7 +1353,6 @@
+@@ -1311,7 +1350,6 @@
  	 * Copy the new gateway value into the memory chunk.
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
@@ -486,7 +477,7 @@
  	return (0);
  }
  
-@@ -1374,8 +1415,9 @@
+@@ -1374,8 +1412,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -497,7 +488,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1447,8 @@
+@@ -1405,8 +1444,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -508,7 +499,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,11 +1481,10 @@
+@@ -1439,11 +1478,10 @@
  			}
  			else
  #endif

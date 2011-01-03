@@ -1,5 +1,5 @@
 --- route.c.org	2010-12-26 14:51:50.000000000 +0900
-+++ route.c	2011-01-01 04:20:57.000000000 +0900
++++ route.c	2011-01-03 14:47:02.000000000 +0900
 @@ -51,7 +51,8 @@
  #include <net/if_var.h>
  #include <net/if_dl.h>
@@ -316,7 +316,7 @@
 +		if(sa->sa_family == AF_INET)
 +			printf("%-19s"," ");
 +		else if(sa->sa_family == AF_INET6)
-+			printf("%-33s"," ");
++			printf("%-34s"," ");
 +	}
 +	else
  	p_sockaddr(&addr.u_sa, &mask.u_sa, rt->rt_flags, wid_dst);
