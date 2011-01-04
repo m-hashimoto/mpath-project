@@ -10,7 +10,7 @@ FILE *log;
 												fprintf(log,x); \
 												fclose(log);		\
 										} 									\
-									}
+									};
 
 #ifdef _KERNEL
 #ifdef MALLOC_DECLARE
