@@ -3,8 +3,8 @@
 #define _PTREE_H_
 
 /* debug print */
-#define DEBUG 0
-#define dprint(x) { if(DEBUG) printf x; }
+#define DEBUG 1
+#define dprint(x) { if(DEBUG) syslog(LOG_DEBUG, x); }
 
 #ifdef _KERNEL
 #ifdef MALLOC_DECLARE
