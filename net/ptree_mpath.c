@@ -28,6 +28,7 @@ static char *pn_zeros, *pn_ones;
 #ifdef PTREE_MPATH
 static uint32_t max_multipath;
 #endif
+static FILE *debug, *info; /* file pointre for debug */
 
 #define LEN(x) (*(const u_char *)(x))
 #define INET_HEADOFF 4
@@ -40,7 +41,6 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
-static FILE *debug, *info;
 
  void
 sprint_inet_ntoa(int af, void *sa)

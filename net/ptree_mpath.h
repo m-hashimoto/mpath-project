@@ -20,11 +20,11 @@
 
 #define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
 													debug = fopen("/var/log/ptree_debug.log","a"); \
-													fprintf x; 				\
+													fprintf msg; 				\
 													fclose(debug);	 	\
 												}else if(DEBUG && fp == P_INFO){\
 													info = fopen("/var/log/ptree_rdtsc.log","a"); \
-													fprintf x; 				\
+													fprintf msg; 				\
 													fclose(info);		\
 												} \
 											};
