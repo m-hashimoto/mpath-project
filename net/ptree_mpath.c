@@ -278,13 +278,13 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	if ( memcmp(cp,cplim,vlen/8) != 0 ){
-		dprint("ptree_matchaddr: not match\n");
+		dprint((debug,"ptree_matchaddr: not match\n"i));
 		return 0;
 	}
 	/*
 	 * match exactly as a host.
 	 */
-	dprint("ptree_matchaddr: match ptree_node[%p]\n",t);
+	dprint((debug,"ptree_matchaddr: match ptree_node[%p]\n",t));
 	return t;
 }
 
@@ -346,14 +346,14 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 
 			rt0->mpath_counter = n + 1;
 			rt->rt_nodes = tt;
-			dprint("ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt);
+			dprint((debug,"ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt));
 			return tt;
 		}
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
 		rt->mpath_counter = 0;
-		dprint("ptree_addroute: rt[%p]\n",rt);
+		dprint((debug,"ptree_addroute: rt[%p]\n",rt));
 		return tt;
 }
 
@@ -747,7 +747,7 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash %= n+1;
 	rt = rt_array[hash];
-	dprint("-multipath_nexthop: rt[%d]=%p\n",hash,rt);
+	dprint((debug,"-multipath_nexthop: rt[%d]=%p\n",hash,rt));
 	return rt;
 }
 

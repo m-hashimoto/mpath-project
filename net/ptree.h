@@ -5,10 +5,10 @@
 /* debug print */
 #define DEBUG 1
 #define dprint(x) { if(DEBUG) { 				\
-												FILE *log;			\
-												log = fopen("/var/log/ptree.log","a"); \
-												fprintf(log,x); \
-												fclose(log);		\
+												FILE *debug;			\
+												debug = fopen("/var/log/ptree.log","a"); \
+												fprintf x; \
+												fclose(debug);		\
 										} 									\
 									};
 
