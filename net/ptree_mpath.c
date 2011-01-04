@@ -278,7 +278,7 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	if ( memcmp(cp,cplim,vlen/8) != 0 ){
-		dprint("ptree_matchaddr: not match\n",0);
+		dprint("ptree_matchaddr: not match\n");
 		return 0;
 	}
 	/*

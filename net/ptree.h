@@ -4,9 +4,13 @@
 
 /* debug print */
 #define DEBUG 1
-#define dprint(x, y) { if(DEBUG) \
-												if(y) syslog(LOG_DEBUG, x, y); \
-												else	syslog(LOG_DEBUG,x);}
+FILE *log;
+#define dprint(x) { if(DEBUG) { 				\
+												log = fopen("/var/log/ptree.log","a"); \
+												fprintf(log,x); \
+												fclose(log);		\
+										} 									\
+									}
 
 #ifdef _KERNEL
 #ifdef MALLOC_DECLARE
