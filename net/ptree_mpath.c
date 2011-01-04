@@ -277,11 +277,14 @@ ptree_matchaddr(v_arg, head)
 		return 0;
 
 	cp = t->key; cplim = v; vlen = t->keylen;
-	if ( memcmp(cp,cplim,vlen/8) != 0 )
+	if ( memcmp(cp,cplim,vlen/8) != 0 ){
+		dprint(("ptree_matchaddr: not match\n"));
 		return 0;
+	}
 	/*
 	 * match exactly as a host.
 	 */
+	dprint(("ptree_matchaddr: match ptree_node[%p]\n",t));
 	return t;
 }
 
