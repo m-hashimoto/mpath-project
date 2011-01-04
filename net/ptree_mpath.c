@@ -40,6 +40,8 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
+static FILE *debug, *info;
+
  void
 sprint_inet_ntoa(int af, void *sa)
 {
@@ -141,7 +143,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		printf("----------------------------------------------------------\n\n");
 		return (0);
 }
-#endif
+#endif /* DEBUG */
 
 	static struct ptree_node 
 *ptree_insert(v_arg, m_arg, head, dupentry)  

@@ -15,7 +15,6 @@
 
 /* debug print */
 #define DEBUG 1
-static FILE *debug, *info;
 #define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
 													debug = fopen("/var/log/ptree_debug.log","a"); \
 													fprintf x; 				\
@@ -25,7 +24,7 @@ static FILE *debug, *info;
 													fprintf x; 				\
 													fclose(info);		\
 												} \
-											}
+											};
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 //static double cpu_frequency = 1999.78;
