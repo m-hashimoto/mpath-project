@@ -14,20 +14,12 @@
 
 
 /* debug print */
-#define DEBUG 1
-#define P_DEBUG 0x10
-#define P_INFO  0x11
+#define DEBUG 	1
+#define P_DEBUG 2
+#define P_INFO  3
 
-#define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
-													FILE *debug = fopen("/var/log/ptree_debug.log","a"); \
-													fprintf msg; 				\
-													fclose(debug);	 	\
-												}else if(DEBUG && fp == P_INFO){\
-													FILE *info = fopen("/var/log/ptree_rdtsc.log","a"); \
-													fprintf msg; 				\
-													fclose(info);		\
-												} \
-											};
+void dprint_ctof(int fp,char *msg);
+#define dprint(fp,msg) dprint_ctof(fp,msg);
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 //static double cpu_frequency = 1999.78;

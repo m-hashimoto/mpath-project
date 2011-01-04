@@ -40,6 +40,18 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
+void
+dprint_ctof(int fp,char *msg){ 
+	if(DEBUG && fp == P_DEBUG){
+		FILE *debug = fopen("/var/log/ptree_debug.log","a");
+		fprintf(msg);
+		fclose(debug);
+	}else if(DEBUG && fp == P_INFO){
+		FILE *info = fopen("/var/log/ptree_rdtsc.log","a");
+		fprintf(msg);
+		fclose(info);
+	}
+}
 
  void
 sprint_inet_ntoa(int af, void *sa)
@@ -279,13 +291,13 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	if ( memcmp(cp,cplim,vlen/8) != 0 ){
-		dprint(P_DEBUG,(debug,"ptree_matchaddr: not match\n"));
+		dprint(P_DEBUG,'debug,"ptree_matchaddr: not match\n"');
 		return 0;
 	}
 	/*
 	 * match exactly as a host.
 	 */
-	dprint(P_DEBUG,(debug,"ptree_matchaddr: match ptree_node[%p]\n",t));
+	dprint(P_DEBUG,'debug,"ptree_matchaddr: match ptree_node[%p]\n",t');
 	return t;
 }
 
