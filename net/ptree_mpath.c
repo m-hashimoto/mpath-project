@@ -342,10 +342,8 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				
 				R_Realloc(tmp, struct rtentry **, 
 												5*max_multipath*sizeof(struct rtentry *));
-				if(tmp == NULL){
-					printf("realloc fault\n");
+				if(tmp == NULL)
 					return NULL;
-				}
 				else
 					rt_array = tmp;
 				

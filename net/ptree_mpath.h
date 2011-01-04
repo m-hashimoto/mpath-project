@@ -19,7 +19,7 @@
 #define P_INFO  3
 
 void dprint_ctof(int fp,char *msg);
-#define dprint(fp,msg) dprint_ctof(fp,msg);
+#define dprint(fp,msg) { char *tmp = (char *)msg; dprint_ctof(fp,tmp); }
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 //static double cpu_frequency = 1999.78;
