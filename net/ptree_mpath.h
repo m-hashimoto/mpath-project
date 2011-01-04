@@ -17,14 +17,13 @@
 #define DEBUG 1
 #define P_DEBUG 0x10
 #define P_INFO  0x11
-static FILE *debug, *info; /* file pointre for debug */
 
 #define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
-													debug = fopen("/var/log/ptree_debug.log","a"); \
+													FILE *debug = fopen("/var/log/ptree_debug.log","a"); \
 													fprintf msg; 				\
 													fclose(debug);	 	\
 												}else if(DEBUG && fp == P_INFO){\
-													info = fopen("/var/log/ptree_rdtsc.log","a"); \
+													FILE *info = fopen("/var/log/ptree_rdtsc.log","a"); \
 													fprintf msg; 				\
 													fclose(info);		\
 												} \
