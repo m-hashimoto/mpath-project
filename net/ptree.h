@@ -4,8 +4,8 @@
 
 /* debug print */
 #define DEBUG 1
-FILE *log;
 #define dprint(x) { if(DEBUG) { 				\
+												FILE *log;			\
 												log = fopen("/var/log/ptree.log","a"); \
 												fprintf(log,x); \
 												fclose(log);		\
