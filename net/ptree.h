@@ -4,7 +4,9 @@
 
 /* debug print */
 #define DEBUG 1
-#define dprint(x) { if(DEBUG) syslog(LOG_DEBUG, x); }
+#define dprint(x, y) { if(DEBUG) \
+												if(y) syslog(LOG_DEBUG, x, y); \
+												else	syslog(LOG_DEBUG,x);}
 
 #ifdef _KERNEL
 #ifdef MALLOC_DECLARE
