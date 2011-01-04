@@ -18,8 +18,6 @@
 #define P_DEBUG 0x10
 #define P_INFO  0x11
 
-#include <stdio.h>
-
 #define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
 													debug = fopen("/var/log/ptree_debug.log","a"); \
 													fprintf x; 				\
