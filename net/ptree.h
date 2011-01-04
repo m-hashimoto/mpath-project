@@ -2,16 +2,6 @@
 #ifndef _PTREE_H_
 #define _PTREE_H_
 
-/* debug print */
-#define DEBUG 1
-static FILE *debug;
-#define dprint(x) { if(DEBUG) { 				\
-												debug = fopen("/var/log/ptree.log","a"); \
-												fprintf x; \
-												fclose(debug);		\
-										} 									\
-									};
-
 #ifdef _KERNEL
 #ifdef MALLOC_DECLARE
 MALLOC_DECLARE(M_RTABLE);

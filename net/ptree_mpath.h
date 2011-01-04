@@ -12,6 +12,31 @@
 #include <net/ptree.h>
 #endif /* _KERNEL */
 
+
+/* debug print */
+#define DEBUG 1
+static FILE *debug, *info;
+#define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
+													debug = fopen("/var/log/ptree_debug.log","a"); \
+													fprintf x; 				\
+													fclose(debug);	 	\
+												}else if(DEBUG && fp == P_INFO){\
+													info = fopen("/var/log/ptree_rdtsc.log","a"); \
+													fprintf x; 				\
+													fclose(info);		\
+												} \
+											}
+
+#define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
+//static double cpu_frequency = 1999.78;
+
+#ifdef DEBUG
+void sprint_inet_ntoa(int af, void *sa);
+int debug_node_print(struct ptree_node *, int );
+int debug_tree_print(struct ptree_node_head *);
+#endif
+
+
 typedef int walktree_f_t(struct ptree_node *, void *);
 
 struct ptree_node_head {
@@ -88,14 +113,6 @@ struct ptree_node
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 
-#define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
-//static double cpu_frequency = 1999.78;
-
-#ifdef DEBUG
-void sprint_inet_ntoa(int af, void *sa);
-int debug_node_print(struct ptree_node *, int );
-int debug_tree_print(struct ptree_node_head *);
-#endif
 
 #ifdef PTREE_MPATH
 #ifdef _KERNEL
