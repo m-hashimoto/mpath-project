@@ -28,7 +28,6 @@ static char *pn_zeros, *pn_ones;
 #ifdef PTREE_MPATH
 static uint32_t max_multipath;
 #endif
-static FILE *debug = NULL, *info = NULL; /* file pointre for debug */
 
 #define LEN(x) (*(const u_char *)(x))
 #define INET_HEADOFF 4

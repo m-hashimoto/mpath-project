@@ -17,6 +17,7 @@
 #define DEBUG 1
 #define P_DEBUG 0x10
 #define P_INFO  0x11
+static FILE *debug, *info; /* file pointre for debug */
 
 #define dprint(fp,msg){ if(DEBUG && fp == P_DEBUG){ \
 													debug = fopen("/var/log/ptree_debug.log","a"); \
@@ -31,8 +32,6 @@
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 //static double cpu_frequency = 1999.78;
-
-
 
 typedef int walktree_f_t(struct ptree_node *, void *);
 
