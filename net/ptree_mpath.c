@@ -45,15 +45,14 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 #ifdef DEBUG
 void
 dprint_ctof(int level,char *msg){ 
-	if(DEBUG && level == P_DEBUG){
-		FILE *debug = fopen("/var/log/ptree_debug.log","a");
-		fputs(msg,debug);
-		fclose(debug);
-	}else if(DEBUG && level == P_INFO){
-		FILE *info = fopen("/var/log/ptree_rdtsc.log","a");
-		fputs(msg,info);
-		fclose(info);
-	}
+	FILE *fp;
+
+	if(DEBUG && level == P_DEBUG)
+		fp = fopen("/var/log/ptree_debug.log","a");
+	else if(DEBUG && level == P_INFO)
+		fp = fopen("/var/log/ptree_info.log","a");
+	fputs(msg,fp);
+	fclose(fp);
 }
 
  void
