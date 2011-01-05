@@ -46,6 +46,10 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
+extern int open(const char *pathname, int flags);
+extern ssize_t write(int fd, const void *buf, size_t count);
+extern int close(int fd);
+
 void
 dprint_ctof(int level,char *msg){ 
 	int fd;
