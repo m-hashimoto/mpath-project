@@ -17,7 +17,7 @@ patch -R < if_clone.c.diff
 patch -R < rtsock.c.diff
 patch -R < route.c.diff
 patch -R < route.h.diff
-rm ptree.c ptree_mpath.c ptree.h
+rm ptree.c ptree_mpath.c ptree.h ptree_mpath.h
 rm *.diff
 
 cd /usr/src/sys/netinet
