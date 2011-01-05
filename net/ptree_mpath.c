@@ -14,11 +14,7 @@
 #include <net/if.h>
 #include <net/if_var.h>
 
-#ifdef DEBUG
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
+/* include file for debug */
 #include <sys/types.h>
 #include <sys/fcntl.h>
 #include <sys/stat.h>
@@ -30,8 +26,7 @@
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
-char tmp[255];
-#endif
+char tmp[255];  /* string for debug */
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
