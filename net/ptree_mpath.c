@@ -21,6 +21,8 @@
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
+
+static char *tmp[255];
 #endif
 
 static int  max_keylen;
@@ -28,6 +30,7 @@ static char *pn_zeros, *pn_ones;
 #ifdef PTREE_MPATH
 static uint32_t max_multipath;
 #endif
+
 
 #define LEN(x) (*(const u_char *)(x))
 #define INET_HEADOFF 4
@@ -40,6 +43,7 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
+#if 0
 void
 dprint_ctof(int fp,char *msg){ 
 	if(DEBUG && fp == P_DEBUG){
@@ -52,6 +56,7 @@ dprint_ctof(int fp,char *msg){
 		fclose(info);
 	}
 }
+#endif
 
  void
 sprint_inet_ntoa(int af, void *sa)
@@ -291,13 +296,14 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	if ( memcmp(cp,cplim,vlen/8) != 0 ){
-		dprint(P_DEBUG,'debug,"ptree_matchaddr: not match\n"');
+		dprint(P_DEBUG,"ptree_matchaddr: not match\n");
 		return 0;
 	}
 	/*
 	 * match exactly as a host.
 	 */
-	dprint(P_DEBUG,'debug,"ptree_matchaddr: match ptree_node[%p]\n",t');
+	sprintf(tmp,"ptree_matchaddr: match ptree_node[%p]\n",t);
+	dprint(P_DEBUG,tmp);
 	return t;
 }
 
@@ -357,14 +363,16 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 
 			rt0->mpath_counter = n + 1;
 			rt->rt_nodes = tt;
-			dprint(P_DEBUG,(debug,"ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt));
+			sprintf(tmp,"ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt);
+			dprint(P_DEBUG,tmp);
 			return tt;
 		}
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
 		rt->mpath_counter = 0;
-		dprint(P_DEBUG,(debug,"ptree_addroute: rt[%p]\n",rt));
+		sprintf(tmp,"ptree_addroute: rt[%p]\n",rt);
+		dprint(P_DEBUG,tmp);
 		return tt;
 }
 
@@ -758,7 +766,8 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash %= n+1;
 	rt = rt_array[hash];
-	dprint(P_DEBUG,(debug,"-multipath_nexthop: rt[%d]=%p\n",hash,rt));
+	sprintf(tmp,"-multipath_nexthop: rt[%d]=%p\n",hash,rt);
+	dprint(P_DEBUG,tmp);
 	return rt;
 }
 

@@ -17,10 +17,13 @@
 #define DEBUG 	1
 #define P_DEBUG 2
 #define P_INFO  3
-
+#if 0
 void dprint_ctof(int fp,char *msg);
 #define dprint(fp,msg) { char *tmp = (char *)msg; dprint_ctof(fp,tmp); }
-
+#endif
+#define dprint(level,msg) { if(level == P_INFO) syslog(LOG_INFO,msg);\
+														else if(level == P_DEBUG) syslog(LOG_DEBUG,msg);}
+													
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 //static double cpu_frequency = 1999.78;
 
