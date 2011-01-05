@@ -228,11 +228,21 @@ debug_tree_print(struct ptree_node_head *pnh)
    }
 #endif	 
 		unsigned char bitmask = 0xff;
+		unsigned char diff;
 		len = head->pnh_offset;
 		while(m[len] & bitmask)
 			len++;
+		
+	 	diff = m[len] ^ bitmask;
+		dprint(("ptree_insert: diff[%s]\n",diff));
 		len = 8*len;
-		dprint(("ptree_insert: masklen[%d]\n",len));
+		/* support CIDR */
+	 	bitmask = 0x80;
+	 	while (len < salen && ! (bitmask & diff)) {
+      len++;
+      bitmask >>= 1;
+   	}
+		dprint(("ptree_insert: masklen[%d]\n",len - 8*head->pnh_offset));
 	}
 	else if( (m && (LEN(m) <= head->pnh_offset)) )
 		len = 8*head->pnh_offset;
