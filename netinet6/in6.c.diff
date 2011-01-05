@@ -1,5 +1,5 @@
 --- in6.c.orig	2005-02-10 21:46:02.000000000 +0900
-+++ in6.c	2011-01-03 14:46:43.000000000 +0900
++++ in6.c	2011-01-06 01:00:41.000000000 +0900
 @@ -688,7 +688,6 @@
  	struct rtentry *rt;
  	int delay;
@@ -33,3 +33,11 @@
  		rt.rt_gateway = (struct sockaddr *)&gateway;
  		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
  		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));
+@@ -2378,6 +2381,7 @@
+ in6_lltable_lookup(struct lltable *llt, u_int flags,
+ 	const struct sockaddr *l3addr)
+ {
++	dprint(("in6_lltable_lookup Start\n"));
+ 	const struct sockaddr_in6 *sin6 = (const struct sockaddr_in6 *)l3addr;
+ 	struct ifnet *ifp = llt->llt_ifp;
+ 	struct llentry *lle;
