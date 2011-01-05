@@ -16,17 +16,18 @@
 
 /* include file for debug */
 #include <sys/types.h>
+#if 0
 #include <sys/fcntl.h>
 #include <sys/stat.h>
 #include <sys/unistd.h>
-
+#endif
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
-char tmp[255];  /* string for debug */
+//char tmp[255];  /* string for debug */
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
@@ -50,7 +51,6 @@ static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 extern int open(const char *pathname, int flags);
 extern ssize_t write(int fd, const void *buf, size_t count);
 extern int close(int fd);
-#endif
 extern void	closelog(void);
 extern void	openlog(const char *, int, int);
 extern void	syslog(int, const char *, ...) __printflike(2, 3);
@@ -77,6 +77,7 @@ dprint_ctof(int level,char *msg){
 	}
 	closelog();
 }
+#endif
 
  void
 sprint_inet_ntoa(int af, void *sa)
@@ -316,14 +317,16 @@ ptree_matchaddr(v_arg, head)
 
 	cp = t->key; cplim = v; vlen = t->keylen;
 	if ( memcmp(cp,cplim,vlen/8) != 0 ){
-		dprint(P_DEBUG,"ptree_matchaddr: not match\n");
+		//dprint(P_DEBUG,"ptree_matchaddr: not match\n");
+		dprint(("ptree_matchaddr: not match\n"));
 		return 0;
 	}
 	/*
 	 * match exactly as a host.
 	 */
-	sprintf(tmp,"ptree_matchaddr: match ptree_node[%p]\n",t);
-	dprint(P_DEBUG,tmp);
+	//sprintf(tmp,"ptree_matchaddr: match ptree_node[%p]\n",t);
+	//dprint(P_DEBUG,tmp);
+	dprint(("ptree_matchaddr: match ptree_node[%p]\n",t));
 	return t;
 }
 
@@ -383,16 +386,16 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 
 			rt0->mpath_counter = n + 1;
 			rt->rt_nodes = tt;
-			sprintf(tmp,"ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt);
-			dprint(P_DEBUG,tmp);
+			//sprintf(tmp,"ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt);
+			//dprint(P_DEBUG,tmp);
 			return tt;
 		}
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
 		rt->mpath_counter = 0;
-		sprintf(tmp,"ptree_addroute: rt[%p]\n",rt);
-		dprint(P_DEBUG,tmp);
+		//sprintf(tmp,"ptree_addroute: rt[%p]\n",rt);
+		//dprint(P_DEBUG,tmp);
 		return tt;
 }
 
@@ -786,8 +789,8 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash %= n+1;
 	rt = rt_array[hash];
-	sprintf(tmp,"-multipath_nexthop: rt[%d]=%p\n",hash,rt);
-	dprint(P_DEBUG,tmp);
+	//sprintf(tmp,"-multipath_nexthop: rt[%d]=%p\n",hash,rt);
+	//dprint(P_DEBUG,tmp);
 	return rt;
 }
 

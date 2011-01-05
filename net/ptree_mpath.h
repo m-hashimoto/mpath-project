@@ -15,13 +15,14 @@
 
 /* debug print */
 #define DEBUG 	1
+#define dprint(x) {if(debug) printf x;}
+#if 0
 #define P_DEBUG 2
 #define P_INFO  3
 
 void dprint_ctof(int fp,char *msg);
 #define dprint(level,msg) dprint_ctof(level,msg);
 
-#if 0
 __BEGIN_DECLS
 void	closelog(void);
 void	openlog(const char *, int, int);
