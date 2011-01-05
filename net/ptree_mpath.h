@@ -19,7 +19,7 @@
 #define P_INFO  3
 
 void dprint_ctof(int fp,char *msg);
-#define dprint(level,msg) dprint_ctof(level,tmp);
+#define dprint(level,msg) dprint_ctof(level,msg);
 
 #if 0
 __BEGIN_DECLS
