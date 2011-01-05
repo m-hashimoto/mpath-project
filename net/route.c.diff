@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2011-01-05 10:19:15.000000000 +0900
++++ route.c	2011-01-05 11:08:58.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -35,7 +35,16 @@
  static VNET_DEFINE(uma_zone_t, rtzone);		/* Routing table UMA zone. */
  VNET_DEFINE(int, rttrash);		/* routes not in table but not freed */
  VNET_DEFINE(struct rtstat, rtstat);
-@@ -114,7 +114,7 @@
+@@ -98,6 +98,8 @@
+ #define	V_rttrash	VNET(rttrash)
+ #define	V_rtstat	VNET(rtstat)
+ 
++extern char tmp[255];
++
+ static void rt_maskedcopy(struct sockaddr *,
+ 	    struct sockaddr *, struct sockaddr *);
+ 
+@@ -114,7 +116,7 @@
   * But because there are a lot of assumptions in this conversion,
   * do not cast explicitly, but always use the macro below.
   */
@@ -44,7 +53,7 @@
  
  #if 0
  /* default fib for tunnels to use */
-@@ -139,28 +139,26 @@
+@@ -139,28 +141,26 @@
  SYSCTL_PROC(_net, OID_AUTO, my_fibnum, CTLTYPE_INT|CTLFLAG_RD,
              NULL, 0, &sysctl_my_fibnum, "I", "default FIB of caller");
  
@@ -78,7 +87,7 @@
  	return (*rt_tables_get_rnh_ptr(table, fam));
  }
  
-@@ -171,13 +169,12 @@
+@@ -171,13 +171,12 @@
  static void
  route_init(void)
  {
@@ -93,7 +102,7 @@
  }
  SYSINIT(route_init, SI_SUB_PROTO_DOMAIN, SI_ORDER_THIRD, route_init, 0);
  
-@@ -185,20 +182,20 @@
+@@ -185,20 +184,20 @@
  vnet_route_init(const void *unused __unused)
  {
  	struct domain *dom;
@@ -118,7 +127,7 @@
   			        	/* for now only AF_INET has > 1 table */
  					/* XXX MRT 
  					 * rtattach will be also called
-@@ -229,7 +226,7 @@
+@@ -229,7 +228,7 @@
  	int table;
  	int fam;
  	struct domain *dom;
@@ -127,7 +136,7 @@
  
  	for (dom = domains; dom; dom = dom->dom_next) {
  		if (dom->dom_rtdetach) {
-@@ -330,9 +327,9 @@
+@@ -330,9 +329,9 @@
  rtalloc1_fib(struct sockaddr *dst, int report, u_long ignflags,
  		    u_int fibnum)
  {
@@ -139,7 +148,7 @@
  	struct rtentry *newrt;
  	struct rt_addrinfo info;
  	int err = 0, msgtype = RTM_MISS;
-@@ -357,15 +354,24 @@
+@@ -357,15 +356,24 @@
  	else
  		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  #endif
@@ -166,7 +175,7 @@
  	} else if (needlock)
  		RADIX_NODE_HEAD_RUNLOCK(rnh);
  	
-@@ -399,7 +405,7 @@
+@@ -399,7 +407,7 @@
  void
  rtfree(struct rtentry *rt)
  {
@@ -175,7 +184,7 @@
  
  	KASSERT(rt != NULL,("%s: NULL rt", __func__));
  	rnh = rt_tables_get_rnh(rt->rt_fibnum, rt_key(rt)->sa_family);
-@@ -427,7 +433,7 @@
+@@ -427,7 +435,7 @@
  	 * on the entry so that the code below reclaims the storage.
  	 */
  	if (rt->rt_refcnt == 0 && rnh->rnh_close)
@@ -184,7 +193,7 @@
  
  	/*
  	 * If we are no longer "up" (and ref == 0)
-@@ -435,18 +441,15 @@
+@@ -435,18 +443,15 @@
  	 * with the route.
  	 */
  	if ((rt->rt_flags & RTF_UP) == 0) {
@@ -205,7 +214,7 @@
  #endif
  		/*
  		 * release references on items we hold them on..
-@@ -502,7 +505,7 @@
+@@ -502,7 +507,7 @@
  	short *stat = NULL;
  	struct rt_addrinfo info;
  	struct ifaddr *ifa;
@@ -214,7 +223,7 @@
  
  	ifa = NULL;
  	rnh = rt_tables_get_rnh(fibnum, dst->sa_family);
-@@ -626,7 +629,6 @@
+@@ -626,7 +631,6 @@
  int
  rtioctl_fib(u_long req, caddr_t data, u_int fibnum)
  {
@@ -222,7 +231,7 @@
  	/*
  	 * If more ioctl commands are added here, make sure the proper
  	 * super-user checks are being performed because it is possible for
-@@ -825,8 +827,8 @@
+@@ -825,8 +829,8 @@
  int
  rtexpunge(struct rtentry *rt)
  {
@@ -233,7 +242,7 @@
  	struct ifaddr *ifa;
  	int error = 0;
  
-@@ -888,14 +890,14 @@
+@@ -888,14 +892,14 @@
  #ifdef RADIX_MPATH
  static int
  rn_mpath_update(int req, struct rt_addrinfo *info,
@@ -250,7 +259,7 @@
  	int error = 0;
  
  	rn = rnh->rnh_matchaddr(dst, rnh);
-@@ -909,7 +911,7 @@
+@@ -909,7 +913,7 @@
  	 * this is the first entry in the chain
  	 */
  	if (rto == rt) {
@@ -259,7 +268,7 @@
  		/*
  		 * there is another entry, now it's active
  		 */
-@@ -1000,11 +1002,12 @@
+@@ -1000,11 +1004,12 @@
  #ifdef FLOWTABLE
  	register struct rtentry *rt0;
  #endif
@@ -275,7 +284,7 @@
  
  	KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
  	if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */
-@@ -1045,29 +1048,33 @@
+@@ -1045,29 +1050,33 @@
  		 * Remove the item from the tree and return it.
  		 * Complain if it is not there and do no more processing.
  		 */
@@ -313,7 +322,7 @@
  		/*
  		 * If the caller wants it, then it can have it,
  		 * but it's up to it to free the rtentry as we won't be
-@@ -1091,13 +1098,13 @@
+@@ -1091,13 +1100,13 @@
  		if (dst && gateway && (dst->sa_family != gateway->sa_family) && 
  		    (gateway->sa_family != AF_UNSPEC) && (gateway->sa_family != AF_LINK))
  			senderr(EINVAL);
@@ -328,7 +337,7 @@
  		ifa = info->rti_ifa;
  		rt = uma_zalloc(V_rtzone, M_NOWAIT | M_ZERO);
  		if (rt == NULL) {
-@@ -1113,6 +1120,24 @@
+@@ -1113,6 +1122,24 @@
  		 * 
  		 */
  		RT_LOCK(rt);
@@ -353,7 +362,7 @@
  		if ((error = rt_setgate(rt, dst, gateway)) != 0) {
  			RT_LOCK_DESTROY(rt);
  			if (ifa != NULL)
-@@ -1120,12 +1145,11 @@
+@@ -1120,12 +1147,11 @@
  			uma_zfree(V_rtzone, rt);
  			senderr(error);
  		}
@@ -368,7 +377,7 @@
  		/*
  		 * make sure it contains the value we want (masked if needed).
  		 */
-@@ -1133,7 +1157,6 @@
+@@ -1133,7 +1159,6 @@
  			rt_maskedcopy(dst, ndst, netmask);
  		} else
  			bcopy(dst, ndst, dst->sa_len);
@@ -376,7 +385,7 @@
  		/*
  		 * We use the ifa reference returned by rt_getifa_fib().
  		 * This moved from below so that rnh->rnh_addaddr() can
-@@ -1142,7 +1165,6 @@
+@@ -1142,7 +1167,6 @@
  		rt->rt_ifa = ifa;
  		rt->rt_ifp = ifa->ifa_ifp;
  		rt->rt_rmx.rmx_weight = 1;
@@ -384,7 +393,7 @@
  #ifdef RADIX_MPATH
  		/* do not permit exactly the same dst/mask/gw pair */
  		if (rn_mpath_capable(rnh) &&
-@@ -1156,7 +1178,20 @@
+@@ -1156,7 +1180,20 @@
  			senderr(EEXIST);
  		}
  #endif
@@ -406,7 +415,7 @@
  #ifdef FLOWTABLE
  		rt0 = NULL;
  		/* XXX
-@@ -1169,7 +1204,6 @@
+@@ -1169,7 +1206,6 @@
  				struct sockaddr *mask;
  				u_char *m, *n;
  				int len;
@@ -414,7 +423,7 @@
  				/*
  				 * compare mask to see if the new route is
  				 * more specific than the existing one
-@@ -1205,9 +1239,15 @@
+@@ -1205,9 +1241,15 @@
  		}
  #endif
  #endif
@@ -432,7 +441,7 @@
  		/*
  		 * If it still failed to go into the tree,
  		 * then un-make it (this should be a function)
-@@ -1232,14 +1272,12 @@
+@@ -1232,14 +1274,12 @@
  			RTFREE(rt0);
  		}
  #endif
@@ -447,7 +456,7 @@
  		/*
  		 * actually return a resultant rtentry and
  		 * give the caller a single reference.
-@@ -1256,6 +1294,10 @@
+@@ -1256,6 +1296,10 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
@@ -458,7 +467,7 @@
  	return (error);
  #undef senderr
  }
-@@ -1273,11 +1315,10 @@
+@@ -1273,11 +1317,10 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -471,7 +480,7 @@
  	RT_LOCK_ASSERT(rt);
  	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  	
-@@ -1311,7 +1352,6 @@
+@@ -1311,7 +1354,6 @@
  	 * Copy the new gateway value into the memory chunk.
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
@@ -479,7 +488,7 @@
  	return (0);
  }
  
-@@ -1374,8 +1414,9 @@
+@@ -1374,8 +1416,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -490,7 +499,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1446,8 @@
+@@ -1405,8 +1448,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -501,7 +510,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,11 +1480,10 @@
+@@ -1439,11 +1482,10 @@
  			}
  			else
  #endif
