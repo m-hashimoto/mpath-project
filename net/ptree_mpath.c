@@ -46,23 +46,36 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
+#if 0
 extern int open(const char *pathname, int flags);
 extern ssize_t write(int fd, const void *buf, size_t count);
 extern int close(int fd);
+#endif
+extern void	closelog(void);
+extern void	openlog(const char *, int, int);
+extern void	syslog(int, const char *, ...) __printflike(2, 3);
 
 	void
 dprint_ctof(int level,char *msg){ 
-	int fd;
+	//int fd;
+	openlog("ptree_log",LOG_CONS | LOG_PID, LOG_KERN);
 
 	if(DEBUG && level == P_DEBUG){
-		fd = open("/tmp/gptree_debug.log",O_WRONLY | O_CREAT);
+		syslog(LOG_DEBUG,msg);
+#if 0
+		fd = open("/var/log/ptree_debug.log",O_WRONLY | O_CREAT | O_APPEND);
 		write(fd,msg,strlen(msg));
 		close(fd);
+#endif
 	}else if(DEBUG && level == P_INFO){
-		fd = open("/tmp/ptree_info.log",O_WRONLY | O_CREAT);
+		syslog(LOG_INFO,msg);
+#if 0
+		fd = open("/var/log/ptree_info.log",O_WRONLY | O_CREAT | O_APPEND);
 		write(fd,msg,strlen(msg));
 		close(fd);
+#endif
 	}
+	closelog();
 }
 
  void
