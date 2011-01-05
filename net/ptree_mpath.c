@@ -31,6 +31,7 @@
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
+extern char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
 #ifdef PTREE_MPATH
 static uint32_t max_multipath;
 #endif
@@ -218,7 +219,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 		while(m[len] & bitmask)
 			len++;
 		
-		dprint(("ptree_insert: len[%d]\n",len));
 	 	diff = m[len-1] ^ bitmask;
 		if(diff){
 			/* support CIDR */
@@ -331,24 +331,32 @@ ptree_matchaddr(v_arg, head)
 		dprint(("tree is empty\n"));
 		return 0;
 	}
-	
+
 	register char *cp;
 	char *cplim;
 	struct ptree_node *saved_t;
-	int vlen;
+	int v_bytes, v_bits;
 	
-	vlen = (int)8*LEN(v);
-	t = saved_t = ptree_search(v, vlen, head->pnh_treetop);
+	v_bits = (int)8*LEN(v);
+	t = saved_t = ptree_search(v, v_bits, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("not match\n"));
 		return 0;
 	}
 
-	cp = t->key; cplim = v; vlen = t->keylen;
-	if ( memcmp(cp,cplim,vlen/8) != 0 ){
-		//dprint(P_DEBUG,"ptree_matchaddr: not match\n");
+	cp = t->key; cplim = v; v_bytes = t->keylen / 8;
+	if ( memcmp(cp,cplim,v_bytes) != 0 ){
 		dprint(("not match\n"));
 		return 0;
+	}
+	/* support CIDER */
+	if ( (v_bits = t->keylen % 8) != 0 ){
+		cp = cp[v_bytes];
+		cplim = v[v_bytes] & mask[v_bits];
+		if( cp ^ cplim ){
+			dprint(("not match v_bits[%d]\n",v_bits));
+			return 0;
+		}
 	}
 	/*
 	 * match exactly as a host.
