@@ -22,7 +22,7 @@
 #include <rpc/nettype.h>
 #include <rpc/rpc_com.h>
 
-static char tmp[255];
+char tmp[255];
 #endif
 
 static int  max_keylen;
