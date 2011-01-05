@@ -43,20 +43,18 @@ static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 static int ptree_walktree(struct ptree_node_head *h, walktree_f_t *f, void *w);
 
 #ifdef DEBUG
-#if 0
 void
-dprint_ctof(int fp,char *msg){ 
-	if(DEBUG && fp == P_DEBUG){
+dprint_ctof(int level,char *msg){ 
+	if(DEBUG && level == P_DEBUG){
 		FILE *debug = fopen("/var/log/ptree_debug.log","a");
-		fprintf(msg);
+		fputs(msg,debug);
 		fclose(debug);
-	}else if(DEBUG && fp == P_INFO){
+	}else if(DEBUG && level == P_INFO){
 		FILE *info = fopen("/var/log/ptree_rdtsc.log","a");
-		fprintf(msg);
+		fputs(msg,info);
 		fclose(info);
 	}
 }
-#endif
 
  void
 sprint_inet_ntoa(int af, void *sa)

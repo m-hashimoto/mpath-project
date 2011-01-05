@@ -17,16 +17,16 @@
 #define DEBUG 	1
 #define P_DEBUG 2
 #define P_INFO  3
-#if 0
-void dprint_ctof(int fp,char *msg);
-#define dprint(fp,msg) { char *tmp = (char *)msg; dprint_ctof(fp,tmp); }
-#endif
 
-//__BEGIN_DECLS
+void dprint_ctof(int fp,char *msg);
+#define dprint(level,msg) dprint_ctof(level,tmp);
+
+#if 0
+__BEGIN_DECLS
 void	closelog(void);
 void	openlog(const char *, int, int);
 void	syslog(int, const char *, ...) __printflike(2, 3);
-//__END_DECLS
+__END_DECLS
 
 #define dprint(level,msg) { \
 				openlog("ptree_log",LOG_CONS | LOG_PID, LOG_KERN); \
@@ -34,6 +34,7 @@ void	syslog(int, const char *, ...) __printflike(2, 3);
 				else if(level == P_DEBUG) syslog(LOG_DEBUG,msg); \
 				closelog(); \
 }
+#endif
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 //static double cpu_frequency = 1999.78;
