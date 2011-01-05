@@ -267,6 +267,7 @@ on1:
 
 	//RDTSC(c0);
 	//RDTSC(c1);
+	dprint(("ptree_insert: len[%d]\n",len - 8*head->pnh_offset));
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	//RDTSC(c2);
 	//printf("-ptree_insert: RDTSC Start    :%lld clk\n",c0);
@@ -352,6 +353,7 @@ ptree_matchaddr(v_arg, head)
 	/* support CIDER */
 	if ( (v_bits = t->keylen % 8) != 0 ){
 		dprint(("v_bits[%d] ",v_bits));
+		dprint(("cp[%x] cplim[%x] ",cp[v_bytes],cplim[v_bytes]));
 		if( ((cp[v_bytes] ^ cplim[v_bytes]) & mask[v_bits]) ){
 			dprint(("not match\n"));
 			return 0;
