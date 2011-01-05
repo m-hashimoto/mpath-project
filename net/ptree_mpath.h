@@ -22,7 +22,7 @@ void dprint_ctof(int fp,char *msg);
 #define dprint(fp,msg) { char *tmp = (char *)msg; dprint_ctof(fp,tmp); }
 #endif
 #define dprint(level,msg) { \
-				openlog("ptree_log",LOG_CONS | LOG_PID, LOG_KERNEL); \
+				openlog("ptree_log",LOG_CONS | LOG_PID, LOG_KERN); \
 				if(level == P_INFO) syslog(LOG_INFO,msg); \
 				else if(level == P_DEBUG) syslog(LOG_DEBUG,msg); \
 				closelog(); \
