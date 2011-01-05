@@ -55,11 +55,11 @@ dprint_ctof(int level,char *msg){
 	int fd;
 
 	if(DEBUG && level == P_DEBUG){
-		fd = open("/var/log/ptree_debug.log",O_WRONLY | O_CREAT | O_APPEND);
+		fd = open("/tmp/gptree_debug.log",O_WRONLY | O_CREAT);
 		write(fd,msg,strlen(msg));
 		close(fd);
 	}else if(DEBUG && level == P_INFO){
-		fd = open("/var/log/ptree_info.log",O_WRONLY | O_CREAT | O_APPEND);
+		fd = open("/tmp/ptree_info.log",O_WRONLY | O_CREAT);
 		write(fd,msg,strlen(msg));
 		close(fd);
 	}
