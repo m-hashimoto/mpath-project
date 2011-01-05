@@ -233,8 +233,9 @@ debug_tree_print(struct ptree_node_head *pnh)
 		while(m[len] & bitmask)
 			len++;
 		
-	 	diff = m[len] ^ bitmask;
-		dprint(("ptree_insert: diff[%d]\n",diff));
+		dprint(("ptree_insert: len[%d]\n",len));
+	 	diff = m[len+1] ^ bitmask;
+		dprint(("ptree_insert: diff[%x]\n",diff));
 		len = 8*len;
 		/* support CIDR */
 	 	bitmask = 0x80;
