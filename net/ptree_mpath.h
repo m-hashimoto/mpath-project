@@ -15,7 +15,7 @@
 
 /* debug print */
 #define DEBUG 	1
-#define dprint(x) {if(debug) printf x;}
+#define dprint(x) {if(DEBUG) printf x;}
 #if 0
 #define P_DEBUG 2
 #define P_INFO  3
