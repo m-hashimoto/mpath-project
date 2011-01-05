@@ -262,7 +262,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			if ( (t_bits = t->keylen % 8) != 0 ){
 				dprint(("t_bits[%d] ",t_bits));
 				dprint(("cp2[%x] cplim[%x] ",cp2[v_bytes],cplim[v_bytes]));
-				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) )
+				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) && t->keylen != len)
 					goto on1;
 			}
 			*dupentry = 1;
