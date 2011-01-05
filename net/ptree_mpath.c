@@ -31,7 +31,7 @@
 
 static int  max_keylen;
 static char *pn_zeros, *pn_ones;
-char mask[] = { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
+extern char mask[];
 #ifdef PTREE_MPATH
 static uint32_t max_multipath;
 #endif
