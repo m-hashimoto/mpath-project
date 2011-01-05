@@ -199,16 +199,17 @@ debug_tree_print(struct ptree_node_head *pnh)
 	else
 		salen = len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#if 0
+#ifdef DEBUG
 	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
-	printf("addr: ");
+	printf("ptree_insert: addr[");
 	sprint_inet_ntoa(sa->sa_family, sa);
-	printf("\n");
+	printf("] ");
 	if(m){
-		printf("mask: ");
+		printf("mask[");
 		sprint_inet_ntoa(sa_m->sa_family, sa_m);
-		printf("\n");
+		printf("]");
 	}
+	printf("\n");
 #endif
 	
 	if(m && (LEN(m) > head->pnh_offset)){
@@ -301,6 +302,15 @@ ptree_matchaddr(v_arg, head)
 {
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
+#ifdef DEBUG
+	struct sockaddr *sa = (struct sockaddr *)v;
+	dprint(("ptree_matchaddr: v["));
+	if(sa->sa_family == AF_INET)
+		sprint_inet_ntoa(AF_INET, sa);
+	else
+		sprint_inet_ntoa(AF_INET6, sa);
+	dprint(("] haed[%p]\n",head));
+#endif
 	
 	if(!t)
 		return 0;
@@ -326,7 +336,15 @@ ptree_matchaddr(v_arg, head)
 	 */
 	//sprintf(tmp,"ptree_matchaddr: match ptree_node[%p]\n",t);
 	//dprint(P_DEBUG,tmp);
-	dprint(("ptree_matchaddr: match ptree_node[%p]\n",t));
+#ifdef DEBUG
+	dprint(("ptree_matchaddr: match["));
+	sa = (struct sockaddr *)t->key;
+	if(sa->sa_family == AF_INET)
+		sprint_inet_ntoa(AF_INET, sa);
+	else
+		sprint_inet_ntoa(AF_INET6, sa);
+	dprint(("]\n"));
+#endif
 	return t;
 }
 
