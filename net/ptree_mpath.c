@@ -15,6 +15,10 @@
 #include <net/if_var.h>
 
 #ifdef DEBUG
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include <sys/types.h>
 #include <sys/fcntl.h>
 #include <sys/stat.h>
