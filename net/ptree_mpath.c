@@ -256,12 +256,13 @@ debug_tree_print(struct ptree_node_head *pnh)
 	{
 		register char *cp2 = t->key;
 		char *cplim = v;
-		if ( !memcmp(cp2,cplim,len/8) ){
+		int t_bits, v_bytes = len/8;
+		if ( !memcmp(cp2,cplim,v_bytes) ){
 			/* support CIDER */
-			if ( (v_bits = t->keylen % 8) != 0 ){
-				dprint(("v_bits[%d] ",v_bits));
+			if ( (t_bits = t->keylen % 8) != 0 ){
+				dprint(("t_bits[%d] ",t_bits));
 				dprint(("cp2[%x] cplim[%x] ",cp2[v_bytes],cplim[v_bytes]));
-				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[v_bits]) )
+				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) )
 					goto on1;
 			}
 			*dupentry = 1;
