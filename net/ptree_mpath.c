@@ -16,6 +16,7 @@
 
 #ifdef DEBUG
 #include <sys/types.h>
+#include <sys/fcntl.h>
 #include <netinet/in.h>
 
 #include <rpc/rpc.h>
