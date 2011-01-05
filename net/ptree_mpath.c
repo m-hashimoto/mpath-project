@@ -50,16 +50,19 @@ extern int open(const char *pathname, int flags);
 extern ssize_t write(int fd, const void *buf, size_t count);
 extern int close(int fd);
 
-void
+	void
 dprint_ctof(int level,char *msg){ 
 	int fd;
 
-	if(DEBUG && level == P_DEBUG)
+	if(DEBUG && level == P_DEBUG){
 		fd = open("/var/log/ptree_debug.log",O_WRONLY | O_CREAT | O_APPEND);
-	else if(DEBUG && level == P_INFO)
+		write(fd,msg,strlen(msg));
+		close(fd);
+	}else if(DEBUG && level == P_INFO){
 		fd = open("/var/log/ptree_info.log",O_WRONLY | O_CREAT | O_APPEND);
-	write(fd,msg,strlen(msg));
-	close(fd);
+		write(fd,msg,strlen(msg));
+		close(fd);
+	}
 }
 
  void
