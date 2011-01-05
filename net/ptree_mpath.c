@@ -212,16 +212,17 @@ debug_tree_print(struct ptree_node_head *pnh)
 #endif
 	
 	if(m && (LEN(m) > head->pnh_offset)){
-	 	unsigned char bitmask = 0x80;
+	 	unsigned char bitmask = 0xff;
 		unsigned char diff;
 		len = head->pnh_offset;
 		
-		while (len < salen / 8 && m[len] == 0xff) {
+		while (len < salen / 8 && m[len] == bitmask) {
 		   len++;
 	 }
 
-	 diff = keyi[len] ^ 0xff;
+	 diff = m[len] ^ bitmask;
 	 len = len * 8;
+	 bitmask = 0x80;
 	 while (len < salen && ! (bitmask & diff)) {
       len++;
       bitmask >>= 1;
