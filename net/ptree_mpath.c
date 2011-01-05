@@ -351,8 +351,8 @@ ptree_matchaddr(v_arg, head)
 	}
 	/* support CIDER */
 	if ( (v_bits = t->keylen % 8) != 0 ){
-		cp = cp[v_bytes];
-		cplim = v[v_bytes] & mask[v_bits];
+		cp = t->key + v_bytes;
+		cplim = (v + v_bytes) & mask[v_bits];
 		if( cp ^ cplim ){
 			dprint(("not match v_bits[%d]\n",v_bits));
 			return 0;
