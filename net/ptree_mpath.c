@@ -727,6 +727,12 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		if (!rn)
 				return 0;
 
+#ifdef DEBUG
+	struct sockaddr *sa = (struct sockaddr *)rn->key;
+	printf("rt_mpath_conflict: rn->key[");
+	sprint_inet_ntoa(sa->sa_family, sa);
+	printf("/%d]\n",rn->keylen);
+#endif
 		cp = rn->key; cplim = (char *)dst; bytes = rn->keylen / 8;
 		/* compare key. */
 		if ( memcmp(cp,cplim,bytes) != 0 )
