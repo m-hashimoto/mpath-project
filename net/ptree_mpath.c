@@ -720,7 +720,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		dprint(("rt_mpath_conflict: Start\n"));
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
-		int bits = 8*LEN(dst), bytes, i, n;
+		int bits = 8*LEN(dst), bytes = LEN(dst), i, n;
 		char *cp,*cplim;
 		
 		if(netmask && (LEN(netmask) > pnh->pnh_offset)){
