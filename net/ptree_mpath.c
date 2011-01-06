@@ -717,7 +717,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 								struct sockaddr *dst)
 {
-		dprint(("rt_mpath_conflict Start\n"));
+		dprint(("rt_mpath_conflict: Start\n"));
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
 		int bits = 8*LEN(dst), bytes, i, n;
@@ -732,9 +732,10 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		if ( memcmp(cp,cplim,bytes) != 0 )
 			goto different;
 		/* support CIDER */
-		if( (bits = rn->keylen % 8) != 0 && ((cp[bytes]^cplim[bytes])&mask[bits]))
+		if( (bits = rn->keylen % 8) != 0 && ((cp[bytes]^cplim[bytes])&mask[bits])){
+			dprint(("bits[%d] ",bits));
 			goto different;
-
+		}
 		/*
 		 * unlike other functions we have in this file, we have to check
 		 * all key/mask/gateway as rnh_lookup can match less specific entry.
@@ -756,6 +757,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				}
 
 				/* all key/mask/gateway are the same.  conflicting entry. */
+				dprint(("-conflicting entry\n"));
 				return EEXIST;
 		}
 		/* key/mask were the same.  compare gateway for all multipaths */
@@ -776,10 +778,12 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				}
 
 				/* all key/mask/gateway are the same.  conflicting entry. */
+				dprint((" conflicting entry\n"));
 				return EEXIST;
 		} while ((++i) < n);
 
 different:
+		dprint((" different\n"));
 		return 0;
 }
 
