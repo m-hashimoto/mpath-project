@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2011-01-07 01:39:06.000000000 +0900
++++ route.c	2011-01-07 02:58:24.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -408,7 +408,7 @@
 +#ifdef PTREE_MPATH
 +		/* do not permit exactly the same dst/mask/gw pair */
 +			if (ptree_mpath_capable(rnh) &&
-+				rt_mpath_conflict(rnh, rt, ndst)) {
++				rt_mpath_conflict(rnh, rt, ndst, netmask)) {
 +					if (rt->rt_ifa) {
 +							ifa_free(rt->rt_ifa);
 +					}
