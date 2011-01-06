@@ -723,14 +723,15 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		int bits = 8*LEN(dst), bytes, i, n;
 		char *cp,*cplim;
 		
-		if(netmasak && (LEN(netmask) > pnh->pnh_offset)){
+		if(netmask && (LEN(netmask) > pnh->pnh_offset)){
 			unsigned char bitmask = 0xff;
 			unsigned char diff;
 			bytes = pnh->pnh_offset;
-			while(netmask[bytes] & bitmask)
+			cp = (char *)netmask;
+			while(cp[bytes] & bitmask)
 				bytes++;
 		
-		 	diff = m[bytes-1] ^ bitmask;
+		 	diff = cp[bytes-1] ^ bitmask;
 			if(diff){
 				/* support CIDR */
 				bits = 8*(bytes - 1);
@@ -743,7 +744,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				bits = 8*bytes;
 			dprint(("rt_mpath_conflict: masklen[%d]\n",bits - 8*pnh->pnh_offset));
 		}
-		else if( (netmaask && (LEN(netmask) <= pnh->pnh_offset)) )
+		else if( (netmask && (LEN(netmask) <= pnh->pnh_offset)) )
 			bits = 8*pnh->pnh_offset;
 		
 		rn = ptree_search((char *)dst, bits, pnh->pnh_treetop);
