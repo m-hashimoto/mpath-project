@@ -199,7 +199,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	else
 		salen = len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#ifdef DEBUG
+#if 0
 	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
 	printf("ptree_insert: addr[");
 	sprint_inet_ntoa(sa->sa_family, sa);
@@ -306,7 +306,7 @@ ptree_matchaddr(v_arg, head)
 {
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
-#ifdef DEBUG
+#if 0
 	struct sockaddr *sa = (struct sockaddr *)v;
 	dprint(("ptree_matchaddr: v["));
 	if(sa->sa_family == AF_INET)
@@ -349,7 +349,7 @@ ptree_matchaddr(v_arg, head)
 	/*
 	 * match exactly as a host.
 	 */
-#ifdef DEBUG
+#if 0
 	dprint(("match["));
 	sa = (struct sockaddr *)t->key;
 	if(sa->sa_family == AF_INET)
@@ -417,8 +417,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 
 			rt0->mpath_counter = n + 1;
 			rt->rt_nodes = tt;
-			//sprintf(tmp,"ptree_addroute: rt0[%d]->%p\n",rt0->mpath_counter,rt);
-			//dprint(P_DEBUG,tmp);
 			return tt;
 		}
 #else
@@ -428,8 +426,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		tt->data = rt;
 		rt->rt_nodes = tt;
 		rt->mpath_counter = 0;
-		//sprintf(tmp,"ptree_addroute: rt[%p]\n",rt);
-		//dprint(P_DEBUG,tmp);
 		return tt;
 }
 
@@ -460,7 +456,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		if ( memcmp(cp, v, bytes) != 0 )
 				return (0);
 		/* support CIDER */
-		if ( (bits = t->keylen % 8) != 0 ){
+		if ( (bits = tt->keylen % 8) != 0 ){
 			dprint(("v_bits[%d] ",bits));
 			if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) ){
 				dprint(("ptree_deladdr: not match\n"));
@@ -735,7 +731,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		if (!rn)
 				return 0;
 
-#ifdef DEBUG
+#if 0
 	struct sockaddr *sa = (struct sockaddr *)rn->key;
 	printf("rt_mpath_conflict: rn->key[");
 	sprint_inet_ntoa(sa->sa_family, sa);
@@ -863,8 +859,6 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash %= n+1;
 	rt = rt_array[hash];
-	//sprintf(tmp,"-multipath_nexthop: rt[%d]=%p\n",hash,rt);
-	//dprint(P_DEBUG,tmp);
 	return rt;
 }
 
