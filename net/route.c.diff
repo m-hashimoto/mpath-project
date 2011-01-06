@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2011-01-06 09:06:56.000000000 +0900
++++ route.c	2011-01-06 09:10:53.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -167,7 +167,7 @@
 +			if(dst->sa_family == AF_INET)
 +				seed = arc4random();
 +			else if (dst->sa_family == AF_INET6){
-+				struct sockaddr_in6 *dst_sin6 = (struct sockaddr_in6)dst;
++				struct sockaddr_in6 *dst_sin6 = (struct sockaddr_in6 *)dst;
 +				seed = dst_sin6->sin6_flowinfo;
 +				dprint(("rtalloc1_fib: IPv6 flowinfo[%d]\n",(unsigned int)seed));
 +			}
