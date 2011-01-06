@@ -259,7 +259,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if ( !memcmp(cp2,cplim,v_bytes) ){
 			/* support CIDER */
 			if ( (t_bits = t->keylen % 8) != 0 ){
-				dprint(("t_bits[%d] ",t_bits));
 				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) && t->keylen != len)
 					goto on1;
 			}
