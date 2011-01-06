@@ -222,7 +222,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 	 	diff = m[len-1] ^ bitmask;
 		if(diff){
 			/* support CIDR */
-			dprint(("ptree_insert: diff[0x%x]\n",diff));
 			len = 8*(len-1);
 	 		bitmask = 0x80;
 	 		while (len < salen && ! (bitmask & diff)) {
@@ -261,7 +260,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 			/* support CIDER */
 			if ( (t_bits = t->keylen % 8) != 0 ){
 				dprint(("t_bits[%d] ",t_bits));
-				dprint(("cp2[%x] cplim[%x] ",cp2[v_bytes],cplim[v_bytes]));
 				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) && t->keylen != len)
 					goto on1;
 			}
@@ -361,7 +359,6 @@ ptree_matchaddr(v_arg, head)
 	/* support CIDER */
 	if ( (v_bits = t->keylen % 8) != 0 ){
 		dprint(("v_bits[%d] ",v_bits));
-		dprint(("cp[%x] cplim[%x] ",cp[v_bytes],cplim[v_bytes]));
 		if( ((cp[v_bytes] ^ cplim[v_bytes]) & mask[v_bits]) ){
 			dprint(("not match\n"));
 			return 0;
