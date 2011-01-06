@@ -718,16 +718,19 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 {
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
-		int len = 8*LEN(dst), i, n;
+		int bits = 8*LEN(dst), bytes, i, n;
 		char *cp,*cplim;
 		
-		rn = ptree_search((char *)dst, len, pnh->pnh_treetop);
+		rn = ptree_search((char *)dst, bits, pnh->pnh_treetop);
 		if (!rn)
 				return 0;
 
-		cp = rn->key; cplim = (char *)dst; len = rn->keylen;
+		cp = rn->key; cplim = (char *)dst; bytes = rn->keylen / 8;
 		/* compare key. */
-		if ( memcmp(cp,cplim,len/8) != 0 )
+		if ( memcmp(cp,cplim,bytes) != 0 )
+			goto different;
+		/* support CIDER */
+		if( (bits = rn->keylen % 8) != 0 && ((cp[bytes]^cplim[bytes])&mask[bits]))
 			goto different;
 
 		/*
