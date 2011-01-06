@@ -238,27 +238,18 @@ debug_tree_print(struct ptree_node_head *pnh)
 	if (!top)
 		goto on1;
 	
-	//long long int c0,c1,c2;
-	//RDTSC(c0);
-	//RDTSC(c1);
 	t = ptree_search(v, len, head->pnh_treetop);
-	//RDTSC(c2);
-	//printf("-ptree_insert: RDTSC Start    :%lld clk\n",c0);
-	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
-	//printf("-ptree_insert: search Start   :%lld clk\n",c1);
-	//printf("-ptree_insert: search End     :%lld clk\n",c2);
-	//printf("-ptree_insert: ptree_search %lld[clk]\n",c2-c1-(c1-c0));
+	
 	if (!t)
 		goto on1;
-
-	//cp = v;
+	/* check key duplication */
 	{
 		register char *cp2 = t->key;
 		char *cplim = v;
 		int t_bits, v_bytes = len/8;
-		if ( !memcmp(cp2,cplim,v_bytes) ){
+		if ( !memcmp(cp2,cplim,v_bytes) && len == t->keylen){
 			/* support CIDER */
-			if ( (t_bits = t->keylen % 8) != 0 ){
+			if ( (t_bits = t->keylen % 8) != 0){
 				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) && t->keylen != len)
 					goto on1;
 			}
@@ -270,16 +261,8 @@ on1:
 	*dupentry = 0;
 	void *data = NULL;
 
-	//RDTSC(c0);
-	//RDTSC(c1);
 	dprint(("ptree_insert: len[%d]\n",len - 8*head->pnh_offset));
 	tt = ptree_add(v, len, data, head->pnh_treetop);
-	//RDTSC(c2);
-	//printf("-ptree_insert: RDTSC Start    :%lld clk\n",c0);
-	//printf("-ptree_insert: RDTSC Interval :%lld clk\n",c1-c0);
-	//printf("-ptree_insert: add Start      :%lld clk\n",c1);
-	//printf("-ptree_insert: add End        :%lld clk\n",c2);
-	//printf("-ptree_insert: ptree_add %lld[clk]\n",c2-c1-(c1-c0));
 	/* set netmask */
 	cp = tt->key + len/8;
 	memset(cp,0,(salen-len)/8);
@@ -366,8 +349,6 @@ ptree_matchaddr(v_arg, head)
 	/*
 	 * match exactly as a host.
 	 */
-	//sprintf(tmp,"ptree_matchaddr: match ptree_node[%p]\n",t);
-	//dprint(P_DEBUG,tmp);
 #ifdef DEBUG
 	dprint(("match["));
 	sa = (struct sockaddr *)t->key;
@@ -387,7 +368,6 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node_head *head;
 		struct ptree_node *rt_node;
 {
-		dprint(("ptree_addroute Start\n"));
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
@@ -441,6 +421,9 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			//dprint(P_DEBUG,tmp);
 			return tt;
 		}
+#else
+		if (keyduplicated) 
+			return NULL;
 #endif /* mluti path */
 		tt->data = rt;
 		rt->rt_nodes = tt;
@@ -460,22 +443,30 @@ ptree_deladdr(v_arg, gate_arg, head)
 		struct ptree_node *saved_tt, *top;
 		char *v;
 		struct sockaddr *gate;
-		unsigned int len;
+		unsigned int bits, bytes;
 
 		v = v_arg;
 		gate = gate_arg;
 		top = head->pnh_top;
-		len = (int)8*LEN(v);
+		bits = (int)8*LEN(v);
 
-		tt = saved_tt = ptree_search(v, len, head->pnh_treetop);
+		tt = saved_tt = ptree_search(v, bits, head->pnh_treetop);
 
 		if (!saved_tt)
 				return (0);
 		
 		register char *cp, *cplim;
-		cp = tt->key; cplim = v; len = tt->keylen;
-		if ( memcmp(cp, v, len/8) != 0 )
+		cp = tt->key; cplim = v; bytes = tt->keylen / 8;
+		if ( memcmp(cp, v, bytes) != 0 )
 				return (0);
+		/* support CIDER */
+		if ( (bits = t->keylen % 8) != 0 ){
+			dprint(("v_bits[%d] ",bits));
+			if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) ){
+				dprint(("ptree_deladdr: not match\n"));
+				return 0;
+			}
+		}
 		
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
@@ -600,16 +591,7 @@ ptree_mpath_capable(struct ptree_node_head *pnh)
 		unsigned int
 ptree_mpath_count(struct rtentry *rt)
 {
-#if 0
-		struct rtentry **rt1;
-		uint32_t i = 0;
-
-		rt1 = rt->mpath_array;
-		/* count mpath_array */
-		while (rt1 && rt1[i] && i < max_multipath)
-				i++;
-#endif
-		return (rt->mpath_counter);
+		return rt->mpath_counter;
 }
 
 		struct rtentry *
@@ -725,6 +707,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 		if(netmask && (LEN(netmask) > pnh->pnh_offset)){
 			unsigned char bitmask = 0xff;
 			unsigned char diff;
+			
 			bytes = pnh->pnh_offset;
 			cp = (char *)netmask;
 			while(cp[bytes] & bitmask)
@@ -739,12 +722,14 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 	    	  bits++;
 	    	  bitmask >>= 1;
 	   		}
-			} else
+			}
+		 	else
 				bits = 8*bytes;
-			dprint(("rt_mpath_conflict: masklen[%d]\n",bits - 8*pnh->pnh_offset));
 		}
 		else if( (netmask && (LEN(netmask) <= pnh->pnh_offset)) )
 			bits = 8*pnh->pnh_offset;
+		
+		dprint(("rt_mpath_conflict: keylen[%d]\n",bits - 8*pnh->pnh_offset));
 		
 		rn = ptree_search((char *)dst, bits, pnh->pnh_treetop);
 		if (!rn)
