@@ -715,13 +715,36 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
  */
 		int
 rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
-								struct sockaddr *dst)
+								struct sockaddr *dst, struct sockaddr *netmask)
 {
 		dprint(("rt_mpath_conflict: Start\n"));
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
 		int bits = 8*LEN(dst), bytes, i, n;
 		char *cp,*cplim;
+		
+		if(netmasak && (LEN(netmask) > pnh->pnh_offset)){
+			unsigned char bitmask = 0xff;
+			unsigned char diff;
+			bytes = pnh->pnh_offset;
+			while(netmask[bytes] & bitmask)
+				bytes++;
+		
+		 	diff = m[bytes-1] ^ bitmask;
+			if(diff){
+				/* support CIDR */
+				bits = 8*(bytes - 1);
+		 		bitmask = 0x80;
+		 		while (bits < 8*LEN(dst) && ! (bitmask & diff)) {
+	    	  bits++;
+	    	  bitmask >>= 1;
+	   		}
+			} else
+				bits = 8*bytes;
+			dprint(("rt_mpath_conflict: masklen[%d]\n",bits - 8*pnh->pnh_offset));
+		}
+		else if( (netmaask && (LEN(netmask) <= pnh->pnh_offset)) )
+			bits = 8*pnh->pnh_offset;
 		
 		rn = ptree_search((char *)dst, bits, pnh->pnh_treetop);
 		if (!rn)
@@ -733,9 +756,9 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 	sprint_inet_ntoa(sa->sa_family, sa);
 	printf("/%d]\n",rn->keylen);
 #endif
-		cp = rn->key; cplim = (char *)dst; bytes = rn->keylen / 8;
+		cp = rn->key; cplim = (char *)dst;
 		/* compare key. */
-		if ( memcmp(cp,cplim,bytes) != 0 )
+		if ( (memcmp(cp,cplim,bytes) != 0) || (bits != rn->keylen) )
 			goto different;
 		/* support CIDER */
 		if( (bits = rn->keylen % 8) != 0 && ((cp[bytes]^cplim[bytes])&mask[bits])){
