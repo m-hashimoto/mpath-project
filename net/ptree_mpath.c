@@ -388,6 +388,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 		struct ptree_node_head *head;
 		struct ptree_node *rt_node;
 {
+		dprint(("ptree_addroute Start\n"));
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
@@ -716,6 +717,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 								struct sockaddr *dst)
 {
+		dprint(("rt_mpath_conflict Start\n"));
 		struct ptree_node *rn;
 		struct rtentry *rt0, **rt1;
 		int bits = 8*LEN(dst), bytes, i, n;
