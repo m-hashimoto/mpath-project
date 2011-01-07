@@ -192,7 +192,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	char *v = v_arg, *m = m_arg;
 	register char *cp;
 	struct ptree_node *top = head->pnh_top, *t, *tt;
-	int len, salen;
+	int len, salen, bits, bytes;
 	
 	if(head->pnh_offset == INET_HEADOFF )
 		salen = len = (int)8*LEN(v) - SIN_ZERO;
@@ -215,7 +215,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 	if(m && (LEN(m) > head->pnh_offset)){
 		unsigned char bitmask = 0xff;
 		unsigned char diff;
-		int bits, bytes;
 		
 		/* count mask_len */
 		bytes = head->pnh_offset;
@@ -250,7 +249,8 @@ debug_tree_print(struct ptree_node_head *pnh)
 	char *cplim = v;
 	cp = t->key;
 	bytes = t->keylen / 8;
-	if ( !memcmp(cp2,cplim,bytes) ){
+	
+	if ( !memcmp(cp,cplim,bytes) ){
 		/* support CIDER */
 		if ( (bits = t->keylen % 8) != 0 ){
 			if( ((cp2[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
