@@ -223,6 +223,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 		if(diff){
 			/* support CIDR */
 			len = 8*(len-1);
+			dprint(("ptree_insert: len_bytes[%d]\n",len-1));
 	 		bitmask = 0x80;
 	 		while (len < salen && ! (bitmask & diff)) {
     	  len++;
@@ -246,11 +247,11 @@ debug_tree_print(struct ptree_node_head *pnh)
 	{
 		register char *cp2 = t->key;
 		char *cplim = v;
-		int t_bits, v_bytes = len/8;
-		if ( !memcmp(cp2,cplim,v_bytes) && len == t->keylen){
+		int bits, bytes = len/8;
+		if ( !memcmp(cp2,cplim,bytes) && len == t->keylen){
 			/* support CIDER */
-			if ( (t_bits = t->keylen % 8) != 0){
-				if( ((cp2[v_bytes] ^ cplim[v_bytes]) & mask[t_bits]) && t->keylen != len)
+			if ( (bits = t->keylen % 8) != 0){
+				if( ((cp2[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
 					goto on1;
 			}
 			*dupentry = 1;
