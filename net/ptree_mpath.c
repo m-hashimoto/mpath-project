@@ -247,19 +247,17 @@ debug_tree_print(struct ptree_node_head *pnh)
 		goto on1;
 	
 	/* check key duplication */
-	{
-		register char *cp2 = t->key;
-		char *cplim = v;
-		bytes = t->keylen / 8;
-		if ( !memcmp(cp2,cplim,bytes) ){
-			/* support CIDER */
-			if ( (bits = t->keylen % 8) != 0 ){
-				if( ((cp2[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
-					goto on1;
-			}
-			*dupentry = 1;
-			return t;
+	char *cplim = v;
+	cp = t->key;
+	bytes = t->keylen / 8;
+	if ( !memcmp(cp2,cplim,bytes) ){
+		/* support CIDER */
+		if ( (bits = t->keylen % 8) != 0 ){
+			if( ((cp2[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
+				goto on1;
 		}
+		*dupentry = 1;
+		return t;
 	}
 	
 on1:
