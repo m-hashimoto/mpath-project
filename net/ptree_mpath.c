@@ -253,7 +253,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	if ( !memcmp(cp,cplim,bytes) ){
 		/* support CIDER */
 		if ( (bits = t->keylen % 8) != 0 ){
-			if( ((cp2[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
+			if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
 				goto on1;
 		}
 		*dupentry = 1;
