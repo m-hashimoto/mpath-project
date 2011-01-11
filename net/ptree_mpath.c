@@ -336,13 +336,15 @@ ptree_matchaddr(v_arg, head)
 		return 0;
 	}
 
-	cp = t->key; cplim = v; bytes = t->keylen / 8;
+	cp = t->key; cplim = v;
+	bytes = t->keylen / 8;
 	if ( memcmp(cp,cplim,bytes) != 0 ){
 		dprint(("not match\n"));
 		return 0;
 	}
 	/* support CIDER */
-	if ( (bits = t->keylen % 8) != 0 ){
+	bits = t->keylen % 8;
+	if ( bits != 0 ){
 		dprint(("bits[%d] ",bits));
 		if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) ){
 			dprint(("not match\n"));
@@ -352,7 +354,7 @@ ptree_matchaddr(v_arg, head)
 	/*
 	 * match exactly as a host.
 	 */
-#if 0
+#ifdef DEBUG
 	dprint(("match["));
 	sa = (struct sockaddr *)t->key;
 	if(sa->sa_family == AF_INET)
