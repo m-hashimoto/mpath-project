@@ -358,7 +358,7 @@ ptree_matchaddr(v_arg, head)
 	/*
 	 * match exactly as a host.
 	 */
-#ifdef DEBUG
+#if 0
 	struct sockaddr *sa;
 	dprint(("match["));
 	sa = (struct sockaddr *)t->key;
