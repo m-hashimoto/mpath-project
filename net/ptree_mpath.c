@@ -741,7 +741,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 #endif
 		cp = rn->key; cplim = (char *)dst;
 		/* compare key. */
-		if ( memcmp(cp,cplim,bits/8) != 0 || bits != rn->keylen )
+		if ( memcmp(cp,cplim,rn->keylen/8) != 0 || bits != rn->keylen )
 			goto different;
 		/* support CIDER */
 		if( (bits = rn->keylen % 8) != 0 ){
