@@ -85,8 +85,8 @@ options 	MAC			# TrustedBSD MAC Framework
 options		PTREE_MPATH
 
 # for kernel debug
-options		KDB
-options		DDB
+#options		KDB
+#options		DDB
 
 # To make an SMP kernel, the next two lines are needed
 #options 	SMP			# Symmetric MultiProcessor Kernel

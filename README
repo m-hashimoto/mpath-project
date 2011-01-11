@@ -1,9 +1,14 @@
 # mpath project 2010
+Multipath routeing support in a FreeBSD kernel.
+
+It enables:
+- IPv4 and IPv6 multipath routeing table.
+- multipath routing support in netstat.
 
 # File
 README		:This file.
-install.sh	:Sell(csh/tcsh) script for install.
-uninstall.sh	:Sell script for uninstall(unpacth).
+install.csh	:C-Sell(csh/tcsh) script for install.
+uninstall.csh	:C-Sell script for uninstall(unpacth).
 
 # UPDATE
 ...branch ptree
@@ -28,3 +33,4 @@ debugging...
 2010/12/08 mpath debug start.
 ...ptree_v3.2
 2010/12/08 mpath add and delete worked.
+2011/01/11 CIDER support is worked.
