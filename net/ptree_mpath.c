@@ -248,11 +248,12 @@ debug_tree_print(struct ptree_node_head *pnh)
 	/* check key duplication */
 	char *cplim = v;
 	cp = t->key;
-	bytes = t->keylen / 8;
+	bytes = len / 8;
+	//bytes = t->keylen / 8;
 	
 	if ( !memcmp(cp,cplim,bytes) ){
 		/* support CIDER */
-		if ( (bits = t->keylen % 8) != 0 ){
+		if ( (bits = len % 8) != 0 ){
 			if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) && t->keylen != len)
 				goto on1;
 		}
@@ -267,7 +268,11 @@ on1:
 	dprint(("ptree_insert: len[%d]\n",len - 8*head->pnh_offset));
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	/* set netmask */
-	cp = tt->key + len/8;
+	if(len%8)
+		bytes = len/8 + 1;
+	bytes = len/8;
+	
+	cp = tt->key + bytes;
 	memset(cp,0,(salen-len)/8);
 	return (tt);
 }
@@ -310,7 +315,6 @@ ptree_matchaddr(v_arg, head)
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 #if 0
-	struct sockaddr *sa = (struct sockaddr *)v;
 	dprint(("ptree_matchaddr: v["));
 	if(sa->sa_family == AF_INET)
 		sprint_inet_ntoa(AF_INET, sa);
@@ -355,6 +359,7 @@ ptree_matchaddr(v_arg, head)
 	 * match exactly as a host.
 	 */
 #ifdef DEBUG
+	struct sockaddr *sa;
 	dprint(("match["));
 	sa = (struct sockaddr *)t->key;
 	if(sa->sa_family == AF_INET)
