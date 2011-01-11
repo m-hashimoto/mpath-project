@@ -249,7 +249,6 @@ debug_tree_print(struct ptree_node_head *pnh)
 	char *cplim = v;
 	cp = t->key;
 	bytes = len / 8;
-	//bytes = t->keylen / 8;
 	
 	if ( !memcmp(cp,cplim,bytes) ){
 		/* support CIDER */
