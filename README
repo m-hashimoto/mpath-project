@@ -1,14 +1,17 @@
 # mpath project 2010
 Multipath routeing support in a FreeBSD kernel.
+Currently we support FreeBSD 8.0 only.
 
 It enables:
 - IPv4 and IPv6 multipath routeing table.
 - multipath routing support in netstat.
 
+
 # File
 README		:This file.
-install.csh	:C-Sell(csh/tcsh) script for install.
-uninstall.csh	:C-Sell script for uninstall(unpacth).
+install.csh   :C-Sell(csh/tcsh) script for install.
+uninstall.csh :C-Sell script for uninstall(unpacth).
+netstat/*     :Patch for netstat of multipath support.
 
 # UPDATE
 ...branch ptree
