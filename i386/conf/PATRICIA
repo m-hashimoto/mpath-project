@@ -77,16 +77,16 @@ options 	MAC			# TrustedBSD MAC Framework
 #options 	KDTRACE_HOOKS		# Kernel DTrace hooks
 
 # dummynet options
-#options 	IPFIREWALL
-#options 	DUMMYNET
-#options 	HZ=1000
+options 	IPFIREWALL
+options 	DUMMYNET
+options 	HZ=1000
 
 # patricia-trie for multi path routing
 options		PTREE_MPATH
 
 # for kernel debug
-#options		KDB
-#options		DDB
+options		KDB
+options		DDB
 
 # To make an SMP kernel, the next two lines are needed
 #options 	SMP			# Symmetric MultiProcessor Kernel

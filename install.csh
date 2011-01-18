@@ -29,6 +29,7 @@ cp ${diff_pf} /usr/src/sys/contrib/pf/net/
 cp ${diff_nfs} /usr/src/sys/fs/nfs/
 cp ${cprg} /usr/src/sys/net/
 cp ${head} /usr/src/sys/net/
+cp ${head} /usr/include/net/
 
 cd /usr/src/sys/conf
 patch -N < files.diff
