@@ -62,6 +62,7 @@ ptree_node_delete (struct ptree_node *x)
 static int
 check_bit (char *key, int keylen)
 {
+	printf("check_bit Start\n");
   int offset;
   int shift;
   offset = keylen / 8;
@@ -75,6 +76,7 @@ check_bit (char *key, int keylen)
 static int
 ptree_match (char *keyi, char *keyj, int keylen)
 {
+	printf("ptree_match Start\n");
   int bytes;
   int bits;
   bytes = keylen / 8;
@@ -96,7 +98,7 @@ ptree_lookup (char *key, int keylen, struct ptree *t)
   if (!x)
     return NULL;
   
-  while (x && x->key && x->keylen <= keylen &&
+  while (x && x->key && x->keylen < keylen &&
          ptree_match (x->key, key, x->keylen))
     x = x->child[check_bit (key, x->keylen)];
 

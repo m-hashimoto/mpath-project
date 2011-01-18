@@ -445,6 +445,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		void *v_arg, *gate_arg;
 		struct ptree_node_head *head;
 {
+		dprint(("ptree_deladdr Start\n"));
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt, *top;
 		char *v;
@@ -458,8 +459,10 @@ ptree_deladdr(v_arg, gate_arg, head)
 
 		tt = saved_tt = ptree_search(v, bits, head->pnh_treetop);
 
-		if (!saved_tt)
+		if (!saved_tt){
+				dprint(("ptree_deladdr: no entry in the tree\n"));
 				return (0);
+		}
 		
 		register char *cp, *cplim;
 		cp = tt->key; cplim = v; bytes = tt->keylen / 8;
@@ -473,6 +476,9 @@ ptree_deladdr(v_arg, gate_arg, head)
 				return 0;
 			}
 		}
+
+		/* if save_tt is treetop */
+		
 		
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
@@ -493,6 +499,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 				return (0);
 		}
 #endif
+		dprint(("ptree_deladdr: call ptree_remove\n"));
 		ptree_remove(tt);
 		return (tt);
 }
