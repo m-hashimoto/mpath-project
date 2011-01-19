@@ -1,5 +1,5 @@
 --- rtsock.c.orig	2005-01-19 02:48:34.000000000 +0900
-+++ rtsock.c	2011-01-19 07:50:10.000000000 +0900
++++ rtsock.c	2011-01-19 16:59:42.000000000 +0900
 @@ -105,7 +105,7 @@
  			caddr_t cp, struct walkarg *w);
  static int	rt_xaddrs(caddr_t cp, caddr_t cplim,
@@ -24,7 +24,7 @@
  		RADIX_NODE_HEAD_RLOCK(rnh);
 -		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST],
 -			info.rti_info[RTAX_NETMASK], rnh);
-+		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)info.rti_info[RTAX_NETMASK]->sa_data, rnh->pnh_treetop);
++		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)8 * info.rti_info[RTAX_NETMASK]->sa_len, rnh->pnh_treetop);
  		if (rt == NULL) {	/* XXX looks bogus */
  			RADIX_NODE_HEAD_RUNLOCK(rnh);
  			senderr(ESRCH);

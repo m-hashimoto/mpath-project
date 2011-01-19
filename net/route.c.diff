@@ -1,5 +1,5 @@
 --- route.c.orig	2011-01-19 12:46:49.000000000 +0900
-+++ route.c	2011-01-19 15:43:13.000000000 +0900
++++ route.c	2011-01-19 16:29:11.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -557,7 +557,7 @@
 -			rn = rnh->rnh_lookup(dst, netmask, rnh);
 +			//				rn = rnh->rnh_lookup(dst->sa_data, 
 +			//						(int)*(const u_char *)netmask->sa_data, rnh->pnh_treetop);
-+#ifdef DEBUG
++#if 0
 +	printf("rtinit1: addr[");
 +	sprint_inet_ntoa(dst->sa_family, dst);
 +	printf("/%d(bytes)] ",dst->sa_len);

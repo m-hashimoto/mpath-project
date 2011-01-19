@@ -199,7 +199,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 	else
 		salen = len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#ifdef DEBUG
+#if 0
 	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
 	printf("ptree_insert: addr[");
 	sprint_inet_ntoa(sa->sa_family, sa);
