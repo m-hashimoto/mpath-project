@@ -21,6 +21,7 @@ rm ptree.c ptree_mpath.c ptree.h ptree_mpath.h
 rm *.diff
 
 cd /usr/src/sys/netinet
+patch -R < in.c.diff
 patch -R < in_rmx.c.diff
 patch -R < in_proto.c.diff
 patch -R < ip_fw.h.diff

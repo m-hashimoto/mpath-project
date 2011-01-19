@@ -199,15 +199,15 @@ debug_tree_print(struct ptree_node_head *pnh)
 	else
 		salen = len = (int)8*LEN(v) - SIN6_ZERO;
 	
-#if 0
+#ifdef DEBUG
 	struct sockaddr *sa = (struct sockaddr *)v, *sa_m = (struct sockaddr *)m;
 	printf("ptree_insert: addr[");
 	sprint_inet_ntoa(sa->sa_family, sa);
-	printf("] ");
+	printf("/%d(bytes)] ",sa->sa_len);
 	if(m){
 		printf("mask[");
 		sprint_inet_ntoa(sa_m->sa_family, sa_m);
-		printf("/%d]",sa_m->sa_len);
+		printf("/%d(bytes)]",sa_m->sa_len);
 	}
 	printf("\n");
 #endif
@@ -234,7 +234,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 			len = bits;
 		} else
 			len = 8*bytes;
-		dprint(("ptree_insert: masklen[%d]\n",len - 8*head->pnh_offset));
+		dprint(("ptree_insert: masklen_bits[%d]\n",len - 8*head->pnh_offset));
 	}
 	else if( (m && (LEN(m) <= head->pnh_offset)) )
 		len = 8*head->pnh_offset;
@@ -264,7 +264,7 @@ on1:
 	*dupentry = 0;
 	void *data = NULL;
 
-	dprint(("ptree_insert: len[%d]\n",len - 8*head->pnh_offset));
+	dprint(("ptree_insert: len_bits[%d]\n",len - 8*head->pnh_offset));
 	tt = ptree_add(v, len, data, head->pnh_treetop);
 	/* set netmask */
 	if(len%8)
@@ -323,7 +323,7 @@ ptree_matchaddr(v_arg, head)
 #endif
 	
 	if(!t){
-		dprint(("tree is empty\n"));
+		dprint(("ptree_matchaddr: tree is empty\n"));
 		return 0;
 	}
 
@@ -335,24 +335,25 @@ ptree_matchaddr(v_arg, head)
 	bits = (int)8*LEN(v);
 	t = saved_t = ptree_search(v, bits, head->pnh_treetop);
 	if( !saved_t ){
-		dprint(("not match\n"));
+		dprint(("ptree_matchaddr: not match\n"));
 		return 0;
 	}
 
 	cp = t->key; cplim = v;
 	bytes = t->keylen / 8;
 	if ( memcmp(cp,cplim,bytes) != 0 ){
-		dprint(("not match\n"));
+		dprint(("ptree_matchaddr: not match\n"));
 		return 0;
 	}
 	/* support CIDER */
 	bits = t->keylen % 8;
 	if ( bits != 0 ){
-		dprint(("bits[%d] ",bits));
+		dprint(("ptree_matchaddr: keylen = %d bits, ",bits));
 		if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) ){
 			dprint(("not match\n"));
 			return 0;
 		}
+		dprint(("match\n"));
 	}
 	/*
 	 * match exactly as a host.
@@ -730,14 +731,15 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 			}
 		 	else
 				bits = 8*bytes;
-			dprint(("rt_mpath_conflict: masklen[%d]\n",bits-8*pnh->pnh_offset));
 		}
 		
 		dprint(("rt_mpath_conflict: bits[%d] bytes[%d]\n",bits, bytes));
 		
 		rn = ptree_search((char *)dst, bits, pnh->pnh_treetop);
-		if (!rn)
+		if (!rn){
+				dprint(("rt_mpath_conflict: this dst-key has no-entry\n"));
 				return 0;
+		}
 
 #if 0
 	struct sockaddr *sa = (struct sockaddr *)rn->key;
@@ -776,7 +778,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				}
 
 				/* all key/mask/gateway are the same.  conflicting entry. */
-				dprint(("-conflicting entry\n"));
+				dprint(("rt_mpath_conflict: conflicting entry\n"));
 				return EEXIST;
 		}
 		/* key/mask were the same.  compare gateway for all multipaths */
@@ -797,12 +799,12 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				}
 
 				/* all key/mask/gateway are the same.  conflicting entry. */
-				dprint((" conflicting entry\n"));
+				dprint(("rt_mpath_conflict: conflicting entry\n"));
 				return EEXIST;
 		} while ((++i) < n);
 
 different:
-		dprint((" different\n"));
+		dprint(("rt_mpath_conflict: different\n"));
 		return 0;
 }
 

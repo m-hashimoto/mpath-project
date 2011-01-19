@@ -1,5 +1,5 @@
 --- route.c.orig	2005-02-24 13:50:32.000000000 +0900
-+++ route.c	2011-01-12 03:27:18.000000000 +0900
++++ route.c	2011-01-19 07:58:02.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -289,7 +289,7 @@
  	struct ifaddr *ifa;
  	struct sockaddr *ndst;
 -#define senderr(x) { error = x ; goto bad; }
-+	long long int c0,c1,c2;
++	//long long int c0,c1,c2;
 +#define senderr(x) { error = x ; printf("goto bad: error = %x\n",x); goto bad; }
  
  	KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
@@ -299,10 +299,10 @@
  		 * Complain if it is not there and do no more processing.
  		 */
 -		rn = rnh->rnh_deladdr(dst, netmask, rnh);
-+			RDTSC(c0);
-+			RDTSC(c1);
++			//RDTSC(c0);
++			//RDTSC(c1);
 +			rn = rnh->rnh_deladdr(dst, info->rti_info[RTAX_GATEWAY], rnh);
-+			RDTSC(c2);
++			//RDTSC(c2);
 +			//sprintf(tmp,"-rtrequest1_fib RTM_DELETE: pnh_deladdr %lld[clk]\n",c2-c1-(c1-c0));
 +			//dprint(P_INFO,tmp);
  		if (rn == NULL)
@@ -372,7 +372,7 @@
  		if ((error = rt_setgate(rt, dst, gateway)) != 0) {
  			RT_LOCK_DESTROY(rt);
  			if (ifa != NULL)
-@@ -1120,12 +1157,11 @@
+@@ -1120,17 +1157,20 @@
  			uma_zfree(V_rtzone, rt);
  			senderr(error);
  		}
@@ -387,15 +387,16 @@
  		/*
  		 * make sure it contains the value we want (masked if needed).
  		 */
-@@ -1133,7 +1169,6 @@
++			struct sockaddr *nmask;
+ 		if (netmask) {
  			rt_maskedcopy(dst, ndst, netmask);
++					R_Zalloc(nmask, struct sockaddr *, SA_SIZE(netmask));
++					rt->rt_mask = nmask;
++					bcopy(netmask, rt->rt_gateway, SA_SIZE(netmask));
  		} else
  			bcopy(dst, ndst, dst->sa_len);
--
- 		/*
- 		 * We use the ifa reference returned by rt_getifa_fib().
- 		 * This moved from below so that rnh->rnh_addaddr() can
-@@ -1142,7 +1177,6 @@
+ 
+@@ -1142,7 +1182,6 @@
  		rt->rt_ifa = ifa;
  		rt->rt_ifp = ifa->ifa_ifp;
  		rt->rt_rmx.rmx_weight = 1;
@@ -403,7 +404,7 @@
  #ifdef RADIX_MPATH
  		/* do not permit exactly the same dst/mask/gw pair */
  		if (rn_mpath_capable(rnh) &&
-@@ -1156,7 +1190,20 @@
+@@ -1156,7 +1195,20 @@
  			senderr(EEXIST);
  		}
  #endif
@@ -425,7 +426,7 @@
  #ifdef FLOWTABLE
  		rt0 = NULL;
  		/* XXX
-@@ -1169,7 +1216,6 @@
+@@ -1169,7 +1221,6 @@
  				struct sockaddr *mask;
  				u_char *m, *n;
  				int len;
@@ -433,17 +434,17 @@
  				/*
  				 * compare mask to see if the new route is
  				 * more specific than the existing one
-@@ -1205,9 +1251,15 @@
+@@ -1205,9 +1256,15 @@
  		}
  #endif
  #endif
 -
  		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
 -		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
-+			RDTSC(c0);
-+			RDTSC(c1);
++			//RDTSC(c0);
++			//RDTSC(c1);
 +			rn = rnh->rnh_addaddr(ndst, netmask, rnh, (struct ptree_node *)rt);
-+			RDTSC(c2);
++			//RDTSC(c2);
 +			//sprintf(tmp,"-rtrequest: RDTSC Interval   :%lld clk\n",c1-c0);
 +			//dprint(P_INFO,tmp);
 +			//sprintf(tmp,"-rtrequest1_fib RTM_ADD: pnh_addaddr %lld[clk]\n",c2-c1-(c1-c0));
@@ -451,7 +452,7 @@
  		/*
  		 * If it still failed to go into the tree,
  		 * then un-make it (this should be a function)
-@@ -1232,14 +1284,12 @@
+@@ -1232,14 +1289,12 @@
  			RTFREE(rt0);
  		}
  #endif
@@ -466,18 +467,16 @@
  		/*
  		 * actually return a resultant rtentry and
  		 * give the caller a single reference.
-@@ -1256,6 +1306,10 @@
+@@ -1256,6 +1311,8 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
-+#if 0
 +	if (DEBUG)
 +		debug_tree_print(rnh);
-+#endif
  	return (error);
  #undef senderr
  }
-@@ -1273,11 +1327,10 @@
+@@ -1273,11 +1330,10 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -490,7 +489,7 @@
  	RT_LOCK_ASSERT(rt);
  	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  	
-@@ -1311,7 +1364,6 @@
+@@ -1311,7 +1367,6 @@
  	 * Copy the new gateway value into the memory chunk.
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
@@ -498,7 +497,7 @@
  	return (0);
  }
  
-@@ -1374,8 +1426,9 @@
+@@ -1374,8 +1429,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -509,7 +508,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1458,8 @@
+@@ -1405,8 +1461,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -520,7 +519,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,11 +1492,10 @@
+@@ -1439,11 +1495,10 @@
  			}
  			else
  #endif
@@ -534,3 +533,11 @@
  			RADIX_NODE_HEAD_UNLOCK(rnh);
  			if (error) {
  				/* this is only an error if bad on ALL tables */
+@@ -1497,6 +1552,7 @@
+ 			    ((struct sockaddr_dl *)rt->rt_gateway)->sdl_index =
+ 				rt->rt_ifp->if_index;
+ 			}
++					dprint(("rt_init1: call rt_newaddrmsg\n"));
+ 			rt_newaddrmsg(cmd, ifa, error, rt);
+ 			if (cmd == RTM_DELETE) {
+ 				/*
