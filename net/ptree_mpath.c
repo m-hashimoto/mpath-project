@@ -312,12 +312,6 @@ ptree_matchaddr(v_arg, head)
 {
 	char *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
-#if DEBUG
-	struct sockaddr *sa = (struct sockaddr *)v;
-	dprint(("ptree_matchaddr: v["));
-	sprint_inet_ntoa(sa->sa_family, sa);
-	dprint(("/%d] ",sa->sa_len));
-#endif
 	
 	if(!t){
 		dprint(("tree is empty\n"));
@@ -329,7 +323,15 @@ ptree_matchaddr(v_arg, head)
 	struct ptree_node *saved_t;
 	int bytes, bits;
 	
-	bits = (int)8*LEN(v);
+	//if((bytes = LEN(v)) < head->pnh_offset)
+	bytes = sizeof(struct sockaddr);
+	bits = 8 * bytes;
+#if DEBUG
+	struct sockaddr *sa = (struct sockaddr *)v;
+	dprint(("ptree_matchaddr: v["));
+	sprint_inet_ntoa(sa->sa_family, sa);
+	dprint(("/%d(bytes)] ",LEN(v)));
+#endif
 	t = saved_t = ptree_search(v, bits, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("not match(no entry)\n"));

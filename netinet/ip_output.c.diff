@@ -1,5 +1,5 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2011-01-21 05:23:00.000000000 +0900
++++ ip_output.c	2011-01-21 05:31:36.000000000 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -15,7 +15,7 @@
 +	/* forwarding for MARA */
 +	mara_tag = ip->ip_tos;
 +	if (mara_tag){
-+		ro->ro_rt = rt_mpath_nexthop(mara_tag,ro->ro_rt);
++		ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
 +	}
  
  	/*
