@@ -6,12 +6,16 @@ It enables:
 - IPv4 and IPv6 multipath routeing table.
 - multipath routing support in netstat.
 
-
 # File
 README		:This file.
 install.csh   :C-Sell(csh/tcsh) script for install.
 uninstall.csh :C-Sell script for uninstall(unpacth).
 netstat/*     :Patch for netstat of multipath support.
+
+# ToDo
+1. To download kernel source by sysinstall.
+2. To run the install script.(./install.csh)
+3. After reboot, run the netstat install script.(./netstat/install.csh)
 
 # UPDATE
 ...branch ptree
@@ -37,3 +41,4 @@ debugging...
 ...ptree_v3.2
 2010/12/08 mpath add and delete worked.
 2011/01/11 CIDER support is worked.
+2011/01/19 dhcp support is worked.

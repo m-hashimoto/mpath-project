@@ -1,5 +1,5 @@
 --- route.c.orig	2011-01-19 12:46:49.000000000 +0900
-+++ route.c	2011-01-19 16:29:11.000000000 +0900
++++ route.c	2011-01-20 08:40:42.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -550,14 +550,14 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,14 +1502,27 @@
+@@ -1439,14 +1502,36 @@
  			}
  			else
  #endif
 -			rn = rnh->rnh_lookup(dst, netmask, rnh);
 +			//				rn = rnh->rnh_lookup(dst->sa_data, 
 +			//						(int)*(const u_char *)netmask->sa_data, rnh->pnh_treetop);
-+#if 0
++#if DEBUG
 +	printf("rtinit1: addr[");
 +	sprint_inet_ntoa(dst->sa_family, dst);
 +	printf("/%d(bytes)] ",dst->sa_len);
@@ -568,7 +568,16 @@
 +	}
 +	printf("\n");
 +#endif
-+							rn = rnh->rnh_lookup((char *)dst, (int)8 * netmask->sa_len, rnh->pnh_treetop);
++	
++	/* support CIDER */
++	int bits, keylen;
++	keylen = 8*((int)*(const u_char *)netmask->sa_data + rnh->pnh_offset);
++	bits = (int)*(const u_char *)netmask->sa_data % 8;
++	if ( bits != 0 ){
++		dprint(("rtinit1: CIDER_len[%d bits], ",bits));
++		keylen = keylen + (bits - 8);
++	}
++					rn = rnh->rnh_lookup((char *)dst,keylen,rnh->pnh_treetop);
  			error = (rn == NULL ||
 -			    (rn->rn_flags & RNF_ROOT) ||
  			    RNTORT(rn)->rt_ifa != ifa ||
@@ -581,7 +590,7 @@
  				continue;
  			}
  		}
-@@ -1466,6 +1542,7 @@
+@@ -1466,6 +1551,7 @@
  		else
  			info.rti_info[RTAX_GATEWAY] = ifa->ifa_addr;
  		info.rti_info[RTAX_NETMASK] = netmask;
@@ -589,7 +598,7 @@
  		error = rtrequest1_fib(cmd, &info, &rt, fibnum);
  		if (error == 0 && rt != NULL) {
  			/*
-@@ -1497,6 +1574,7 @@
+@@ -1497,6 +1583,7 @@
  			    ((struct sockaddr_dl *)rt->rt_gateway)->sdl_index =
  				rt->rt_ifp->if_index;
  			}
@@ -597,7 +606,7 @@
  			rt_newaddrmsg(cmd, ifa, error, rt);
  			if (cmd == RTM_DELETE) {
  				/*
-@@ -1534,6 +1612,7 @@
+@@ -1534,6 +1621,7 @@
  			error = a_failure;
  		}
  	}

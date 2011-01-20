@@ -90,25 +90,29 @@ ptree_match (char *keyi, char *keyj, int keylen)
 struct ptree_node *
 ptree_lookup (char *key, int keylen, struct ptree *t)
 {
-	//printf("ptree_lookup Start: keylen[%d]\n",keylen);
+	printf("ptree_lookup Start\n");
+	printf("ptree_lookup: key[%d.%d.%d.%d/%d]\n",key[4],key[5],key[6],key[7],keylen);
   struct ptree_node *x;
 
   x = t->top;
   if (!x)
     return NULL;
   
-  while (x && x->key && x->keylen < keylen &&
+  while (x && x->key && x->keylen <= keylen &&
          ptree_match (x->key, key, x->keylen)){
-		//printf("ptree_lookup: chek keylen[%d]\n",x->keylen);
+		printf("ptree_lookup: chek keylen[%d]\n",x->keylen);
     x = x->child[check_bit (key, x->keylen)];
 	}
+  /* if passed by the tree */
+	if( (!x || x->keylen > keylen) && x->parent)
+    x = x->parent;
 	
   if (x->keylen == keylen){
-		//printf("ptree_lookup: matching\n");
+		printf("ptree_lookup: match[%d.%d.%d.%d/%d]\n",x->key[4],x->key[5],x->key[6],x->key[7],x->keylen);
     return x;
 	}
 
-	//printf("ptree_lookup: not matching\n");
+	printf("ptree_lookup: not matching\n");
   return NULL;
 }
 
