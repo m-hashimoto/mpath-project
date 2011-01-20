@@ -1,5 +1,5 @@
 --- rtsock.c.orig	2005-01-19 02:48:34.000000000 +0900
-+++ rtsock.c	2011-01-20 08:43:18.000000000 +0900
++++ rtsock.c	2011-01-21 04:47:41.000000000 +0900
 @@ -105,7 +105,7 @@
  			caddr_t cp, struct walkarg *w);
  static int	rt_xaddrs(caddr_t cp, caddr_t cplim,
@@ -19,30 +19,36 @@
  	struct rt_addrinfo info;
  	int len, error = 0;
  	struct ifnet *ifp = NULL;
-@@ -598,8 +599,20 @@
+@@ -598,8 +599,26 @@
  		if (rnh == NULL)
  			senderr(EAFNOSUPPORT);
  		RADIX_NODE_HEAD_RLOCK(rnh);
 -		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST],
 -			info.rti_info[RTAX_NETMASK], rnh);
-+		dprint(("route_output: call rnh_lookup\n"));
-+	/* support CIDER */
-+	int bits, keylen;
-+	keylen =  8*((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data
-+					                    + rnh->pnh_offset);
-+	bits = ((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data) % 8;
-+	if ( bits != 0 ){
-+		dprint(("rtinit1: CIDER_len[%d bits], ",bits));
-+		keylen = keylen + (bits - 8);
-+	}
 +		
++		int keylen;
++	//keylen =  8*((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data
++	//				                    + rnh->pnh_offset);
++		if(info.rti_info[RTAX_NETMASK]->sa_len >= rnh->pnh_offset)
++			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK],rnh);
++		keylen = 8 * rnh->pnh_offset;
++
++		/* support CIDER */
++#if 0
++		//bits = ((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data) % 8;
++		if ( bits != 0 ){
++			dprint(("rtinit1: CIDER_len[%d bits], ",bits));
++			keylen = keylen + (bits - 8);
++		}
++#endif
++		dprint(("route_output: call rnh_lookup\n"));
 +		pn = rnh->rnh_lookup((char *)info.rti_info[RTAX_DST], keylen, rnh->pnh_treetop);
 +		rt = pn->data;
 +		//rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)info.rti_info[RTAX_NETMASK]->sa_data, rnh->pnh_treetop);
  		if (rt == NULL) {	/* XXX looks bogus */
  			RADIX_NODE_HEAD_RUNLOCK(rnh);
  			senderr(ESRCH);
-@@ -1096,6 +1109,7 @@
+@@ -1096,6 +1115,7 @@
  void
  rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
  {
@@ -50,7 +56,7 @@
  	struct rt_addrinfo info;
  	struct sockaddr *sa = NULL;
  	int pass;
-@@ -1114,12 +1128,15 @@
+@@ -1114,12 +1134,15 @@
  	sctp_addr_change(ifa, cmd);
  #endif /* SCTP */
  #endif
@@ -67,7 +73,7 @@
  			struct ifa_msghdr *ifam;
  			int ncmd = cmd == RTM_ADD ? RTM_NEWADDR : RTM_DELADDR;
  
-@@ -1137,6 +1154,7 @@
+@@ -1137,6 +1160,7 @@
  		}
  		if ((cmd == RTM_ADD && pass == 2) ||
  		    (cmd == RTM_DELETE && pass == 1)) {
@@ -75,7 +81,7 @@
  			struct rt_msghdr *rtm;
  
  			if (rt == NULL)
-@@ -1144,6 +1162,7 @@
+@@ -1144,6 +1168,7 @@
  			info.rti_info[RTAX_NETMASK] = rt_mask(rt);
  			info.rti_info[RTAX_DST] = sa = rt_key(rt);
  			info.rti_info[RTAX_GATEWAY] = rt->rt_gateway;
@@ -83,7 +89,7 @@
  			if ((m = rt_msg1(cmd, &info)) == NULL)
  				continue;
  			rtm = mtod(m, struct rt_msghdr *);
-@@ -1152,8 +1171,10 @@
+@@ -1152,8 +1177,10 @@
  			rtm->rtm_errno = error;
  			rtm->rtm_addrs = info.rti_addrs;
  		}
@@ -94,7 +100,7 @@
  }
  
  /*
-@@ -1302,7 +1323,7 @@
+@@ -1302,7 +1329,7 @@
   * This is used in dumping the kernel table via sysctl().
   */
  static int
@@ -103,7 +109,7 @@
  {
  	struct walkarg *w = vw;
  	struct rtentry *rt = (struct rtentry *)rn;
-@@ -1459,7 +1480,7 @@
+@@ -1459,7 +1486,7 @@
  {
  	int	*name = (int *)arg1;
  	u_int	namelen = arg2;

@@ -151,6 +151,34 @@ debug_tree_print(struct ptree_node_head *pnh)
 }
 #endif /* DEBUG */
 
+int
+create_masklen(char *m, struct ptree_node_head *head)
+{
+		int bytes, bits, keylen;
+		unsigned char bitmask = 0xff;
+		unsigned char diff;
+		
+		/* count mask_len */
+		keylen = bytes = head->pnh_offset;
+		while(m[bytes] & bitmask)
+			bytes++;
+		
+	 	diff = m[bytes-1] ^ bitmask;
+		if(diff){
+			/* support CIDR */
+			bits = 8*(bytes-1);
+			dprint(("create_masklen: len_bytes[%d]\n",bytes-1));
+	 		bitmask = 0x80;
+	 		while (/*bits < salen && */! (bitmask & diff)) {
+    	  bits++;
+    	  bitmask >>= 1;
+   		}
+			keylen = bits;
+		} else
+			keylen = 8*bytes;
+
+		return keylen;
+}
 	static struct ptree_node 
 *ptree_insert(v_arg, m_arg, head, dupentry)  
 	void *v_arg, *m_arg;
@@ -181,6 +209,7 @@ debug_tree_print(struct ptree_node_head *pnh)
 #endif
 	
 	if(m && (LEN(m) > head->pnh_offset)){
+#if 0
 		unsigned char bitmask = 0xff;
 		unsigned char diff;
 		
@@ -202,6 +231,8 @@ debug_tree_print(struct ptree_node_head *pnh)
 			len = bits;
 		} else
 			len = 8*bytes;
+#endif
+		len = create_masklen(m,head);
 		dprint(("ptree_insert: masklen_bits[%d]\n",len - 8*head->pnh_offset));
 	}
 	else if( (m && (LEN(m) <= head->pnh_offset)) )
@@ -285,7 +316,7 @@ ptree_matchaddr(v_arg, head)
 	struct sockaddr *sa = (struct sockaddr *)v;
 	dprint(("ptree_matchaddr: v["));
 	sprint_inet_ntoa(sa->sa_family, sa);
-	dprint(("] "));
+	dprint(("/%d] ",sa->sa_len));
 #endif
 	
 	if(!t){
@@ -301,14 +332,14 @@ ptree_matchaddr(v_arg, head)
 	bits = (int)8*LEN(v);
 	t = saved_t = ptree_search(v, bits, head->pnh_treetop);
 	if( !saved_t ){
-		dprint(("not match\n"));
+		dprint(("not match(no entry)\n"));
 		return 0;
 	}
 
 	cp = t->key; cplim = v;
 	bytes = t->keylen / 8;
 	if ( memcmp(cp,cplim,bytes) != 0 ){
-		dprint(("not match\n"));
+		dprint(("not match(key diff)\n"));
 		return 0;
 	}
 	/* support CIDER */
@@ -316,10 +347,9 @@ ptree_matchaddr(v_arg, head)
 	if ( bits != 0 ){
 		dprint(("CIDER_len[%d bits], ",bits));
 		if( ((cp[bytes] ^ cplim[bytes]) & mask[bits]) ){
-			dprint(("not match\n"));
+			dprint(("not match(netmask diff)\n"));
 			return 0;
 		}
-		dprint(("match\n"));
 	}
 	/*
 	 * match exactly as a host.
@@ -835,9 +865,8 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 		return rt;
 	
 	rt_array = rt->mpath_array;
-	hash = seed + hashjitter;
 	
-	hash %= n+1;
+	hash = seed % n;
 	rt = rt_array[hash];
 	return rt;
 }

@@ -109,7 +109,8 @@ struct ptree_node_head {
 
 void     ptree_init(void);
 int      ptree_inithead(void **, int),
-				 ptree_refines(void *, void *);
+				 ptree_refines(void *, void *),
+				 create_masklen(char *, struct ptree_node_head *);
 struct ptree_node
 		*ptree_addroute(void *, void *, struct ptree_node_head *,
 					   	struct ptree_node *),

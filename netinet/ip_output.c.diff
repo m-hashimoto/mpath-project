@@ -1,11 +1,31 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2005-02-26 04:46:20.000000000 +0900
-@@ -306,12 +306,14 @@
++++ ip_output.c	2011-01-21 05:23:00.000000000 +0900
+@@ -135,6 +135,7 @@
+ #ifdef IPSEC
+ 	int no_route_but_check_spd = 0;
+ #endif
++	int mara_tag;
+ 	M_ASSERTPKTHDR(m);
+ 
+ 	if (inp != NULL) {
+@@ -169,6 +170,11 @@
+ 			hlen = len;
+ 	}
+ 	ip = mtod(m, struct ip *);
++	/* forwarding for MARA */
++	mara_tag = ip->ip_tos;
++	if (mara_tag){
++		ro->ro_rt = rt_mpath_nexthop(mara_tag,ro->ro_rt);
++	}
+ 
+ 	/*
+ 	 * Fill in IP header.  If we are not allowing fragmentation,
+@@ -306,12 +312,14 @@
  		 * them, there is no way for one to update all its
  		 * routes when the MTU is changed.
  		 */
-+		printf("ip_output: rt_rmx.rmx_mtu[%lu] ifp->if_mtu[%lu]\n",
-+						ro->ro_rt->rt_rmx.rmx_mtu,ifp->if_mtu);
++		dprint(("ip_output: rt_rmx.rmx_mtu[%lu] ifp->if_mtu[%lu]\n",
++						ro->ro_rt->rt_rmx.rmx_mtu,ifp->if_mtu));
  		if (ro->ro_rt->rt_rmx.rmx_mtu > ifp->if_mtu)
  			ro->ro_rt->rt_rmx.rmx_mtu = ifp->if_mtu;
  		mtu = ro->ro_rt->rt_rmx.rmx_mtu;
@@ -13,40 +33,39 @@
 +	} else 
  		mtu = ifp->if_mtu;
 -	}
-+	printf("ip_output: Calculated MTU[%d]\n",mtu);
++	dprint(("ip_output: Calculated MTU[%d]\n",mtu));
  	if (IN_MULTICAST(ntohl(ip->ip_dst.s_addr))) {
  		m->m_flags |= M_MCAST;
  		/*
-@@ -425,6 +427,8 @@
+@@ -425,6 +433,7 @@
  	 * packet or packet fragments, unless ALTQ is enabled on the given
  	 * interface in which case packetdrop should be done by queueing.
  	 */
-+	printf("ip_output: if(%d >= %d)\n",ifp->if_snd.ifq_len + ip->ip_len / mtu + 1,
-+							   ifp->if_snd.ifq_maxlen);
++	dprint(("ip_output: if(%d >= %d)\n",ifp->if_snd.ifq_len + ip->ip_len / mtu + 1, ifp->if_snd.ifq_maxlen));
  #ifdef ALTQ
  	if ((!ALTQ_IS_ENABLED(&ifp->if_snd)) &&
  	    ((ifp->if_snd.ifq_len + ip->ip_len / mtu + 1) >=
-@@ -557,6 +561,7 @@
+@@ -557,6 +566,7 @@
  #endif /* IPFIREWALL_FORWARD */
  
  passout:
-+	printf("ip_output: passout\n");
++	dprint(("ip_output: passout\n"));
  	/* 127/8 must not appear on wire - RFC1122. */
  	if ((ntohl(ip->ip_dst.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET ||
  	    (ntohl(ip->ip_src.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET) {
-@@ -661,6 +666,7 @@
+@@ -661,6 +671,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
-+	printf("ip_output: done\n");
++	dprint(("ip_output: done\n"));
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +674,7 @@
+@@ -668,6 +679,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
-+	printf("ip_output: bad\n");
++	dprint(("ip_output: bad\n"));
  	m_freem(m);
  	goto done;
  }
