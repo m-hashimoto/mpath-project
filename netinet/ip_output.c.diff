@@ -1,5 +1,5 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2011-01-21 09:53:25.000000000 +0900
++++ ip_output.c	2011-01-21 10:58:28.000000000 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -16,25 +16,14 @@
 +#ifdef PTREE_MPATH
 +	/* forwarding for MARA */
 +	mara_tag = ip->ip_tos;
-+	if (mara_tag){
++	if (mara_tag != 0){
 +		ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
 +	}
 +#endif
  	/*
  	 * Fill in IP header.  If we are not allowing fragmentation,
  	 * then the ip_id field is meaningless, but we don't set it
-@@ -309,9 +316,8 @@
- 		if (ro->ro_rt->rt_rmx.rmx_mtu > ifp->if_mtu)
- 			ro->ro_rt->rt_rmx.rmx_mtu = ifp->if_mtu;
- 		mtu = ro->ro_rt->rt_rmx.rmx_mtu;
--	} else {
-+	} else 
- 		mtu = ifp->if_mtu;
--	}
- 	if (IN_MULTICAST(ntohl(ip->ip_dst.s_addr))) {
- 		m->m_flags |= M_MCAST;
- 		/*
-@@ -661,6 +667,7 @@
+@@ -661,6 +668,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -42,7 +31,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +675,7 @@
+@@ -668,6 +676,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
