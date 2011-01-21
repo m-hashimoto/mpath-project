@@ -1,5 +1,5 @@
 --- route.c.orig	2011-01-19 12:46:49.000000000 +0900
-+++ route.c	2011-01-21 08:15:17.000000000 +0900
++++ route.c	2011-01-21 15:24:02.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -478,19 +478,18 @@
  		/*
  		 * actually return a resultant rtentry and
  		 * give the caller a single reference.
-@@ -1256,6 +1305,11 @@
+@@ -1256,6 +1305,10 @@
  bad:
  	if (needlock)
  		RADIX_NODE_HEAD_UNLOCK(rnh);
-+#if 0
-+	if (DEBUG)
++#if DEBUG
 +		debug_tree_print(rnh);
-+#endif
 +		dprint(("rtrequest End\n"));
++#endif
  	return (error);
  #undef senderr
  }
-@@ -1273,11 +1327,10 @@
+@@ -1273,11 +1326,10 @@
  	/* XXX dst may be overwritten, can we move this to below */
  	int dlen = SA_SIZE(dst), glen = SA_SIZE(gate);
  #ifdef INVARIANTS
@@ -503,7 +502,7 @@
  	RT_LOCK_ASSERT(rt);
  	RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
  	
-@@ -1311,7 +1364,6 @@
+@@ -1311,7 +1363,6 @@
  	 * Copy the new gateway value into the memory chunk.
  	 */
  	bcopy(gate, rt->rt_gateway, glen);
@@ -511,7 +510,7 @@
  	return (0);
  }
  
-@@ -1342,6 +1394,7 @@
+@@ -1342,6 +1393,7 @@
  static inline  int
  rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
  {
@@ -519,7 +518,7 @@
  	struct sockaddr *dst;
  	struct sockaddr *netmask;
  	struct rtentry *rt = NULL;
-@@ -1374,8 +1427,9 @@
+@@ -1374,8 +1426,9 @@
  		startfib = fibnum;
  		endfib = fibnum;
  	}
@@ -530,7 +529,7 @@
  
  	/*
  	 * If it's a delete, check that if it exists,
-@@ -1405,8 +1459,8 @@
+@@ -1405,8 +1458,8 @@
  	 */
  	for ( fibnum = startfib; fibnum <= endfib; fibnum++) {
  		if (cmd == RTM_DELETE) {
@@ -541,7 +540,7 @@
  			/*
  			 * Look up an rtentry that is in the routing tree and
  			 * contains the correct info.
-@@ -1439,14 +1493,40 @@
+@@ -1439,14 +1492,40 @@
  			}
  			else
  #endif
@@ -585,7 +584,7 @@
  				continue;
  			}
  		}
-@@ -1466,6 +1546,7 @@
+@@ -1466,6 +1545,7 @@
  		else
  			info.rti_info[RTAX_GATEWAY] = ifa->ifa_addr;
  		info.rti_info[RTAX_NETMASK] = netmask;
@@ -593,7 +592,7 @@
  		error = rtrequest1_fib(cmd, &info, &rt, fibnum);
  		if (error == 0 && rt != NULL) {
  			/*
-@@ -1497,6 +1578,7 @@
+@@ -1497,6 +1577,7 @@
  			    ((struct sockaddr_dl *)rt->rt_gateway)->sdl_index =
  				rt->rt_ifp->if_index;
  			}
@@ -601,7 +600,7 @@
  			rt_newaddrmsg(cmd, ifa, error, rt);
  			if (cmd == RTM_DELETE) {
  				/*
-@@ -1534,6 +1616,7 @@
+@@ -1534,6 +1615,7 @@
  			error = a_failure;
  		}
  	}

@@ -871,8 +871,8 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash = seed % n;
 	rt = rt_array[hash];
+	printf("multipath_nexthop: tag[%d] rt_num[%d]\n",seed,hash);
 #if DEBUG
-	dprint(("multipath_nexthop: mara_tag[%d]\n",seed));
 	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;
 	printf("multipath_nexthop: addr[");
 	sprint_inet_ntoa(sa->sa_family, sa);
