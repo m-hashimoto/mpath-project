@@ -1,5 +1,5 @@
 --- route.c.orig	2011-01-19 12:46:49.000000000 +0900
-+++ route.c	2011-01-21 06:08:54.000000000 +0900
++++ route.c	2011-01-21 08:15:17.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -403,7 +403,7 @@
  			rt_maskedcopy(dst, ndst, netmask);
 +					R_Zalloc(nmask, struct sockaddr *, SA_SIZE(netmask));
 +					rt->rt_mask = nmask;
-+					bcopy(netmask, rt->rt_gateway, SA_SIZE(netmask));
++					bcopy(netmask, rt->rt_mask, SA_SIZE(netmask));
  		} else
  			bcopy(dst, ndst, dst->sa_len);
  

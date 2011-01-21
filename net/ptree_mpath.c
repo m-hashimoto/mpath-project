@@ -470,15 +470,13 @@ ptree_deladdr(v_arg, gate_arg, head)
 				return 0;
 			}
 		}
-
-		/* if save_tt is treetop */
-		
 		
 #ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
 		headrt = tt->data;
 		
 		if(headrt->mpath_array){
+			dprint(("ptree_delete: rtentrry has mpath_array\n"));
 			if ( (rt = rt_mpath_matchgate(headrt,gate)) != NULL ){
 				struct ptree_node *tmprn;
 			
@@ -652,6 +650,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		struct rtentry *rt0,**rt1;
 		//struct sockaddr *sa0, *sa1;
 		struct ptree_node *rn = headrt->rt_nodes;
+		dprint(("rt_mpath_delete Start\n"));
 
 		if (!headrt || !rt)
 				return (0);
@@ -660,6 +659,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 		//sa0 = rt->rt_gateway;
 		n = ptree_mpath_count(rt0);
 		rt1 = rt0->mpath_array;
+		dprint(("rt_mpath_delete: mpath_count[%d]\n",n));
 		
 		while (rt1[i] && i <= n) {
 			//sa1 = rt1[i]->rt_gateway;
@@ -863,13 +863,21 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	int n;
 	
 	rt = nexthops;
-	if((n = ptree_mpath_count(rt)) == 0)
+	if(rt == NULL)
+		return NULL;
+	if((rt_array = rt->mpath_array) == NULL || (n = ptree_mpath_count(rt)) == 0)
 		return rt;
 	
-	rt_array = rt->mpath_array;
 	
 	hash = seed % n;
 	rt = rt_array[hash];
+#if DEBUG
+	dprint(("multipath_nexthop: mara_tag[%d]\n",seed));
+	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;
+	printf("multipath_nexthop: addr[");
+	sprint_inet_ntoa(sa->sa_family, sa);
+	printf("/%d(bytes)]\n",sa->sa_len);
+#endif
 	return rt;
 }
 

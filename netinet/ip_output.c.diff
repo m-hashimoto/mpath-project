@@ -1,5 +1,5 @@
 --- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2011-01-21 05:31:36.000000000 +0900
++++ ip_output.c	2011-01-21 09:53:25.000000000 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -8,24 +8,22 @@
  	M_ASSERTPKTHDR(m);
  
  	if (inp != NULL) {
-@@ -169,6 +170,11 @@
+@@ -169,7 +170,13 @@
  			hlen = len;
  	}
  	ip = mtod(m, struct ip *);
+-
++#ifdef PTREE_MPATH
 +	/* forwarding for MARA */
 +	mara_tag = ip->ip_tos;
 +	if (mara_tag){
 +		ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
 +	}
- 
++#endif
  	/*
  	 * Fill in IP header.  If we are not allowing fragmentation,
-@@ -306,12 +312,14 @@
- 		 * them, there is no way for one to update all its
- 		 * routes when the MTU is changed.
- 		 */
-+		dprint(("ip_output: rt_rmx.rmx_mtu[%lu] ifp->if_mtu[%lu]\n",
-+						ro->ro_rt->rt_rmx.rmx_mtu,ifp->if_mtu));
+ 	 * then the ip_id field is meaningless, but we don't set it
+@@ -309,9 +316,8 @@
  		if (ro->ro_rt->rt_rmx.rmx_mtu > ifp->if_mtu)
  			ro->ro_rt->rt_rmx.rmx_mtu = ifp->if_mtu;
  		mtu = ro->ro_rt->rt_rmx.rmx_mtu;
@@ -33,27 +31,10 @@
 +	} else 
  		mtu = ifp->if_mtu;
 -	}
-+	dprint(("ip_output: Calculated MTU[%d]\n",mtu));
  	if (IN_MULTICAST(ntohl(ip->ip_dst.s_addr))) {
  		m->m_flags |= M_MCAST;
  		/*
-@@ -425,6 +433,7 @@
- 	 * packet or packet fragments, unless ALTQ is enabled on the given
- 	 * interface in which case packetdrop should be done by queueing.
- 	 */
-+	dprint(("ip_output: if(%d >= %d)\n",ifp->if_snd.ifq_len + ip->ip_len / mtu + 1, ifp->if_snd.ifq_maxlen));
- #ifdef ALTQ
- 	if ((!ALTQ_IS_ENABLED(&ifp->if_snd)) &&
- 	    ((ifp->if_snd.ifq_len + ip->ip_len / mtu + 1) >=
-@@ -557,6 +566,7 @@
- #endif /* IPFIREWALL_FORWARD */
- 
- passout:
-+	dprint(("ip_output: passout\n"));
- 	/* 127/8 must not appear on wire - RFC1122. */
- 	if ((ntohl(ip->ip_dst.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET ||
- 	    (ntohl(ip->ip_src.s_addr) >> IN_CLASSA_NSHIFT) == IN_LOOPBACKNET) {
-@@ -661,6 +671,7 @@
+@@ -661,6 +667,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -61,7 +42,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +679,7 @@
+@@ -668,6 +675,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
