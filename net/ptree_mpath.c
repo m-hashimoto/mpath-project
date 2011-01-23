@@ -602,21 +602,26 @@ ptree_mpath_count(struct rtentry *rt)
 		struct rtentry *
 rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 {
-		uint32_t	i = 0;
+		uint32_t	i = 0, n;
 		struct rtentry **match;
+		dprint(("rt_mpath_matchgate Start\n"));
 
-		if (!rt->mpath_array)
+		if (!rt->mpath_array){
+				dprint(("rt_mpath_matchgate End: mpath_array is NULL\n"));
 				return rt;
-		
+		}
 		else
 				match = rt->mpath_array;
 
-		if (!gate)
+		if (!gate){
+				dprint(("rt_mpath_matchgate End: gateway is NULL\n"));
 				return NULL;
-
+		}
+		n = ptree_mpath_count(rt);
 		/* beyond here, we use rn as the master copy */
 		do {
 				rt = match[i];
+				dprint(("rt_matchgate: check rt[%d]=%p\n",i,rt));
 				/*
 				 * we are removing an address alias that has 
 				 * the same prefix as another address
@@ -624,17 +629,22 @@ rt_mpath_matchgate(struct rtentry *rt, struct sockaddr *gate)
 				 * rt_gateway is a special sockadd_dl structure
 				 */
 				if (rt->rt_gateway->sa_family == AF_LINK) {
-						if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len/8))
-								break;
+						if (!memcmp(rt->rt_ifa->ifa_addr, gate, gate->sa_len)){
+								dprint(("rt_mpath_matchgate: match rt[%d](AF_LINK)\n",i));
+								return rt;
+						}
 				} else {
-						if (rt->rt_gateway->sa_len == gate->sa_len &&
-										!memcmp(rt->rt_gateway, gate, gate->sa_len/8))
-								break;
+						if ( /*(rt->rt_gateway->sa_len == gate->sa_len) &&*/
+										!memcmp(rt->rt_gateway, gate, gate->sa_len)){
+								dprint(("rt_mpath_matchgate: match rt[%d]=%p\n",i,rt));
+								return rt;
+						}
 				}
 				i++;
-		} while ( match[i] );
+		} while ( i <= n );
 
-		return rt;
+		dprint(("rt_matchgate End: not match\n"));
+		return NULL;
 }
 
 /* 
@@ -670,7 +680,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					return (1);
 				}
 				if(rt0 == rt1[i] && i == 0){ /* case: delete entry is array's top */
-					//printf("debug: case array's top\n");
+					dprint(("debug: case array's top\n"));
 					/* move mpath_array pointer */
 					rn->data = rt1[n];
 					rt1[n]->mpath_array = rt1;
@@ -680,7 +690,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 					rt0 = rt1[0];
 				}
 				else if(n == i) { /* case: delete entry is array's tail */
-					//printf("debug: case array's tail\n");
+					dprint(("debug: case array's tail\n"));
 					rt1[i] = NULL;
 				}
 				else {
