@@ -1,5 +1,5 @@
---- ip_output.c.org	2005-02-24 17:01:11.000000000 +0900
-+++ ip_output.c	2011-01-21 15:12:28.000000000 +0900
+--- ip_output.c.orig	2011-01-24 00:28:07.000000000 +0900
++++ ip_output.c	2011-01-25 09:18:00.000000000 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -16,21 +16,24 @@
  	/*
  	 * Fill in IP header.  If we are not allowing fragmentation,
  	 * then the ip_id field is meaningless, but we don't set it
-@@ -269,6 +269,13 @@
+@@ -269,6 +269,16 @@
  			in_rtalloc_ign(ro, 0,
  			    inp ? inp->inp_inc.inc_fibnum : M_GETFIB(m));
  #endif
 +#ifdef PTREE_MPATH
 +			/* forwarding for MARA */
 +			mara_tag = ip->ip_tos;
-+			if (ro->ro_rt != NULL){
++			if (ro->ro_rt != NULL && mara_tag != 0){
++				printf("ip_output: tag[%d], dst[",mara_tag);
++				sprint_inet_ntoa(dst->sin_family,dst);
++				printf("]\n");
 +				ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
 +			}
 +#endif
  		if (ro->ro_rt == NULL) {
  #ifdef IPSEC
  			/*
-@@ -661,6 +668,7 @@
+@@ -661,6 +671,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -38,7 +41,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +676,7 @@
+@@ -668,6 +679,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
