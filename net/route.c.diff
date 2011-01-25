@@ -1,5 +1,5 @@
---- route.c.orig	2011-01-19 12:46:49.000000000 +0900
-+++ route.c	2011-01-21 15:24:02.000000000 +0900
+--- route.c.orig	2011-01-26 03:36:57.000000000 +0900
++++ route.c	2011-01-26 03:38:27.000000000 +0900
 @@ -38,6 +38,7 @@
  #include "opt_route.h"
  #include "opt_mrouting.h"
@@ -301,7 +301,7 @@
  	struct sockaddr *ndst;
 -#define senderr(x) { error = x ; goto bad; }
 +	//long long int c0,c1,c2;
-+#define senderr(x) { error = x ; printf("goto bad: error = %x\n",x); goto bad; }
++#define senderr(x) { error = x ; dprint(("goto bad: error = %x\n",x)); goto bad; }
  
  	KASSERT((fibnum < rt_numfibs), ("rtrequest1_fib: bad fibnum"));
  	if (dst->sa_family != AF_INET)	/* Only INET supports > 1 fib now */

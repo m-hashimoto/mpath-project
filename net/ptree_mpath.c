@@ -209,29 +209,6 @@ create_masklen(char *m, struct ptree_node_head *head)
 #endif
 	
 	if(m && (LEN(m) > head->pnh_offset)){
-#if 0
-		unsigned char bitmask = 0xff;
-		unsigned char diff;
-		
-		/* count mask_len */
-		bytes = head->pnh_offset;
-		while(m[bytes] & bitmask)
-			bytes++;
-		
-	 	diff = m[bytes-1] ^ bitmask;
-		if(diff){
-			/* support CIDR */
-			bits = 8*(bytes-1);
-			dprint(("ptree_insert: len_bytes[%d]\n",bytes-1));
-	 		bitmask = 0x80;
-	 		while (bits < salen && ! (bitmask & diff)) {
-    	  bits++;
-    	  bitmask >>= 1;
-   		}
-			len = bits;
-		} else
-			len = 8*bytes;
-#endif
 		len = create_masklen(m,head);
 		dprint(("ptree_insert: masklen_bits[%d]\n",len - 8*head->pnh_offset));
 	}

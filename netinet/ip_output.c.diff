@@ -1,5 +1,5 @@
---- ip_output.c.orig	2011-01-24 00:28:07.000000000 +0900
-+++ ip_output.c	2011-01-25 09:18:00.000000000 +0900
+--- ip_output.c.orig	2011-01-26 03:16:19.000000000 +0900
++++ ip_output.c	2011-01-26 03:20:14.000000000 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -16,13 +16,20 @@
  	/*
  	 * Fill in IP header.  If we are not allowing fragmentation,
  	 * then the ip_id field is meaningless, but we don't set it
-@@ -269,6 +269,16 @@
+@@ -191,6 +191,7 @@
+ 	}
+ 
+ 	dst = (struct sockaddr_in *)&ro->ro_dst;
++	mara_tag = ip->ip_tos;
+ again:
+ 	/*
+ 	 * If there is a cached route,
+@@ -269,6 +270,15 @@
  			in_rtalloc_ign(ro, 0,
  			    inp ? inp->inp_inc.inc_fibnum : M_GETFIB(m));
  #endif
 +#ifdef PTREE_MPATH
 +			/* forwarding for MARA */
-+			mara_tag = ip->ip_tos;
 +			if (ro->ro_rt != NULL && mara_tag != 0){
 +				printf("ip_output: tag[%d], dst[",mara_tag);
 +				sprint_inet_ntoa(dst->sin_family,dst);
@@ -33,7 +40,28 @@
  		if (ro->ro_rt == NULL) {
  #ifdef IPSEC
  			/*
-@@ -661,6 +671,7 @@
+@@ -521,9 +531,11 @@
+ #endif
+ 			error = netisr_queue(NETISR_IP, m);
+ 			goto done;
+-		} else
++		} else{
++			mara_tag++;
+ 			goto again;	/* Redo the routing table lookup. */
+ 	}
++	}
+ 
+ #ifdef IPFIREWALL_FORWARD
+ 	/* See if local, if yes, send it to netisr with IP_FASTFWD_OURS. */
+@@ -552,6 +564,7 @@
+ 		bcopy((fwd_tag+1), dst, sizeof(struct sockaddr_in));
+ 		m->m_flags |= M_SKIP_FIREWALL;
+ 		m_tag_delete(m, fwd_tag);
++		mara_tag++;
+ 		goto again;
+ 	}
+ #endif /* IPFIREWALL_FORWARD */
+@@ -661,6 +674,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -41,7 +69,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +679,7 @@
+@@ -668,6 +682,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
