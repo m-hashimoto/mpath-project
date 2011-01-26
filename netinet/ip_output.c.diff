@@ -1,5 +1,5 @@
 --- ip_output.c.orig	2011-01-26 03:16:19.000000000 +0900
-+++ ip_output.c	2011-01-26 03:20:14.000000000 +0900
++++ ip_output.c	2011-01-26 08:58:12.000000000 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -31,37 +31,16 @@
 +#ifdef PTREE_MPATH
 +			/* forwarding for MARA */
 +			if (ro->ro_rt != NULL && mara_tag != 0){
-+				printf("ip_output: tag[%d], dst[",mara_tag);
++				ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
++				printf(" dst[");
 +				sprint_inet_ntoa(dst->sin_family,dst);
 +				printf("]\n");
-+				ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
 +			}
 +#endif
  		if (ro->ro_rt == NULL) {
  #ifdef IPSEC
  			/*
-@@ -521,9 +531,11 @@
- #endif
- 			error = netisr_queue(NETISR_IP, m);
- 			goto done;
--		} else
-+		} else{
-+			mara_tag++;
- 			goto again;	/* Redo the routing table lookup. */
- 	}
-+	}
- 
- #ifdef IPFIREWALL_FORWARD
- 	/* See if local, if yes, send it to netisr with IP_FASTFWD_OURS. */
-@@ -552,6 +564,7 @@
- 		bcopy((fwd_tag+1), dst, sizeof(struct sockaddr_in));
- 		m->m_flags |= M_SKIP_FIREWALL;
- 		m_tag_delete(m, fwd_tag);
-+		mara_tag++;
- 		goto again;
- 	}
- #endif /* IPFIREWALL_FORWARD */
-@@ -661,6 +674,7 @@
+@@ -661,6 +671,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -69,7 +48,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +682,7 @@
+@@ -668,6 +679,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
