@@ -850,19 +850,17 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	int n;
 	
 	rt = nexthops;
-	if(rt == NULL)
-		return NULL;
+
 	if((rt_array = rt->mpath_array) == NULL || (n = ptree_mpath_count(rt)) == 0)
 		return rt;
 	
-	
 	hash = seed % (n+1);
 	rt = rt_array[hash];
-	printf("multipath_nexthop: tag[%d] rt_num[%d] ",seed,hash);
+	printf(" rt_num[%d] ",hash);
 	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;
 	printf("gate[");
 	sprint_inet_ntoa(sa->sa_family, sa);
-	printf("], ");
+	printf("]");
 	return rt;
 }
 
