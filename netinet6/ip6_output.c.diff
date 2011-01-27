@@ -1,0 +1,15 @@
+--- ip6_output.c.org	2011-01-27 02:32:49 +0900
++++ ip6_output.c	2011-01-27 02:51:54 +0900
+@@ -589,6 +589,12 @@
+ 		 */
+ 		*dst = dst_sa;	/* XXX */
+ 	}
++	/*
++	 * select nexthops by ip6_flow
++	 */
++	uint32_t mara_tag = ip6->ip6_flow;
++	if(mara_tag != 0)
++		rt = malutipath_nexthop((unsigned int)mara_tag,rt);
+ 
+ 	/*
+ 	 * then rt (for unicast) and ifp must be non-NULL valid values.

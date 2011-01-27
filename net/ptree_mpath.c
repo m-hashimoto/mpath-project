@@ -856,11 +856,13 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash = seed % (n+1);
 	rt = rt_array[hash];
+#if DEBUG
 	printf(" rt_num[%d] ",hash);
 	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;
 	printf("gate[");
 	sprint_inet_ntoa(sa->sa_family, sa);
 	printf("]");
+#endif
 	return rt;
 }
 

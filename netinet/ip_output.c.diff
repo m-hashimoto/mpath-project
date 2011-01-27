@@ -1,5 +1,5 @@
---- ip_output.c.orig	2011-01-26 03:16:19.000000000 +0900
-+++ ip_output.c	2011-01-26 09:13:19.000000000 +0900
+--- ip_output.c.org	2011-01-27 02:28:57 +0900
++++ ip_output.c	2011-01-27 02:30:43 +0900
 @@ -135,6 +135,7 @@
  #ifdef IPSEC
  	int no_route_but_check_spd = 0;
@@ -24,24 +24,26 @@
  again:
  	/*
  	 * If there is a cached route,
-@@ -269,6 +270,16 @@
+@@ -269,6 +270,18 @@
  			in_rtalloc_ign(ro, 0,
  			    inp ? inp->inp_inc.inc_fibnum : M_GETFIB(m));
  #endif
 +#ifdef PTREE_MPATH
 +			/* forwarding for MARA */
 +			if (ro->ro_rt != NULL && mara_tag != 0){
-+				printf("ip_output: tag[%d]",mara_tag);
++				dprint(("ip_output: tag[%d]",mara_tag));
 +				ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
++#if DEBUG
 +				printf(" dst[");
 +				sprint_inet_ntoa(dst->sin_family,dst);
 +				printf("]\n");
++#endif
 +			}
 +#endif
  		if (ro->ro_rt == NULL) {
  #ifdef IPSEC
  			/*
-@@ -661,6 +672,7 @@
+@@ -661,6 +674,7 @@
  		IPSTAT_INC(ips_fragmented);
  
  done:
@@ -49,7 +51,7 @@
  	if (ro == &iproute && ro->ro_rt && !nortfree) {
  		RTFREE(ro->ro_rt);
  	}
-@@ -668,6 +680,7 @@
+@@ -668,6 +682,7 @@
  		ifa_free(&ia->ia_ifa);
  	return (error);
  bad:
