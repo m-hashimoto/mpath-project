@@ -37,7 +37,7 @@ patch -R < in6_proto.c.diff
 patch -R < in6_rmx.c.diff
 patch -R < nd6_rtr.c.diff
 patch -R < in6.c.diff
-patch -R < ipa6_output.c.diff
+patch -R < ip6_output.c.diff
 rm *.diff
 
 cd /usr/src/sys/contrib/ipfilter/netinet/
