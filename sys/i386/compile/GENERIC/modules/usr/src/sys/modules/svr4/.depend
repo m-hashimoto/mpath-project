@@ -1,0 +1,436 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/svr4/../../compat/svr4/svr4_sysent.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_sysvec.c /usr/src/sys/modules/svr4/../../compat/svr4/imgact_svr4.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_signal.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_fcntl.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_misc.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_ioctl.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_stat.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_filio.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_termios.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_stream.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_socket.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_sockio.c /usr/src/sys/modules/svr4/../../i386/svr4/svr4_machdep.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_resource.c /usr/src/sys/modules/svr4/../../compat/svr4/svr4_ipc.c
+svr4_sysent.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_sysent.c \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/sysent.h @/bsm/audit.h \
+  @/sys/param.h @/sys/_null.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/sysproto.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/acl.h @/sys/queue.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h \
+  machine/ucontext.h @/bsm/audit_kevents.h @/netinet/in.h \
+  @/netinet6/in6.h @/compat/svr4/svr4.h opt_svr4.h \
+  @/compat/svr4/svr4_types.h @/compat/svr4/svr4_signal.h \
+  @/i386/svr4/svr4_machdep.h @/compat/svr4/svr4_siginfo.h \
+  @/compat/svr4/svr4_proto.h
+svr4_sysvec.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_sysvec.c \
+  @/sys/cdefs.h opt_compat.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/_lock.h @/sys/lock_profile.h @/sys/_mutex.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysent.h @/sys/imgact.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/imgact_elf.h machine/elf.h @/sys/elf32.h @/sys/elf_common.h \
+  @/sys/elf_generic.h @/sys/fcntl.h @/sys/lock.h @/sys/malloc.h \
+  @/sys/module.h @/sys/linker_set.h @/sys/mutex.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/namei.h @/sys/socket.h @/sys/syscallsubr.h \
+  @/sys/mac.h @/sys/mount.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/vnode.h @/sys/bufobj.h @/sys/selinfo.h \
+  @/sys/acl.h @/vm/uma.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/vm/vm.h machine/vm.h machine/specialreg.h \
+  @/sys/exec.h machine/exec.h @/sys/kernel.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/netinet/in.h @/netinet6/in6.h @/compat/svr4/svr4.h \
+  opt_svr4.h @/compat/svr4/svr4_types.h @/compat/svr4/svr4_syscall.h \
+  @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_socket.h \
+  @/compat/svr4/svr4_sockio.h @/compat/svr4/svr4_errno.h \
+  @/compat/svr4/svr4_proto.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h @/compat/svr4/svr4_util.h @/vm/vm_param.h \
+  machine/vmparam.h @/vm/pmap.h machine/pmap.h
+imgact_svr4.o: /usr/src/sys/modules/svr4/../../compat/svr4/imgact_svr4.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/exec.h machine/exec.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/imgact.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/imgact_aout.h @/sys/kernel.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/mman.h @/vm/vm.h machine/vm.h machine/specialreg.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/resourcevar.h \
+  @/sys/vnode.h @/sys/bufobj.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/selinfo.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/ktr.h vnode_if.h vnode_if_typedef.h vnode_if_newproto.h \
+  @/vm/vm_kern.h @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h \
+  machine/pmap.h @/vm/vm_map.h @/sys/sx.h @/sys/_sx.h @/vm/vm_extern.h \
+  @/compat/svr4/svr4.h opt_svr4.h
+svr4_signal.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_signal.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/filedesc.h @/sys/event.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/sx.h @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/_limits.h @/sys/mutex.h \
+  @/sys/_mutex.h machine/mutex.h @/sys/proc.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/syscallsubr.h @/sys/uio.h @/sys/_iovec.h @/sys/socket.h \
+  @/sys/mac.h @/sys/mount.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h @/sys/sysproto.h \
+  @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/compat/svr4/svr4.h opt_svr4.h @/compat/svr4/svr4_types.h \
+  @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_proto.h \
+  @/compat/svr4/svr4_util.h @/vm/vm.h machine/vm.h machine/specialreg.h \
+  @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h machine/pmap.h \
+  @/sys/exec.h machine/exec.h @/sys/sysent.h \
+  @/compat/svr4/svr4_ucontext.h
+svr4_fcntl.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_fcntl.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/file.h @/sys/refcount.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/_limits.h @/sys/malloc.h @/sys/mount.h \
+  @/sys/ucred.h @/bsm/audit.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h @/sys/mutex.h \
+  machine/mutex.h @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/priv.h \
+  @/sys/proc.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  machine/proc.h @/sys/stat.h @/sys/syscallsubr.h @/sys/socket.h \
+  @/sys/mac.h @/sys/unistd.h @/sys/vnode.h @/sys/bufobj.h @/sys/selinfo.h \
+  @/sys/acl.h @/vm/uma.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/sysproto.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h @/compat/svr4/svr4.h opt_svr4.h \
+  @/compat/svr4/svr4_types.h @/compat/svr4/svr4_signal.h \
+  @/i386/svr4/svr4_machdep.h @/compat/svr4/svr4_siginfo.h \
+  @/compat/svr4/svr4_proto.h @/compat/svr4/svr4_util.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vm_param.h machine/vmparam.h \
+  @/vm/pmap.h machine/pmap.h @/sys/exec.h machine/exec.h @/sys/sysent.h \
+  @/compat/svr4/svr4_fcntl.h @/sys/fcntl.h @/security/mac/mac_framework.h
+svr4_misc.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_misc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/dirent.h @/sys/fcntl.h @/sys/filedesc.h \
+  @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/_limits.h @/sys/imgact.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h @/sys/_mutex.h \
+  @/sys/file.h @/sys/refcount.h @/sys/mman.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/msg.h @/sys/ipc.h @/sys/mutex.h machine/mutex.h @/sys/namei.h \
+  @/sys/priv.h @/sys/proc.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h machine/proc.h @/sys/ptrace.h machine/ptrace.h \
+  @/sys/resourcevar.h @/sys/sem.h @/sys/stat.h @/sys/syscallsubr.h \
+  @/sys/socket.h @/sys/mac.h @/sys/sysproto.h @/sys/acl.h @/vm/uma.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/bsm/audit_kevents.h @/sys/times.h \
+  @/sys/vnode.h @/sys/bufobj.h @/sys/selinfo.h @/sys/ktr.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/sys/wait.h \
+  @/compat/svr4/svr4.h opt_svr4.h @/compat/svr4/svr4_types.h \
+  @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_proto.h \
+  @/compat/svr4/svr4_util.h @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h \
+  machine/pmap.h @/sys/exec.h machine/exec.h @/sys/sysent.h \
+  @/compat/svr4/svr4_sysconfig.h @/compat/svr4/svr4_dirent.h \
+  @/compat/svr4/svr4_acl.h @/compat/svr4/svr4_ulimit.h \
+  @/compat/svr4/svr4_statvfs.h @/compat/svr4/svr4_hrt.h \
+  @/compat/svr4/svr4_mman.h @/compat/svr4/svr4_wait.h \
+  @/security/mac/mac_framework.h @/vm/vm_map.h @/vm/vm_extern.h
+svr4_ioctl.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_ioctl.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/proc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/event.h @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h \
+  @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/resource.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/pcpu.h \
+  @/sys/vmmeter.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/file.h @/sys/refcount.h machine/atomic.h \
+  @/sys/systm.h machine/cpufunc.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/filedesc.h @/sys/lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/lockstat.h @/sys/fcntl.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/socketvar.h @/sys/selinfo.h @/sys/sockbuf.h @/sys/sockstate.h \
+  @/sys/sockopt.h @/compat/svr4/svr4.h opt_svr4.h \
+  @/compat/svr4/svr4_types.h @/compat/svr4/svr4_util.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vm_param.h machine/vmparam.h \
+  @/vm/pmap.h machine/pmap.h @/sys/exec.h machine/exec.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysent.h @/sys/uio.h \
+  @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_proto.h @/sys/acl.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h @/compat/svr4/svr4_stropts.h \
+  @/compat/svr4/svr4_ioctl.h @/compat/svr4/svr4_termios.h \
+  @/compat/svr4/svr4_filio.h @/compat/svr4/svr4_sockio.h
+svr4_stat.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_stat.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/_lock.h @/sys/lock_profile.h @/sys/_mutex.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/stat.h @/sys/filedesc.h @/sys/lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/lockstat.h @/sys/jail.h @/sys/sysctl.h @/sys/mutex.h \
+  machine/mutex.h @/sys/_task.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/malloc.h @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/unistd.h \
+  @/sys/syscallsubr.h @/sys/socket.h @/sys/mac.h @/sys/mount.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/sysproto.h @/sys/acl.h @/vm/uma.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/bsm/audit_kevents.h @/sys/un.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/netinet/in.h @/netinet6/in6.h \
+  @/compat/svr4/svr4.h opt_svr4.h @/compat/svr4/svr4_types.h \
+  @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_proto.h \
+  @/compat/svr4/svr4_util.h @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h \
+  machine/pmap.h @/sys/exec.h machine/exec.h @/sys/sysent.h \
+  @/compat/svr4/svr4_stat.h @/compat/svr4/svr4_ustat.h \
+  @/compat/svr4/svr4_utsname.h @/compat/svr4/svr4_systeminfo.h \
+  @/compat/svr4/svr4_socket.h @/compat/svr4/svr4_time.h
+svr4_filio.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_filio.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/proc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/event.h @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h \
+  @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/resource.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/pcpu.h \
+  @/sys/vmmeter.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/file.h \
+  @/sys/refcount.h @/sys/filio.h @/sys/ioccom.h @/sys/lock.h \
+  @/sys/filedesc.h @/sys/sx.h @/sys/_sx.h @/sys/lockstat.h @/sys/poll.h \
+  @/sys/malloc.h @/sys/mutex.h machine/mutex.h @/sys/resourcevar.h \
+  @/sys/sysproto.h @/sys/acl.h @/vm/uma.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/bsm/audit_kevents.h @/compat/svr4/svr4.h \
+  opt_svr4.h @/compat/svr4/svr4_types.h @/compat/svr4/svr4_util.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/vm_param.h \
+  machine/vmparam.h @/vm/pmap.h machine/pmap.h @/sys/exec.h \
+  machine/exec.h @/sys/module.h @/sys/linker_set.h @/sys/sysent.h \
+  @/sys/uio.h @/sys/_iovec.h @/compat/svr4/svr4_signal.h \
+  @/i386/svr4/svr4_machdep.h @/compat/svr4/svr4_siginfo.h \
+  @/compat/svr4/svr4_proto.h @/compat/svr4/svr4_ioctl.h \
+  @/compat/svr4/svr4_filio.h
+svr4_termios.o:  \
+ /usr/src/sys/modules/svr4/../../compat/svr4/svr4_termios.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/proc.h @/sys/callout.h @/sys/queue.h @/sys/event.h \
+  @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h @/sys/_mutex.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/file.h @/sys/refcount.h \
+  @/sys/filedesc.h @/sys/lock.h @/sys/sx.h @/sys/_sx.h @/sys/lockstat.h \
+  @/sys/termios.h @/sys/ttycom.h @/sys/ioccom.h @/sys/ttydefaults.h \
+  @/sys/sysproto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/bsm/audit_kevents.h @/compat/svr4/svr4.h \
+  opt_svr4.h @/compat/svr4/svr4_util.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h \
+  machine/pmap.h @/sys/exec.h machine/exec.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysent.h @/sys/uio.h @/sys/_iovec.h \
+  @/compat/svr4/svr4_ioctl.h @/compat/svr4/svr4_termios.h
+svr4_stream.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_stream.c \
+  @/sys/cdefs.h opt_compat.h opt_ktrace.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/fcntl.h @/sys/filedesc.h \
+  @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/_limits.h @/sys/filio.h @/sys/ioccom.h @/sys/malloc.h \
+  @/sys/_mutex.h @/sys/file.h @/sys/refcount.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/mutex.h machine/mutex.h @/sys/proc.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/socketvar.h \
+  @/sys/selinfo.h @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h \
+  @/sys/stat.h @/sys/syscallsubr.h @/sys/uio.h @/sys/mac.h @/sys/mount.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysproto.h @/sys/acl.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/bsm/audit_kevents.h @/sys/ktrace.h @/sys/un.h \
+  @/netinet/in.h @/netinet6/in6.h @/compat/svr4/svr4.h opt_svr4.h \
+  @/compat/svr4/svr4_types.h @/compat/svr4/svr4_util.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vm_param.h machine/vmparam.h \
+  @/vm/pmap.h machine/pmap.h @/sys/exec.h machine/exec.h @/sys/sysent.h \
+  @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_proto.h \
+  @/compat/svr4/svr4_stropts.h @/compat/svr4/svr4_timod.h \
+  @/compat/svr4/svr4_sockmod.h @/compat/svr4/svr4_ioctl.h \
+  @/compat/svr4/svr4_socket.h
+svr4_socket.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_socket.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/file.h \
+  @/sys/refcount.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/event.h \
+  @/sys/_sx.h @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h \
+  @/sys/sysproto.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/sys/un.h @/sys/stat.h @/sys/proc.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signalvar.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/compat/svr4/svr4.h opt_svr4.h \
+  @/compat/svr4/svr4_types.h @/compat/svr4/svr4_util.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vm_param.h machine/vmparam.h \
+  @/vm/pmap.h machine/pmap.h @/sys/exec.h machine/exec.h @/sys/module.h \
+  @/sys/sysent.h @/sys/uio.h @/compat/svr4/svr4_socket.h @/netinet/in.h \
+  @/netinet6/in6.h @/compat/svr4/svr4_signal.h @/i386/svr4/svr4_machdep.h \
+  @/compat/svr4/svr4_siginfo.h @/compat/svr4/svr4_sockmod.h \
+  @/compat/svr4/svr4_proto.h
+svr4_sockio.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_sockio.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/proc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/event.h @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h \
+  @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/resource.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/pcpu.h \
+  @/sys/vmmeter.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/file.h \
+  @/sys/refcount.h @/sys/filedesc.h @/sys/lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/lockstat.h @/sys/sockio.h @/sys/ioccom.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/eventhandler.h @/sys/ktr.h @/sys/mutex.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/compat/svr4/svr4.h \
+  opt_svr4.h @/compat/svr4/svr4_util.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h \
+  machine/pmap.h @/sys/exec.h machine/exec.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysent.h @/sys/uio.h \
+  @/compat/svr4/svr4_ioctl.h @/compat/svr4/svr4_sockio.h
+svr4_machdep.o: /usr/src/sys/modules/svr4/../../i386/svr4/svr4_machdep.c \
+  @/sys/cdefs.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/exec.h machine/exec.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/filedesc.h @/sys/event.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/sx.h @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/_limits.h @/sys/mutex.h \
+  @/sys/_mutex.h machine/mutex.h @/sys/proc.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  machine/cpu.h machine/psl.h machine/frame.h machine/reg.h \
+  machine/specialreg.h machine/sysarch.h machine/vm86.h machine/vmparam.h \
+  @/vm/vm.h machine/vm.h @/vm/pmap.h machine/pmap.h @/compat/svr4/svr4.h \
+  opt_svr4.h @/compat/svr4/svr4_types.h @/compat/svr4/svr4_signal.h \
+  @/i386/svr4/svr4_machdep.h @/compat/svr4/svr4_siginfo.h \
+  @/compat/svr4/svr4_ucontext.h @/compat/svr4/svr4_proto.h @/sys/acl.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h @/compat/svr4/svr4_util.h @/vm/vm_param.h \
+  @/sys/sysent.h @/sys/uio.h @/sys/_iovec.h
+svr4_resource.o:  \
+ /usr/src/sys/modules/svr4/../../compat/svr4/svr4_resource.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/file.h @/sys/refcount.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/resourcevar.h @/sys/syscallsubr.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h \
+  @/compat/svr4/svr4.h opt_svr4.h @/compat/svr4/svr4_types.h \
+  @/compat/svr4/svr4_resource.h @/compat/svr4/svr4_signal.h \
+  @/i386/svr4/svr4_machdep.h @/compat/svr4/svr4_siginfo.h \
+  @/compat/svr4/svr4_proto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/bsm/audit_kevents.h \
+  @/compat/svr4/svr4_util.h @/vm/vm.h machine/vm.h machine/specialreg.h \
+  @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h machine/pmap.h \
+  @/sys/exec.h machine/exec.h @/sys/sysent.h
+svr4_ipc.o: /usr/src/sys/modules/svr4/../../compat/svr4/svr4_ipc.c \
+  @/sys/cdefs.h opt_sysvipc.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/ipc.h @/sys/msg.h @/sys/proc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/event.h @/sys/condvar.h @/sys/_lock.h \
+  @/sys/lock_profile.h @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sem.h @/sys/shm.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/sys/syscallsubr.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/socket.h @/sys/mac.h @/sys/mount.h \
+  @/sys/lock.h @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h \
+  @/sys/module.h @/sys/linker_set.h @/sys/sysproto.h @/sys/acl.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/compat/svr4/svr4.h \
+  opt_svr4.h @/compat/svr4/svr4_types.h @/compat/svr4/svr4_signal.h \
+  @/i386/svr4/svr4_machdep.h @/compat/svr4/svr4_siginfo.h \
+  @/compat/svr4/svr4_proto.h @/compat/svr4/svr4_util.h @/vm/vm_param.h \
+  machine/vmparam.h @/vm/pmap.h machine/pmap.h @/sys/exec.h \
+  machine/exec.h @/sys/sysent.h @/compat/svr4/svr4_ipc.h

@@ -1,0 +1,128 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/nfslockd/../../nlm/nlm_advlock.c /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_clnt.c /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_impl.c /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_server.c /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_svc.c /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_xdr.c /usr/src/sys/modules/nfslockd/../../nlm/sm_inter_xdr.c
+nlm_advlock.o: /usr/src/sys/modules/nfslockd/../../nlm/nlm_advlock.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/fcntl.h @/sys/jail.h @/sys/queue.h @/sys/sysctl.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/_task.h @/sys/osd.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/limits.h machine/_limits.h \
+  @/sys/lockf.h @/sys/_sx.h @/sys/malloc.h @/sys/mbuf.h @/sys/systm.h \
+  @/sys/callout.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/vm/uma.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  machine/proc.h @/sys/syslog.h @/sys/unistd.h @/sys/vnode.h \
+  @/sys/bufobj.h @/sys/selinfo.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h \
+  @/sys/ktr.h vnode_if.h vnode_if_typedef.h vnode_if_newproto.h \
+  @/nfs/nfsproto.h @/nfsclient/nfs.h opt_nfs.h @/nfsclient/nfsargs.h \
+  @/nfsclient/nfsstats.h @/nfsclient/nfsnode.h @/nfsclient/nfsmount.h \
+  @/rpc/types.h @/rpc/netconfig.h @/rpc/auth.h @/rpc/xdr.h \
+  @/rpc/clnt_stat.h @/sys/socket.h @/rpc/clnt.h @/sys/refcount.h \
+  @/sys/un.h @/rpc/rpcsec_gss.h @/kgssapi/gssapi.h @/nlm/nlm_prot.h \
+  @/rpc/rpc.h @/netinet/in.h @/netinet6/in6.h @/rpc/rpc_msg.h @/rpc/svc.h \
+  @/rpc/svc_auth.h @/rpc/pmap_prot.h @/rpc/rpcb_clnt.h @/nlm/nlm.h
+nlm_prot_clnt.o: /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_clnt.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/lock.h @/sys/queue.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/atomic.h machine/cpufunc.h machine/mutex.h \
+  @/sys/systm.h @/sys/callout.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/nlm/nlm_prot.h @/rpc/rpc.h @/rpc/types.h \
+  @/rpc/netconfig.h @/sys/socket.h @/sys/_iovec.h @/netinet/in.h \
+  @/netinet6/in6.h @/rpc/xdr.h @/rpc/auth.h @/rpc/clnt_stat.h \
+  @/rpc/clnt.h @/sys/refcount.h @/sys/un.h @/rpc/rpc_msg.h @/rpc/svc.h \
+  @/sys/_sx.h @/sys/condvar.h @/sys/sysctl.h @/rpc/svc_auth.h \
+  @/rpc/pmap_prot.h @/rpc/rpcb_clnt.h
+nlm_prot_impl.o: /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_impl.c \
+  opt_inet6.h @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/fcntl.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/queue.h @/sys/kthread.h @/sys/lockf.h @/sys/_lock.h @/sys/_sx.h \
+  @/sys/malloc.h @/sys/_mutex.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lock.h @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h \
+  @/sys/module.h @/sys/priv.h @/sys/proc.h @/sys/callout.h @/sys/event.h \
+  @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  machine/proc.h @/sys/socket.h @/sys/_iovec.h @/sys/socketvar.h \
+  @/sys/selinfo.h @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h \
+  @/sys/syscall.h @/sys/sysctl.h @/sys/sysent.h @/sys/syslog.h \
+  @/sys/sysproto.h @/sys/acl.h @/vm/uma.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/bsm/audit_kevents.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/taskqueue.h @/sys/_task.h @/sys/unistd.h @/sys/vnode.h \
+  @/sys/bufobj.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/uio.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/nfs/nfsproto.h @/nfsclient/nfs.h opt_nfs.h \
+  @/nfsclient/nfsargs.h @/nfsclient/nfsstats.h @/nfsclient/nfsnode.h \
+  @/nlm/nlm_prot.h @/rpc/rpc.h @/rpc/types.h @/rpc/netconfig.h \
+  @/netinet/in.h @/netinet6/in6.h @/rpc/xdr.h @/rpc/auth.h \
+  @/rpc/clnt_stat.h @/rpc/clnt.h @/sys/refcount.h @/sys/un.h \
+  @/rpc/rpc_msg.h @/rpc/svc.h @/rpc/svc_auth.h @/rpc/pmap_prot.h \
+  @/rpc/rpcb_clnt.h @/nlm/sm_inter.h @/nlm/nlm.h @/rpc/rpc_com.h \
+  @/rpc/rpcb_prot.h
+nlm_prot_server.o:  \
+ /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_server.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/malloc.h @/sys/queue.h @/sys/_lock.h @/sys/_mutex.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/nlm/nlm_prot.h @/rpc/rpc.h \
+  @/rpc/types.h @/rpc/netconfig.h @/sys/socket.h @/sys/_iovec.h \
+  @/netinet/in.h @/netinet6/in6.h @/rpc/xdr.h @/rpc/auth.h \
+  @/rpc/clnt_stat.h @/rpc/clnt.h @/sys/refcount.h @/sys/un.h \
+  @/rpc/rpc_msg.h @/rpc/svc.h @/sys/_sx.h @/sys/condvar.h @/sys/sysctl.h \
+  @/rpc/svc_auth.h @/rpc/pmap_prot.h @/rpc/rpcb_clnt.h @/nlm/nlm.h
+nlm_prot_svc.o: /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_svc.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/nlm/nlm_prot.h @/rpc/rpc.h @/rpc/types.h \
+  @/rpc/netconfig.h @/sys/socket.h @/sys/_iovec.h @/netinet/in.h \
+  @/netinet6/in6.h @/rpc/xdr.h @/rpc/auth.h @/rpc/clnt_stat.h \
+  @/rpc/clnt.h @/sys/refcount.h @/sys/un.h @/rpc/rpc_msg.h @/rpc/svc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/_sx.h @/sys/condvar.h @/sys/sysctl.h \
+  @/rpc/svc_auth.h @/rpc/pmap_prot.h @/rpc/rpcb_clnt.h @/nlm/nlm.h
+nlm_prot_xdr.o: /usr/src/sys/modules/nfslockd/../../nlm/nlm_prot_xdr.c \
+  @/nlm/nlm_prot.h @/rpc/rpc.h @/rpc/types.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/_null.h @/sys/time.h @/rpc/netconfig.h @/sys/socket.h \
+  @/sys/_iovec.h machine/param.h @/netinet/in.h @/netinet6/in6.h \
+  @/rpc/xdr.h @/rpc/auth.h @/rpc/clnt_stat.h @/rpc/clnt.h \
+  @/sys/refcount.h machine/atomic.h @/sys/systm.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/un.h @/rpc/rpc_msg.h @/rpc/svc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/_sx.h @/sys/condvar.h @/sys/sysctl.h \
+  @/rpc/svc_auth.h @/rpc/pmap_prot.h @/rpc/rpcb_clnt.h
+sm_inter_xdr.o: /usr/src/sys/modules/nfslockd/../../nlm/sm_inter_xdr.c \
+  @/nlm/sm_inter.h @/rpc/rpc.h @/rpc/types.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/_null.h @/sys/time.h @/rpc/netconfig.h @/sys/socket.h \
+  @/sys/_iovec.h machine/param.h @/netinet/in.h @/netinet6/in6.h \
+  @/rpc/xdr.h @/rpc/auth.h @/rpc/clnt_stat.h @/rpc/clnt.h \
+  @/sys/refcount.h machine/atomic.h @/sys/systm.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/un.h @/rpc/rpc_msg.h @/rpc/svc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/_sx.h @/sys/condvar.h @/sys/sysctl.h \
+  @/rpc/svc_auth.h @/rpc/pmap_prot.h @/rpc/rpcb_clnt.h

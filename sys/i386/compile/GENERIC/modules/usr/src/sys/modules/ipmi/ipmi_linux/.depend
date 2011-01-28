@@ -1,0 +1,22 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/ipmi/ipmi_linux/../../../dev/ipmi/ipmi_linux.c
+ipmi_linux.o:  \
+ /usr/src/sys/modules/ipmi/ipmi_linux/../../../dev/ipmi/ipmi_linux.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/module.h @/sys/file.h \
+  @/sys/refcount.h @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h machine/../linux/linux.h @/i386/linux/linux_syscall.h \
+  machine/../linux/linux_proto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/bsm/audit_kevents.h \
+  @/compat/linux/linux_ioctl.h @/sys/ioccom.h @/sys/ipmi.h

@@ -1,0 +1,151 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_bmap.c /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_lookup.c /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_node.c /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_rrip.c /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_util.c /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_vfsops.c /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_vnops.c
+cd9660_bmap.o: /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_bmap.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/vnode.h @/sys/bufobj.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/lock.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/selinfo.h \
+  @/sys/event.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/module.h @/sys/linker_set.h @/fs/cd9660/iso.h \
+  @/fs/cd9660/cd9660_node.h
+cd9660_lookup.o:  \
+ /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_lookup.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/bio.h \
+  @/sys/buf.h @/sys/bufobj.h @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/mutex.h @/sys/lockstat.h machine/mutex.h @/sys/vnode.h \
+  @/sys/selinfo.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/ktr.h \
+  vnode_if.h vnode_if_typedef.h vnode_if_newproto.h @/sys/mount.h \
+  @/sys/module.h @/sys/linker_set.h @/fs/cd9660/iso.h \
+  @/fs/cd9660/cd9660_node.h @/fs/cd9660/iso_rrip.h
+cd9660_node.o: /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_node.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_mutex.h \
+  @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h @/sys/bio.h \
+  @/sys/buf.h @/sys/bufobj.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/ucontext.h machine/ucontext.h machine/proc.h \
+  @/sys/mutex.h @/sys/lockstat.h machine/mutex.h @/sys/vnode.h \
+  @/sys/selinfo.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/stat.h @/fs/cd9660/iso.h \
+  @/fs/cd9660/cd9660_node.h @/fs/cd9660/cd9660_mount.h
+cd9660_rrip.o: /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_rrip.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bio.h @/sys/buf.h @/sys/bufobj.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/lock.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/mutex.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/jail.h @/sys/sysctl.h @/sys/_task.h @/sys/vnode.h \
+  @/sys/selinfo.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/mount.h @/sys/module.h @/sys/linker_set.h \
+  @/sys/kernel.h @/fs/cd9660/iso.h @/fs/cd9660/cd9660_node.h \
+  @/fs/cd9660/cd9660_rrip.h @/fs/cd9660/iso_rrip.h
+cd9660_util.o: /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_util.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_mutex.h \
+  @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h @/sys/vnode.h \
+  @/sys/bufobj.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/selinfo.h \
+  @/sys/event.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/iconv.h @/sys/kobj.h @/sys/sysctl.h \
+  @/fs/cd9660/iso.h @/fs/cd9660/cd9660_mount.h
+cd9660_vfsops.o:  \
+ /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_vfsops.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/priv.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/_lock.h \
+  @/sys/lock_profile.h @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/vnode.h @/sys/bufobj.h @/sys/lock.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/mutex.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/selinfo.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/mount.h @/sys/module.h @/sys/bio.h \
+  @/sys/buf.h @/sys/cdio.h @/sys/ioccom.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/fcntl.h @/sys/stat.h @/sys/syslog.h \
+  @/sys/iconv.h @/sys/kobj.h @/sys/sysctl.h @/fs/cd9660/iso.h \
+  @/fs/cd9660/iso_rrip.h @/fs/cd9660/cd9660_node.h \
+  @/fs/cd9660/cd9660_mount.h @/geom/geom.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/sbuf.h @/geom/geom_vfs.h
+cd9660_vnops.o:  \
+ /usr/src/sys/modules/cd9660/../../fs/cd9660/cd9660_vnops.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/stat.h @/sys/bio.h @/sys/buf.h @/sys/bufobj.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/mount.h @/sys/module.h \
+  @/sys/vnode.h @/sys/selinfo.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  vnode_if.h vnode_if_typedef.h vnode_if_newproto.h @/fs/fifofs/fifo.h \
+  @/sys/dirent.h @/sys/unistd.h @/sys/filio.h @/sys/ioccom.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vnode_pager.h @/fs/cd9660/iso.h \
+  @/fs/cd9660/cd9660_node.h @/fs/cd9660/iso_rrip.h

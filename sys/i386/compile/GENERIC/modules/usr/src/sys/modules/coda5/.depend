@@ -1,0 +1,127 @@
+# -nostdinc -DCODA5_MODULE -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/coda5/../../fs/coda/coda_fbsd.c /usr/src/sys/modules/coda5/../../fs/coda/coda_psdev.c /usr/src/sys/modules/coda5/../../fs/coda/coda_subr.c /usr/src/sys/modules/coda5/../../fs/coda/coda_venus.c /usr/src/sys/modules/coda5/../../fs/coda/coda_vfsops.c /usr/src/sys/modules/coda5/../../fs/coda/coda_vnops.c
+coda_fbsd.o: /usr/src/sys/modules/coda5/../../fs/coda/coda_fbsd.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/fcntl.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/module.h @/sys/ucred.h @/bsm/audit.h @/sys/vnode.h @/sys/bufobj.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/selinfo.h \
+  @/sys/event.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h @/vm/uma.h \
+  vnode_if.h vnode_if_typedef.h vnode_if_newproto.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vnode_pager.h @/fs/coda/coda.h \
+  opt_coda.h @/fs/coda/cnode.h @/fs/coda/coda_vnops.h \
+  @/fs/coda/coda_psdev.h
+coda_psdev.o: /usr/src/sys/modules/coda5/../../fs/coda/coda_psdev.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/ioccom.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/file.h @/sys/refcount.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/poll.h @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h machine/proc.h @/sys/filedesc.h \
+  @/sys/sx.h @/sys/_sx.h @/fs/coda/coda.h opt_coda.h @/fs/coda/cnode.h \
+  @/sys/vnode.h @/sys/bufobj.h @/sys/selinfo.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/acl.h @/vm/uma.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/fs/coda/coda_io.h @/fs/coda/coda_psdev.h
+coda_subr.o: /usr/src/sys/modules/coda5/../../fs/coda/coda_subr.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/lock.h @/sys/_lock.h @/sys/malloc.h \
+  @/sys/_mutex.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/mount.h \
+  @/sys/ucred.h @/bsm/audit.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h @/fs/coda/coda.h \
+  opt_coda.h @/fs/coda/cnode.h @/sys/vnode.h @/sys/bufobj.h \
+  @/sys/selinfo.h @/sys/event.h @/sys/uio.h @/sys/_iovec.h @/sys/acl.h \
+  @/vm/uma.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/fs/coda/coda_subr.h
+coda_venus.o: /usr/src/sys/modules/coda5/../../fs/coda/coda_venus.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/fcntl.h @/sys/ioccom.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/malloc.h @/sys/_mutex.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/sx.h @/sys/_sx.h @/fs/coda/coda.h opt_coda.h \
+  @/fs/coda/cnode.h @/sys/vnode.h @/sys/bufobj.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/selinfo.h @/sys/uio.h \
+  @/sys/_iovec.h @/sys/acl.h @/vm/uma.h @/sys/ktr.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/fs/coda/coda_venus.h \
+  @/fs/coda/coda_pioctl.h
+coda_vfsops.o: /usr/src/sys/modules/coda5/../../fs/coda/coda_vfsops.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/fcntl.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/mount.h @/sys/ucred.h @/bsm/audit.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h @/sys/namei.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h machine/proc.h \
+  @/fs/coda/coda.h opt_coda.h @/fs/coda/cnode.h @/sys/vnode.h \
+  @/sys/bufobj.h @/sys/selinfo.h @/sys/acl.h @/vm/uma.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/fs/coda/coda_vfsops.h \
+  @/fs/coda/coda_venus.h @/fs/coda/coda_subr.h @/fs/coda/coda_opstats.h
+coda_vnops.o: /usr/src/sys/modules/coda5/../../fs/coda/coda_vnops.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/acct.h @/sys/fcntl.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/lock.h @/sys/_lock.h @/sys/malloc.h \
+  @/sys/_mutex.h @/sys/file.h @/sys/refcount.h @/sys/mount.h \
+  @/sys/ucred.h @/bsm/audit.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/module.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  machine/proc.h @/sys/unistd.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/vm_object.h @/vm/vm_extern.h @/fs/coda/coda.h \
+  opt_coda.h @/fs/coda/cnode.h @/sys/vnode.h @/sys/bufobj.h \
+  @/sys/selinfo.h @/sys/acl.h @/vm/uma.h @/sys/ktr.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/fs/coda/coda_vnops.h \
+  @/fs/coda/coda_venus.h @/fs/coda/coda_opstats.h @/fs/coda/coda_subr.h \
+  @/fs/coda/coda_pioctl.h

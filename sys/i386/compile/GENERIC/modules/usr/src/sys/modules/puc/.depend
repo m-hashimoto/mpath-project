@@ -1,0 +1,80 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/puc/../../dev/puc/puc.c /usr/src/sys/modules/puc/../../dev/puc/puc_cfg.c /usr/src/sys/modules/puc/../../dev/puc/puc_pci.c /usr/src/sys/modules/puc/../../dev/puc/puc_pccard.c /usr/src/sys/modules/puc/../../dev/puc/pucdata.c serdev_if.c
+puc.o: /usr/src/sys/modules/puc/../../dev/puc/puc.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/malloc.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  machine/resource.h @/sys/rman.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h \
+  pci_if.h @/dev/puc/puc_bus.h @/sys/serial.h serdev_if.h \
+  @/dev/puc/puc_cfg.h @/dev/puc/puc_bfe.h
+puc_cfg.o: /usr/src/sys/modules/puc/../../dev/puc/puc_cfg.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/dev/puc/puc_bus.h @/sys/serial.h serdev_if.h @/dev/puc/puc_cfg.h \
+  @/dev/puc/puc_bfe.h
+puc_pci.o: /usr/src/sys/modules/puc/../../dev/puc/puc_pci.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/module.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/malloc.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  machine/resource.h @/sys/rman.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h \
+  pci_if.h @/dev/puc/puc_cfg.h @/dev/puc/puc_bfe.h
+puc_pccard.o: /usr/src/sys/modules/puc/../../dev/puc/puc_pccard.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/malloc.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  machine/resource.h @/sys/rman.h @/dev/pccard/pccardvar.h card_if.h \
+  @/dev/puc/puc_cfg.h @/dev/puc/puc_bfe.h
+pucdata.o: /usr/src/sys/modules/puc/../../dev/puc/pucdata.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h machine/resource.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h @/dev/pci/pcivar.h pci_if.h @/dev/puc/puc_bus.h \
+  @/sys/serial.h serdev_if.h @/dev/puc/puc_cfg.h @/dev/puc/puc_bfe.h
+serdev_if.o: serdev_if.c @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/queue.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/kobj.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h device_if.h bus_if.h @/sys/serial.h serdev_if.h

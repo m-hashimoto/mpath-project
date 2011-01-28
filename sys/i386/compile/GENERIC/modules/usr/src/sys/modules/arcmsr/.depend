@@ -1,0 +1,28 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/arcmsr/../../dev/arcmsr/arcmsr.c
+arcmsr.o: /usr/src/sys/modules/arcmsr/../../dev/arcmsr/arcmsr.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/stat.h \
+  @/sys/devicestat.h @/sys/kthread.h @/sys/module.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/lock.h @/sys/sysctl.h \
+  @/sys/poll.h @/sys/ioccom.h @/vm/vm.h machine/vm.h machine/specialreg.h \
+  @/vm/vm_param.h machine/vmparam.h @/vm/pmap.h machine/pmap.h \
+  @/isa/rtc.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/resource.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h @/sys/rman.h \
+  @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h @/cam/cam_debug.h \
+  @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h @/cam/cam_sim.h \
+  @/cam/cam_xpt_sim.h @/cam/cam_xpt.h @/cam/cam_queue.h \
+  @/cam/scsi/scsi_message.h @/sys/selinfo.h @/sys/endian.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/arcmsr/arcmsr.h

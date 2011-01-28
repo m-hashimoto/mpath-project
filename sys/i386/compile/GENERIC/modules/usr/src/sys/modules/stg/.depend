@@ -1,0 +1,102 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/stg/../../dev/stg/tmc18c30.c /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_subr.c /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_isa.c /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_pccard.c /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_pci.c
+tmc18c30.o: /usr/src/sys/modules/stg/../../dev/stg/tmc18c30.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/bio.h \
+  @/sys/buf.h @/sys/bufobj.h @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/mutex.h @/sys/lockstat.h machine/mutex.h @/sys/malloc.h \
+  machine/cpu.h machine/psl.h machine/frame.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  @/compat/netbsd/dvcfg.h @/compat/netbsd/physio_proc.h \
+  @/cam/scsi/scsi_low.h @/sys/device_port.h @/sys/module.h @/sys/bus.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/kdb.h machine/setjmp.h \
+  @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h @/cam/cam_debug.h \
+  @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h \
+  @/cam/cam_sim.h @/cam/cam_xpt_sim.h @/cam/cam_xpt.h @/cam/cam_queue.h \
+  @/cam/scsi/scsi_dvcfg.h @/i386/isa/ccbque.h @/dev/stg/tmc18c30reg.h \
+  @/dev/stg/tmc18c30var.h
+tmc18c30_subr.o: /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_subr.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/module.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/cam/scsi/scsi_low.h @/sys/device_port.h @/sys/kdb.h \
+  machine/setjmp.h @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h \
+  @/cam/cam_debug.h @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h \
+  @/sys/ioccom.h @/cam/cam_sim.h @/cam/cam_xpt_sim.h @/cam/cam_xpt.h \
+  @/cam/cam_queue.h @/cam/scsi/scsi_dvcfg.h @/i386/isa/ccbque.h \
+  @/cam/scsi/scsi_low_pisa.h @/dev/stg/tmc18c30reg.h \
+  @/dev/stg/tmc18c30var.h @/dev/stg/tmc18c30.h
+tmc18c30_isa.o: /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_isa.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/cam/scsi/scsi_low.h @/sys/device_port.h @/sys/kdb.h \
+  machine/setjmp.h @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h \
+  @/cam/cam_debug.h @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h \
+  @/sys/ioccom.h @/cam/cam_sim.h @/cam/cam_xpt_sim.h @/cam/cam_xpt.h \
+  @/cam/cam_queue.h @/cam/scsi/scsi_dvcfg.h @/i386/isa/ccbque.h \
+  @/cam/scsi/scsi_low_pisa.h @/dev/stg/tmc18c30reg.h \
+  @/dev/stg/tmc18c30var.h @/dev/stg/tmc18c30.h
+tmc18c30_pccard.o:  \
+ /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_pccard.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/module.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  @/compat/netbsd/dvcfg.h @/sys/device_port.h @/sys/bus.h \
+  machine/_limits.h @/sys/kobj.h device_if.h bus_if.h \
+  @/dev/pccard/pccardvar.h card_if.h @/cam/scsi/scsi_low.h @/sys/kdb.h \
+  machine/setjmp.h @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h \
+  @/cam/cam_debug.h @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h \
+  @/sys/ioccom.h @/cam/cam_sim.h @/cam/cam_xpt_sim.h @/cam/cam_xpt.h \
+  @/cam/cam_queue.h @/cam/scsi/scsi_dvcfg.h @/i386/isa/ccbque.h \
+  @/cam/scsi/scsi_low_pisa.h @/dev/stg/tmc18c30reg.h \
+  @/dev/stg/tmc18c30var.h @/dev/stg/tmc18c30.h pccarddevs.h
+tmc18c30_pci.o: /usr/src/sys/modules/stg/../../dev/stg/tmc18c30_pci.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  @/cam/scsi/scsi_low.h @/sys/device_port.h @/sys/kdb.h machine/setjmp.h \
+  @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h @/cam/cam_debug.h \
+  @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h \
+  @/cam/cam_sim.h @/cam/cam_xpt_sim.h @/cam/cam_xpt.h @/cam/cam_queue.h \
+  @/cam/scsi/scsi_dvcfg.h @/i386/isa/ccbque.h @/cam/scsi/scsi_low_pisa.h \
+  @/dev/stg/tmc18c30reg.h @/dev/stg/tmc18c30var.h @/dev/stg/tmc18c30.h

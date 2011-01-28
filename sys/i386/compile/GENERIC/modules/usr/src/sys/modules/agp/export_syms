@@ -1,0 +1,1 @@
+agp_find_device agp_state agp_acquire agp_release agp_enable agp_alloc_memory agp_free_memory agp_bind_memory agp_unbind_memory agp_memory_info

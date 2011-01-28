@@ -1,0 +1,751 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/wlan/../../net80211/ieee80211.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_action.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_ageq.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_crypto.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_crypto_none.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_dfs.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_freebsd.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_input.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_ioctl.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_mesh.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_node.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_output.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_phy.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_power.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_proto.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_scan.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_scan_sta.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_radiotap.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_regdomain.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_ht.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_hwmp.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_adhoc.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_hostap.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_monitor.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_sta.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_wds.c /usr/src/sys/modules/wlan/../../net80211/ieee80211_ddb.c
+ieee80211.o: /usr/src/sys/modules/wlan/../../net80211/ieee80211.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_dl.h @/net/if_media.h \
+  @/net/if_types.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_regdomain.h \
+  @/net/bpf.h
+ieee80211_action.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_action.c \
+  @/sys/cdefs.h opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_action.h \
+  @/net80211/ieee80211_mesh.h
+ieee80211_ageq.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_ageq.c @/sys/cdefs.h \
+  opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h @/sys/_iovec.h \
+  @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/ethernet.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h
+ieee80211_crypto.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_crypto.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/mbuf.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/vm/uma.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/ethernet.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h
+ieee80211_crypto_none.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_crypto_none.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/module.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h
+ieee80211_dfs.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_dfs.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/endian.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysctl.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/taskqueue.h @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h
+ieee80211_freebsd.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_freebsd.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/linker.h \
+  machine/elf.h @/sys/elf32.h @/sys/elf_common.h @/sys/elf_generic.h \
+  @/sys/kobj.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/module.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sysctl.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/bpf.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_dl.h @/net/if_clone.h \
+  @/net/if_media.h @/net/if_types.h @/net/ethernet.h @/net/route.h \
+  @/net/radix.h @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/taskqueue.h @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_input.h
+ieee80211_input.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_input.c @/sys/cdefs.h \
+  opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/endian.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_llc.h @/net/if_media.h @/net/if_vlan_var.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/net80211/ieee80211_input.h @/net80211/ieee80211_mesh.h @/net/bpf.h \
+  machine/stdarg.h
+ieee80211_ioctl.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_ioctl.c @/sys/cdefs.h \
+  opt_inet.h opt_ipx.h opt_wlan.h @/sys/endian.h @/sys/_types.h \
+  machine/_types.h machine/endian.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/queue.h @/sys/priv.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/net/if.h @/net/if_var.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_dl.h @/net/if_media.h @/net/ethernet.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/if_ether.h @/net/if_arp.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/net80211/ieee80211_regdomain.h @/net80211/ieee80211_input.h
+ieee80211_mesh.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_mesh.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/endian.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysctl.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_llc.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_action.h \
+  @/net80211/ieee80211_input.h @/net80211/ieee80211_mesh.h
+ieee80211_node.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_node.c @/sys/cdefs.h \
+  opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h @/sys/_iovec.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/ethernet.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/net80211/ieee80211_input.h @/net80211/ieee80211_wds.h \
+  @/net80211/ieee80211_mesh.h @/net/bpf.h
+ieee80211_output.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_output.c \
+  @/sys/cdefs.h opt_inet.h opt_inet6.h opt_wlan.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/endian.h @/sys/socket.h @/sys/_iovec.h \
+  @/net/bpf.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_llc.h @/net/if_media.h @/net/if_vlan_var.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/net80211/ieee80211_regdomain.h @/net80211/ieee80211_wds.h \
+  @/net80211/ieee80211_mesh.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/if_ether.h @/net/if_arp.h @/netinet/in_systm.h @/netinet/ip.h \
+  @/netinet/ip6.h @/security/mac/mac_framework.h @/sys/acl.h
+ieee80211_phy.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_phy.c @/sys/cdefs.h \
+  opt_inet.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/socket.h @/sys/_iovec.h \
+  @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h
+ieee80211_power.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_power.c @/sys/cdefs.h \
+  opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h @/sys/_iovec.h \
+  @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/ethernet.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h @/net/bpf.h
+ieee80211_proto.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_proto.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/net/if.h @/net/if_var.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_adhoc.h \
+  @/net80211/ieee80211_sta.h @/net80211/ieee80211_hostap.h \
+  @/net80211/ieee80211_wds.h @/net80211/ieee80211_mesh.h \
+  @/net80211/ieee80211_monitor.h @/net80211/ieee80211_input.h
+ieee80211_scan.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_scan.c @/sys/cdefs.h \
+  opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/_lock.h \
+  @/sys/lock_profile.h @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/socket.h @/sys/_iovec.h @/net/if.h \
+  @/net/if_var.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/ethernet.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h @/net/bpf.h
+ieee80211_scan_sta.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_scan_sta.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_input.h \
+  @/net80211/ieee80211_regdomain.h @/net80211/ieee80211_mesh.h \
+  @/net/bpf.h
+ieee80211_radiotap.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_radiotap.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/endian.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/bpf.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_llc.h @/net/if_media.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h
+ieee80211_regdomain.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_regdomain.c \
+  @/sys/cdefs.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/net80211/ieee80211_regdomain.h
+ieee80211_ht.o: /usr/src/sys/modules/wlan/../../net80211/ieee80211_ht.c \
+  @/sys/cdefs.h opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/ethernet.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_action.h \
+  @/net80211/ieee80211_input.h
+ieee80211_hwmp.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_hwmp.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/endian.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysctl.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_llc.h @/net/ethernet.h @/net/bpf.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_action.h \
+  @/net80211/ieee80211_input.h @/net80211/ieee80211_mesh.h
+ieee80211_adhoc.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_adhoc.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/endian.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysctl.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_llc.h @/net/ethernet.h @/net/bpf.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_adhoc.h \
+  @/net80211/ieee80211_input.h
+ieee80211_hostap.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_hostap.c \
+  @/sys/cdefs.h opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h \
+  @/sys/ioccom.h @/sys/endian.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sysctl.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_llc.h \
+  @/net/ethernet.h @/net/bpf.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_hostap.h \
+  @/net80211/ieee80211_input.h @/net80211/ieee80211_wds.h
+ieee80211_monitor.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_monitor.c \
+  @/sys/cdefs.h opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h \
+  @/sys/ioccom.h @/sys/endian.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sysctl.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_llc.h \
+  @/net/ethernet.h @/net/bpf.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_monitor.h
+ieee80211_sta.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_sta.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/endian.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysctl.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_llc.h @/net/ethernet.h @/net/bpf.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_sta.h \
+  @/net80211/ieee80211_input.h
+ieee80211_wds.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_wds.c @/sys/cdefs.h \
+  opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/endian.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sysctl.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_llc.h @/net/ethernet.h @/net/bpf.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/sys/taskqueue.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net80211/ieee80211_wds.h \
+  @/net80211/ieee80211_input.h
+ieee80211_ddb.o:  \
+ /usr/src/sys/modules/wlan/../../net80211/ieee80211_ddb.c @/sys/cdefs.h \
+  opt_ddb.h opt_wlan.h

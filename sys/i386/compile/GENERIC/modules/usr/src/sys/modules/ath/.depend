@@ -1,0 +1,1428 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -I. -I/usr/src/sys/modules/ath/../../dev/ath -I/usr/src/sys/modules/ath/../../dev/ath/ath_hal -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/ath/../../dev/ath/if_ath.c /usr/src/sys/modules/ath/../../dev/ath/if_ath_pci.c /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_regdomain.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v1.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_attach.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_beacon.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_interrupts.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_keycache.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_misc.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_phy.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_power.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_recv.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_reset.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_xmit.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_attach.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_beacon.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_interrupts.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_keycache.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_misc.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_phy.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_power.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_recv.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_reset.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_xmit.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_ani.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_attach.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_beacon.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_eeprom.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_gpio.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_interrupts.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_keycache.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_misc.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_phy.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_power.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_recv.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_reset.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_rfgain.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_xmit.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5111.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5112.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar2413.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar2425.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5413.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_ani.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_attach.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_beacon.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal_iq.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal_adcgain.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal_adcdc.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_eeprom.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_gpio.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_interrupts.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_keycache.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_misc.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_phy.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_power.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_recv.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_reset.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_xmit.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar9160_attach.c /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar2133.c /usr/src/sys/modules/ath/../../dev/ath/ath_rate/sample/sample.c
+if_ath.o: /usr/src/sys/modules/ath/../../dev/ath/if_ath.c @/sys/cdefs.h \
+  opt_inet.h opt_ath.h opt_wlan.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/sysctl.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/endian.h @/sys/kthread.h @/sys/taskqueue.h @/sys/_task.h \
+  @/sys/priv.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/ktr.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/contrib/altq/altq/if_altq.h @/net/if_dl.h \
+  @/net/if_media.h @/net/if_types.h @/net/if_arp.h @/net/ethernet.h \
+  @/net/if_llc.h @/net80211/ieee80211_var.h \
+  @/net80211/ieee80211_freebsd.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/net80211/ieee80211_regdomain.h @/net/bpf.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/if_ether.h @/dev/ath/if_athvar.h \
+  @/dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h \
+  @/dev/ath/ath_hal/ah_desc.h opt_ah.h @/dev/ath/if_athioctl.h \
+  @/dev/ath/if_athrate.h @/dev/ath/ath_hal/ah_devid.h
+if_ath_pci.o: /usr/src/sys/modules/ath/../../dev/ath/if_ath_pci.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/module.h @/sys/linker_set.h @/sys/kernel.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/_bus_dma.h machine/resource.h @/sys/bus.h machine/_limits.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/rman.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/eventhandler.h @/sys/ktr.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_arp.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/net80211/_ieee80211.h \
+  @/net80211/ieee80211.h @/net80211/ieee80211_ageq.h \
+  @/net80211/ieee80211_crypto.h @/net80211/ieee80211_dfs.h \
+  @/net80211/ieee80211_ioctl.h @/net80211/ieee80211_phy.h \
+  @/net80211/ieee80211_power.h @/net80211/ieee80211_node.h \
+  @/net80211/ieee80211_ht.h @/net80211/ieee80211_proto.h \
+  @/net80211/ieee80211_radiotap.h @/net80211/ieee80211_scan.h \
+  @/dev/ath/if_athvar.h @/dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/endian.h \
+  @/dev/ath/ath_hal/ah_desc.h opt_ah.h @/dev/ath/if_athioctl.h \
+  @/dev/ath/if_athrate.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h
+ah_osdep.o: /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.c opt_ah.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/sysctl.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/pcpu.h \
+  @/sys/vmmeter.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h machine/stdarg.h @/net/ethernet.h @/dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/endian.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h
+ah.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.c opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h
+ah_regdomain.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_regdomain.c opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  @/net80211/_ieee80211.h @/net80211/ieee80211_regdomain.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h
+ah_eeprom_v3.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.c opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ah_eeprom_v1.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v1.c opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v1.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5210_attach.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_attach.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v1.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5210_beacon.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_beacon.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210desc.h
+ar5210_interrupts.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_interrupts.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h
+ar5210_keycache.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_keycache.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h
+ar5210_misc.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_misc.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v1.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5210_phy.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_phy.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h
+ar5210_power.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_power.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h
+ar5210_recv.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_recv.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210desc.h
+ar5210_reset.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_reset.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v1.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5k_0007.ini
+ar5210_xmit.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210_xmit.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5210/ar5210desc.h
+ar5211_attach.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_attach.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5211_beacon.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_beacon.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h
+ar5211_interrupts.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_interrupts.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h
+ar5211_keycache.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_keycache.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h
+ar5211_misc.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_misc.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5211_phy.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_phy.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5211_power.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_power.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h
+ar5211_recv.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_recv.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211desc.h
+ar5211_reset.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_reset.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/boss.ini
+ar5211_xmit.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211_xmit.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5211/ar5211desc.h
+ar5212_ani.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_ani.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5212_attach.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_attach.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.ini
+ar5212_beacon.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_beacon.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h
+ar5212_eeprom.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_eeprom.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5212_gpio.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_gpio.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5212_interrupts.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_interrupts.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5212_keycache.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_keycache.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h
+ar5212_misc.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_misc.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5212_phy.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_phy.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5212_power.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_power.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h
+ar5212_recv.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_recv.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h
+ar5212_reset.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_reset.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5212_rfgain.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_rfgain.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5212_xmit.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212_xmit.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212desc.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5111.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5111.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.ini
+ar5112.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5112.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.ini
+ar2413.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar2413.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.ini
+ar2425.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar2425.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.ini
+ar5413.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5413.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v3.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.ini
+ah_eeprom_v14.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.c opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h
+ar5416_ani.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_ani.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_attach.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_attach.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.ini
+ar5416_beacon.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_beacon.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_cal.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_cal_iq.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal_iq.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_cal_adcgain.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal_adcgain.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_cal_adcdc.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal_adcdc.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_eeprom.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_eeprom.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_gpio.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_gpio.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_interrupts.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_interrupts.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h
+ar5416_keycache.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_keycache.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h
+ar5416_misc.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_misc.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_phy.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_phy.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h
+ar5416_power.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_power.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h
+ar5416_recv.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_recv.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416desc.h
+ar5416_reset.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_reset.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+ar5416_xmit.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_xmit.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_desc.h opt_ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416desc.h
+ar9160_attach.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar9160_attach.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_devid.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar9160.ini
+ar2133.o: /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar2133.c \
+  opt_ah.h /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/linker_set.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_internal.h \
+  @/net80211/_ieee80211.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_decode.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom_v14.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ah_eeprom.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416_cal.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416reg.h \
+  @/dev/ath/ath_hal/ar5212/ar5212reg.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5416/ar5416phy.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ath_hal/ar5212/ar5212phy.h
+sample.o:  \
+ /usr/src/sys/modules/ath/../../dev/ath/ath_rate/sample/sample.c \
+  @/sys/cdefs.h opt_inet.h opt_wlan.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/sysctl.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h machine/resource.h \
+  @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/if_arp.h @/net/ethernet.h \
+  @/net80211/ieee80211_var.h @/net80211/ieee80211_freebsd.h \
+  @/sys/taskqueue.h @/net80211/_ieee80211.h @/net80211/ieee80211.h \
+  @/net80211/ieee80211_ageq.h @/net80211/ieee80211_crypto.h \
+  @/net80211/ieee80211_dfs.h @/net80211/ieee80211_ioctl.h \
+  @/net80211/ieee80211_phy.h @/net80211/ieee80211_power.h \
+  @/net80211/ieee80211_node.h @/net80211/ieee80211_ht.h \
+  @/net80211/ieee80211_proto.h @/net80211/ieee80211_radiotap.h \
+  @/net80211/ieee80211_scan.h @/net/bpf.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/if_ether.h @/dev/ath/if_athvar.h @/dev/ath/ath_hal/ah.h \
+  /usr/src/sys/modules/ath/../../dev/ath/ah_osdep.h @/sys/endian.h \
+  @/dev/ath/ath_hal/ah_desc.h opt_ah.h @/dev/ath/if_athioctl.h \
+  @/dev/ath/if_athrate.h @/dev/ath/ath_rate/sample/sample.h

@@ -1,0 +1,269 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/uart/../../dev/uart/uart_bus_acpi.c /usr/src/sys/modules/uart/../../dev/uart/uart_bus_isa.c /usr/src/sys/modules/uart/../../dev/uart/uart_bus_pccard.c /usr/src/sys/modules/uart/../../dev/uart/uart_bus_pci.c /usr/src/sys/modules/uart/../../dev/uart/uart_bus_puc.c /usr/src/sys/modules/uart/../../dev/uart/uart_bus_scc.c /usr/src/sys/modules/uart/../../dev/uart/uart_core.c /usr/src/sys/modules/uart/../../dev/uart/uart_dbg.c /usr/src/sys/modules/uart/../../dev/uart/uart_dev_ns8250.c /usr/src/sys/modules/uart/../../dev/uart/uart_dev_quicc.c /usr/src/sys/modules/uart/../../dev/uart/uart_dev_sab82532.c /usr/src/sys/modules/uart/../../dev/uart/uart_dev_z8530.c uart_if.c /usr/src/sys/modules/uart/../../dev/uart/uart_subr.c /usr/src/sys/modules/uart/../../dev/uart/uart_tty.c /usr/src/sys/modules/uart/../../dev/uart/uart_cpu_i386.c
+uart_bus_acpi.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_bus_acpi.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/isa/isavar.h isa_if.h @/isa/pnpvar.h @/dev/uart/uart.h \
+  @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h @/sys/ioccom.h
+uart_bus_isa.o: /usr/src/sys/modules/uart/../../dev/uart/uart_bus_isa.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h machine/resource.h @/isa/isavar.h isa_if.h @/isa/pnpvar.h \
+  @/dev/uart/uart.h @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h \
+  @/sys/ioccom.h
+uart_bus_pccard.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_bus_pccard.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/dev/pccard/pccard_cis.h @/dev/pccard/pccardvar.h card_if.h \
+  @/dev/uart/uart.h @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h \
+  @/sys/ioccom.h pccarddevs.h
+uart_bus_pci.o: /usr/src/sys/modules/uart/../../dev/uart/uart_bus_pci.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h machine/resource.h @/dev/pci/pcivar.h pci_if.h \
+  @/dev/uart/uart.h @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h \
+  @/sys/ioccom.h
+uart_bus_puc.o: /usr/src/sys/modules/uart/../../dev/uart/uart_bus_puc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h machine/resource.h @/dev/puc/puc_bus.h @/sys/serial.h \
+  serdev_if.h @/dev/uart/uart.h @/dev/uart/uart_bus.h @/sys/timepps.h \
+  @/sys/ioccom.h
+uart_bus_scc.o: /usr/src/sys/modules/uart/../../dev/uart/uart_bus_scc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h machine/resource.h @/dev/scc/scc_bus.h @/sys/serial.h \
+  serdev_if.h @/dev/uart/uart.h @/dev/uart/uart_bus.h @/sys/timepps.h \
+  @/sys/ioccom.h
+uart_core.o: /usr/src/sys/modules/uart/../../dev/uart/uart_core.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/cons.h @/sys/fcntl.h @/sys/interrupt.h \
+  @/sys/kdb.h machine/setjmp.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/malloc.h @/sys/reboot.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/sys/termios.h @/sys/ttycom.h @/sys/ioccom.h @/sys/ttydefaults.h \
+  machine/stdarg.h @/dev/uart/uart.h @/dev/uart/uart_bus.h @/sys/serial.h \
+  @/sys/timepps.h @/dev/uart/uart_cpu.h uart_if.h
+uart_dbg.o: /usr/src/sys/modules/uart/../../dev/uart/uart_dbg.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/kernel.h @/sys/linker_set.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/gdb/gdb.h @/dev/uart/uart.h @/dev/uart/uart_cpu.h @/sys/kdb.h \
+  machine/setjmp.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h
+uart_dev_ns8250.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_dev_ns8250.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h @/dev/uart/uart.h \
+  @/dev/uart/uart_cpu.h @/sys/kdb.h machine/setjmp.h \
+  @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h @/sys/ioccom.h \
+  @/dev/ic/ns16550.h uart_if.h
+uart_dev_quicc.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_dev_quicc.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/endian.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/ic/quicc.h @/dev/uart/uart.h @/dev/uart/uart_cpu.h @/sys/kdb.h \
+  machine/setjmp.h @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h \
+  @/sys/ioccom.h uart_if.h
+uart_dev_sab82532.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_dev_sab82532.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/uart/uart.h @/dev/uart/uart_cpu.h @/sys/kdb.h \
+  machine/setjmp.h @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h \
+  @/sys/ioccom.h @/dev/ic/sab82532.h uart_if.h
+uart_dev_z8530.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_dev_z8530.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h @/dev/uart/uart.h \
+  @/dev/uart/uart_cpu.h @/sys/kdb.h machine/setjmp.h \
+  @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h @/sys/ioccom.h \
+  @/dev/ic/z8530.h uart_if.h
+uart_if.o: uart_if.c @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/queue.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/kobj.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/dev/uart/uart.h \
+  @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h @/sys/ioccom.h \
+  uart_if.h
+uart_subr.o: /usr/src/sys/modules/uart/../../dev/uart/uart_subr.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h machine/vmparam.h @/dev/uart/uart.h \
+  @/dev/uart/uart_cpu.h @/sys/kdb.h machine/setjmp.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h
+uart_tty.o: /usr/src/sys/modules/uart/../../dev/uart/uart_tty.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/cons.h @/sys/fcntl.h @/sys/interrupt.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h @/sys/reboot.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h machine/resource.h @/sys/termios.h @/sys/ttycom.h \
+  @/sys/ioccom.h @/sys/ttydefaults.h @/sys/tty.h @/sys/condvar.h \
+  @/sys/selinfo.h @/sys/event.h @/sys/ttyqueue.h @/sys/ttydisc.h \
+  @/sys/ttydevsw.h @/sys/ttyhook.h machine/stdarg.h @/dev/uart/uart.h \
+  @/dev/uart/uart_bus.h @/sys/serial.h @/sys/timepps.h \
+  @/dev/uart/uart_cpu.h @/sys/kdb.h machine/setjmp.h uart_if.h
+uart_cpu_i386.o:  \
+ /usr/src/sys/modules/uart/../../dev/uart/uart_cpu_i386.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/uart/uart.h @/dev/uart/uart_cpu.h @/sys/kdb.h machine/setjmp.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h

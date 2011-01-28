@@ -1,0 +1,43 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/dtrace/dtraceall/../../.. -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/dtrace/dtraceall/dtraceall.c
+dtraceall.o: /usr/src/sys/modules/dtrace/dtraceall/dtraceall.c \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/cdefs.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/param.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_null.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/types.h \
+  machine/endian.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_types.h \
+  machine/_types.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_pthreadtypes.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/select.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_sigset.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_timeval.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/timespec.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/syslimits.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/errno.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/time.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/priority.h \
+  machine/param.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/systm.h \
+  machine/atomic.h machine/cpufunc.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/callout.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/queue.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/stdint.h \
+  machine/_stdint.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/libkern.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/conf.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/eventhandler.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/lock.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_lock.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/ktr.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/mutex.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/_mutex.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/pcpu.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/vmmeter.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/lock_profile.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/lockstat.h \
+  machine/mutex.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/kernel.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/linker_set.h \
+  /usr/src/sys/modules/dtrace/dtraceall/../../../sys/module.h

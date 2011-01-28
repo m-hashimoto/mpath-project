@@ -1,0 +1,27 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/usb/cue/../../../dev/usb/net/if_cue.c
+if_cue.o: /usr/src/sys/modules/usb/cue/../../../dev/usb/net/if_cue.c \
+  @/sys/cdefs.h @/sys/stdint.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  usbdevs.h @/dev/usb/usb_debug.h @/dev/usb/usb_process.h \
+  @/dev/usb/net/usb_ethernet.h opt_inet.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/limits.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/ktr.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h \
+  @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_arp.h @/net/if_dl.h @/net/if_media.h @/net/if_types.h \
+  @/net/bpf.h @/net/ethernet.h miibus_if.h @/dev/mii/mii.h \
+  @/dev/mii/miivar.h @/dev/usb/net/if_cuereg.h

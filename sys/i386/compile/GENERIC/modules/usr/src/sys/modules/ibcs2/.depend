@@ -1,0 +1,360 @@
+# -nostdinc -DCOMPAT_IBCS2 -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_errno.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_ipc.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_stat.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_misc.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_fcntl.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_signal.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_sysent.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_ioctl.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_socksys.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_util.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_xenix.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_xenix_sysent.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_isc.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_isc_sysent.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_msg.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_other.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_sysi86.c /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_sysvec.c
+ibcs2_errno.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_errno.c \
+  @/sys/cdefs.h @/sys/errno.h @/i386/ibcs2/ibcs2_errno.h
+ibcs2_ipc.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_ipc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/limits.h machine/_limits.h @/sys/msg.h \
+  @/sys/ipc.h @/sys/sem.h @/sys/shm.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/sys/syscallsubr.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_mutex.h @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h \
+  @/sys/sysproto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_proto.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/signalvar.h \
+  @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h machine/segments.h \
+  machine/tss.h machine/proc.h @/i386/ibcs2/ibcs2_ipc.h
+ibcs2_stat.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_stat.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/namei.h @/sys/uio.h @/sys/_iovec.h @/sys/file.h \
+  @/sys/refcount.h @/sys/_lock.h @/sys/_mutex.h @/sys/stat.h \
+  @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/_limits.h @/sys/jail.h @/sys/sysctl.h @/sys/mutex.h \
+  machine/mutex.h @/sys/_task.h @/sys/osd.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/malloc.h @/sys/vnode.h @/sys/bufobj.h @/sys/selinfo.h @/sys/acl.h \
+  @/vm/uma.h @/sys/ktr.h vnode_if.h vnode_if_typedef.h \
+  vnode_if_newproto.h @/sys/syscallsubr.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/socket.h @/sys/mac.h @/sys/sysproto.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_signal.h \
+  @/i386/ibcs2/ibcs2_stat.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_statfs.h @/i386/ibcs2/ibcs2_proto.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/condvar.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signalvar.h \
+  machine/proc.h @/i386/ibcs2/ibcs2_utsname.h
+ibcs2_misc.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_misc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/dirent.h @/sys/fcntl.h @/sys/filedesc.h \
+  @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/_limits.h @/sys/imgact.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h @/sys/_mutex.h \
+  @/sys/file.h @/sys/refcount.h @/sys/mutex.h machine/mutex.h \
+  @/sys/namei.h @/sys/priv.h @/sys/reboot.h @/sys/resourcevar.h \
+  @/sys/stat.h @/sys/sysctl.h @/sys/syscallsubr.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/socket.h @/sys/mac.h \
+  @/sys/mount.h @/sys/ucred.h @/bsm/audit.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h @/sys/sysproto.h \
+  @/sys/acl.h @/vm/uma.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/sys/ucontext.h machine/ucontext.h @/bsm/audit_kevents.h @/sys/times.h \
+  @/sys/vnode.h @/sys/bufobj.h @/sys/selinfo.h @/sys/ktr.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/sys/wait.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/i386/ibcs2/ibcs2_dirent.h \
+  @/i386/ibcs2/ibcs2_types.h @/i386/ibcs2/ibcs2_signal.h \
+  @/i386/ibcs2/ibcs2_proto.h @/i386/ibcs2/ibcs2_unistd.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signalvar.h machine/proc.h @/i386/ibcs2/ibcs2_utime.h \
+  @/i386/ibcs2/ibcs2_xenix.h @/security/mac/mac_framework.h
+ibcs2_fcntl.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_fcntl.c \
+  @/sys/cdefs.h opt_spx_hack.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/fcntl.h @/sys/file.h @/sys/refcount.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/filedesc.h @/sys/event.h \
+  @/sys/lock.h @/sys/sx.h @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/_limits.h @/sys/malloc.h \
+  @/sys/mutex.h machine/mutex.h @/sys/syscallsubr.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysproto.h @/sys/acl.h @/vm/uma.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/sys/ttycom.h @/sys/ioccom.h \
+  @/i386/ibcs2/ibcs2_fcntl.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_proto.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signalvar.h machine/proc.h
+ibcs2_signal.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_signal.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/signalvar.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/syscallsubr.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysproto.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h \
+  machine/ucontext.h @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_proto.h \
+  @/i386/ibcs2/ibcs2_xenix.h @/i386/ibcs2/ibcs2_util.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h machine/proc.h
+ibcs2_sysent.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_sysent.c @/sys/param.h \
+  @/sys/_null.h @/sys/types.h @/sys/cdefs.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/sysent.h @/bsm/audit.h @/sys/sysproto.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/acl.h \
+  @/sys/queue.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_proto.h
+ibcs2_ioctl.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_ioctl.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/consio.h @/sys/ioccom.h @/sys/fcntl.h \
+  @/sys/file.h @/sys/refcount.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/_limits.h @/sys/filio.h @/sys/kbio.h @/sys/mutex.h \
+  machine/mutex.h @/sys/sysproto.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/sys/tty.h @/sys/condvar.h @/sys/selinfo.h \
+  @/sys/termios.h @/sys/ttycom.h @/sys/ttydefaults.h @/sys/ttyqueue.h \
+  @/sys/ttydisc.h @/sys/ttydevsw.h @/sys/ttyhook.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_socksys.h \
+  @/i386/ibcs2/ibcs2_types.h @/i386/ibcs2/ibcs2_stropts.h \
+  @/i386/ibcs2/ibcs2_proto.h @/i386/ibcs2/ibcs2_termios.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signalvar.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/uio.h @/sys/_iovec.h \
+  @/i386/ibcs2/ibcs2_ioctl.h
+ibcs2_socksys.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_socksys.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/sysproto.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/sys/ucontext.h machine/ucontext.h @/bsm/audit_kevents.h @/sys/jail.h \
+  @/sys/sysctl.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/_task.h \
+  @/sys/osd.h @/sys/kernel.h @/sys/linker_set.h \
+  @/i386/ibcs2/ibcs2_socksys.h @/sys/ioccom.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signalvar.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/uio.h @/sys/_iovec.h
+ibcs2_util.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_util.c \
+  @/sys/cdefs.h @/sys/fcntl.h @/sys/_types.h machine/_types.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/syscallsubr.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/uio.h \
+  @/sys/_iovec.h @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/ucred.h \
+  @/bsm/audit.h @/sys/lock.h @/sys/_lock.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_mutex.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/linker_set.h @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  machine/proc.h
+ibcs2_xenix.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_xenix.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/namei.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/sysproto.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h \
+  machine/ucontext.h @/bsm/audit_kevents.h @/sys/clock.h @/sys/jail.h \
+  @/sys/sysctl.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/_task.h \
+  @/sys/osd.h @/sys/kernel.h @/sys/linker_set.h @/sys/filio.h \
+  @/sys/ioccom.h @/sys/vnode.h @/sys/bufobj.h @/sys/lockmgr.h \
+  @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/selinfo.h @/sys/event.h \
+  @/sys/ktr.h vnode_if.h vnode_if_typedef.h vnode_if_newproto.h \
+  @/sys/syscallsubr.h @/sys/socket.h @/sys/mac.h @/sys/mount.h \
+  @/sys/ucred.h @/bsm/audit.h @/sys/module.h @/sys/sysent.h \
+  @/sys/unistd.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/i386/ibcs2/ibcs2_types.h @/i386/ibcs2/ibcs2_unistd.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_util.h @/sys/proc.h \
+  @/sys/condvar.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signalvar.h machine/proc.h \
+  @/i386/ibcs2/ibcs2_proto.h @/i386/ibcs2/ibcs2_xenix.h \
+  @/i386/ibcs2/ibcs2_xenix_syscall.h
+ibcs2_xenix_sysent.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_xenix_sysent.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/sysent.h @/bsm/audit.h @/sys/sysproto.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/acl.h @/sys/queue.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h \
+  machine/ucontext.h @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_xenix.h
+ibcs2_isc.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_isc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/lock.h @/sys/queue.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/atomic.h machine/cpufunc.h machine/mutex.h \
+  @/sys/systm.h @/sys/callout.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/sysent.h @/bsm/audit.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h machine/proc.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/i386/ibcs2/ibcs2_types.h @/i386/ibcs2/ibcs2_signal.h \
+  @/i386/ibcs2/ibcs2_proto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/bsm/audit_kevents.h \
+  @/i386/ibcs2/ibcs2_isc_syscall.h
+ibcs2_isc_sysent.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_isc_sysent.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/sysent.h @/bsm/audit.h @/sys/sysproto.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/acl.h @/sys/queue.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h \
+  machine/ucontext.h @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_proto.h \
+  @/i386/ibcs2/ibcs2_xenix.h
+ibcs2_msg.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_msg.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/syscallsubr.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_mutex.h @/sys/_rwlock.h @/sys/module.h @/sys/linker_set.h \
+  @/sys/sysproto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h @/sys/cpuset.h \
+  @/sys/_semaphore.h @/sys/ucontext.h machine/ucontext.h \
+  @/bsm/audit_kevents.h @/i386/ibcs2/ibcs2_types.h \
+  @/i386/ibcs2/ibcs2_signal.h @/i386/ibcs2/ibcs2_util.h @/sys/proc.h \
+  @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h machine/proc.h \
+  @/i386/ibcs2/ibcs2_proto.h
+ibcs2_other.o: /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_other.c \
+  @/sys/cdefs.h opt_spx_hack.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/syscallsubr.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socket.h @/sys/mac.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/sysproto.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/cpuset.h @/sys/_semaphore.h @/sys/ucontext.h \
+  machine/ucontext.h @/bsm/audit_kevents.h @/sys/un.h \
+  @/i386/ibcs2/ibcs2_types.h @/i386/ibcs2/ibcs2_signal.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signalvar.h machine/proc.h @/i386/ibcs2/ibcs2_proto.h
+ibcs2_sysi86.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_sysi86.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/lock.h @/sys/queue.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/atomic.h machine/cpufunc.h machine/mutex.h @/sys/systm.h \
+  @/sys/callout.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/sysctl.h @/i386/ibcs2/ibcs2_types.h @/i386/ibcs2/ibcs2_signal.h \
+  @/i386/ibcs2/ibcs2_util.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/uio.h @/sys/_iovec.h \
+  @/i386/ibcs2/ibcs2_proto.h @/sys/acl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/cpuset.h @/sys/_semaphore.h @/bsm/audit_kevents.h
+ibcs2_sysvec.o:  \
+ /usr/src/sys/modules/ibcs2/../../i386/ibcs2/ibcs2_sysvec.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/exec.h machine/exec.h \
+  @/sys/module.h @/sys/imgact.h @/sys/uio.h @/sys/_iovec.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/sysent.h @/bsm/audit.h @/sys/signalvar.h \
+  @/sys/_mutex.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/pcpu.h \
+  @/sys/vmmeter.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h machine/proc.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/lockstat.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/pmap.h machine/pmap.h @/vm/vm_param.h \
+  machine/vmparam.h @/i386/ibcs2/ibcs2_syscall.h \
+  @/i386/ibcs2/ibcs2_signal.h

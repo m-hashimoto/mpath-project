@@ -1,0 +1,233 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_mod.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_logging.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_amd.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_core.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_intel.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_piv.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_ppro.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_pentium.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_tsc.c /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_x86.c
+hwpmc_mod.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_mod.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/eventhandler.h @/sys/lock.h @/sys/queue.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/jail.h @/sys/sysctl.h \
+  @/sys/_task.h @/sys/osd.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/kthread.h @/sys/limits.h machine/_limits.h @/sys/malloc.h \
+  @/sys/module.h @/sys/pmc.h @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h \
+  @/dev/hwpmc/hwpmc_amd.h @/dev/hwpmc/hwpmc_core.h \
+  @/dev/hwpmc/hwpmc_piv.h @/dev/hwpmc/hwpmc_ppro.h \
+  @/dev/hwpmc/hwpmc_pentium.h @/dev/hwpmc/hwpmc_tsc.h machine/profile.h \
+  machine/frame.h @/sys/pmckern.h @/sys/proc.h @/sys/callout.h \
+  @/sys/event.h @/sys/condvar.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pmclog.h @/sys/priv.h @/sys/resourcevar.h @/sys/sched.h \
+  @/sys/smp.h @/sys/sysent.h @/sys/systm.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/vnode.h @/sys/bufobj.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/selinfo.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/acl.h @/vm/uma.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/sys/linker.h machine/elf.h \
+  @/sys/elf32.h @/sys/elf_common.h @/sys/elf_generic.h @/sys/kobj.h \
+  machine/md_var.h
+hwpmc_logging.o:  \
+ /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_logging.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/file.h @/sys/queue.h @/sys/refcount.h machine/atomic.h \
+  @/sys/systm.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/kthread.h @/sys/lock.h \
+  @/sys/module.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/pmc.h \
+  @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h \
+  @/dev/hwpmc/hwpmc_core.h @/dev/hwpmc/hwpmc_piv.h \
+  @/dev/hwpmc/hwpmc_ppro.h @/dev/hwpmc/hwpmc_pentium.h \
+  @/dev/hwpmc/hwpmc_tsc.h machine/profile.h @/sys/malloc.h @/sys/sysctl.h \
+  machine/frame.h @/sys/pmckern.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pmclog.h @/sys/uio.h @/sys/_iovec.h @/sys/unistd.h @/sys/vnode.h \
+  @/sys/bufobj.h @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h \
+  @/sys/selinfo.h @/sys/acl.h @/vm/uma.h @/sys/ktr.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h
+hwpmc_amd.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_amd.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/lock.h @/sys/queue.h @/sys/_lock.h @/sys/malloc.h \
+  @/sys/_mutex.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/pmc.h @/dev/hwpmc/pmc_events.h \
+  machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h @/dev/hwpmc/hwpmc_core.h \
+  @/dev/hwpmc/hwpmc_piv.h @/dev/hwpmc/hwpmc_ppro.h \
+  @/dev/hwpmc/hwpmc_pentium.h @/dev/hwpmc/hwpmc_tsc.h machine/profile.h \
+  @/sys/sysctl.h machine/frame.h @/sys/pmckern.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/proc.h @/sys/callout.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/smp.h @/sys/systm.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h machine/cpu.h machine/psl.h machine/md_var.h \
+  machine/specialreg.h
+hwpmc_core.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_core.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/queue.h @/sys/kobj.h device_if.h bus_if.h @/sys/pmc.h \
+  @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h \
+  @/dev/hwpmc/hwpmc_core.h @/dev/hwpmc/hwpmc_piv.h \
+  @/dev/hwpmc/hwpmc_ppro.h @/dev/hwpmc/hwpmc_pentium.h \
+  @/dev/hwpmc/hwpmc_tsc.h machine/profile.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/sysctl.h machine/frame.h @/sys/pmckern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/lock.h @/sys/proc.h \
+  @/sys/callout.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/lockstat.h machine/atomic.h @/sys/systm.h machine/cpufunc.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h machine/intr_machdep.h \
+  machine/apicvar.h machine/cpu.h machine/psl.h machine/specialreg.h
+hwpmc_intel.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_intel.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/pmc.h @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h \
+  @/dev/hwpmc/hwpmc_amd.h @/dev/hwpmc/hwpmc_core.h \
+  @/dev/hwpmc/hwpmc_piv.h @/dev/hwpmc/hwpmc_ppro.h \
+  @/dev/hwpmc/hwpmc_pentium.h @/dev/hwpmc/hwpmc_tsc.h machine/profile.h \
+  @/sys/malloc.h @/sys/queue.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/sysctl.h machine/frame.h @/sys/pmckern.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/lock.h @/sys/proc.h @/sys/callout.h \
+  @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/lockstat.h machine/atomic.h @/sys/systm.h \
+  machine/cpufunc.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  machine/cpu.h machine/psl.h machine/cputypes.h machine/md_var.h \
+  machine/specialreg.h
+hwpmc_piv.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_piv.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/queue.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/pmc.h @/dev/hwpmc/pmc_events.h \
+  machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h @/dev/hwpmc/hwpmc_core.h \
+  @/dev/hwpmc/hwpmc_piv.h @/dev/hwpmc/hwpmc_ppro.h \
+  @/dev/hwpmc/hwpmc_pentium.h @/dev/hwpmc/hwpmc_tsc.h machine/profile.h \
+  @/sys/malloc.h @/sys/sysctl.h machine/frame.h @/sys/pmckern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/proc.h @/sys/callout.h \
+  @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/smp.h @/sys/systm.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h machine/intr_machdep.h machine/apicvar.h machine/cpu.h \
+  machine/psl.h machine/cputypes.h machine/md_var.h machine/specialreg.h
+hwpmc_ppro.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_ppro.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/queue.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/pmc.h @/dev/hwpmc/pmc_events.h \
+  machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h @/dev/hwpmc/hwpmc_core.h \
+  @/dev/hwpmc/hwpmc_piv.h @/dev/hwpmc/hwpmc_ppro.h \
+  @/dev/hwpmc/hwpmc_pentium.h @/dev/hwpmc/hwpmc_tsc.h machine/profile.h \
+  @/sys/malloc.h @/sys/sysctl.h machine/frame.h @/sys/pmckern.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/proc.h @/sys/callout.h \
+  @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/smp.h @/sys/systm.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h machine/intr_machdep.h machine/apicvar.h machine/cpu.h \
+  machine/psl.h machine/cputypes.h machine/md_var.h machine/specialreg.h
+hwpmc_pentium.o:  \
+ /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_pentium.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/lock.h @/sys/queue.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/atomic.h machine/cpufunc.h machine/mutex.h @/sys/pmc.h \
+  @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h \
+  @/dev/hwpmc/hwpmc_core.h @/dev/hwpmc/hwpmc_piv.h \
+  @/dev/hwpmc/hwpmc_ppro.h @/dev/hwpmc/hwpmc_pentium.h \
+  @/dev/hwpmc/hwpmc_tsc.h machine/profile.h @/sys/malloc.h @/sys/sysctl.h \
+  machine/frame.h @/sys/pmckern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/proc.h @/sys/callout.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/sx.h @/sys/_sx.h @/sys/smp.h @/sys/systm.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h machine/md_var.h
+hwpmc_tsc.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_tsc.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/pmc.h @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h \
+  @/dev/hwpmc/hwpmc_amd.h @/dev/hwpmc/hwpmc_core.h \
+  @/dev/hwpmc/hwpmc_piv.h @/dev/hwpmc/hwpmc_ppro.h \
+  @/dev/hwpmc/hwpmc_pentium.h @/dev/hwpmc/hwpmc_tsc.h machine/profile.h \
+  @/sys/malloc.h @/sys/queue.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/sysctl.h machine/frame.h @/sys/pmckern.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/lock.h @/sys/proc.h @/sys/callout.h \
+  @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/lockstat.h machine/atomic.h @/sys/systm.h \
+  machine/cpufunc.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  machine/specialreg.h
+hwpmc_x86.o: /usr/src/sys/modules/hwpmc/../../dev/hwpmc/hwpmc_x86.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/queue.h @/sys/kobj.h device_if.h bus_if.h @/sys/pmc.h \
+  @/dev/hwpmc/pmc_events.h machine/pmc_mdep.h @/dev/hwpmc/hwpmc_amd.h \
+  @/dev/hwpmc/hwpmc_core.h @/dev/hwpmc/hwpmc_piv.h \
+  @/dev/hwpmc/hwpmc_ppro.h @/dev/hwpmc/hwpmc_pentium.h \
+  @/dev/hwpmc/hwpmc_tsc.h machine/profile.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/sysctl.h machine/frame.h @/sys/proc.h \
+  @/sys/callout.h @/sys/event.h @/sys/condvar.h @/sys/lock_profile.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h machine/cpu.h machine/psl.h machine/cputypes.h \
+  machine/intr_machdep.h machine/apicvar.h machine/md_var.h @/vm/vm.h \
+  machine/vm.h machine/specialreg.h @/vm/vm_param.h machine/vmparam.h \
+  @/vm/pmap.h machine/pmap.h

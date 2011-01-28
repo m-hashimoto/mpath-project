@@ -1,0 +1,32 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/sound/driver/atiixp/../../../../dev/sound/pci/atiixp.c
+atiixp.o:  \
+ /usr/src/sys/modules/sound/driver/atiixp/../../../../dev/sound/pci/atiixp.c \
+  /usr/src/sys/i386/compile/GENERIC/opt_snd.h @/dev/sound/pcm/sound.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/ioccom.h @/sys/filio.h @/sys/sockio.h \
+  @/sys/fcntl.h @/sys/selinfo.h @/sys/event.h @/sys/proc.h \
+  @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h @/sys/_mutex.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/module.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/file.h @/sys/refcount.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/syslog.h @/sys/malloc.h @/sys/bus.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h machine/resource.h \
+  machine/bus.h machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/sys/rman.h @/sys/limits.h @/sys/mman.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/sys/poll.h @/sys/sbuf.h @/sys/soundcard.h \
+  @/sys/sysctl.h @/vm/pmap.h machine/pmap.h @/dev/sound/pcm/buffer.h \
+  @/dev/sound/pcm/matrix.h @/dev/sound/pcm/matrix_map.h \
+  @/dev/sound/pcm/channel.h channel_if.h @/dev/sound/pcm/feeder.h \
+  @/dev/sound/pcm/mixer.h @/dev/sound/pcm/dsp.h @/dev/sound/clone.h \
+  @/dev/sound/unit.h @/dev/sound/pcm/ac97.h ac97_if.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h @/sys/endian.h @/dev/sound/pci/atiixp.h

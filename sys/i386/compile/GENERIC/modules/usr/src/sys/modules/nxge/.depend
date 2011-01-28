@@ -1,0 +1,450 @@
+# -nostdinc -DXGE_DEBUG_MODULE_MASK=XGE_COMPONENT_LL -DXGE_DEBUG_ERR_MASK=XGE_COMPONENT_LL -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/nxge/../../dev/nxge/if_nxge.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-device.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-mm.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xge-queue.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-driver.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-ring.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-channel.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-fifo.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-stats.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-config.c /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-mgmt.c
+if_nxge.o: /usr/src/sys/modules/nxge/../../dev/nxge/if_nxge.c \
+  @/dev/nxge/if_nxge.h @/dev/nxge/include/xgehal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/include/xge-os-pal.h @/dev/nxge/xge-osdep.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h @/sys/cdefs.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/rman.h machine/_bus.h \
+  machine/resource.h @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/endian.h @/sys/sysctl.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/clock.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/pmap.h machine/pmap.h @/dev/pci/pcivar.h \
+  pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_arp.h @/net/ethernet.h \
+  @/net/if_dl.h @/net/if_media.h @/net/bpf.h @/net/if_types.h \
+  @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/tcp.h @/dev/nxge/include/xge-debug.h \
+  @/dev/nxge/include/xgehal-types.h @/dev/nxge/include/xgehal-driver.h \
+  @/dev/nxge/include/xge-list.h @/dev/nxge/include/xge-queue.h \
+  @/dev/nxge/include/xgehal-event.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xgehal-device.h @/dev/nxge/include/xgehal-regs.h \
+  @/dev/nxge/include/xgehal-channel.h @/dev/nxge/include/xgehal-stats.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-ring.h \
+  @/dev/nxge/include/xgehal-mm.h @/dev/nxge/xgehal/xgehal-ring-fp.c \
+  @/dev/nxge/xgehal/xgehal-device-fp.c @/dev/nxge/include/xgehal-fifo.h \
+  @/dev/nxge/xgehal/xgehal-fifo-fp.c @/dev/nxge/include/xgehal-mgmt.h \
+  @/net/if_vlan_var.h
+xgehal-device.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-device.c \
+  @/dev/nxge/include/xgehal-device.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xge-queue.h \
+  @/dev/nxge/include/xge-list.h @/dev/nxge/include/xge-debug.h \
+  @/dev/nxge/include/xgehal-event.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xgehal-types.h @/dev/nxge/include/xgehal-regs.h \
+  @/dev/nxge/include/xgehal-channel.h @/dev/nxge/include/xgehal-stats.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-ring.h \
+  @/dev/nxge/include/xgehal-mm.h @/dev/nxge/include/xgehal-driver.h \
+  @/dev/nxge/xgehal/xgehal-ring-fp.c @/dev/nxge/xgehal/xgehal-device-fp.c \
+  @/dev/nxge/include/xgehal-fifo.h @/dev/nxge/xgehal/xgehal-fifo-fp.c \
+  @/dev/nxge/include/xgehal-mgmt.h
+xgehal-mm.o: /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-mm.c \
+  @/dev/nxge/include/xge-os-pal.h @/dev/nxge/include/xge-defs.h \
+  @/dev/nxge/include/version.h @/dev/nxge/include/build-version.h \
+  @/dev/nxge/xgell-version.h @/dev/nxge/xge-osdep.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h @/sys/cdefs.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/rman.h machine/_bus.h \
+  machine/resource.h @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/endian.h @/sys/sysctl.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/clock.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/pmap.h machine/pmap.h @/dev/pci/pcivar.h \
+  pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_arp.h @/net/ethernet.h \
+  @/net/if_dl.h @/net/if_media.h @/net/bpf.h @/net/if_types.h \
+  @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/tcp.h @/dev/nxge/include/xgehal-mm.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xgehal-types.h \
+  @/dev/nxge/include/xgehal-driver.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xgehal-event.h \
+  @/dev/nxge/include/xgehal-config.h
+xge-queue.o: /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xge-queue.c \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xgehal-event.h
+xgehal-driver.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-driver.c \
+  @/dev/nxge/include/xgehal-driver.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xge-queue.h \
+  @/dev/nxge/include/xgehal-event.h @/dev/nxge/include/xgehal-types.h \
+  @/dev/nxge/include/xgehal-config.h @/dev/nxge/include/xgehal-device.h \
+  @/dev/nxge/include/xgehal-regs.h @/dev/nxge/include/xgehal-channel.h \
+  @/dev/nxge/include/xgehal-stats.h @/dev/nxge/xgehal/xgehal-channel-fp.c \
+  @/dev/nxge/include/xgehal-ring.h @/dev/nxge/include/xgehal-mm.h \
+  @/dev/nxge/xgehal/xgehal-ring-fp.c @/dev/nxge/xgehal/xgehal-device-fp.c \
+  @/dev/nxge/include/xgehal-fifo.h @/dev/nxge/xgehal/xgehal-fifo-fp.c
+xgehal-ring.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-ring.c \
+  @/dev/nxge/include/xgehal-ring.h @/dev/nxge/include/xgehal-channel.h \
+  @/dev/nxge/include/xge-os-pal.h @/dev/nxge/include/xge-defs.h \
+  @/dev/nxge/include/version.h @/dev/nxge/include/build-version.h \
+  @/dev/nxge/xgell-version.h @/dev/nxge/xge-osdep.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h @/sys/cdefs.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/rman.h machine/_bus.h \
+  machine/resource.h @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/endian.h @/sys/sysctl.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/clock.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/pmap.h machine/pmap.h @/dev/pci/pcivar.h \
+  pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_arp.h @/net/ethernet.h \
+  @/net/if_dl.h @/net/if_media.h @/net/bpf.h @/net/if_types.h \
+  @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/tcp.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xgehal-types.h \
+  @/dev/nxge/include/xgehal-stats.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xgehal-event.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-mm.h \
+  @/dev/nxge/include/xgehal-driver.h @/dev/nxge/xgehal/xgehal-ring-fp.c \
+  @/dev/nxge/include/xgehal-device.h @/dev/nxge/include/xgehal-regs.h \
+  @/dev/nxge/xgehal/xgehal-device-fp.c @/dev/nxge/include/xgehal-fifo.h \
+  @/dev/nxge/xgehal/xgehal-fifo-fp.c
+xgehal-channel.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-channel.c \
+  @/dev/nxge/include/xgehal-channel.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xgehal-types.h \
+  @/dev/nxge/include/xgehal-stats.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xgehal-event.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-fifo.h \
+  @/dev/nxge/include/xgehal-mm.h @/dev/nxge/include/xgehal-driver.h \
+  @/dev/nxge/xgehal/xgehal-fifo-fp.c @/dev/nxge/include/xgehal-ring.h \
+  @/dev/nxge/xgehal/xgehal-ring-fp.c @/dev/nxge/include/xgehal-device.h \
+  @/dev/nxge/include/xgehal-regs.h @/dev/nxge/xgehal/xgehal-device-fp.c
+xgehal-fifo.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-fifo.c \
+  @/dev/nxge/include/xgehal-fifo.h @/dev/nxge/include/xgehal-channel.h \
+  @/dev/nxge/include/xge-os-pal.h @/dev/nxge/include/xge-defs.h \
+  @/dev/nxge/include/version.h @/dev/nxge/include/build-version.h \
+  @/dev/nxge/xgell-version.h @/dev/nxge/xge-osdep.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h @/sys/cdefs.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/rman.h machine/_bus.h \
+  machine/resource.h @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/endian.h @/sys/sysctl.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/clock.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/pmap.h machine/pmap.h @/dev/pci/pcivar.h \
+  pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_arp.h @/net/ethernet.h \
+  @/net/if_dl.h @/net/if_media.h @/net/bpf.h @/net/if_types.h \
+  @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/tcp.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xgehal-types.h \
+  @/dev/nxge/include/xgehal-stats.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xgehal-event.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-mm.h \
+  @/dev/nxge/include/xgehal-driver.h @/dev/nxge/xgehal/xgehal-fifo-fp.c \
+  @/dev/nxge/include/xgehal-device.h @/dev/nxge/include/xgehal-regs.h \
+  @/dev/nxge/include/xgehal-ring.h @/dev/nxge/xgehal/xgehal-ring-fp.c \
+  @/dev/nxge/xgehal/xgehal-device-fp.c
+xgehal-stats.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-stats.c \
+  @/dev/nxge/include/xgehal-stats.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xge-debug.h \
+  @/dev/nxge/include/xgehal-types.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xgehal-event.h @/dev/nxge/include/xgehal-device.h \
+  @/dev/nxge/include/xgehal-regs.h @/dev/nxge/include/xgehal-channel.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-ring.h \
+  @/dev/nxge/include/xgehal-mm.h @/dev/nxge/include/xgehal-driver.h \
+  @/dev/nxge/xgehal/xgehal-ring-fp.c @/dev/nxge/xgehal/xgehal-device-fp.c \
+  @/dev/nxge/include/xgehal-fifo.h @/dev/nxge/xgehal/xgehal-fifo-fp.c
+xgehal-config.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-config.c \
+  @/dev/nxge/include/xgehal-config.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xgehal-types.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xge-debug.h @/dev/nxge/include/xgehal-event.h
+xgehal-mgmt.o:  \
+ /usr/src/sys/modules/nxge/../../dev/nxge/xgehal/xgehal-mgmt.c \
+  @/dev/nxge/include/xgehal-mgmt.h @/dev/nxge/include/xge-os-pal.h \
+  @/dev/nxge/include/xge-defs.h @/dev/nxge/include/version.h \
+  @/dev/nxge/include/build-version.h @/dev/nxge/xgell-version.h \
+  @/dev/nxge/xge-osdep.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/rman.h machine/_bus.h machine/resource.h \
+  @/sys/stddef.h @/sys/sockio.h @/sys/ioccom.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/endian.h @/sys/sysctl.h \
+  machine/bus.h machine/bus_dma.h @/sys/bus_dma.h machine/clock.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h @/dev/pci/pci_private.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_arp.h \
+  @/net/ethernet.h @/net/if_dl.h @/net/if_media.h @/net/bpf.h \
+  @/net/if_types.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/dev/nxge/include/xge-debug.h \
+  @/dev/nxge/include/xgehal-types.h @/dev/nxge/include/xgehal-config.h \
+  @/dev/nxge/include/xge-queue.h @/dev/nxge/include/xge-list.h \
+  @/dev/nxge/include/xgehal-event.h @/dev/nxge/include/xgehal-stats.h \
+  @/dev/nxge/include/xgehal-regs.h @/dev/nxge/include/xgehal-device.h \
+  @/dev/nxge/include/xgehal-channel.h \
+  @/dev/nxge/xgehal/xgehal-channel-fp.c @/dev/nxge/include/xgehal-ring.h \
+  @/dev/nxge/include/xgehal-mm.h @/dev/nxge/include/xgehal-driver.h \
+  @/dev/nxge/xgehal/xgehal-ring-fp.c @/dev/nxge/xgehal/xgehal-device-fp.c \
+  @/dev/nxge/include/xgehal-fifo.h @/dev/nxge/xgehal/xgehal-fifo-fp.c

@@ -1,0 +1,51 @@
+# -nostdinc -D_KERNEL -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/dtrace/dtrace_test/../../.. -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/dtrace/dtrace_test/../../../cddl/dev/dtrace/dtrace_test.c
+dtrace_test.o:  \
+ /usr/src/sys/modules/dtrace/dtrace_test/../../../cddl/dev/dtrace/dtrace_test.c \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/cdefs.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/types.h \
+  machine/endian.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_types.h \
+  machine/_types.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_pthreadtypes.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/select.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_sigset.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_timeval.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/timespec.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/param.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_null.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/syslimits.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/errno.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/time.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/priority.h \
+  machine/param.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/conf.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/eventhandler.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/lock.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/queue.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_lock.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/ktr.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/mutex.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_mutex.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/pcpu.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/vmmeter.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/lock_profile.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/lockstat.h \
+  machine/atomic.h machine/cpufunc.h machine/mutex.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/kernel.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/linker_set.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/module.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/vnode.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/bufobj.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/lockmgr.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_lockmgr.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_rwlock.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/selinfo.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/event.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/uio.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/_iovec.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/acl.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../vm/uma.h \
+  /usr/src/sys/modules/dtrace/dtrace_test/../../../sys/malloc.h \
+  vnode_if.h vnode_if_typedef.h vnode_if_newproto.h

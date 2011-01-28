@@ -1,0 +1,43 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/vpo/../../dev/ppbus/immio.c /usr/src/sys/modules/vpo/../../dev/ppbus/vpo.c /usr/src/sys/modules/vpo/../../dev/ppbus/vpoio.c
+immio.o: /usr/src/sys/modules/vpo/../../dev/ppbus/immio.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/module.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h opt_vpo.h @/dev/ppbus/ppbio.h \
+  @/dev/ppbus/ppbconf.h @/dev/ppbus/ppb_msq.h @/dev/ppbus/vpoio.h \
+  @/dev/ppbus/ppb_1284.h ppbus_if.h
+vpo.o: /usr/src/sys/modules/vpo/../../dev/ppbus/vpo.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/module.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/malloc.h \
+  @/cam/cam.h opt_cam.h @/cam/cam_ccb.h @/sys/limits.h @/cam/cam_debug.h \
+  @/cam/scsi/scsi_all.h @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h \
+  @/cam/cam_sim.h @/cam/cam_xpt_sim.h @/cam/cam_xpt.h @/cam/cam_queue.h \
+  @/cam/cam_periph.h @/cam/scsi/scsi_message.h @/cam/scsi/scsi_da.h \
+  @/sys/kernel.h opt_vpo.h @/dev/ppbus/ppbconf.h @/dev/ppbus/vpoio.h \
+  ppbus_if.h
+vpoio.o: /usr/src/sys/modules/vpo/../../dev/ppbus/vpoio.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/module.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h opt_vpo.h @/dev/ppbus/ppbio.h \
+  @/dev/ppbus/ppbconf.h @/dev/ppbus/ppb_msq.h @/dev/ppbus/vpoio.h \
+  ppbus_if.h

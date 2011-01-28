@@ -1,0 +1,43 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/libiconv/../../libkern/iconv.c /usr/src/sys/modules/libiconv/../../libkern/iconv_xlat.c /usr/src/sys/modules/libiconv/../../libkern/iconv_xlat16.c iconv_converter_if.c
+iconv.o: /usr/src/sys/modules/libiconv/../../libkern/iconv.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/iconv.h \
+  @/sys/kobj.h @/sys/module.h @/sys/sysctl.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/mount.h @/sys/ucred.h @/bsm/audit.h @/sys/lock.h \
+  @/sys/lockmgr.h @/sys/_lockmgr.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  @/sys/syslog.h iconv_converter_if.h
+iconv_xlat.o: /usr/src/sys/modules/libiconv/../../libkern/iconv_xlat.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/iconv.h @/sys/kobj.h @/sys/module.h \
+  @/sys/sysctl.h iconv_converter_if.h
+iconv_xlat16.o:  \
+ /usr/src/sys/modules/libiconv/../../libkern/iconv_xlat16.c @/sys/cdefs.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/iconv.h @/sys/kobj.h @/sys/module.h @/sys/sysctl.h \
+  iconv_converter_if.h
+iconv_converter_if.o: iconv_converter_if.c @/sys/param.h @/sys/_null.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/queue.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/kobj.h @/sys/iconv.h \
+  @/sys/module.h @/sys/sysctl.h iconv_converter_if.h

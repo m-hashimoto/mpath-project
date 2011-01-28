@@ -1,0 +1,175 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/mpt/../../dev/mpt/mpt.c /usr/src/sys/modules/mpt/../../dev/mpt/mpt_cam.c /usr/src/sys/modules/mpt/../../dev/mpt/mpt_debug.c /usr/src/sys/modules/mpt/../../dev/mpt/mpt_pci.c /usr/src/sys/modules/mpt/../../dev/mpt/mpt_raid.c /usr/src/sys/modules/mpt/../../dev/mpt/mpt_user.c
+mpt.o: /usr/src/sys/modules/mpt/../../dev/mpt/mpt.c @/sys/cdefs.h \
+  @/dev/mpt/mpt.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/endian.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h @/sys/condvar.h \
+  @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/bus.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/module.h machine/cpu.h machine/psl.h machine/frame.h \
+  machine/resource.h @/sys/rman.h machine/_bus.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h opt_ddb.h @/dev/mpt/mpt_reg.h \
+  @/dev/mpt/mpilib/mpi_type.h @/dev/mpt/mpilib/mpi.h \
+  @/dev/mpt/mpilib/mpi_cnfg.h @/dev/mpt/mpilib/mpi_ioc.h \
+  @/dev/mpt/mpilib/mpi_raid.h @/dev/mpt/mpilib/mpi_init.h \
+  @/dev/mpt/mpt_cam.h @/cam/cam.h opt_cam.h @/cam/cam_debug.h \
+  @/cam/cam_ccb.h @/sys/limits.h @/cam/scsi/scsi_all.h \
+  @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h @/cam/cam_sim.h \
+  @/cam/cam_xpt.h @/cam/cam_periph.h @/cam/cam_xpt_periph.h \
+  @/cam/cam_queue.h @/cam/cam_xpt_sim.h @/cam/scsi/scsi_message.h \
+  @/dev/mpt/mpt_raid.h @/dev/mpt/mpilib/mpi_fc.h \
+  @/dev/mpt/mpilib/mpi_targ.h @/sys/sysctl.h
+mpt_cam.o: /usr/src/sys/modules/mpt/../../dev/mpt/mpt_cam.c @/sys/cdefs.h \
+  @/dev/mpt/mpt.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/endian.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h @/sys/condvar.h \
+  @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/bus.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/module.h machine/cpu.h machine/psl.h machine/frame.h \
+  machine/resource.h @/sys/rman.h machine/_bus.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h opt_ddb.h @/dev/mpt/mpt_reg.h \
+  @/dev/mpt/mpilib/mpi_type.h @/dev/mpt/mpilib/mpi.h \
+  @/dev/mpt/mpilib/mpi_cnfg.h @/dev/mpt/mpilib/mpi_ioc.h \
+  @/dev/mpt/mpilib/mpi_raid.h @/dev/mpt/mpilib/mpi_init.h \
+  @/dev/mpt/mpt_cam.h @/cam/cam.h opt_cam.h @/cam/cam_debug.h \
+  @/cam/cam_ccb.h @/sys/limits.h @/cam/scsi/scsi_all.h \
+  @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h @/cam/cam_sim.h \
+  @/cam/cam_xpt.h @/cam/cam_periph.h @/cam/cam_xpt_periph.h \
+  @/cam/cam_queue.h @/cam/cam_xpt_sim.h @/cam/scsi/scsi_message.h \
+  @/dev/mpt/mpt_raid.h @/dev/mpt/mpilib/mpi_targ.h \
+  @/dev/mpt/mpilib/mpi_fc.h @/dev/mpt/mpilib/mpi_sas.h @/sys/sysctl.h \
+  @/sys/kthread.h
+mpt_debug.o: /usr/src/sys/modules/mpt/../../dev/mpt/mpt_debug.c \
+  @/sys/cdefs.h @/dev/mpt/mpt.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/param.h \
+  @/sys/_null.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/endian.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/condvar.h @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/bus.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h machine/cpu.h machine/psl.h machine/frame.h \
+  machine/resource.h @/sys/rman.h machine/_bus.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h opt_ddb.h @/dev/mpt/mpt_reg.h \
+  @/dev/mpt/mpilib/mpi_type.h @/dev/mpt/mpilib/mpi.h \
+  @/dev/mpt/mpilib/mpi_cnfg.h @/dev/mpt/mpilib/mpi_ioc.h \
+  @/dev/mpt/mpilib/mpi_raid.h @/dev/mpt/mpilib/mpi_init.h \
+  @/dev/mpt/mpilib/mpi_fc.h @/dev/mpt/mpilib/mpi_targ.h \
+  @/cam/scsi/scsi_all.h machine/stdarg.h
+mpt_pci.o: /usr/src/sys/modules/mpt/../../dev/mpt/mpt_pci.c @/sys/cdefs.h \
+  @/dev/mpt/mpt.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/endian.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h @/sys/condvar.h \
+  @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/bus.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/module.h machine/cpu.h machine/psl.h machine/frame.h \
+  machine/resource.h @/sys/rman.h machine/_bus.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h opt_ddb.h @/dev/mpt/mpt_reg.h \
+  @/dev/mpt/mpilib/mpi_type.h @/dev/mpt/mpilib/mpi.h \
+  @/dev/mpt/mpilib/mpi_cnfg.h @/dev/mpt/mpilib/mpi_ioc.h \
+  @/dev/mpt/mpilib/mpi_raid.h @/dev/mpt/mpilib/mpi_init.h \
+  @/dev/mpt/mpt_cam.h @/cam/cam.h opt_cam.h @/cam/cam_debug.h \
+  @/cam/cam_ccb.h @/sys/limits.h @/cam/scsi/scsi_all.h \
+  @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h @/cam/cam_sim.h \
+  @/cam/cam_xpt.h @/cam/cam_periph.h @/cam/cam_xpt_periph.h \
+  @/cam/cam_queue.h @/cam/cam_xpt_sim.h @/cam/scsi/scsi_message.h \
+  @/dev/mpt/mpt_raid.h
+mpt_raid.o: /usr/src/sys/modules/mpt/../../dev/mpt/mpt_raid.c \
+  @/sys/cdefs.h @/dev/mpt/mpt.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/param.h \
+  @/sys/_null.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/endian.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/condvar.h @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/bus.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h machine/cpu.h machine/psl.h machine/frame.h \
+  machine/resource.h @/sys/rman.h machine/_bus.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h opt_ddb.h @/dev/mpt/mpt_reg.h \
+  @/dev/mpt/mpilib/mpi_type.h @/dev/mpt/mpilib/mpi.h \
+  @/dev/mpt/mpilib/mpi_cnfg.h @/dev/mpt/mpilib/mpi_ioc.h \
+  @/dev/mpt/mpilib/mpi_raid.h @/dev/mpt/mpilib/mpi_init.h \
+  @/dev/mpt/mpt_raid.h @/cam/cam.h opt_cam.h @/cam/cam_ccb.h \
+  @/sys/limits.h @/cam/cam_debug.h @/cam/scsi/scsi_all.h \
+  @/cam/ata/ata_all.h @/sys/ata.h @/sys/ioccom.h @/cam/cam_sim.h \
+  @/cam/cam_xpt_periph.h @/cam/cam_queue.h @/cam/cam_xpt.h \
+  @/cam/cam_xpt_sim.h @/cam/cam_periph.h @/sys/kthread.h @/sys/sysctl.h \
+  machine/stdarg.h
+mpt_user.o: /usr/src/sys/modules/mpt/../../dev/mpt/mpt_user.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/queue.h @/sys/_lock.h @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/atomic.h machine/cpufunc.h machine/mutex.h @/sys/ioccom.h \
+  @/sys/mpt_ioctl.h @/dev/mpt/mpilib/mpi_type.h @/dev/mpt/mpilib/mpi.h \
+  @/dev/mpt/mpilib/mpi_cnfg.h @/dev/mpt/mpt.h @/sys/systm.h \
+  @/sys/callout.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/endian.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/condvar.h @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/bus.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h machine/cpu.h machine/psl.h machine/frame.h \
+  machine/resource.h @/sys/rman.h machine/_bus.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h machine/bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h opt_ddb.h @/dev/mpt/mpt_reg.h \
+  @/dev/mpt/mpilib/mpi_ioc.h @/dev/mpt/mpilib/mpi_raid.h \
+  @/dev/mpt/mpilib/mpi_init.h

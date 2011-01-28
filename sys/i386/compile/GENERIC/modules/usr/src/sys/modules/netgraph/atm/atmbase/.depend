@@ -1,0 +1,85 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/netgraph/atm/atmbase/../../../../netgraph/atm/ngatmbase.c /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/misc/unimsg_common.c /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/misc/straddr.c /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/traffic.c /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_ie.c /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_msg.c
+ngatmbase.o:  \
+ /usr/src/sys/modules/netgraph/atm/atmbase/../../../../netgraph/atm/ngatmbase.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/module.h @/sys/linker_set.h @/sys/kernel.h \
+  @/sys/queue.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/mbuf.h @/vm/uma.h machine/stdarg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/netgraph/atm/ngatmbase.h
+unimsg_common.o:  \
+ /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/misc/unimsg_common.c \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h
+straddr.o:  \
+ /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/misc/straddr.c \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/ctype.h @/sys/libkern.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/addr.h
+traffic.o:  \
+ /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/traffic.c \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/unimsglib.h
+uni_ie.o:  \
+ /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_ie.c \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/libkern.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/unimsg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uniprint.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/priv.h \
+  machine/stdarg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_ietab.h
+uni_msg.o:  \
+ /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_msg.c \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/libkern.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/unimsg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/priv.h \
+  machine/stdarg.h \
+  /usr/src/sys/modules/netgraph/atm/atmbase/../../../../contrib/ngatm/netnatm/msg/privmsg.c

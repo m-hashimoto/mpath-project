@@ -1,0 +1,221 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/pf/../../contrib/pf -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/pf/../../contrib/pf/net/pf.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_if.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_subr.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_osfp.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_ioctl.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_norm.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_table.c /usr/src/sys/modules/pf/../../contrib/pf/net/pf_ruleset.c /usr/src/sys/modules/pf/../../contrib/pf/netinet/in4_cksum.c
+pf.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf.c opt_inet.h \
+  opt_inet6.h @/sys/cdefs.h opt_bpf.h opt_pf.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/filio.h \
+  @/sys/ioccom.h @/sys/socket.h @/sys/_iovec.h @/sys/socketvar.h \
+  @/sys/selinfo.h @/sys/event.h @/sys/_sx.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/sysctl.h @/sys/endian.h @/sys/proc.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/kthread.h @/sys/lock.h @/sys/sx.h \
+  @/sys/lockstat.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/ktr.h @/sys/mutex.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_types.h @/net/bpf.h @/net/route.h @/net/radix.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/in_var.h @/sys/fnv_hash.h @/sys/tree.h \
+  @/netinet6/in6_var.h @/netinet/in_systm.h @/netinet/ip.h \
+  @/netinet/ip_var.h @/netinet/tcp.h @/netinet/tcp_seq.h @/netinet/udp.h \
+  @/netinet/ip_icmp.h @/netinet/in_pcb.h @/netinet/tcp_timer.h \
+  @/netinet/tcp_var.h @/netinet/udp_var.h @/netinet/icmp_var.h \
+  @/netinet/if_ether.h @/net/ethernet.h @/net/if_arp.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h @/net/if_clone.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/if_pflog.h @/netinet/ip6.h \
+  @/netinet/icmp6.h @/netinet6/nd6.h @/netinet6/ip6_var.h \
+  @/netinet6/in6_pcb.h machine/in_cksum.h @/sys/limits.h \
+  @/security/mac/mac_framework.h @/sys/acl.h
+pf_if.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_if.c opt_inet.h \
+  opt_inet6.h @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/filio.h @/sys/ioccom.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/event.h \
+  @/sys/_sx.h @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h \
+  @/sys/kernel.h @/sys/linker_set.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_types.h \
+  @/netinet/in.h @/netinet6/in6.h @/netinet/in_var.h @/sys/fnv_hash.h \
+  @/sys/tree.h @/netinet6/in6_var.h @/netinet/in_systm.h @/netinet/ip.h \
+  @/netinet/ip_var.h /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h \
+  @/net/radix.h @/net/route.h @/net/if_clone.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h @/netinet/ip6.h
+pf_subr.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_subr.c \
+  opt_inet.h opt_inet6.h @/sys/cdefs.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/queue.h @/sys/libkern.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/md5.h @/sys/random.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/socketvar.h @/sys/selinfo.h @/sys/event.h @/sys/_sx.h \
+  @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_types.h @/net/bpf.h @/net/route.h @/net/radix.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/in_var.h @/sys/fnv_hash.h @/sys/tree.h \
+  @/netinet6/in6_var.h @/netinet/in_systm.h @/netinet/ip.h \
+  @/netinet/ip_var.h @/netinet/tcp.h @/netinet/tcp_seq.h @/netinet/udp.h \
+  @/netinet/ip_icmp.h @/netinet/in_pcb.h @/netinet/tcp_timer.h \
+  @/netinet/tcp_var.h @/netinet/if_ether.h @/net/ethernet.h \
+  @/net/if_arp.h /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h \
+  @/net/if_clone.h /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h
+pf_osfp.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_osfp.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/socket.h @/sys/_iovec.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/in_systm.h @/netinet/ip.h @/netinet/tcp.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h @/sys/tree.h \
+  @/net/radix.h @/net/route.h @/net/if_clone.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h @/netinet/ip6.h @/netinet6/in6_var.h
+pf_ioctl.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_ioctl.c \
+  @/sys/cdefs.h opt_inet.h opt_inet6.h opt_bpf.h opt_pf.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/filio.h \
+  @/sys/ioccom.h @/sys/fcntl.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/socketvar.h @/sys/selinfo.h @/sys/event.h @/sys/_sx.h \
+  @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/module.h @/sys/conf.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/proc.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/sysctl.h \
+  @/sys/kthread.h @/net/if.h @/net/if_var.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_types.h @/netinet/in.h @/netinet6/in6.h @/netinet/in_var.h \
+  @/sys/fnv_hash.h @/sys/tree.h @/netinet6/in6_var.h @/netinet/in_systm.h \
+  @/netinet/ip.h @/netinet/ip_var.h @/netinet/ip_icmp.h @/sys/md5.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h @/net/radix.h \
+  @/net/route.h @/net/if_clone.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/if_pflog.h @/netinet/ip6.h \
+  @/netinet/in_pcb.h @/sys/limits.h @/net/pfil.h @/sys/rmlock.h \
+  @/sys/_rmlock.h
+pf_norm.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_norm.c \
+  opt_inet.h opt_inet6.h opt_pf.h @/sys/cdefs.h @/sys/param.h \
+  @/sys/_null.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h \
+  @/sys/time.h @/sys/priority.h machine/param.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/filio.h \
+  @/sys/ioccom.h @/sys/fcntl.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/kernel.h @/sys/linker_set.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_types.h @/net/bpf.h @/net/route.h @/net/radix.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/if_pflog.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/in_var.h @/sys/fnv_hash.h @/sys/tree.h \
+  @/netinet6/in6_var.h @/netinet/in_systm.h @/netinet/ip.h \
+  @/netinet/ip_var.h @/netinet/tcp.h @/netinet/tcp_seq.h @/netinet/udp.h \
+  @/netinet/ip_icmp.h @/netinet/ip6.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h @/net/if_clone.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h
+pf_table.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_table.c \
+  opt_inet.h opt_inet6.h @/sys/cdefs.h @/sys/param.h @/sys/_null.h \
+  @/sys/types.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/lock.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/lock_profile.h @/sys/lockstat.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/net/if.h @/net/if_var.h @/sys/eventhandler.h \
+  @/sys/ktr.h @/sys/mutex.h machine/mutex.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/route.h @/net/radix.h @/netinet/in.h @/netinet6/in6.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h @/sys/tree.h \
+  @/net/if_clone.h /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h
+pf_ruleset.o: /usr/src/sys/modules/pf/../../contrib/pf/net/pf_ruleset.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/socket.h @/sys/_iovec.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/in_systm.h @/netinet/ip.h @/netinet/tcp.h \
+  @/net/if.h @/net/if_var.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pfvar.h @/sys/tree.h \
+  @/net/radix.h @/net/route.h @/net/if_clone.h \
+  /usr/src/sys/modules/pf/../../contrib/pf/net/pf_mtag.h \
+  @/netinet/tcp_fsm.h
+in4_cksum.o:  \
+ /usr/src/sys/modules/pf/../../contrib/pf/netinet/in4_cksum.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/netinet/in.h @/netinet6/in6.h @/netinet/in_systm.h \
+  @/netinet/ip.h @/netinet/ip_var.h @/net/vnet.h machine/in_cksum.h

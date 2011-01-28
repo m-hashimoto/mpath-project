@@ -1,0 +1,25 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/usb/ucom/../../../dev/usb/serial/usb_serial.c
+usb_serial.o:  \
+ /usr/src/sys/modules/usb/ucom/../../../dev/usb/serial/usb_serial.c \
+  @/sys/cdefs.h @/sys/stdint.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_debug.h @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/mbuf.h @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_process.h @/dev/usb/serial/usb_serial.h \
+  @/sys/tty.h @/sys/selinfo.h @/sys/event.h @/sys/termios.h \
+  @/sys/ttycom.h @/sys/ioccom.h @/sys/ttydefaults.h @/sys/ttyqueue.h \
+  @/sys/ttydisc.h @/sys/ttydevsw.h @/sys/ttyhook.h @/sys/serial.h \
+  @/sys/fcntl.h

@@ -1,0 +1,205 @@
+# -nostdinc -DCCATM_DEBUG -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm -I/usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/ccatm -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/netgraph/atm/ccatm/../../../../netgraph/atm/ccatm/ng_ccatm.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_conn.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_data.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_dump.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_port.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_sig.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_user.c /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.c
+ng_ccatm.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../netgraph/atm/ccatm/ng_ccatm.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/mbuf.h @/vm/uma.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/event.h \
+  @/sys/_sx.h @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h \
+  @/sys/sbuf.h machine/stdarg.h @/netgraph/ng_message.h \
+  @/netgraph/netgraph.h @/sys/lock.h @/sys/module.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h opt_netgraph.h @/netgraph/ng_parse.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  @/netgraph/atm/ngatmbase.h @/netgraph/atm/ng_uni.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  @/netgraph/atm/ng_ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h
+cc_conn.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_conn.c \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccpriv.h \
+  @/netgraph/atm/ccatm/ng_ccatm_cust.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h @/netgraph/atm/ngatmbase.h
+cc_data.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_data.c \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccpriv.h \
+  @/netgraph/atm/ccatm/ng_ccatm_cust.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h @/netgraph/atm/ngatmbase.h
+cc_dump.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_dump.c \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccpriv.h \
+  @/netgraph/atm/ccatm/ng_ccatm_cust.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h @/netgraph/atm/ngatmbase.h \
+  machine/stdarg.h
+cc_port.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_port.c \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccpriv.h \
+  @/netgraph/atm/ccatm/ng_ccatm_cust.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h @/netgraph/atm/ngatmbase.h
+cc_sig.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_sig.c \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccpriv.h \
+  @/netgraph/atm/ccatm/ng_ccatm_cust.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h @/netgraph/atm/ngatmbase.h
+cc_user.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/cc_user.c \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/unimsg.h \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unimsglib.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/sig/unidef.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/atmapi.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccatm.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/ccpriv.h \
+  @/netgraph/atm/ccatm/ng_ccatm_cust.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/mbuf.h @/vm/uma.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h @/netgraph/atm/ngatmbase.h
+unisap.o:  \
+ /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.c \
+  @/sys/types.h @/sys/cdefs.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/ctype.h @/sys/libkern.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/unistruct.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_config.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_hdr.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_ie.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/msg/uni_msg.h \
+  /usr/src/sys/modules/netgraph/atm/ccatm/../../../../contrib/ngatm/netnatm/api/unisap.h

@@ -1,0 +1,24 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/mac_partition/../../security/mac_partition/mac_partition.c
+mac_partition.o:  \
+ /usr/src/sys/modules/mac_partition/../../security/mac_partition/mac_partition.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/kernel.h @/sys/linker_set.h @/sys/queue.h \
+  @/sys/module.h @/sys/priv.h @/sys/proc.h @/sys/callout.h @/sys/event.h \
+  @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h @/sys/_mutex.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/resource.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sbuf.h @/sys/socket.h @/sys/_iovec.h @/sys/socketvar.h \
+  @/sys/selinfo.h @/sys/_sx.h @/sys/sockbuf.h @/sys/sockstate.h \
+  @/sys/sockopt.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/sysctl.h \
+  @/net/route.h @/net/radix.h @/sys/_rwlock.h @/sys/eventhandler.h \
+  @/sys/lock.h @/sys/ktr.h @/sys/mutex.h @/sys/lockstat.h machine/mutex.h \
+  @/netinet/in.h @/netinet6/in6.h @/netinet/in_pcb.h @/sys/rwlock.h \
+  @/net/vnet.h @/security/mac/mac_policy.h @/sys/acl.h @/vm/uma.h \
+  @/sys/malloc.h @/security/mac_partition/mac_partition.h

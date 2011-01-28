@@ -1,0 +1,130 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris -I/usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common -I/usr/src/sys/modules/dtrace/lockstat/../../.. -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/dtrace/lockstat/../../../cddl/dev/lockstat/lockstat.c
+lockstat.o:  \
+ /usr/src/sys/modules/dtrace/lockstat/../../../cddl/dev/lockstat/lockstat.c \
+  /usr/src/sys/i386/compile/GENERIC/opt_kdtrace.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/cdefs.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/param.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/param.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_null.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/types.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/stdint.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_types.h \
+  machine/_types.h machine/_stdint.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/types.h \
+  machine/endian.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_pthreadtypes.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/select.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_sigset.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_timeval.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/timespec.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/syslimits.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/errno.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/time.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/time.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/priority.h \
+  machine/param.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/systm.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/systm.h \
+  machine/atomic.h machine/cpufunc.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/callout.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/queue.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/libkern.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/string.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/conf.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/eventhandler.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/lock.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/lock.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_lock.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/ktr.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/mutex.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/mutex.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_mutex.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/pcpu.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/pcpu.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/vmmeter.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/lock_profile.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/lockstat.h \
+  machine/mutex.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/proc.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/kthread.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/proc.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/event.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/condvar.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/osd.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/rtprio.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/runq.h machine/runq.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/sigio.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/signalvar.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/ucontext.h \
+  machine/ucontext.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/ucred.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../bsm/audit.h \
+  machine/proc.h /usr/src/sys/modules/dtrace/lockstat/../../../sys/smp.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/sched.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/unistd.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/debug.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/debug.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/sx.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_sx.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/kernel.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/linker_set.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/limits.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/linker.h \
+  machine/elf.h /usr/src/sys/modules/dtrace/lockstat/../../../sys/elf32.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/elf_common.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/elf_generic.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/kobj.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/kmem.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/malloc.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../vm/uma.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../vm/vm.h machine/vm.h \
+  machine/specialreg.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../vm/vm_extern.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/kobj.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/vnode.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/namei.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/uio.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/uio.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_iovec.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/vnode.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/vnode.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/bufobj.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/lockmgr.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_lockmgr.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/_rwlock.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/selinfo.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/acl.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/acl.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/acl_impl.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/acl.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/mount.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/mount.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/module.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/cred.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/fcntl.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/file.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/file.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/refcount.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/filedesc.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/syscallsubr.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/socket.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/mac.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/dtrace.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/modctl.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/processor.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/procset.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/feature_tests.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/ioccom.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/ctf_api.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/elf.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/elf.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../sys/elf64.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/contrib/opensolaris/uts/common/sys/ctf.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/cyclic.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/cpuvar.h \
+  /usr/src/sys/modules/dtrace/lockstat/../../../cddl/compat/opensolaris/sys/cpuvar_defs.h

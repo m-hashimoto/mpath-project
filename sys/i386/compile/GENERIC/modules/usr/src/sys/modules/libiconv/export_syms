@@ -1,0 +1,1 @@
+iconv_open iconv_close iconv_conv iconv_conv_case iconv_convchr iconv_convchr_case iconv_convstr iconv_convmem iconv_vfs_refcount

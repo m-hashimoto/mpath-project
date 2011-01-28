@@ -1,0 +1,31 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/aio/../../kern/vfs_aio.c
+vfs_aio.o: /usr/src/sys/modules/aio/../../kern/vfs_aio.c @/sys/cdefs.h \
+  opt_compat.h @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/bio.h @/sys/buf.h \
+  @/sys/bufobj.h @/sys/lock.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/proc.h @/sys/event.h @/sys/condvar.h \
+  @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/resource.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/sys/mutex.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/eventhandler.h @/sys/ktr.h @/sys/sysproto.h \
+  @/sys/acl.h @/vm/uma.h @/sys/cpuset.h @/sys/_semaphore.h \
+  @/bsm/audit_kevents.h @/sys/filedesc.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/module.h @/sys/kthread.h \
+  @/sys/fcntl.h @/sys/file.h @/sys/refcount.h @/sys/limits.h \
+  @/sys/unistd.h @/sys/posix4.h @/sys/ioccom.h @/sys/sched.h \
+  @/sys/resourcevar.h @/sys/protosw.h @/sys/sema.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/syscall.h @/sys/sysent.h \
+  @/sys/sysctl.h @/sys/taskqueue.h @/sys/_task.h @/sys/vnode.h \
+  @/sys/uio.h vnode_if.h vnode_if_typedef.h vnode_if_newproto.h \
+  @/sys/conf.h @/sys/mount.h @/vm/vm.h machine/vm.h machine/specialreg.h \
+  @/vm/vm_extern.h @/vm/pmap.h machine/pmap.h @/vm/vm_map.h \
+  @/vm/vm_object.h @/sys/aio.h opt_vfs_aio.h

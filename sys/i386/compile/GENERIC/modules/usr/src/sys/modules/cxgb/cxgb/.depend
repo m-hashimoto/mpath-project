@@ -1,0 +1,518 @@
+# -nostdinc -DDEFAULT_JUMBO -DDISABLE_MBUF_IOVEC -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_mc5.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_vsc8211.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ael1002.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_mv88e1xxx.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_xgmac.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_vsc7323.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_hw.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_main.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_sge.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tn1010.c /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/uipc_mvec.c
+cxgb_mc5.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_mc5.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/ctype.h @/sys/endian.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/_bus.h machine/resource.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h \
+  @/sys/ioccom.h @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/ethernet.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h \
+  @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_dl.h machine/bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h
+cxgb_vsc8211.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_vsc8211.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  machine/bus.h machine/_bus.h machine/cpufunc.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/systm.h machine/atomic.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/ctype.h \
+  @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h
+cxgb_ael1002.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ael1002.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  machine/bus.h machine/_bus.h machine/cpufunc.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/systm.h machine/atomic.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/ctype.h \
+  @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h
+cxgb_mv88e1xxx.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_mv88e1xxx.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  machine/bus.h machine/_bus.h machine/cpufunc.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/systm.h machine/atomic.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/ctype.h \
+  @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h
+cxgb_xgmac.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_xgmac.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  machine/bus.h machine/_bus.h machine/cpufunc.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/systm.h machine/atomic.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/ctype.h \
+  @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h
+cxgb_vsc7323.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_vsc7323.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/ctype.h @/sys/endian.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/_bus.h machine/resource.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h \
+  @/sys/ioccom.h @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/ethernet.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h \
+  @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h \
+  @/sys/_task.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_dl.h machine/bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h
+cxgb_t3_hw.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_hw.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  machine/bus.h machine/_bus.h machine/cpufunc.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/systm.h machine/atomic.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/ctype.h \
+  @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h
+cxgb_main.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_main.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/module.h @/sys/pciio.h @/sys/ioccom.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/linker.h \
+  machine/elf.h @/sys/elf32.h @/sys/elf_common.h @/sys/elf_generic.h \
+  @/sys/firmware.h @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h \
+  @/sys/smp.h @/sys/sysctl.h @/sys/syslog.h @/sys/taskqueue.h \
+  @/sys/_task.h @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/net/bpf.h @/net/ethernet.h @/net/if.h @/net/if_var.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_arp.h @/net/if_dl.h @/net/if_media.h @/net/if_types.h \
+  @/net/if_vlan_var.h @/netinet/in_systm.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/if_ether.h @/netinet/ip.h @/netinet/tcp.h \
+  @/netinet/udp.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  @/dev/pci/pci_private.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/ctype.h @/sys/endian.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h \
+  @/sys/priv.h
+cxgb_sge.o: /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_sge.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/sys/sysctl.h @/sys/taskqueue.h @/sys/_task.h \
+  @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/sbuf.h @/sys/sched.h @/sys/smp.h @/sys/syslog.h @/net/bpf.h \
+  @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/tcp.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/ctype.h @/sys/endian.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/sockio.h @/sys/ioccom.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/ethernet.h @/net/if.h \
+  @/net/if_var.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h \
+  @/sys/_sx.h @/contrib/altq/altq/if_altq.h @/net/if_media.h \
+  @/net/if_dl.h /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mvec.h
+cxgb_offload.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/module.h @/sys/pciio.h @/sys/ioccom.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/linker.h \
+  machine/elf.h @/sys/elf32.h @/sys/elf_common.h @/sys/elf_generic.h \
+  @/sys/firmware.h @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h \
+  @/sys/smp.h @/sys/sysctl.h @/sys/syslog.h @/sys/taskqueue.h \
+  @/sys/_task.h @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/ctype.h @/sys/endian.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/ethernet.h @/net/if.h @/net/if_var.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/if_dl.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h \
+  pci_if.h /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h \
+  @/net/route.h @/net/radix.h
+cxgb_tn1010.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tn1010.c \
+  @/sys/cdefs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  machine/bus.h machine/_bus.h machine/cpufunc.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/systm.h machine/atomic.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/ctype.h \
+  @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h @/sys/_mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/condvar.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/net/ethernet.h @/net/if.h @/net/if_var.h \
+  @/sys/eventhandler.h @/sys/ktr.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h
+uipc_mvec.o:  \
+ /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/uipc_mvec.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/malloc.h @/sys/_mutex.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/ktr.h @/sys/sf_buf.h machine/sf_buf.h @/vm/vm.h machine/vm.h \
+  machine/specialreg.h @/vm/pmap.h machine/pmap.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h @/sys/_bus_dma.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_include.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_osdep.h \
+  @/sys/ctype.h @/sys/endian.h @/sys/bus.h machine/_limits.h @/sys/kobj.h \
+  device_if.h bus_if.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/dev/mii/mii.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_version.h \
+  opt_inet.h @/sys/syslog.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_common.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_adapter.h \
+  @/sys/rman.h machine/resource.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/sockio.h @/sys/ioccom.h @/sys/condvar.h @/sys/buf_ring.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/net/ethernet.h @/net/if.h \
+  @/net/if_var.h @/sys/eventhandler.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_dl.h \
+  @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/t3cdev.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mbufq.h \
+  @/netinet/tcp_lro.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_ioctl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_offload.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/cxgb_config.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_tcb.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_regs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_t3_cpl.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_ctl_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_sge_defs.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/cxgb_firmware_exports.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/common/jhash.h \
+  /usr/src/sys/modules/cxgb/cxgb/../../../dev/cxgb/sys/mvec.h \
+  @/vm/vm_page.h @/vm/vm_param.h machine/vmparam.h

@@ -1,0 +1,454 @@
+# -nostdinc -DSMP -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/igb/../../dev/e1000 -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/igb/../../dev/e1000/if_igb.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_82542.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_82540.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.c /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.c
+if_igb.o: /usr/src/sys/modules/igb/../../dev/e1000/if_igb.c \
+  /usr/src/sys/i386/compile/GENERIC/opt_device_polling.h opt_inet.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/buf_ring.h machine/cpu.h machine/psl.h \
+  machine/frame.h machine/segments.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/endian.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/kthread.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/mbuf.h @/vm/uma.h @/sys/module.h \
+  @/sys/rman.h machine/_bus.h machine/resource.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/sockio.h @/sys/ioccom.h @/sys/sysctl.h \
+  @/sys/taskqueue.h @/sys/_task.h @/sys/eventhandler.h @/sys/lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/smp.h machine/smp.h machine/intr_machdep.h \
+  machine/apicvar.h machine/pcb.h machine/npx.h machine/bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/net/bpf.h @/net/ethernet.h \
+  @/net/if.h @/net/if_var.h @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/event.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_arp.h @/net/if_dl.h @/net/if_media.h @/net/if_types.h \
+  @/net/if_vlan_var.h @/netinet/in_systm.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/if_ether.h @/netinet/ip.h @/netinet/ip6.h \
+  @/netinet/tcp.h @/netinet/tcp_lro.h @/netinet/udp.h machine/in_cksum.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/protosw.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/if_igb.h
+e1000_api.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_phy.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_nvm.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_mac.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_manage.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_80003es2lan.o:  \
+ /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_82542.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_82542.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_82541.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_82543.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_82540.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_82540.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_ich8lan.o:  \
+ /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_82571.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_osdep.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h
+e1000_82575.o: /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.c \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_api.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_hw.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_osdep.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/param.h @/sys/_null.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/systm.h machine/atomic.h machine/cpufunc.h @/sys/callout.h \
+  @/sys/queue.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/kobj.h device_if.h bus_if.h machine/bus.h machine/_bus.h \
+  machine/bus_dma.h @/sys/bus_dma.h @/sys/rman.h machine/resource.h \
+  @/vm/vm.h machine/vm.h machine/specialreg.h @/vm/pmap.h machine/pmap.h \
+  machine/clock.h @/dev/pci/pcivar.h pci_if.h @/dev/pci/pcireg.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_regs.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_defines.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_mac.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_phy.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_nvm.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_manage.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82541.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82543.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82571.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_80003es2lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_ich8lan.h \
+  /usr/src/sys/modules/igb/../../dev/e1000/e1000_82575.h

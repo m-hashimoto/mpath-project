@@ -1,0 +1,333 @@
+--- route.c.org	2010-12-26 14:51:50.000000000 +0900
++++ route.c	2011-01-03 14:47:02.000000000 +0900
+@@ -51,7 +51,8 @@
+ #include <net/if_var.h>
+ #include <net/if_dl.h>
+ #include <net/if_types.h>
+-#include <net/radix.h>
++#include <net/ptree.h>
++#include <net/ptree_mpath.h>
+ #include <net/route.h>
+ 
+ #include <netinet/in.h>
+@@ -116,23 +117,23 @@
+ } sa_u;
+ 
+ static sa_u pt_u;
++static int p_multipath = 0;
+ 
+ int	fibnum;
+ int	do_rtent = 0;
+ struct	rtentry rtentry;
+-struct	radix_node rnode;
+-struct	radix_mask rmask;
+-struct	radix_node_head **rt_tables;
++struct	ptree_node rnode;
++struct	ptree_node_head **rt_tables;
+ 
+ int	NewTree = 0;
+ 
+ struct	timespec uptime;
+ 
+ static struct sockaddr *kgetsa(struct sockaddr *);
+-static void size_cols(int ef, struct radix_node *rn);
+-static void size_cols_tree(struct radix_node *rn);
++static void size_cols(int ef, struct ptree_node *rn);
++static void size_cols_tree(struct ptree_node *rn);
+ static void size_cols_rtentry(struct rtentry *rt);
+-static void p_tree(struct radix_node *);
++static void p_tree(struct ptree_node *);
+ static void p_rtnode(void);
+ static void ntreestuff(void);
+ static void np_rtentry(struct rt_msghdr *);
+@@ -150,7 +151,8 @@
+ void
+ routepr(u_long rtree)
+ {
+-	struct radix_node_head **rnhp, *rnh, head;
++	struct ptree_node_head **rnhp, *rnh, head;
++	struct ptree *pnhp, pnh_head;
+ 	size_t intsize;
+ 	int i;
+ 	int numfibs;
+@@ -161,7 +163,7 @@
+ 	if (sysctlbyname("net.fibs", &numfibs, &intsize, NULL, 0) == -1)
+ 		numfibs = 1;
+ 	rt_tables = calloc(numfibs * (AF_MAX+1),
+-	    sizeof(struct radix_node_head *));
++	    sizeof(struct ptree_node_head *));
+ 	if (rt_tables == NULL)
+ 		err(EX_OSERR, "memory allocation failed");
+ 	/*
+@@ -183,7 +185,7 @@
+ 		}
+ 
+ 		if (kread((u_long)(rtree), (char *)(rt_tables), (numfibs *
+-		    (AF_MAX+1) * sizeof(struct radix_node_head *))) != 0)
++		    (AF_MAX+1) * sizeof(struct ptree_node_head *))) != 0)
+ 			return;
+ 		for (i = 0; i <= AF_MAX; i++) {
+ 			int tmpfib;
+@@ -191,7 +193,7 @@
+ 				tmpfib = 0;
+ 			else
+ 				tmpfib = fibnum;
+-			rnhp = (struct radix_node_head **)*rt_tables;
++			rnhp = (struct ptree_node_head **)*rt_tables;
+ 			/* Calculate the in-kernel address. */
+ 			rnhp += tmpfib * (AF_MAX+1) + i;
+ 			/* Read the in kernel rhn pointer. */
+@@ -202,17 +204,22 @@
+ 			/* Read the rnh data. */
+ 			if (kget(rnh, head) != 0)
+ 				continue;
++			
++			pnhp = head.pnh_treetop;
++			/* Read the pnh_head data. */
++			if (kget(pnhp,pnh_head) != 0)
++				continue;
+ 			if (i == AF_UNSPEC) {
+ 				if (Aflag && af == 0) {
+ 					printf("Netmasks:\n");
+-					p_tree(head.rnh_treetop);
++					p_tree(pnh_head.top);
+ 				}
+ 			} else if (af == AF_UNSPEC || af == i) {
+-				size_cols(i, head.rnh_treetop);
++				size_cols(i, pnh_head.top);
+ 				pr_family(i);
+ 				do_rtent = 1;
+ 				pr_rthdr(i);
+-				p_tree(head.rnh_treetop);
++				p_tree(pnh_head.top);
+ 			}
+ 		}
+ 	}
+@@ -283,7 +290,7 @@
+ static int wid_expire;
+ 
+ static void
+-size_cols(int ef __unused, struct radix_node *rn)
++size_cols(int ef __unused, struct ptree_node *rn)
+ {
+ 	wid_dst = WID_DST_DEFAULT(ef);
+ 	wid_gw = WID_GW_DEFAULT(ef);
+@@ -299,27 +306,21 @@
+ }
+ 
+ static void
+-size_cols_tree(struct radix_node *rn)
++size_cols_tree(struct ptree_node *rn)
+ {
+-again:
+ 	if (kget(rn, rnode) != 0)
+ 		return;
+-	if (!(rnode.rn_flags & RNF_ACTIVE))
++	if(!rn->data)
+ 		return;
+-	if (rnode.rn_bit < 0) {
+-		if ((rnode.rn_flags & RNF_ROOT) == 0) {
+-			if (kget(rn, rtentry) != 0)
++	else{
++		if (kget(rn->data,rtentry) != 0)
+ 				return;
+ 			size_cols_rtentry(&rtentry);
+ 		}
+-		if ((rn = rnode.rn_dupedkey))
+-			goto again;
+-	} else {
+-		rn = rnode.rn_right;
+-		size_cols_tree(rnode.rn_left);
++	rn = rnode.child[1];
++	size_cols_tree(rnode.child[0]);
+ 		size_cols_tree(rn);
+ 	}
+-}
+ 
+ static void
+ size_cols_rtentry(struct rtentry *rt)
+@@ -330,9 +331,13 @@
+ 	struct sockaddr *sa;
+ 	sa_u addr, mask;
+ 	int len;
++	struct ptree_node rn;
++
+ 
+ 	bzero(&addr, sizeof(addr));
+-	if ((sa = kgetsa(rt_key(rt))))
++	if (kget(rt->rt_nodes,rn) != 0)
++		return;
++	if ((sa = kgetsa((struct sockaddr *)rn.key)))
+ 		bcopy(sa, &addr, sa->sa_len);
+ 	bzero(&mask, sizeof(mask));
+ 	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
+@@ -382,14 +387,12 @@
+ 	}
+ }
+ 
+-
+ /*
+  * Print header for routing table columns.
+  */
+ void
+ pr_rthdr(int af1)
+ {
+-
+ 	if (Aflag)
+ 		printf("%-8.8s ","Address");
+ 	if (af1 == AF_INET || Wflag) {
+@@ -426,7 +429,6 @@
+ static struct sockaddr *
+ kgetsa(struct sockaddr *dst)
+ {
+-
+ 	if (kget(dst, pt_u.u_sa) != 0)
+ 		return (NULL);
+ 	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
+@@ -435,85 +437,59 @@
+ }
+ 
+ static void
+-p_tree(struct radix_node *rn)
++p_tree(struct ptree_node *rn)
+ {
++	unsigned int n, i = 1;
++	struct rtentry rt;
+ 
+-again:
+-	if (kget(rn, rnode) != 0)
++	if(!rn)
+ 		return;
+-	if (!(rnode.rn_flags & RNF_ACTIVE))
++	if (kget(rn, rnode) != 0)
+ 		return;
+-	if (rnode.rn_bit < 0) {
+ 		if (Aflag)
+ 			printf("%-8.8lx ", (u_long)rn);
+-		if (rnode.rn_flags & RNF_ROOT) {
+-			if (Aflag)
+-				printf("(root node)%s",
+-				    rnode.rn_dupedkey ? " =>\n" : "\n");
+-		} else if (do_rtent) {
+-			if (kget(rn, rtentry) == 0) {
++	if (do_rtent) {
++		if (rnode.data && kget(rnode.data, rtentry) == 0) {
+ 				p_rtentry(&rtentry);
+ 				if (Aflag)
+ 					p_rtnode();
++			/* multipath print*/
++			p_multipath = 1;
++			if(rtentry.mpath_array){
++				n = rtentry.mpath_counter;
++				struct rtentry *rt0[n+1];
++				
++				if (kget(rtentry.mpath_array, rt0) == 0){
++					while( i <= n && rt0+i ){
++						if (kget(rt0[i], rt) == 0)
++							p_rtentry(&rt);
++						i++;
++					}
++				}
++			}	/* multipath End */
++			p_multipath = 0;
+ 			}
+ 		} else {
+-			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_key),
++		p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
+ 				   NULL, 0, 44);
+ 			putchar('\n');
+ 		}
+-		if ((rn = rnode.rn_dupedkey))
+-			goto again;
+-	} else {
+ 		if (Aflag && do_rtent) {
+ 			printf("%-8.8lx ", (u_long)rn);
+ 			p_rtnode();
+ 		}
+-		rn = rnode.rn_right;
+-		p_tree(rnode.rn_left);
++	rn = rnode.child[1];
++	p_tree(rnode.child[0]);
+ 		p_tree(rn);
+ 	}
+-}
+ 
+ char	nbuf[20];
+ 
+ static void
+ p_rtnode(void)
+ {
+-	struct radix_mask *rm = rnode.rn_mklist;
+-
+-	if (rnode.rn_bit < 0) {
+-		if (rnode.rn_mask) {
+-			printf("\t  mask ");
+-			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_mask),
+-				   NULL, 0, -1);
+-		} else if (rm == 0)
+-			return;
+-	} else {
+-		sprintf(nbuf, "(%d)", rnode.rn_bit);
+-		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_left, (u_long)rnode.rn_right);
+-	}
+-	while (rm) {
+-		if (kget(rm, rmask) != 0)
+-			break;
+-		sprintf(nbuf, " %d refs, ", rmask.rm_refs);
+-		printf(" mk = %8.8lx {(%d),%s",
+-			(u_long)rm, -1 - rmask.rm_bit, rmask.rm_refs ? nbuf : " ");
+-		if (rmask.rm_flags & RNF_NORMAL) {
+-			struct radix_node rnode_aux;
+-			printf(" <normal>, ");
+-			if (kget(rmask.rm_leaf, rnode_aux) == 0)
+-				p_sockaddr(kgetsa((struct sockaddr *)rnode_aux.rn_mask),
+-				    NULL, 0, -1);
+-			else
+-				p_sockaddr(NULL, NULL, 0, -1);
+-		} else
+-		    p_sockaddr(kgetsa((struct sockaddr *)rmask.rm_mask),
+-				NULL, 0, -1);
+-		putchar('}');
+-		if ((rm = rmask.rm_mklist))
+-			printf(" ->");
+-	}
+-	putchar('\n');
++		sprintf(nbuf, "(%d)", rnode.keylen);
++		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.child[0], (u_long)rnode.child[1]);
+ }
+ 
+ static void
+@@ -763,13 +739,23 @@
+ 	static char prettyname[128];
+ 	struct sockaddr *sa;
+ 	sa_u addr, mask;
++	struct ptree_node rn;
+ 
+ 	bzero(&addr, sizeof(addr));
+-	if ((sa = kgetsa(rt_key(rt))))
++	if (kget(rt->rt_nodes,rn) != 0)
++		return;
++	if ((sa = kgetsa((struct sockaddr *)rn.key)))
+ 		bcopy(sa, &addr, sa->sa_len);
+ 	bzero(&mask, sizeof(mask));
+ 	if (rt_mask(rt) && (sa = kgetsa(rt_mask(rt))))
+ 		bcopy(sa, &mask, sa->sa_len);
++	if(p_multipath){
++		if(sa->sa_family == AF_INET)
++			printf("%-19s"," ");
++		else if(sa->sa_family == AF_INET6)
++			printf("%-34s"," ");
++	}
++	else
+ 	p_sockaddr(&addr.u_sa, &mask.u_sa, rt->rt_flags, wid_dst);
+ 	p_sockaddr(kgetsa(rt->rt_gateway), NULL, RTF_HOST, wid_gw);
+ 	snprintf(buffer, sizeof(buffer), "%%-%d.%ds ", wid_flags, wid_flags);
+@@ -801,8 +787,6 @@
+ 			    rt->rt_rmx.rmx_expire - uptime.tv_sec) > 0)
+ 				printf(" %*d", wid_expire, (int)expire_time);
+ 		}
+-		if (rt->rt_nodes[0].rn_dupedkey)
+-			printf(" =>");
+ 	}
+ 	putchar('\n');
+ }

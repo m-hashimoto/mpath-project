@@ -1,0 +1,18 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/i2c/controllers/lpbb/../../../../dev/ppbus/lpbb.c
+lpbb.o:  \
+ /usr/src/sys/modules/i2c/controllers/lpbb/../../../../dev/ppbus/lpbb.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h \
+  @/sys/queue.h @/sys/kobj.h device_if.h bus_if.h @/sys/lock.h \
+  @/sys/_lock.h @/sys/kernel.h @/sys/linker_set.h @/sys/module.h \
+  @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/sys/systm.h @/sys/callout.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/libkern.h @/sys/uio.h \
+  @/sys/_iovec.h @/dev/ppbus/ppbconf.h ppbus_if.h @/dev/ppbus/ppbio.h \
+  @/dev/iicbus/iiconf.h @/dev/iicbus/iic.h @/sys/ioccom.h \
+  @/dev/iicbus/iicbus.h iicbb_if.h

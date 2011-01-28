@@ -1,0 +1,155 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias.c /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_db.c /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_proxy.c /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_util.c /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_mod.c /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_sctp.c
+alias.o:  \
+ /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/mbuf.h @/vm/uma.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/sysctl.h @/netinet/in_systm.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/ip.h @/netinet/ip_icmp.h @/netinet/tcp.h \
+  @/netinet/udp.h @/netinet/libalias/alias.h \
+  @/netinet/libalias/alias_local.h @/sys/lock.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/netinet/libalias/alias_sctp.h @/sys/module.h \
+  @/sys/linker_set.h @/sys/kernel.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/signal.h machine/_limits.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socketvar.h @/sys/selinfo.h @/sys/_sx.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/syslog.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/netinet/sctp.h @/netinet/sctp_uio.h \
+  @/sys/socket.h @/netinet/sctp_header.h @/netinet/sctp_constants.h \
+  @/netinet/libalias/alias_mod.h
+alias_db.o:  \
+ /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_db.c \
+  @/sys/cdefs.h machine/stdarg.h @/sys/_types.h machine/_types.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/queue.h @/sys/lock.h @/sys/_lock.h @/sys/module.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/lock_profile.h @/sys/lockstat.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h machine/atomic.h @/sys/syslog.h @/sys/socket.h \
+  @/sys/_iovec.h @/netinet/tcp.h @/netinet/libalias/alias.h \
+  @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/libalias/alias_local.h @/sys/sysctl.h @/sys/malloc.h \
+  @/sys/_mutex.h @/sys/mutex.h machine/cpufunc.h machine/mutex.h \
+  @/netinet/libalias/alias_sctp.h @/sys/proc.h @/sys/callout.h \
+  @/sys/event.h @/sys/condvar.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/uio.h @/sys/socketvar.h @/sys/selinfo.h @/sys/_sx.h \
+  @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/netinet/sctp.h @/netinet/sctp_uio.h \
+  @/netinet/sctp_header.h @/netinet/sctp_constants.h \
+  @/netinet/libalias/alias_mod.h @/net/if.h @/net/if_var.h @/sys/mbuf.h \
+  @/sys/systm.h @/sys/stdint.h machine/_stdint.h @/sys/libkern.h \
+  @/vm/uma.h @/sys/eventhandler.h @/sys/ktr.h @/sys/buf_ring.h \
+  @/net/vnet.h @/sys/sx.h @/sys/_task.h @/contrib/altq/altq/if_altq.h
+alias_proxy.o:  \
+ /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_proxy.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/ctype.h @/sys/libkern.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/limits.h machine/_limits.h \
+  @/netinet/tcp.h @/netinet/libalias/alias.h @/netinet/in_systm.h \
+  @/netinet/in.h @/netinet6/in6.h @/netinet/ip.h \
+  @/netinet/libalias/alias_local.h @/sys/sysctl.h @/sys/malloc.h \
+  @/sys/_lock.h @/sys/_mutex.h @/sys/lock.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/netinet/libalias/alias_sctp.h @/sys/module.h @/sys/linker_set.h \
+  @/sys/kernel.h @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h \
+  @/sys/_sx.h @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h \
+  @/sys/syslog.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/netinet/sctp.h @/netinet/sctp_uio.h @/sys/socket.h \
+  @/netinet/sctp_header.h @/netinet/sctp_constants.h \
+  @/netinet/libalias/alias_mod.h
+alias_util.o:  \
+ /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_util.c \
+  @/sys/cdefs.h @/sys/param.h @/sys/_null.h @/sys/types.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/proc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/event.h @/sys/condvar.h @/sys/_lock.h @/sys/lock_profile.h \
+  @/sys/_mutex.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/resource.h @/sys/sigio.h @/sys/signal.h machine/_limits.h \
+  machine/signal.h machine/trap.h @/sys/signalvar.h @/sys/pcpu.h \
+  @/sys/vmmeter.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/tcp.h @/netinet/libalias/alias.h \
+  @/netinet/libalias/alias_local.h @/sys/sysctl.h @/sys/malloc.h \
+  @/sys/lock.h @/sys/mutex.h @/sys/lockstat.h machine/atomic.h \
+  machine/cpufunc.h machine/mutex.h @/netinet/libalias/alias_sctp.h \
+  @/sys/module.h @/sys/linker_set.h @/sys/kernel.h @/sys/uio.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/_sx.h \
+  @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h @/sys/syslog.h \
+  machine/cpu.h machine/psl.h machine/frame.h @/netinet/sctp.h \
+  @/netinet/sctp_uio.h @/sys/socket.h @/netinet/sctp_header.h \
+  @/netinet/sctp_constants.h
+alias_mod.o:  \
+ /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_mod.c \
+  @/sys/cdefs.h @/sys/libkern.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/systm.h \
+  machine/atomic.h machine/cpufunc.h @/sys/callout.h @/sys/queue.h \
+  @/sys/stdint.h machine/_stdint.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/lock.h @/sys/_lock.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/lock_profile.h @/sys/lockstat.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/netinet/in_systm.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/ip.h @/netinet/libalias/alias_local.h @/sys/sysctl.h \
+  @/sys/malloc.h @/sys/_mutex.h @/sys/mutex.h machine/mutex.h \
+  @/netinet/libalias/alias_sctp.h @/sys/module.h @/sys/linker_set.h \
+  @/sys/kernel.h @/sys/proc.h @/sys/event.h @/sys/condvar.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/signal.h \
+  machine/_limits.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/uio.h @/sys/_iovec.h @/sys/socketvar.h \
+  @/sys/selinfo.h @/sys/_sx.h @/sys/sockbuf.h @/sys/sockstate.h \
+  @/sys/sockopt.h @/sys/syslog.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/netinet/sctp.h @/netinet/sctp_uio.h @/sys/socket.h \
+  @/netinet/sctp_header.h @/netinet/sctp_constants.h \
+  @/netinet/libalias/alias_mod.h
+alias_sctp.o:  \
+ /usr/src/sys/modules/libalias/libalias/../../../netinet/libalias/alias_sctp.c \
+  machine/stdarg.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  @/sys/param.h @/sys/_null.h @/sys/types.h machine/endian.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/module.h @/sys/syslog.h @/netinet/libalias/alias_sctp.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/proc.h @/sys/event.h \
+  @/sys/condvar.h @/sys/lock_profile.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/resource.h @/sys/sigio.h \
+  @/sys/signal.h machine/_limits.h machine/signal.h machine/trap.h \
+  @/sys/signalvar.h @/sys/pcpu.h @/sys/vmmeter.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/socketvar.h @/sys/selinfo.h @/sys/_sx.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/netinet/in_systm.h @/netinet/in.h \
+  @/netinet6/in6.h @/netinet/ip.h machine/cpu.h machine/psl.h \
+  machine/frame.h @/netinet/sctp.h @/netinet/sctp_uio.h @/sys/socket.h \
+  @/netinet/sctp_header.h @/netinet/sctp_constants.h \
+  @/netinet/libalias/alias.h @/netinet/libalias/alias_local.h \
+  @/sys/sysctl.h @/sys/lock.h @/sys/mutex.h @/sys/lockstat.h \
+  machine/mutex.h @/netinet/sctp_crc32.h machine/in_cksum.h

@@ -1,0 +1,152 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -I/usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/include -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket.c /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_hci_raw.c /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_l2cap_raw.c /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_l2cap.c /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_rfcomm.c /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_sco.c
+ng_btsocket.o:  \
+ /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bitstring.h @/sys/domain.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/lock.h @/sys/_lock.h @/sys/mbuf.h @/vm/uma.h \
+  @/sys/malloc.h @/sys/_mutex.h @/sys/mutex.h @/sys/pcpu.h \
+  @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h machine/segments.h \
+  machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h \
+  @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h @/sys/socketvar.h \
+  @/sys/selinfo.h @/sys/event.h @/sys/_sx.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/sys/_task.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h \
+  @/netgraph/bluetooth/include/ng_bluetooth.h \
+  @/netgraph/bluetooth/include/ng_hci.h \
+  @/netgraph/bluetooth/include/ng_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket.h \
+  @/netgraph/bluetooth/include/ng_btsocket_hci_raw.h \
+  @/netgraph/bluetooth/include/ng_btsocket_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket_rfcomm.h \
+  @/netgraph/bluetooth/include/ng_btsocket_sco.h
+ng_btsocket_hci_raw.o:  \
+ /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_hci_raw.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bitstring.h @/sys/domain.h @/sys/endian.h \
+  @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/_limits.h @/sys/ioccom.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/malloc.h @/sys/_mutex.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/mutex.h machine/mutex.h @/sys/priv.h @/sys/protosw.h \
+  @/sys/socket.h @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h \
+  @/sys/sockbuf.h @/sys/sockstate.h @/sys/sockopt.h @/sys/sysctl.h \
+  @/sys/taskqueue.h @/sys/_task.h @/netgraph/ng_message.h \
+  @/netgraph/netgraph.h @/sys/module.h opt_netgraph.h \
+  @/netgraph/bluetooth/include/ng_bluetooth.h \
+  @/netgraph/bluetooth/include/ng_hci.h \
+  @/netgraph/bluetooth/include/ng_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket.h \
+  @/netgraph/bluetooth/include/ng_btsocket_hci_raw.h
+ng_btsocket_l2cap_raw.o:  \
+ /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_l2cap_raw.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bitstring.h @/sys/domain.h @/sys/filedesc.h \
+  @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/_limits.h @/sys/ioccom.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/malloc.h @/sys/_mutex.h @/sys/mbuf.h @/vm/uma.h @/sys/mutex.h \
+  machine/mutex.h @/sys/priv.h @/sys/protosw.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/sys/_task.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h \
+  @/netgraph/bluetooth/include/ng_bluetooth.h \
+  @/netgraph/bluetooth/include/ng_hci.h \
+  @/netgraph/bluetooth/include/ng_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket.h \
+  @/netgraph/bluetooth/include/ng_btsocket_l2cap.h
+ng_btsocket_l2cap.o:  \
+ /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_l2cap.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bitstring.h @/sys/domain.h @/sys/endian.h \
+  @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/_limits.h @/sys/ioccom.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/malloc.h @/sys/_mutex.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/mutex.h machine/mutex.h @/sys/protosw.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/sys/_task.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h \
+  @/netgraph/bluetooth/include/ng_bluetooth.h \
+  @/netgraph/bluetooth/include/ng_hci.h \
+  @/netgraph/bluetooth/include/ng_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket.h \
+  @/netgraph/bluetooth/include/ng_btsocket_l2cap.h
+ng_btsocket_rfcomm.o:  \
+ /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_rfcomm.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bitstring.h @/sys/domain.h @/sys/endian.h \
+  @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/_limits.h @/sys/ioccom.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/malloc.h @/sys/_mutex.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/mutex.h machine/mutex.h @/sys/proc.h @/sys/condvar.h \
+  @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/signal.h machine/signal.h machine/trap.h @/sys/signalvar.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/sys/protosw.h @/sys/socket.h @/sys/_iovec.h \
+  @/sys/socketvar.h @/sys/selinfo.h @/sys/sockbuf.h @/sys/sockstate.h \
+  @/sys/sockopt.h @/sys/sysctl.h @/sys/taskqueue.h @/sys/_task.h \
+  @/sys/uio.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h \
+  @/netgraph/bluetooth/include/ng_bluetooth.h \
+  @/netgraph/bluetooth/include/ng_hci.h \
+  @/netgraph/bluetooth/include/ng_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket.h \
+  @/netgraph/bluetooth/include/ng_btsocket_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket_rfcomm.h
+ng_btsocket_sco.o:  \
+ /usr/src/sys/modules/netgraph/bluetooth/socket/../../../../netgraph/bluetooth/socket/ng_btsocket_sco.c \
+  @/sys/param.h @/sys/_null.h @/sys/types.h @/sys/cdefs.h \
+  machine/endian.h @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h \
+  @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/bitstring.h @/sys/domain.h @/sys/endian.h \
+  @/sys/filedesc.h @/sys/event.h @/sys/lock.h @/sys/_lock.h @/sys/sx.h \
+  @/sys/_sx.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/_limits.h @/sys/ioccom.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/malloc.h @/sys/_mutex.h @/sys/mbuf.h \
+  @/vm/uma.h @/sys/mutex.h machine/mutex.h @/sys/protosw.h @/sys/socket.h \
+  @/sys/_iovec.h @/sys/socketvar.h @/sys/selinfo.h @/sys/sockbuf.h \
+  @/sys/sockstate.h @/sys/sockopt.h @/sys/sysctl.h @/sys/taskqueue.h \
+  @/sys/_task.h @/netgraph/ng_message.h @/netgraph/netgraph.h \
+  @/sys/module.h opt_netgraph.h \
+  @/netgraph/bluetooth/include/ng_bluetooth.h \
+  @/netgraph/bluetooth/include/ng_hci.h \
+  @/netgraph/bluetooth/include/ng_l2cap.h \
+  @/netgraph/bluetooth/include/ng_btsocket.h \
+  @/netgraph/bluetooth/include/ng_btsocket_sco.h

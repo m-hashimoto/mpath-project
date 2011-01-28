@@ -1,0 +1,128 @@
+# -nostdinc -DENABLE_BPF -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm.c /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_intr.c /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_ioctl.c /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_tx.c /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_rx.c
+if_hatm.o: /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm.c \
+  @/sys/cdefs.h opt_inet.h opt_natm.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/param.h \
+  @/sys/_null.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/module.h @/sys/syslog.h \
+  @/sys/condvar.h @/sys/sysctl.h @/vm/uma.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/mbuf.h @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/if_atm.h @/net/if_types.h @/net/route.h \
+  @/net/radix.h @/net/bpf.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/if_atm.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/resource.h @/sys/rman.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/utopia/utopia.h \
+  @/dev/hatm/if_hatmconf.h @/dev/hatm/if_hatmreg.h \
+  @/dev/hatm/if_hatmvar.h
+if_hatm_intr.o: /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_intr.c \
+  @/sys/cdefs.h opt_inet.h opt_natm.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/param.h \
+  @/sys/_null.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/malloc.h @/sys/_lock.h \
+  @/sys/_mutex.h @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/module.h @/sys/syslog.h \
+  @/sys/condvar.h @/sys/sysctl.h @/vm/uma.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/mbuf.h @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/if_atm.h @/net/route.h @/net/radix.h \
+  @/netinet/in.h @/netinet6/in6.h @/netinet/if_atm.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  @/dev/utopia/utopia.h @/dev/hatm/if_hatmconf.h @/dev/hatm/if_hatmreg.h \
+  @/dev/hatm/if_hatmvar.h
+if_hatm_ioctl.o:  \
+ /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_ioctl.c @/sys/cdefs.h \
+  opt_inet.h opt_natm.h @/sys/types.h machine/endian.h @/sys/_types.h \
+  machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h \
+  @/sys/_timeval.h @/sys/timespec.h @/sys/param.h @/sys/_null.h \
+  @/sys/syslimits.h @/sys/errno.h @/sys/time.h @/sys/priority.h \
+  machine/param.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/queue.h @/sys/stdint.h machine/_stdint.h \
+  @/sys/libkern.h @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h \
+  @/sys/kernel.h @/sys/linker_set.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h @/sys/mutex.h \
+  @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h machine/pcpu.h \
+  machine/segments.h machine/tss.h @/sys/lock_profile.h @/sys/lockstat.h \
+  machine/mutex.h @/sys/module.h @/sys/syslog.h @/sys/condvar.h \
+  @/sys/sysctl.h @/vm/uma.h @/sys/sockio.h @/sys/ioccom.h @/sys/mbuf.h \
+  @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/if_atm.h @/net/route.h @/net/radix.h \
+  @/netinet/in.h @/netinet6/in6.h @/netinet/if_atm.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  @/dev/utopia/utopia.h @/dev/hatm/if_hatmconf.h @/dev/hatm/if_hatmreg.h \
+  @/dev/hatm/if_hatmvar.h
+if_hatm_tx.o: /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_tx.c \
+  @/sys/cdefs.h opt_inet.h opt_natm.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/param.h \
+  @/sys/_null.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/malloc.h @/sys/_lock.h @/sys/_mutex.h @/sys/bus.h \
+  machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h bus_if.h \
+  @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/ktr.h \
+  @/sys/mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/module.h @/sys/syslog.h \
+  @/sys/condvar.h @/sys/sysctl.h @/vm/uma.h @/sys/sockio.h @/sys/ioccom.h \
+  @/sys/mbuf.h @/sys/socket.h @/sys/_iovec.h @/net/if.h @/net/if_var.h \
+  @/sys/buf_ring.h machine/cpu.h machine/psl.h machine/frame.h \
+  @/net/vnet.h @/sys/rwlock.h @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h \
+  @/sys/event.h @/sys/_task.h @/contrib/altq/altq/if_altq.h \
+  @/net/if_media.h @/net/if_atm.h @/net/route.h @/net/radix.h @/net/bpf.h \
+  @/netinet/in.h @/netinet6/in6.h @/netinet/if_atm.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h machine/resource.h \
+  @/sys/rman.h @/dev/pci/pcireg.h @/dev/pci/pcivar.h pci_if.h \
+  @/dev/utopia/utopia.h @/dev/hatm/if_hatmconf.h @/dev/hatm/if_hatmreg.h \
+  @/dev/hatm/if_hatmvar.h
+if_hatm_rx.o: /usr/src/sys/modules/hatm/../../dev/hatm/if_hatm_rx.c \
+  @/sys/cdefs.h opt_inet.h opt_natm.h @/sys/types.h machine/endian.h \
+  @/sys/_types.h machine/_types.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/param.h \
+  @/sys/_null.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/systm.h machine/atomic.h \
+  machine/cpufunc.h @/sys/callout.h @/sys/queue.h @/sys/stdint.h \
+  machine/_stdint.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/conf.h @/sys/eventhandler.h @/sys/lock.h @/sys/_lock.h \
+  @/sys/ktr.h @/sys/mutex.h @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h \
+  @/sys/resource.h machine/pcpu.h machine/segments.h machine/tss.h \
+  @/sys/lock_profile.h @/sys/lockstat.h machine/mutex.h @/sys/module.h \
+  @/sys/syslog.h @/sys/condvar.h @/sys/sysctl.h @/vm/uma.h @/sys/malloc.h \
+  @/sys/sockio.h @/sys/ioccom.h @/sys/mbuf.h @/sys/socket.h \
+  @/sys/_iovec.h @/net/if.h @/net/if_var.h @/sys/buf_ring.h machine/cpu.h \
+  machine/psl.h machine/frame.h @/net/vnet.h @/sys/rwlock.h \
+  @/sys/_rwlock.h @/sys/sx.h @/sys/_sx.h @/sys/event.h @/sys/_task.h \
+  @/contrib/altq/altq/if_altq.h @/net/if_media.h @/net/if_atm.h \
+  @/net/route.h @/net/radix.h @/net/bpf.h @/netinet/in.h @/netinet6/in6.h \
+  @/netinet/if_atm.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h machine/resource.h @/sys/rman.h @/dev/pci/pcireg.h \
+  @/dev/pci/pcivar.h pci_if.h @/dev/utopia/utopia.h \
+  @/dev/hatm/if_hatmconf.h @/dev/hatm/if_hatmreg.h \
+  @/dev/hatm/if_hatmvar.h

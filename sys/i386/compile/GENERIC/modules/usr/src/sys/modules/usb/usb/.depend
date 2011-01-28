@@ -1,0 +1,469 @@
+# -nostdinc -D_KERNEL -DKLD_MODULE -DHAVE_KERNEL_OPTION_HEADERS -I. -I@ -I@/contrib/altq -I/usr/src/sys/i386/compile/GENERIC usb_if.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_busdma.c /usr/src/sys/modules/usb/usb/../../../dev/usb/controller/usb_controller.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_compat_linux.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_core.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_debug.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_dev.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_device.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_dynamic.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_error.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_generic.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_handle_request.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_hid.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_hub.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_lookup.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_mbuf.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_msctest.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_parse.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_process.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_request.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_transfer.c /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_util.c
+usb_if.o: usb_if.c @/sys/param.h @/sys/_null.h @/sys/types.h \
+  @/sys/cdefs.h machine/endian.h @/sys/_types.h machine/_types.h \
+  @/sys/_pthreadtypes.h @/sys/select.h @/sys/_sigset.h @/sys/_timeval.h \
+  @/sys/timespec.h @/sys/syslimits.h @/sys/errno.h @/sys/time.h \
+  @/sys/priority.h machine/param.h @/sys/queue.h @/sys/kernel.h \
+  @/sys/linker_set.h @/sys/kobj.h @/sys/bus.h machine/_limits.h \
+  @/sys/_bus_dma.h device_if.h bus_if.h usb_if.h
+usb_busdma.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_busdma.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_core.h @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/mbuf.h @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_process.h @/dev/usb/usb_transfer.h \
+  @/dev/usb/usb_device.h @/dev/usb/usb_util.h @/dev/usb/usb_debug.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
+usb_controller.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/controller/usb_controller.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usb_core.h \
+  @/dev/usb/usb_debug.h @/dev/usb/usb_process.h @/dev/usb/usb_busdma.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h @/vm/uma.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/usb/usb_dynamic.h @/dev/usb/usb_device.h @/dev/usb/usb_hub.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
+usb_compat_linux.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_compat_linux.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usb_ioctl.h @/sys/ioccom.h \
+  @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h @/dev/usb/usb_core.h \
+  @/dev/usb/usb_compat_linux.h @/dev/usb/usb_process.h \
+  @/dev/usb/usb_device.h @/dev/usb/usb_util.h @/dev/usb/usb_busdma.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h @/vm/uma.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/usb/usb_transfer.h @/dev/usb/usb_hub.h @/dev/usb/usb_request.h \
+  @/dev/usb/usb_debug.h
+usb_core.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_core.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h
+usb_debug.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_debug.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usb_core.h \
+  @/dev/usb/usb_debug.h @/dev/usb/usb_process.h @/dev/usb/usb_device.h \
+  @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h \
+  @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_transfer.h @/ddb/ddb.h \
+  machine/db_machdep.h machine/frame.h machine/trap.h @/ddb/db_sym.h
+usb_dev.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_dev.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/sys/vnode.h @/sys/bufobj.h @/sys/lockmgr.h @/sys/_lockmgr.h \
+  @/sys/_rwlock.h @/sys/selinfo.h @/sys/event.h @/sys/uio.h \
+  @/sys/_iovec.h @/sys/acl.h @/vm/uma.h @/sys/ktr.h vnode_if.h \
+  vnode_if_typedef.h vnode_if_newproto.h @/sys/conf.h \
+  @/sys/eventhandler.h @/sys/fcntl.h @/dev/usb/usb.h opt_usb.h \
+  @/dev/usb/usb_endian.h @/sys/endian.h @/dev/usb/usb_freebsd.h \
+  @/dev/usb/usb_ioctl.h @/sys/ioccom.h @/dev/usb/usbdi.h \
+  @/dev/usb/usbdi_util.h @/dev/usb/usb_core.h @/dev/usb/usb_dev.h \
+  @/sys/file.h @/sys/refcount.h @/sys/poll.h @/sys/signalvar.h \
+  @/sys/signal.h machine/signal.h machine/trap.h @/sys/proc.h @/sys/osd.h \
+  @/sys/rtprio.h @/sys/runq.h machine/runq.h @/sys/sigio.h \
+  @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h @/bsm/audit.h \
+  machine/proc.h @/dev/usb/usb_mbuf.h @/dev/usb/usb_process.h \
+  @/dev/usb/usb_device.h @/dev/usb/usb_debug.h @/dev/usb/usb_busdma.h \
+  @/sys/mbuf.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_generic.h @/dev/usb/usb_dynamic.h \
+  @/dev/usb/usb_util.h @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h \
+  @/sys/filio.h @/sys/ttycom.h @/sys/syscallsubr.h @/sys/socket.h \
+  @/sys/mac.h @/sys/mount.h machine/stdarg.h
+usb_device.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_device.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/sys/conf.h @/sys/eventhandler.h @/sys/ktr.h @/sys/fcntl.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_ioctl.h @/sys/ioccom.h usbdevs.h @/dev/usb/usb_core.h \
+  @/dev/usb/usb_debug.h @/dev/usb/usb_process.h @/dev/usb/usb_device.h \
+  @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h \
+  @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_transfer.h @/dev/usb/usb_request.h \
+  @/dev/usb/usb_dynamic.h @/dev/usb/usb_hub.h @/dev/usb/usb_util.h \
+  @/dev/usb/usb_msctest.h @/dev/usb/usb_dev.h @/sys/file.h \
+  @/sys/refcount.h @/sys/selinfo.h @/sys/event.h @/sys/poll.h \
+  @/sys/signalvar.h @/sys/signal.h machine/signal.h machine/trap.h \
+  @/sys/proc.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h machine/runq.h \
+  @/sys/sigio.h @/sys/ucontext.h machine/ucontext.h @/sys/ucred.h \
+  @/bsm/audit.h machine/proc.h @/dev/usb/usb_generic.h \
+  @/dev/usb/quirk/usb_quirk.h @/dev/usb/usb_controller.h \
+  @/dev/usb/usb_bus.h
+usb_dynamic.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_dynamic.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usb_core.h \
+  @/dev/usb/usb_process.h @/dev/usb/usb_device.h @/dev/usb/usb_dynamic.h
+usb_error.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_error.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h
+usb_generic.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_generic.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/sys/conf.h @/sys/eventhandler.h @/sys/ktr.h @/sys/fcntl.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usb_ioctl.h @/sys/ioccom.h \
+  @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h @/dev/usb/usb_core.h \
+  @/dev/usb/usb_dev.h @/sys/file.h @/sys/refcount.h @/sys/selinfo.h \
+  @/sys/event.h @/sys/poll.h @/sys/signalvar.h @/sys/signal.h \
+  machine/signal.h machine/trap.h @/sys/proc.h @/sys/osd.h @/sys/rtprio.h \
+  @/sys/runq.h machine/runq.h @/sys/sigio.h @/sys/ucontext.h \
+  machine/ucontext.h @/sys/ucred.h @/bsm/audit.h machine/proc.h \
+  @/dev/usb/usb_mbuf.h @/dev/usb/usb_process.h @/dev/usb/usb_device.h \
+  @/dev/usb/usb_debug.h @/dev/usb/usb_request.h @/dev/usb/usb_busdma.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h @/vm/uma.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h @/dev/usb/usb_util.h \
+  @/dev/usb/usb_hub.h @/dev/usb/usb_generic.h @/dev/usb/usb_transfer.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
+usb_handle_request.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_handle_request.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  usb_if.h @/dev/usb/usb_core.h @/dev/usb/usb_process.h \
+  @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h \
+  @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_transfer.h @/dev/usb/usb_device.h \
+  @/dev/usb/usb_debug.h @/dev/usb/usb_dynamic.h @/dev/usb/usb_hub.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
+usb_hid.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_hid.c \
+  @/sys/cdefs.h @/sys/stdint.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usbhid.h @/dev/usb/usb_core.h @/dev/usb/usb_debug.h \
+  @/dev/usb/usb_process.h @/dev/usb/usb_device.h @/dev/usb/usb_request.h
+usb_hub.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_hub.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usb_ioctl.h @/sys/ioccom.h \
+  @/dev/usb/usbdi.h @/dev/usb/usb_core.h @/dev/usb/usb_process.h \
+  @/dev/usb/usb_device.h @/dev/usb/usb_request.h @/dev/usb/usb_debug.h \
+  @/dev/usb/usb_hub.h @/dev/usb/usb_util.h @/dev/usb/usb_busdma.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h @/vm/uma.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/usb/usb_transfer.h @/dev/usb/usb_dynamic.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
+usb_lookup.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_lookup.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h
+usb_mbuf.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_mbuf.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usb_dev.h \
+  @/sys/file.h @/sys/refcount.h @/sys/selinfo.h @/sys/event.h \
+  @/sys/poll.h @/sys/signalvar.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/proc.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/dev/usb/usb_mbuf.h
+usb_msctest.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_msctest.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h \
+  @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_process.h @/dev/usb/usb_transfer.h \
+  @/dev/usb/usb_msctest.h @/dev/usb/usb_debug.h @/dev/usb/usb_device.h \
+  @/dev/usb/usb_request.h @/dev/usb/usb_util.h
+usb_parse.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_parse.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h
+usb_process.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_process.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_process.h @/dev/usb/usb_debug.h @/dev/usb/usb_util.h \
+  @/sys/proc.h @/sys/event.h @/sys/osd.h @/sys/rtprio.h @/sys/runq.h \
+  machine/runq.h @/sys/sigio.h @/sys/signal.h machine/signal.h \
+  machine/trap.h @/sys/signalvar.h @/sys/ucontext.h machine/ucontext.h \
+  @/sys/ucred.h @/bsm/audit.h machine/proc.h @/sys/kthread.h \
+  @/sys/sched.h
+usb_request.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_request.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_ioctl.h @/sys/ioccom.h @/dev/usb/usbhid.h \
+  @/dev/usb/usb_core.h @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/mbuf.h @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_request.h @/dev/usb/usb_process.h \
+  @/dev/usb/usb_transfer.h @/dev/usb/usb_debug.h @/dev/usb/usb_device.h \
+  @/dev/usb/usb_util.h @/dev/usb/usb_dynamic.h @/dev/usb/usb_controller.h \
+  @/dev/usb/usb_bus.h @/sys/ctype.h
+usb_transfer.o:  \
+ /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_transfer.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_core.h @/dev/usb/usb_busdma.h @/sys/uio.h @/sys/_iovec.h \
+  @/sys/mbuf.h @/vm/uma.h machine/bus.h machine/_bus.h machine/bus_dma.h \
+  @/sys/bus_dma.h @/dev/usb/usb_process.h @/dev/usb/usb_transfer.h \
+  @/dev/usb/usb_device.h @/dev/usb/usb_debug.h @/dev/usb/usb_util.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
+usb_util.o: /usr/src/sys/modules/usb/usb/../../../dev/usb/usb_util.c \
+  @/sys/stdint.h @/sys/cdefs.h @/sys/_types.h machine/_types.h \
+  machine/_stdint.h @/sys/stddef.h @/sys/_null.h @/sys/param.h \
+  @/sys/types.h machine/endian.h @/sys/_pthreadtypes.h @/sys/select.h \
+  @/sys/_sigset.h @/sys/_timeval.h @/sys/timespec.h @/sys/syslimits.h \
+  @/sys/errno.h @/sys/time.h @/sys/priority.h machine/param.h \
+  @/sys/queue.h @/sys/systm.h machine/atomic.h machine/cpufunc.h \
+  @/sys/callout.h @/sys/libkern.h @/sys/kernel.h @/sys/linker_set.h \
+  @/sys/bus.h machine/_limits.h @/sys/_bus_dma.h @/sys/kobj.h device_if.h \
+  bus_if.h @/sys/module.h @/sys/lock.h @/sys/_lock.h @/sys/mutex.h \
+  @/sys/_mutex.h @/sys/pcpu.h @/sys/vmmeter.h @/sys/resource.h \
+  machine/pcpu.h machine/segments.h machine/tss.h @/sys/lock_profile.h \
+  @/sys/lockstat.h machine/mutex.h @/sys/condvar.h @/sys/sysctl.h \
+  @/sys/sx.h @/sys/_sx.h @/sys/unistd.h @/sys/malloc.h @/sys/priv.h \
+  @/dev/usb/usb.h opt_usb.h @/dev/usb/usb_endian.h @/sys/endian.h \
+  @/dev/usb/usb_freebsd.h @/dev/usb/usbdi.h @/dev/usb/usbdi_util.h \
+  @/dev/usb/usb_core.h @/dev/usb/usb_util.h @/dev/usb/usb_process.h \
+  @/dev/usb/usb_device.h @/dev/usb/usb_request.h @/dev/usb/usb_busdma.h \
+  @/sys/uio.h @/sys/_iovec.h @/sys/mbuf.h @/vm/uma.h machine/bus.h \
+  machine/_bus.h machine/bus_dma.h @/sys/bus_dma.h \
+  @/dev/usb/usb_controller.h @/dev/usb/usb_bus.h
