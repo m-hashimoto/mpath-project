@@ -369,8 +369,8 @@ struct domain inetdomain = {
 	.dom_name =		"internet",
 	.dom_protosw =		inetsw,
 	.dom_protoswNPROTOSW =	&inetsw[sizeof(inetsw)/sizeof(inetsw[0])],
-#ifdef RADIX_MPATH
-	.dom_rtattach =		rn4_mpath_inithead,
+#ifdef PTREE_MPATH
+	.dom_rtattach =		ptree4_mpath_inithead,
 #else
 	.dom_rtattach =		in_inithead,
 #endif

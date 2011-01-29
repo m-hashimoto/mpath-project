@@ -71,7 +71,7 @@ struct file;
 #if defined(IPFILTER_LOOKUP) && defined(_KERNEL) && \
       ((BSD >= 198911) && !defined(__osf__) && \
       !defined(__hpux) && !defined(__sgi))
-static int rn_freenode __P((struct ptree_node *, void *));
+static int rn_freenode __P((struct radix_node *, void *));
 #endif
 
 /* END OF INCLUDES */
@@ -374,12 +374,12 @@ ip_pool_node_t *ip_pool_findeq(ipo, addr, mask)
 ip_pool_t *ipo;
 addrfamily_t *addr, *mask;
 {
-	struct ptree_node *n;
+	struct radix_node *n;
 	SPL_INT(s);
 
 	SPL_NET(s);
 	RADIX_NODE_HEAD_LOCK(ipo->ipo_head);
-	n = ipo->ipo_head->rnh_lookup(addr, mask, (int)addr, ipo->ipo_head);
+	n = ipo->ipo_head->rnh_lookup(addr, mask, ipo->ipo_head);
 	RADIX_NODE_HEAD_UNLOCK(ipo->ipo_head);
 	SPL_X(s);
 	return (ip_pool_node_t *)n;
@@ -400,7 +400,7 @@ void *tptr;
 int ipversion;
 void *dptr;
 {
-	struct ptree_node *rn;
+	struct radix_node *rn;
 	ip_pool_node_t *m;
 	i6addr_t *addr;
 	addrfamily_t v;
@@ -462,7 +462,7 @@ ip_pool_t *ipo;
 i6addr_t *addr, *mask;
 int info;
 {
-	struct ptree_node *rn;
+	struct radix_node *rn;
 	ip_pool_node_t *x;
 
 	KMALLOC(x, ip_pool_node_t *);
@@ -546,7 +546,7 @@ iplookupop_t *op;
 		return ENOMEM;
 	bzero(h, sizeof(*h));
 
-	if (ptree_inithead((void **)&h->ipo_head,
+	if (rn_inithead((void **)&h->ipo_head,
 			offsetof(addrfamily_t, adf_addr) << 3) == 0) {
 		KFREE(h);
 		return ENOMEM;
@@ -958,10 +958,10 @@ void *data;
 # if defined(_KERNEL) && ((BSD >= 198911) && !defined(__osf__) && \
       !defined(__hpux) && !defined(__sgi))
 static int
-rn_freenode(struct ptree_node *n, void *p)
+rn_freenode(struct radix_node *n, void *p)
 {
-	struct ptree *rnh = p;
-	struct ptree_node *d;
+	struct radix_node_head *rnh = p;
+	struct radix_node *d;
 
 	d = rnh->rnh_deladdr(n->rn_key, NULL, rnh);
 	if (d != NULL) {
@@ -973,7 +973,7 @@ rn_freenode(struct ptree_node *n, void *p)
 
 void
 rn_freehead(rnh)
-      struct ptree *rnh;
+      struct radix_node_head *rnh;
 {
 
 	RADIX_NODE_HEAD_LOCK(rnh);

@@ -113,21 +113,21 @@ extern int	in6_detachhead(void **head, int off);
 
 #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
 
+
 /*
  * Do what we need to do when inserting a route.
  */
-static struct radix_node *
-in6_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
-    struct radix_node *treenodes)
+static struct ptree_node *
+in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
+				struct ptree_node *rt_node)
 {
-	struct rtentry *rt = (struct rtentry *)treenodes;
-	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)rt_key(rt);
-	struct radix_node *ret;
-
+	struct rtentry *rt = (struct rtentry *)(rt_node);
+	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
+	struct ptree_node *ret;
 	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
+
 	if (IN6_IS_ADDR_MULTICAST(&sin6->sin6_addr))
 		rt->rt_flags |= RTF_MULTICAST;
-
 	/*
 	 * A little bit of help for both IPv6 output and input:
 	 *   For local addresses, we make sure that RTF_LOCAL is set,
@@ -153,7 +153,7 @@ in6_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
 		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
 
-	ret = rn_addroute(v_arg, n_arg, head, treenodes);
+	ret = ptree_addroute(v_arg, n_arg, head, rt_node);
 	if (ret == NULL) {
 		struct rtentry *rt2;
 		/*
@@ -187,11 +187,16 @@ in6_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
  * were managing the route, stop doing so and set the expiration timer
  * back off again.
  */
-static struct radix_node *
-in6_matroute(void *v_arg, struct radix_node_head *head)
+static struct ptree_node *
+in6_matroute(void *v_arg, struct ptree_node_head *head)
 {
-	struct radix_node *rn = rn_match(v_arg, head);
-	struct rtentry *rt = (struct rtentry *)rn;
+	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
+	struct rtentry *rt;
+	
+	if (rn)
+		rt = rn->data;
+	else
+		return 0;
 
 	if (rt && rt->rt_refcnt == 0) { /* this is first reference */
 		if (rt->rt_flags & RTPRF_OURS) {
@@ -222,7 +227,7 @@ SYSCTL_VNET_INT(_net_inet6_ip6, IPV6CTL_RTMAXCACHE, rtmaxcache, CTLFLAG_RW,
     &VNET_NAME(rtq_toomany6) , 0, "");
 
 struct rtqk_arg {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	int mode;
 	int updating;
 	int draining;
@@ -237,7 +242,7 @@ struct rtqk_arg {
  * nothing has a timeout longer than the current value of rtq_reallyold6.
  */
 static int
-in6_rtqkill(struct radix_node *rn, void *rock)
+in6_rtqkill(struct ptree_node *rn, void *rock)
 {
 	struct rtqk_arg *ap = rock;
 	struct rtentry *rt = (struct rtentry *)rn;
@@ -272,7 +277,6 @@ in6_rtqkill(struct radix_node *rn, void *rock)
 					    rt->rt_rmx.rmx_expire);
 		}
 	}
-
 	return 0;
 }
 
@@ -287,7 +291,7 @@ static void
 in6_rtqtimo(void *rock)
 {
 	CURVNET_SET_QUIET((struct vnet *) rock);
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct rtqk_arg arg;
 	struct timeval atv;
 	static time_t last_adjusted_timeout = 0;
@@ -343,7 +347,7 @@ in6_rtqtimo(void *rock)
  * Age old PMTUs.
  */
 struct mtuex_arg {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	time_t nextstop;
 };
 
@@ -351,7 +355,7 @@ static VNET_DEFINE(struct callout, rtq_mtutimer);
 #define	V_rtq_mtutimer			VNET(rtq_mtutimer)
 
 static int
-in6_mtuexpire(struct radix_node *rn, void *rock)
+in6_mtuexpire(struct ptree_node *rn, void *rock)
 {
 	struct rtentry *rt = (struct rtentry *)rn;
 	struct mtuex_arg *ap = rock;
@@ -378,7 +382,7 @@ static void
 in6_mtutimo(void *rock)
 {
 	CURVNET_SET_QUIET((struct vnet *) rock);
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct mtuex_arg arg;
 	struct timeval atv;
 
@@ -414,9 +418,9 @@ in6_mtutimo(void *rock)
 int
 in6_inithead(void **head, int off)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 
-	if (!rn_inithead(head, offsetof(struct sockaddr_in6, sin6_addr) << 3))
+	if (!ptree_inithead(head, offsetof(struct sockaddr_in6, sin6_addr) << 3))
 		return 0;		/* See above */
 
 	if (off == 0)		/* See above */

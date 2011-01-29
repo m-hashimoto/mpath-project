@@ -71,7 +71,7 @@ struct file;
 #if defined(IPFILTER_LOOKUP) && defined(_KERNEL) && \
       ((BSD >= 198911) && !defined(__osf__) && \
       !defined(__hpux) && !defined(__sgi))
-static int rn_freenode __P((struct radix_node *, void *));
+static int rn_freenode __P((struct ptree_node *, void *));
 #endif
 
 /* END OF INCLUDES */
@@ -374,12 +374,12 @@ ip_pool_node_t *ip_pool_findeq(ipo, addr, mask)
 ip_pool_t *ipo;
 addrfamily_t *addr, *mask;
 {
-	struct radix_node *n;
+	struct ptree_node *n;
 	SPL_INT(s);
 
 	SPL_NET(s);
 	RADIX_NODE_HEAD_LOCK(ipo->ipo_head);
-	n = ipo->ipo_head->rnh_lookup(addr, mask, ipo->ipo_head);
+	n = ipo->ipo_head->rnh_lookup((char *)addr, (int)mask, ipo->ipo_head->pnh_treetop);
 	RADIX_NODE_HEAD_UNLOCK(ipo->ipo_head);
 	SPL_X(s);
 	return (ip_pool_node_t *)n;
@@ -400,7 +400,7 @@ void *tptr;
 int ipversion;
 void *dptr;
 {
-	struct radix_node *rn;
+	struct ptree_node *rn;
 	ip_pool_node_t *m;
 	i6addr_t *addr;
 	addrfamily_t v;
@@ -434,7 +434,7 @@ void *dptr;
 	rn = ipo->ipo_head->rnh_matchaddr(&v, ipo->ipo_head);
 	RADIX_NODE_HEAD_UNLOCK(ipo->ipo_head);
 
-	if ((rn != NULL) && ((rn->rn_flags & RNF_ROOT) == 0)) {
+	if ((rn != NULL) && (rn->data == 0)) {
 		m = (ip_pool_node_t *)rn;
 		ipo->ipo_hits++;
 		m->ipn_hits++;
@@ -462,7 +462,7 @@ ip_pool_t *ipo;
 i6addr_t *addr, *mask;
 int info;
 {
-	struct radix_node *rn;
+	struct ptree_node *rn;
 	ip_pool_node_t *x;
 
 	KMALLOC(x, ip_pool_node_t *);
@@ -546,7 +546,7 @@ iplookupop_t *op;
 		return ENOMEM;
 	bzero(h, sizeof(*h));
 
-	if (rn_inithead((void **)&h->ipo_head,
+	if (ptree_inithead((void **)&h->ipo_head,
 			offsetof(addrfamily_t, adf_addr) << 3) == 0) {
 		KFREE(h);
 		return ENOMEM;
@@ -958,12 +958,12 @@ void *data;
 # if defined(_KERNEL) && ((BSD >= 198911) && !defined(__osf__) && \
       !defined(__hpux) && !defined(__sgi))
 static int
-rn_freenode(struct radix_node *n, void *p)
+rn_freenode(struct ptree_node *n, void *p)
 {
-	struct radix_node_head *rnh = p;
-	struct radix_node *d;
+	struct ptree_node_head *rnh = p;
+	struct ptree_node *d;
 
-	d = rnh->rnh_deladdr(n->rn_key, NULL, rnh);
+	d = rnh->rnh_deladdr(n->key, NULL, rnh);
 	if (d != NULL) {
 		FreeS(d, max_keylen + 2 * sizeof (*d));
 	}
@@ -973,7 +973,7 @@ rn_freenode(struct radix_node *n, void *p)
 
 void
 rn_freehead(rnh)
-      struct radix_node_head *rnh;
+      struct ptree_node_head *rnh;
 {
 
 	RADIX_NODE_HEAD_LOCK(rnh);

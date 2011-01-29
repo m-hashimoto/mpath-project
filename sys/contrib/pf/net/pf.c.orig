@@ -5976,7 +5976,7 @@ pf_routable(struct pf_addr *addr, sa_family_t af, struct pfi_kif *kif)
 #else
 	struct route		 ro;
 #endif
-	struct ptree_node	*rn;
+	struct radix_node	*rn;
 	struct rtentry		*rt;
 	struct ifnet		*ifp;
 
@@ -6035,7 +6035,7 @@ pf_routable(struct pf_addr *addr, sa_family_t af, struct pfi_kif *kif)
 
 		/* Perform uRPF check if passed input interface */
 		ret = 0;
-		rn = (struct ptree_node *)ro.ro_rt;
+		rn = (struct radix_node *)ro.ro_rt;
 		do {
 			rt = (struct rtentry *)rn;
 #ifndef __FreeBSD__ /* CARPDEV */

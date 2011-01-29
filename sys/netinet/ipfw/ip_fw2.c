@@ -65,7 +65,7 @@ __FBSDID("$FreeBSD: src/sys/netinet/ipfw/ip_fw2.c,v 1.11.2.3.2.1 2009/10/25 01:1
 #include <sys/ucred.h>
 #include <net/ethernet.h> /* for ETHERTYPE_IP */
 #include <net/if.h>
-#include <net/radix.h>
+#include <net/ptree.h>
 #include <net/route.h>
 #include <net/pf_mtag.h>
 #include <net/vnet.h>
@@ -146,7 +146,7 @@ ipfw_nat_cfg_t *ipfw_nat_get_cfg_ptr;
 ipfw_nat_cfg_t *ipfw_nat_get_log_ptr;
 
 struct table_entry {
-	struct radix_node	rn[2];
+	struct ptree_node	rn[2];
 	struct sockaddr_in	addr, mask;
 	u_int32_t		value;
 };
@@ -1824,9 +1824,9 @@ static int
 add_table_entry(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
     uint8_t mlen, uint32_t value)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct table_entry *ent;
-	struct radix_node *rn;
+	struct ptree_node *rn;
 
 	if (tbl >= IPFW_TABLES_MAX)
 		return (EINVAL);
@@ -1853,7 +1853,7 @@ static int
 del_table_entry(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
     uint8_t mlen)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct table_entry *ent;
 	struct sockaddr_in sa, mask;
 
@@ -1875,13 +1875,15 @@ del_table_entry(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
 }
 
 static int
-flush_table_entry(struct radix_node *rn, void *arg)
+flush_table_entry(struct ptree_node *rn, void *arg)
 {
-	struct radix_node_head * const rnh = arg;
+	struct ptree_node_head * const rnh = arg;
 	struct table_entry *ent;
+	struct rtentry *rt;
 
+	rt = (struct rtentry *)rn->data;
 	ent = (struct table_entry *)
-	    rnh->rnh_deladdr(rn->rn_key, rn->rn_mask, rnh);
+	    rnh->rnh_deladdr(rn->rn_key, rt->rt_mask, rnh);
 	if (ent != NULL)
 		free(ent, M_IPFW_TBL);
 	return (0);
@@ -1890,7 +1892,7 @@ flush_table_entry(struct radix_node *rn, void *arg)
 static int
 flush_table(struct ip_fw_chain *ch, uint16_t tbl)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 
 	IPFW_WLOCK_ASSERT(ch);
 
@@ -1920,7 +1922,7 @@ init_tables(struct ip_fw_chain *ch)
 	uint16_t j;
 
 	for (i = 0; i < IPFW_TABLES_MAX; i++) {
-		if (!rn_inithead((void **)&ch->tables[i], 32)) {
+		if (!ptree_inithead((void **)&ch->tables[i], 32)) {
 			for (j = 0; j < i; j++) {
 				(void) flush_table(ch, j);
 			}
@@ -1934,7 +1936,7 @@ static int
 lookup_table(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
     uint32_t *val)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct table_entry *ent;
 	struct sockaddr_in sa;
 
@@ -1943,7 +1945,8 @@ lookup_table(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
 	rnh = ch->tables[tbl];
 	sa.sin_len = 8;
 	sa.sin_addr.s_addr = addr;
-	ent = (struct table_entry *)(rnh->rnh_lookup(&sa, NULL, rnh));
+	ent = (struct table_entry *)
+			(rnh->rnh_lookup((char *)addr, (int)sa.sin_len, rnh->pnh_treetop));
 	if (ent != NULL) {
 		*val = ent->value;
 		return (1);
@@ -1952,7 +1955,7 @@ lookup_table(struct ip_fw_chain *ch, uint16_t tbl, in_addr_t addr,
 }
 
 static int
-count_table_entry(struct radix_node *rn, void *arg)
+count_table_entry(struct ptree_node *rn, void *arg)
 {
 	u_int32_t * const cnt = arg;
 
@@ -1963,7 +1966,7 @@ count_table_entry(struct radix_node *rn, void *arg)
 static int
 count_table(struct ip_fw_chain *ch, uint32_t tbl, uint32_t *cnt)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 
 	if (tbl >= IPFW_TABLES_MAX)
 		return (EINVAL);
@@ -1974,7 +1977,7 @@ count_table(struct ip_fw_chain *ch, uint32_t tbl, uint32_t *cnt)
 }
 
 static int
-dump_table_entry(struct radix_node *rn, void *arg)
+dump_table_entry(struct ptree_node *rn, void *arg)
 {
 	struct table_entry * const n = (struct table_entry *)rn;
 	ipfw_table * const tbl = arg;
@@ -1997,7 +2000,7 @@ dump_table_entry(struct radix_node *rn, void *arg)
 static int
 dump_table(struct ip_fw_chain *ch, ipfw_table *tbl)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 
 	if (tbl->tbl >= IPFW_TABLES_MAX)
 		return (EINVAL);

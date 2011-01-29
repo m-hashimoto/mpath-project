@@ -11,8 +11,9 @@
 
 #if defined(_KERNEL) && !defined(__osf__) && !defined(__hpux) && \
     !defined(linux) && !defined(sun) && !defined(AIX)
-# include <net/radix.h>
-extern void rn_freehead __P((struct radix_node_head *));
+# include <net/ptree.h>
+# include <net/ptree_mpath.h>
+extern void rn_freehead __P((struct ptree_node_head *));
 # define FreeS(p, z)		KFREES(p, z)
 extern int max_keylen;
 #else
@@ -31,7 +32,7 @@ extern int max_keylen;
 #define	IP_POOL_POSITIVE	1
 
 typedef	struct ip_pool_node {
-	struct	radix_node	ipn_nodes[2];
+	struct	ptree_node	ipn_nodes[2];
 	addrfamily_t		ipn_addr;
 	addrfamily_t		ipn_mask;
 	int			ipn_info;
@@ -45,7 +46,7 @@ u_long			ipn_hits;
 typedef	struct ip_pool_s {
 	struct ip_pool_s	*ipo_next;
 	struct ip_pool_s	**ipo_pnext;
-	struct radix_node_head	*ipo_head;
+	struct ptree_node_head	*ipo_head;
 	ip_pool_node_t	*ipo_list;
 	u_long		ipo_hits;
 	int		ipo_unit;

@@ -1,0 +1,31 @@
+# mpath project 2010
+Multipath routeing support in a FreeBSD kernel.
+Currently we support FreeBSD 8.0 only.
+
+It enables:
+- IPv4 and IPv6 multipath routeing table.
+- multipath routing support in netstat.
+
+# Modified File
+README
+sys/net
+   /netinet
+   /netinet6
+   /fs
+   /contrib
+usr.bin/netstat
+
+# ToDo
+1. multipath kernel install
+% cd /usr/src/sys/i386/conf
+% config PTREE_MPATH
+% cd ../compile/PTREE_MPATH
+% make cleandepend && make depend
+% make
+% make install
+% reboot
+
+2. netstat commond(ver.mpath) install
+% cd /usr/src/usr.bin
+% make
+% make install
