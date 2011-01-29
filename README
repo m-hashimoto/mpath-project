@@ -27,5 +27,4 @@ usr.bin/netstat
 
 2. netstat commond(ver.mpath) install
 % cd /usr/src/usr.bin
-% make
-% make install
+% ./install.csh       # c-shell for install
