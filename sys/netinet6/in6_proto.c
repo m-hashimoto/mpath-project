@@ -84,7 +84,7 @@ __FBSDID("$FreeBSD: src/sys/netinet6/in6_proto.c,v 1.67.2.1.2.1 2009/10/25 01:10
 #include <sys/sysctl.h>
 
 #include <net/if.h>
-#include <net/radix.h>
+#include <net/ptree.h>
 #include <net/route.h>
 #ifdef RADIX_MPATH
 #include <net/radix_mpath.h>
@@ -360,8 +360,8 @@ struct domain inet6domain = {
 	.dom_protosw =		(struct protosw *)inet6sw,
 	.dom_protoswNPROTOSW =	(struct protosw *)
 				&inet6sw[sizeof(inet6sw)/sizeof(inet6sw[0])],
-#ifdef RADIX_MPATH
-	.dom_rtattach =		rn6_mpath_inithead,
+#ifdef PTREE_MPATH
+	.dom_rtattach =		ptree6_mpath_inithead,
 #else
 	.dom_rtattach =		in6_inithead,
 #endif

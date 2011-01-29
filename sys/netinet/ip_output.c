@@ -135,6 +135,7 @@ ip_output(struct mbuf *m, struct mbuf *opt, struct route *ro, int flags,
 #ifdef IPSEC
 	int no_route_but_check_spd = 0;
 #endif
+	int mara_tag;
 	M_ASSERTPKTHDR(m);
 
 	if (inp != NULL) {
@@ -169,7 +170,6 @@ ip_output(struct mbuf *m, struct mbuf *opt, struct route *ro, int flags,
 			hlen = len;
 	}
 	ip = mtod(m, struct ip *);
-
 	/*
 	 * Fill in IP header.  If we are not allowing fragmentation,
 	 * then the ip_id field is meaningless, but we don't set it
@@ -191,6 +191,7 @@ ip_output(struct mbuf *m, struct mbuf *opt, struct route *ro, int flags,
 	}
 
 	dst = (struct sockaddr_in *)&ro->ro_dst;
+	mara_tag = ip->ip_tos;
 again:
 	/*
 	 * If there is a cached route,
@@ -268,6 +269,18 @@ again:
 #else
 			in_rtalloc_ign(ro, 0,
 			    inp ? inp->inp_inc.inc_fibnum : M_GETFIB(m));
+#endif
+#ifdef PTREE_MPATH
+			/* forwarding for MARA */
+			if (ro->ro_rt != NULL && mara_tag != 0){
+				//dprint(("ip_output: tag[%d]",mara_tag));
+				ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
+#if DEBUG
+				//printf(" dst[");
+				//sprint_inet_ntoa(dst->sin_family,dst);
+				//printf("]\n");
+#endif
+			}
 #endif
 		if (ro->ro_rt == NULL) {
 #ifdef IPSEC
@@ -661,6 +674,7 @@ passout:
 		IPSTAT_INC(ips_fragmented);
 
 done:
+	//dprint(("ip_output: done\n"));
 	if (ro == &iproute && ro->ro_rt && !nortfree) {
 		RTFREE(ro->ro_rt);
 	}
@@ -668,6 +682,7 @@ done:
 		ifa_free(&ia->ia_ifa);
 	return (error);
 bad:
+	//dprint(("ip_output: bad\n"));
 	m_freem(m);
 	goto done;
 }

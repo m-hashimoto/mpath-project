@@ -688,7 +688,6 @@ in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
 	struct rtentry *rt;
 	int delay;
 	char ip6buf[INET6_ADDRSTRLEN];
-
 	/* Validate parameters */
 	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
 		return (EINVAL);
@@ -896,6 +895,7 @@ in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
 	/* reset the interface and routing table appropriately. */
 	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
 		goto unlink;
+
 
 	/*
 	 * configure address flags.
@@ -1766,6 +1766,7 @@ in6_ifinit(struct ifnet *ifp, struct in6_ifaddr *ia,
 		struct rtentry rt;
 		struct sockaddr_dl gateway;
 		struct sockaddr_in6 mask, addr;
+		struct ptree_node rn;
 
 		IF_AFDATA_LOCK(ifp);
 		ia->ia_ifa.ifa_rtrequest = NULL;
@@ -1793,6 +1794,8 @@ in6_ifinit(struct ifnet *ifp, struct in6_ifaddr *ia,
 		}
 
 		bzero(&rt, sizeof(rt));
+		bzero(&rn, sizeof(rn));
+		rt.rt_nodes = &rn;
 		rt.rt_gateway = (struct sockaddr *)&gateway;
 		memcpy(&mask, &ia->ia_prefixmask, sizeof(ia->ia_prefixmask));
 		memcpy(&addr, &ia->ia_addr, sizeof(ia->ia_addr));

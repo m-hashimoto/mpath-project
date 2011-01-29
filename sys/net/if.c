@@ -34,6 +34,7 @@
 #include "opt_inet6.h"
 #include "opt_inet.h"
 #include "opt_carp.h"
+#include "opt_ptree.h"
 
 #include <sys/param.h>
 #include <sys/types.h>
@@ -68,7 +69,8 @@
 #include <net/if_dl.h>
 #include <net/if_types.h>
 #include <net/if_var.h>
-#include <net/radix.h>
+#include <net/ptree.h>
+#include <net/ptree_mpath.h>
 #include <net/route.h>
 #include <net/vnet.h>
 
@@ -132,7 +134,7 @@ static void	if_slowtimo(void *);
 static int	if_transmit(struct ifnet *ifp, struct mbuf *m);
 static void	if_unroute(struct ifnet *, int flag, int fam);
 static void	link_rtrequest(int, struct rtentry *, struct rt_addrinfo *);
-static int	if_rtdel(struct radix_node *, void *);
+static int	if_rtdel(struct ptree_node *, void *);
 static int	ifhwioctl(u_long, struct ifnet *, caddr_t, struct thread *);
 static int	if_delmulti_locked(struct ifnet *, struct ifmultiaddr *, int);
 static void	do_link_state_change(void *, int);
@@ -807,7 +809,7 @@ static void
 if_detach_internal(struct ifnet *ifp, int vmove)
 {
 	struct ifaddr *ifa;
-	struct radix_node_head	*rnh;
+		struct ptree_node_head	*rnh;
 	int i, j;
 	struct domain *dp;
  	struct ifnet *iter;
@@ -1326,7 +1328,7 @@ if_getgroupmembers(struct ifgroupreq *data)
  *
  */
 static int
-if_rtdel(struct radix_node *rn, void *arg)
+if_rtdel(struct ptree_node *rn, void *arg)
 {
 	struct rtentry	*rt = (struct rtentry *)rn;
 	struct ifnet	*ifp = arg;
@@ -1695,7 +1697,7 @@ next:				continue;
 				 * for an even better one.
 				 */
 				if (ifa_maybe == NULL ||
-				    rn_refines((caddr_t)ifa->ifa_netmask,
+												ptree_refines((caddr_t)ifa->ifa_netmask,
 				    (caddr_t)ifa_maybe->ifa_netmask)) {
 					if (ifa_maybe != NULL)
 						ifa_free(ifa_maybe);

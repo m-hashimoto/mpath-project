@@ -80,7 +80,7 @@
 #include <sys/syscallsubr.h>
 #include <fs/fifofs/fifo.h>
 #include <net/if.h>
-#include <net/radix.h>
+#include <net/ptree.h>
 #include <net/route.h>
 #include <net/if_dl.h>
 #include <netinet/in.h>
