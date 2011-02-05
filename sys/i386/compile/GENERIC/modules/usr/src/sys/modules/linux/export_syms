@@ -1,1 +1,0 @@
-linux_emul_path linux_get_osname linux_get_osrelease linux_ifname linux_ioctl_register_handler linux_ioctl_unregister_handler
