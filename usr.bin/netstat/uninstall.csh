@@ -7,6 +7,7 @@ endif
 echo mpath netstat uninstall...
 
 # remove include file
+echo remove mpath netstat header...
 cd /usr/include/net
 mv route.h.org route.h
 rm /usr/include/net/ptree.h

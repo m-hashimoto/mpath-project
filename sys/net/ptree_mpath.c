@@ -379,6 +379,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 				memset(rt_array, 0, max_multipath*sizeof(struct rtentry *));
 				rt_array[0] = rt0;
 				rt_array[1] = rt;
+				rt0->rt_flags |= RTF_MULTIPATH;
 				rt0->mpath_array = rt_array;
 			} else if(n+1 == max_multipath) {
 				/* if number of path is over MAX_MULTIPATH */
@@ -401,6 +402,7 @@ ptree_addroute(v_arg, n_arg, head, rt_node)
 			}
 
 			rt0->mpath_counter = n + 1;
+			rt->rt_flags |= RTF_MULTIPATH;
 			rt->rt_nodes = tt;
 			return tt;
 		}
@@ -658,6 +660,7 @@ rt_mpath_delete(struct rtentry *headrt, struct rtentry *rt)
 			if (rt1[i] == rt) {
 				if(n == 0){ /* case: single path */
 					rt1 = NULL;
+					rt0->rt_flags &= ~RTF_MULTIPATH;
 					return (1);
 				}
 				if(rt0 == rt1[i] && i == 0){ /* case: delete entry is array's top */
@@ -793,7 +796,7 @@ rt_mpath_conflict(struct ptree_node_head *pnh, struct rtentry *rt,
 				/* all key/mask/gateway are the same.  conflicting entry. */
 				dprint(("rt_mpath_conflict: conflicting entry\n"));
 				return EEXIST;
-		} while ((++i) < n);
+		} while ((++i) <= n);
 
 different:
 		dprint(("rt_mpath_conflict: different\n"));
@@ -855,15 +858,12 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	rt = nexthops;
 
-	printf("multipath_nexthop: basert[%p] flow[%u]",nexthops,seed);
-	if((rt_array = rt->mpath_array) == NULL || (n = ptree_mpath_count(rt)) == 0){
-		printf(" rt_select[default]=%p\n",rt);
+	if((rt_array = rt->mpath_array) == NULL || (n = ptree_mpath_count(rt)) == 0)
 		return rt;
-	}
 	
 	hash = seed % (n+1);
 	rt = rt_array[hash];
-	printf(" rt_select[%d/%d]=%p\n",hash,n,rt);
+	printf("multipath_nexthop: basert[%p] flow[%u] rt_select[%d/%d]\n",nexthops,seed,hash,n);
 #if DEBUG
 	printf(" rt_num[%d] ",hash);
 	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;

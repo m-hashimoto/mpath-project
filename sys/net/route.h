@@ -189,6 +189,7 @@ struct ortentry {
 #define	RTF_DYNAMIC	0x10		/* created dynamically (by redirect) */
 #define	RTF_MODIFIED	0x20		/* modified dynamically (by redirect) */
 #define RTF_DONE	0x40		/* message confirmed */
+#define RTF_MULTIPATH 0x80		/* ptree multipath */
 /*			0x80		   unused, was RTF_DELCLONE */
 /*			0x100		   unused, was RTF_CLONING */
 #define RTF_XRESOLVE	0x200		/* external daemon resolves name */

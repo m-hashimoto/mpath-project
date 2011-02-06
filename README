@@ -15,7 +15,7 @@ sys/net
    /contrib
 usr.bin/netstat
 
-# ToDo
+# For install
 1. multipath kernel install
 % cd /usr/src/sys/i386/conf
 % config PTREE_MPATH
@@ -27,9 +27,14 @@ usr.bin/netstat
 
 2. netstat commond(ver.mpath) install
 % cd /usr/src/usr.bin
-<<<<<<< HEAD
-% ./install.csh       # c-shell for install
-=======
-% make
-% make install
->>>>>>> d27c3a2b9d30bc427173dbaf274cca27896f18cd
+% ./install.csh
+ - copy the header files and apply a patch 
+
+# for uninstall
+1. multipath kernel uninstall
+
+
+2. netstat commond(ver.mpath) uninstall
+% cd /usr/src/usr.bin
+% ./uninstall.csh
+ - remove the header files and apply a reverse patch
