@@ -465,7 +465,7 @@ rtfree(struct rtentry *rt)
 		 * This also frees the gateway, as they are always malloc'd
 		 * together.
 		 */
-		if ((rt->rt_flags & RTF_MULTIPATH) == 0) {
+		if ((rt->rt_flags & RTF_MULTIPATH) == 0)
 			Free(rt_key(rt));
 
 		/*

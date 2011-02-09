@@ -600,10 +600,11 @@ route_output(struct mbuf *m, struct socket *so)
 			senderr(EAFNOSUPPORT);
 		RADIX_NODE_HEAD_RLOCK(rnh);
 		
-		int keylen = 8 * rnh->pnh_offset;
+		int keylen = 8 * info.rti_info[RTAX_DST]->sa_len;
 	//keylen =  8*((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data
 	//				                    + rnh->pnh_offset);
-		if(info.rti_info[RTAX_NETMASK]->sa_len >= rnh->pnh_offset)
+		if(info.rti_info[RTAX_NETMASK] != NULL &&
+										info.rti_info[RTAX_NETMASK]->sa_len >= rnh->pnh_offset)
 			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK],rnh);
 
 		/* support CIDER */
@@ -616,7 +617,8 @@ route_output(struct mbuf *m, struct socket *so)
 #endif
 		dprint(("route_output: call rnh_lookup\n"));
 		pn = rnh->rnh_lookup((char *)info.rti_info[RTAX_DST], keylen, rnh->pnh_treetop);
-		rt = pn->data;
+		if(pn)
+		  rt = pn->data;
 		//rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)info.rti_info[RTAX_NETMASK]->sa_data, rnh->pnh_treetop);
 		if (rt == NULL) {	/* XXX looks bogus */
 			RADIX_NODE_HEAD_RUNLOCK(rnh);
