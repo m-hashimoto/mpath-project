@@ -600,26 +600,21 @@ route_output(struct mbuf *m, struct socket *so)
 			senderr(EAFNOSUPPORT);
 		RADIX_NODE_HEAD_RLOCK(rnh);
 		
-		int keylen = 8 * info.rti_info[RTAX_DST]->sa_len;
-	//keylen =  8*((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data
-	//				                    + rnh->pnh_offset);
-		if(info.rti_info[RTAX_NETMASK] != NULL &&
-										info.rti_info[RTAX_NETMASK]->sa_len >= rnh->pnh_offset)
+		int keylen;
+		
+		if(info.rti_info[RTAX_NETMASK] != NULL)
 			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK],rnh);
-
-		/* support CIDER */
-#if 0
-		//bits = ((int)*(const u_char *)info.rti_info[RTAX_NETMASK]->sa_data) % 8;
-		if ( bits != 0 ){
-			dprint(("rtinit1: CIDER_len[%d bits], ",bits));
-			keylen = keylen + (bits - 8);
+		else{
+			if (info.rti_info[RTAX_DST]->sa_family == AF_INET)
+		 		keylen 	= 8 * (info.rti_info[RTAX_DST]->sa_len - SIN_ZERO);
+			else
+				keylen 	= 8 * (info.rti_info[RTAX_DST]->sa_len - SIN6_ZERO);
 		}
-#endif
+
 		dprint(("route_output: call rnh_lookup\n"));
 		pn = rnh->rnh_lookup((char *)info.rti_info[RTAX_DST], keylen, rnh->pnh_treetop);
-		if(pn)
+		if(pn != NULL)
 		  rt = pn->data;
-		//rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST]->sa_data, (int)info.rti_info[RTAX_NETMASK]->sa_data, rnh->pnh_treetop);
 		if (rt == NULL) {	/* XXX looks bogus */
 			RADIX_NODE_HEAD_RUNLOCK(rnh);
 			senderr(ESRCH);

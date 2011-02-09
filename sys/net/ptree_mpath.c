@@ -38,10 +38,6 @@ static uint32_t max_multipath;
 
 
 #define LEN(x) (*(const u_char *)(x))
-#define INET_HEADOFF 4
-#define INET6_HEADOFF 8
-#define SIN_ZERO 64
-#define SIN6_ZERO 32
 
 static struct ptree_node *ptree_insert(void *v_arg, void *m_arg,
 			   	struct ptree_node_head *head, int *dupentry);
@@ -255,9 +251,6 @@ on1:
 	memset(cp,0,(salen-len)/8);
 	return (tt);
 }
-
-#undef SIN_ZERO
-#undef SIN6_ZERO
 
 	int
 ptree_refines(m_arg, n_arg)

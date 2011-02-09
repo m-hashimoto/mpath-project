@@ -16,29 +16,13 @@
 /* debug print */
 #define DEBUG 0
 #define dprint(x) {if(DEBUG) printf x;}
-#if 0
-#define P_DEBUG 2
-#define P_INFO  3
 
-void dprint_ctof(int fp,char *msg);
-#define dprint(level,msg) dprint_ctof(level,msg);
-
-__BEGIN_DECLS
-void	closelog(void);
-void	openlog(const char *, int, int);
-void	syslog(int, const char *, ...) __printflike(2, 3);
-__END_DECLS
-
-#define dprint(level,msg) { \
-				openlog("ptree_log",LOG_CONS | LOG_PID, LOG_KERN); \
-				if(level == P_INFO) syslog(LOG_INFO,msg); \
-				else if(level == P_DEBUG) syslog(LOG_DEBUG,msg); \
-				closelog(); \
-}
-#endif
+#define INET_HEADOFF 4
+#define INET6_HEADOFF 8
+#define SIN_ZERO 8
+#define SIN6_ZERO 4
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
-//static double cpu_frequency = 1999.78;
 
 typedef int walktree_f_t(struct ptree_node *, void *);
 
