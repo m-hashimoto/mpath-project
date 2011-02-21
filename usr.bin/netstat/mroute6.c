@@ -80,7 +80,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/mroute6.c,v 1.22.2.1.2.1 2009/10/25 01:1
 
 #include <net/if.h>
 #include <net/if_var.h>
-#include <net/route.h>
+#include <net/mpath_route.h>
 
 #include <netinet/in.h>
 

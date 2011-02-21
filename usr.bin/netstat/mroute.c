@@ -58,7 +58,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/mroute.c,v 1.34.2.1.2.1 2009/10/25 01:10
 #include <net/if.h>
 #include <netinet/in.h>
 #include <netinet/igmp.h>
-#include <net/route.h>
+#include <net/mpath_route.h>
 
 #define _KERNEL 1
 #include <netinet/ip_mroute.h>

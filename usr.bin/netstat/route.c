@@ -53,7 +53,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/route.c,v 1.94.2.2.2.1 2009/10/25 01:10:
 #include <net/if_types.h>
 #include <net/ptree.h>
 #include <net/ptree_mpath.h>
-#include <net/route.h>
+#include <net/mpath_route.h>
 
 #include <netinet/in.h>
 #include <netipx/ipx.h>

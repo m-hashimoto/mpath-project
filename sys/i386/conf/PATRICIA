@@ -77,10 +77,10 @@ options 	MAC			# TrustedBSD MAC Framework
 #options 	KDTRACE_HOOKS		# Kernel DTrace hooks
 
 # dummynet options
-options 	IPFIREWALL
-options 	IPFIREWALL_FORWARD
-options 	IPFIREWALL_DEFAULT_TO_ACCEPT
-options 	DUMMYNET
+#options 	IPFIREWALL
+#options 	IPFIREWALL_FORWARD
+#options 	IPFIREWALL_DEFAULT_TO_ACCEPT
+#options 	DUMMYNET
 
 # patricia-trie for multi path routing
 options		PTREE_MPATH

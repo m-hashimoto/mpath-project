@@ -47,7 +47,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/ipx.c,v 1.28.2.1.2.1 2009/10/25 01:10:29
 #include <sys/socketvar.h>
 #include <sys/protosw.h>
 
-#include <net/route.h>
+#include <net/mpath_route.h>
 
 #define	TCPSTATES
 #include <netinet/tcp_fsm.h>

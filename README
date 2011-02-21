@@ -8,12 +8,12 @@ It enables:
 
 # Modified File
 README
-sys/net
-   /netinet
-   /netinet6
-   /fs
-   /contrib
-usr.bin/netstat
+sys/net/*
+   /netinet/*
+   /netinet6/*
+   /fs/*
+   /contrib/*
+usr.bin/netstat/*
 
 # For install
 1. multipath kernel install
@@ -29,12 +29,3 @@ usr.bin/netstat
 % cd /usr/src/usr.bin
 % ./install.csh
  - copy the header files and apply a patch 
-
-# for uninstall
-1. multipath kernel uninstall
-
-
-2. netstat commond(ver.mpath) uninstall
-% cd /usr/src/usr.bin
-% ./uninstall.csh
- - remove the header files and apply a reverse patch
