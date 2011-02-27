@@ -447,16 +447,15 @@ ptree_deladdr(v_arg, gate_arg, head)
 			}
 		}
 		
-#ifdef PTREE_MPATH
 		struct rtentry *headrt, *rt;
-		headrt = tt->data;
-		
+		rt = headrt = tt->data;
+#ifdef PTREE_MPATH
 		if(headrt->mpath_array){
 			dprint(("ptree_delete: rtentrry has mpath_array\n"));
 			if ( (rt = rt_mpath_matchgate(headrt,gate)) != NULL ){
 				struct ptree_node *tmprn;
 			
-  			XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
+  				XRTMALLOC(tmprn, struct ptree_node *, sizeof(struct ptree_node));
 				memcpy(tmprn,tt,sizeof(struct ptree_node));
 				tmprn->data = rt;
 				if( ! rt_mpath_delete(headrt,rt) )
@@ -467,6 +466,9 @@ ptree_deladdr(v_arg, gate_arg, head)
 				return (0);
 		}
 #endif
+		/* compare gateway */
+		if( memcmp(gate, rt->rt_gateway, LEN(gate)) != 0 )
+			return 0;
 		dprint(("ptree_deladdr: call ptree_remove\n"));
 		ptree_remove(tt);
 		return (tt);
