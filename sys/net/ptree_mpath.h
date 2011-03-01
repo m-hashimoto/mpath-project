@@ -17,10 +17,10 @@
 #define DEBUG 0
 #define dprint(x) {if(DEBUG) printf x;}
 
-#define INET_HEADOFF 4
-#define INET6_HEADOFF 8
-#define SIN_ZERO 8
-#define SIN6_ZERO 4
+#define INET_HEADOFF 4   /* bytes */
+#define INET6_HEADOFF 8  /* bytes */
+#define SIN_ZERO 64      /* bits */
+#define SIN6_ZERO 32     /* bits */
 
 #define RDTSC(X) __asm__ __volatile__ ("rdtsc" : "=A" (X));
 
