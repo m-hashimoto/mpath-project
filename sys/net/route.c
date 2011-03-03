@@ -1404,6 +1404,7 @@ rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
 	char tempbuf[_SOCKADDR_TMPSIZE];
 	int didwork = 0;
 	int a_failure = 0;
+	int keylen;
 	static struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
 
 	if (flags & RTF_HOST) {
@@ -1493,33 +1494,16 @@ rtinit1(struct ifaddr *ifa, int cmd, int flags, int fibnum)
 			}
 			else
 #endif
-			//				rn = rnh->rnh_lookup(dst->sa_data, 
-			//						(int)*(const u_char *)netmask->sa_data, rnh->pnh_treetop);
-#if DEBUG
-  printf("rtinit1: addr[");
-	sprint_inet_ntoa(dst->sa_family, dst);
-	printf("/%d(bytes)] ",dst->sa_len);
-	if(netmask){
-		printf("mask[");
-		sprint_inet_ntoa(netmask->sa_family, netmask);
-		printf("/%d(bytes)]",netmask->sa_len);
-	}
-	printf("\n");
-#endif
 	
-					int keylen = 8 * rnh->pnh_offset;
-					if(netmask->sa_len >= rnh->pnh_offset)
-						keylen = create_masklen((char *)netmask, rnh);
-				/* support CIDER */
-#if 0
-	bits = keylen % 8;
-	//bits = (int)*(const u_char *)netmask->sa_data % 8;
-	if ( bits != 0 ){
-		dprint(("rtinit1: CIDER_len[%d bits], ",bits));
-		keylen = keylen + (bits - 8);
-	}
-#endif
-					rn = rnh->rnh_lookup((char *)dst,keylen,rnh->pnh_treetop);
+			if(netmask != NULL)
+				keylen = create_masklen((char *)netmask, rnh);
+			else{
+				if(dst->sa_family == AF_INET)
+					keylen = 8 * dst->sa_len - SIN_ZERO;
+				else
+					keylen = 8 * dst->sa_len - SIN6_ZERO;
+			}
+			rn = rnh->rnh_lookup((char *)dst,keylen,rnh->pnh_treetop);
 			error = (rn == NULL ||
 			    RNTORT(rn)->rt_ifa != ifa ||
 									!sa_equal((struct sockaddr *)rn->key, dst));

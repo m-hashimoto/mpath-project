@@ -606,9 +606,9 @@ route_output(struct mbuf *m, struct socket *so)
 			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK],rnh);
 		else{
 			if (info.rti_info[RTAX_DST]->sa_family == AF_INET)
-		 		keylen 	= 8 * (info.rti_info[RTAX_DST]->sa_len - SIN_ZERO);
+		 		keylen 	= 8 * info.rti_info[RTAX_DST]->sa_len - SIN_ZERO;
 			else
-				keylen 	= 8 * (info.rti_info[RTAX_DST]->sa_len - SIN6_ZERO);
+				keylen 	= 8 * info.rti_info[RTAX_DST]->sa_len - SIN6_ZERO;
 		}
 
 		dprint(("route_output: call rnh_lookup\n"));
