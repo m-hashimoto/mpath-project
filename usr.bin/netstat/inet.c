@@ -48,7 +48,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/inet.c,v 1.90.2.1.2.1 2009/10/25 01:10:2
 #include <sys/socketvar.h>
 #include <sys/sysctl.h>
 
-#include <net/route.h>
+#include <net/mpath_route.h>
 #include <netinet/in.h>
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>

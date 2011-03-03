@@ -45,7 +45,7 @@
 #include <sys/rwlock.h>
 #endif
 
-#include <net/radix.h>
+#include <net/ptree.h>
 #include <net/route.h>
 #ifdef __FreeBSD__
 #include <net/if_clone.h>
@@ -943,7 +943,7 @@ union sockaddr_union {
 
 SLIST_HEAD(pfr_kentryworkq, pfr_kentry);
 struct pfr_kentry {
-	struct radix_node	 pfrke_node[2];
+	struct ptree_node	 pfrke_node[2];
 	union sockaddr_union	 pfrke_sa;
 	u_int64_t		 pfrke_packets[PFR_DIR_MAX][PFR_OP_ADDR_MAX];
 	u_int64_t		 pfrke_bytes[PFR_DIR_MAX][PFR_OP_ADDR_MAX];
@@ -962,8 +962,8 @@ struct pfr_ktable {
 	struct pfr_tstats	 pfrkt_ts;
 	RB_ENTRY(pfr_ktable)	 pfrkt_tree;
 	SLIST_ENTRY(pfr_ktable)	 pfrkt_workq;
-	struct radix_node_head	*pfrkt_ip4;
-	struct radix_node_head	*pfrkt_ip6;
+	struct ptree_node_head	*pfrkt_ip4;
+	struct ptree_node_head	*pfrkt_ip6;
 	struct pfr_ktable	*pfrkt_shadow;
 	struct pfr_ktable	*pfrkt_root;
 	struct pf_ruleset	*pfrkt_rs;

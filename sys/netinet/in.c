@@ -1009,6 +1009,7 @@ in_addprefix(struct in_ifaddr *target, int flags)
 					 */
 					msg_rt.rt_gateway = 
 						(struct sockaddr *)&ia->ia_addr;
+					dprint(("in_addprefix: call rt_newaddrmsg(RTM_ADD)\n"));
 					rt_newaddrmsg(RTM_ADD, 
 						      (struct ifaddr *)target,
 						      0, &msg_rt);
@@ -1041,6 +1042,7 @@ extern void arp_ifscrub(struct ifnet *ifp, uint32_t addr);
 static int
 in_scrubprefix(struct in_ifaddr *target)
 {
+	dprint(("in_scrubprefix Start\n"));
 	struct in_ifaddr *ia;
 	struct in_addr prefix, mask, p;
 	int error;
@@ -1066,12 +1068,16 @@ in_scrubprefix(struct in_ifaddr *target)
 
 	if ((target->ia_flags & IFA_ROUTE) == 0) {
 		struct rtentry rt;
+		struct ptree_node rn;
 
 		/* QL: XXX
 		 * Report a blank rtentry when a route has not been
 		 * installed for the given interface address.
 		 */
 		bzero(&rt, sizeof(rt));
+		bzero(&rn, sizeof(rn));
+		rt.rt_nodes = &rn;
+		dprint(("in_scrubprefix: call rt_newaddrmsg(RTM_DELETE)\n"));
 		rt_newaddrmsg(RTM_DELETE, 
 			      (struct ifaddr *)target,
 			      0, &rt);
@@ -1111,10 +1117,12 @@ in_scrubprefix(struct in_ifaddr *target)
 #endif
 							) {
 			IN_IFADDR_RUNLOCK();
+			dprint(("in_scrubprefix: call rtinit RTM_DELETE 1\n"));
 			rtinit(&(target->ia_ifa), (int)RTM_DELETE,
 			    rtinitflags(target));
 			target->ia_flags &= ~IFA_ROUTE;
 
+			dprint(("in_scrubprefix: call rtinit RTM_ADD\n"));
 			error = rtinit(&ia->ia_ifa, (int)RTM_ADD,
 			    rtinitflags(ia) | RTF_UP);
 			if (error == 0)
@@ -1141,8 +1149,10 @@ in_scrubprefix(struct in_ifaddr *target)
 	/*
 	 * As no-one seem to have this prefix, we can remove the route.
 	 */
+	dprint(("in_scrubprefix: call rtinit RTM_DELETE 2\n"));
 	rtinit(&(target->ia_ifa), (int)RTM_DELETE, rtinitflags(target));
 	target->ia_flags &= ~IFA_ROUTE;
+	dprint(("in_scrubprefix End\n"));
 	return (0);
 }
 

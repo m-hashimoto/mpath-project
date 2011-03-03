@@ -53,7 +53,7 @@ __FBSDID("$FreeBSD: src/sys/netinet6/nd6_rtr.c,v 1.73.2.2.2.1 2009/10/25 01:10:2
 #include <net/if_types.h>
 #include <net/if_dl.h>
 #include <net/route.h>
-#include <net/radix.h>
+#include <net/ptree.h>
 #include <net/vnet.h>
 
 #include <netinet/in.h>
@@ -84,7 +84,7 @@ static int in6_init_prefix_ltimes(struct nd_prefix *);
 static void in6_init_address_ltimes __P((struct nd_prefix *,
 	struct in6_addrlifetime *));
 
-static int rt6_deleteroute(struct radix_node *, void *);
+static int rt6_deleteroute(struct ptree_node *, void *);
 
 VNET_DECLARE(int, nd6_recalc_reachtm_interval);
 #define	V_nd6_recalc_reachtm_interval	VNET(nd6_recalc_reachtm_interval)
@@ -105,6 +105,7 @@ VNET_DEFINE(int, ip6_temp_regen_advance);
 #define RTPREF_LOW	(-1)
 #define RTPREF_RESERVED	(-2)
 #define RTPREF_INVALID	(-3)	/* internal */
+
 
 /*
  * Receive Router Solicitation Message - just for routers.
@@ -1557,7 +1558,7 @@ nd6_prefix_onlink(struct nd_prefix *pr)
 	struct nd_prefix *opr;
 	u_long rtflags;
 	int error = 0;
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct rtentry *rt = NULL;
 	char ip6buf[INET6_ADDRSTRLEN];
 	struct sockaddr_dl null_sdl = {sizeof(null_sdl), AF_LINK};
@@ -2076,7 +2077,7 @@ in6_init_address_ltimes(struct nd_prefix *new, struct in6_addrlifetime *lt6)
 void
 rt6_flush(struct in6_addr *gateway, struct ifnet *ifp)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	int s = splnet();
 
 	/* We'll care only link-local addresses */
@@ -2096,7 +2097,7 @@ rt6_flush(struct in6_addr *gateway, struct ifnet *ifp)
 }
 
 static int
-rt6_deleteroute(struct radix_node *rn, void *arg)
+rt6_deleteroute(struct ptree_node *rn, void *arg)
 {
 #define SIN6(s)	((struct sockaddr_in6 *)s)
 	struct rtentry *rt = (struct rtentry *)rn;

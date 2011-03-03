@@ -47,7 +47,7 @@
 #endif
 #include <net/if_types.h>
 #include <net/if_var.h>
-#include <net/radix.h>
+#include <net/ptree.h>
 #include <net/route.h>
 #include <net/vnet.h>
 

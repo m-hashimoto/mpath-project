@@ -33,6 +33,7 @@
 #ifndef _NET_ROUTE_H_
 #define _NET_ROUTE_H_
 
+
 /*
  * Kernel resident routing tables.
  *
@@ -123,22 +124,28 @@ struct mbuf;
  * gateways are marked so that the output routines know to address the
  * gateway rather than the ultimate destination.
  */
+#ifdef _KERNEL
+#include "opt_ptree.h"
+#endif
 #ifndef RNF_NORMAL
-#include <net/radix.h>
+#include <net/ptree.h>
+#include <net/ptree_mpath.h>
 #ifdef RADIX_MPATH
 #include <net/radix_mpath.h>
 #endif
 #endif
+
 struct rtentry {
-	struct	radix_node rt_nodes[2];	/* tree glue, and other values */
+	struct	ptree_node *rt_nodes;	/* tree glue, and other values */
 	/*
 	 * XXX struct rtentry must begin with a struct radix_node (or two!)
 	 * because the code does some casts of a 'struct radix_node *'
 	 * to a 'struct rtentry *'
 	 */
-#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_key)))
-#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_nodes->rn_mask)))
+#define	rt_key(r)		(*((struct sockaddr **)(&(r)->rt_nodes->key)))
+#define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_mask)))
 	struct	sockaddr *rt_gateway;	/* value */
+	struct	sockaddr *rt_mask;
 	int	rt_flags;		/* up/down?, host/net */
 	int	rt_refcnt;		/* # held references */
 	struct	ifnet *rt_ifp;		/* the answer: interface to use */
@@ -146,10 +153,18 @@ struct rtentry {
 	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
 	u_int	rt_fibnum;		/* which FIB */
 #ifdef _KERNEL
+#ifdef PTREE_MPATH
+	unsigned int mpath_counter;
+	struct rtentry **mpath_array;
+#endif /* PTREE_MPATH */
 	/* XXX ugly, user apps use this definition but don't have a mtx def */
 	struct	mtx rt_mtx;		/* mutex for routing entry */
-#endif
+#else
+	unsigned int mpath_counter;
+	struct rtentry **mpath_array;
+#endif /* _KERNEL */
 };
+
 
 /*
  * Following structure necessary for 4.3 compatibility;
@@ -174,6 +189,7 @@ struct ortentry {
 #define	RTF_DYNAMIC	0x10		/* created dynamically (by redirect) */
 #define	RTF_MODIFIED	0x20		/* modified dynamically (by redirect) */
 #define RTF_DONE	0x40		/* message confirmed */
+#define RTF_MULTIPATH 0x80		/* ptree multipath */
 /*			0x80		   unused, was RTF_DELCLONE */
 /*			0x100		   unused, was RTF_CLONING */
 #define RTF_XRESOLVE	0x200		/* external daemon resolves name */
@@ -373,7 +389,7 @@ struct rt_addrinfo {
 	}							\
 } while (0)
 
-struct radix_node_head *rt_tables_get_rnh(int, int);
+struct ptree_node_head *rt_tables_get_rnh(int, int);
 
 struct ifmultiaddr;
 

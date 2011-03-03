@@ -143,7 +143,7 @@ _copyout(const void *uaddr, void *kaddr, size_t len)
 #define	ADDR_NETWORK(ad)	((ad)->pfra_net < AF_BITS((ad)->pfra_af))
 #define	KENTRY_NETWORK(ke)	((ke)->pfrke_net < AF_BITS((ke)->pfrke_af))
 #define KENTRY_RNF_ROOT(ke) \
-		((((struct radix_node *)(ke))->rn_flags & RNF_ROOT) != 0)
+		((((struct ptree_node *)(ke))->rn_flags & RNF_ROOT) != 0)
 
 #define NO_ADDRESSES		(-1)
 #define ENQUEUE_UNMARKED_ONLY	(1)
@@ -215,7 +215,7 @@ int			 pfr_route_kentry(struct pfr_ktable *,
 			    struct pfr_kentry *);
 int			 pfr_unroute_kentry(struct pfr_ktable *,
 			    struct pfr_kentry *);
-int			 pfr_walktree(struct radix_node *, void *);
+int			 pfr_walktree(struct ptree_node *, void *);
 int			 pfr_validate_table(struct pfr_table *, int, int);
 int			 pfr_fix_anchor(char *);
 void			 pfr_commit_ktable(struct pfr_ktable *, long);
@@ -646,14 +646,14 @@ pfr_get_addrs(struct pfr_table *tbl, struct pfr_addr *addr, int *size,
 #ifdef __FreeBSD__
 	rv = kt->pfrkt_ip4->rnh_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #else
-	rv = rn_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
+	rv = ptree_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #endif
 	if (!rv)
 #ifdef __FreeBSD__
 		rv = kt->pfrkt_ip6->rnh_walktree(kt->pfrkt_ip6, pfr_walktree, 
 		    &w);
 #else
-		rv = rn_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
+		rv = ptree_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
 #endif
 	if (rv)
 		return (rv);
@@ -698,14 +698,14 @@ pfr_get_astats(struct pfr_table *tbl, struct pfr_astats *addr, int *size,
 #ifdef __FreeBSD__
 	rv = kt->pfrkt_ip4->rnh_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #else
-	rv = rn_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
+	rv = ptree_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #endif
 	if (!rv)
 #ifdef __FreeBSD__
 		rv = kt->pfrkt_ip6->rnh_walktree(kt->pfrkt_ip6, pfr_walktree, 
 		    &w);
 #else
-		rv = rn_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
+		rv = ptree_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
 #endif
 	if (!rv && (flags & PFR_FLAG_CLSTATS)) {
 		pfr_enqueue_addrs(kt, &workq, NULL, 0);
@@ -825,7 +825,7 @@ pfr_enqueue_addrs(struct pfr_ktable *kt, struct pfr_kentryworkq *workq,
 		if (kt->pfrkt_ip4->rnh_walktree(kt->pfrkt_ip4, pfr_walktree, 
 		    &w))
 #else
-		if (rn_walktree(kt->pfrkt_ip4, pfr_walktree, &w))
+		if (ptree_walktree(kt->pfrkt_ip4, pfr_walktree, &w))
 #endif
 			printf("pfr_enqueue_addrs: IPv4 walktree failed.\n");
 	if (kt->pfrkt_ip6 != NULL)
@@ -833,7 +833,7 @@ pfr_enqueue_addrs(struct pfr_ktable *kt, struct pfr_kentryworkq *workq,
 		if (kt->pfrkt_ip6->rnh_walktree(kt->pfrkt_ip6, pfr_walktree, 
 		    &w))
 #else
-		if (rn_walktree(kt->pfrkt_ip6, pfr_walktree, &w))
+		if (ptree_walktree(kt->pfrkt_ip6, pfr_walktree, &w))
 #endif
 			printf("pfr_enqueue_addrs: IPv6 walktree failed.\n");
 	if (naddr != NULL)
@@ -850,13 +850,13 @@ pfr_mark_addrs(struct pfr_ktable *kt)
 #ifdef __FreeBSD__
 	if (kt->pfrkt_ip4->rnh_walktree(kt->pfrkt_ip4, pfr_walktree, &w))
 #else
-	if (rn_walktree(kt->pfrkt_ip4, pfr_walktree, &w))
+	if (ptree_walktree(kt->pfrkt_ip4, pfr_walktree, &w))
 #endif
 		printf("pfr_mark_addrs: IPv4 walktree failed.\n");
 #ifdef __FreeBSD__
 	if (kt->pfrkt_ip6->rnh_walktree(kt->pfrkt_ip6, pfr_walktree, &w))
 #else
-	if (rn_walktree(kt->pfrkt_ip6, pfr_walktree, &w))
+	if (ptree_walktree(kt->pfrkt_ip6, pfr_walktree, &w))
 #endif
 		printf("pfr_mark_addrs: IPv6 walktree failed.\n");
 }
@@ -866,7 +866,7 @@ struct pfr_kentry *
 pfr_lookup_addr(struct pfr_ktable *kt, struct pfr_addr *ad, int exact)
 {
 	union sockaddr_union	 sa, mask;
-	struct radix_node_head	*head = NULL;	/* make the compiler happy */
+	struct ptree_node_head	*head = NULL;	/* make the compiler happy */
 	struct pfr_kentry	*ke;
 	int			 s;
 
@@ -884,13 +884,19 @@ pfr_lookup_addr(struct pfr_ktable *kt, struct pfr_addr *ad, int exact)
 #ifdef __FreeBSD__
 		PF_ASSERT(MA_OWNED);
 #endif
-		ke = (struct pfr_kentry *)rn_lookup(&sa, &mask, head);
+		if (ad->pfra_af == AF_INET) {
+			ke = (struct pfr_kentry *)ptree_lookup((char *)sa.sin.sin_addr.s_addr,
+				(int)mask.sin.sin_len, head->pnh_treetop);
+		} else if (ad->pfra_af == AF_INET6) {
+			ke = (struct pfr_kentry *)ptree_lookup((char *)sa.sin6.sin6_addr.s6_addr,
+				(int)mask.sin6.sin6_len, head->pnh_treetop);
+		}
 		splx(s);
-		if (ke && KENTRY_RNF_ROOT(ke))
+		if (ke)
 			ke = NULL;
 	} else {
-		ke = (struct pfr_kentry *)rn_match(&sa, head);
-		if (ke && KENTRY_RNF_ROOT(ke))
+		ke = (struct pfr_kentry *)ptree_matchaddr(&sa, head);
+		if (ke)
 			ke = NULL;
 		if (exact && ke && KENTRY_NETWORK(ke))
 			ke = NULL;
@@ -1071,8 +1077,8 @@ int
 pfr_route_kentry(struct pfr_ktable *kt, struct pfr_kentry *ke)
 {
 	union sockaddr_union	 mask;
-	struct radix_node	*rn;
-	struct radix_node_head	*head = NULL;	/* make the compiler happy */
+	struct ptree_node	*rn;
+	struct ptree_node_head	*head = NULL;	/* make the compiler happy */
 	int			 s;
 
 	bzero(ke->pfrke_node, sizeof(ke->pfrke_node));
@@ -1087,9 +1093,9 @@ pfr_route_kentry(struct pfr_ktable *kt, struct pfr_kentry *ke)
 #endif
 	if (KENTRY_NETWORK(ke)) {
 		pfr_prepare_network(&mask, ke->pfrke_af, ke->pfrke_net);
-		rn = rn_addroute(&ke->pfrke_sa, &mask, head, ke->pfrke_node);
+		rn = ptree_addroute(&ke->pfrke_sa, &mask, head, ke->pfrke_node);
 	} else
-		rn = rn_addroute(&ke->pfrke_sa, NULL, head, ke->pfrke_node);
+		rn = ptree_addroute(&ke->pfrke_sa, NULL, head, ke->pfrke_node);
 	splx(s);
 
 	return (rn == NULL ? -1 : 0);
@@ -1099,8 +1105,8 @@ int
 pfr_unroute_kentry(struct pfr_ktable *kt, struct pfr_kentry *ke)
 {
 	union sockaddr_union	 mask;
-	struct radix_node	*rn;
-	struct radix_node_head	*head = NULL;	/* make the compiler happy */
+	struct ptree_node	*rn;
+	struct ptree_node_head	*head = NULL;	/* make the compiler happy */
 	int			 s;
 
 	if (ke->pfrke_af == AF_INET)
@@ -1115,15 +1121,15 @@ pfr_unroute_kentry(struct pfr_ktable *kt, struct pfr_kentry *ke)
 	if (KENTRY_NETWORK(ke)) {
 		pfr_prepare_network(&mask, ke->pfrke_af, ke->pfrke_net);
 #ifdef __FreeBSD__
-		rn = rn_delete(&ke->pfrke_sa, &mask, head);
+		rn = ptree_deladdr(&ke->pfrke_sa, &mask, head);
 #else
-		rn = rn_delete(&ke->pfrke_sa, &mask, head, NULL);
+		rn = ptree_deladdr(&ke->pfrke_sa, &mask, head, NULL);
 #endif
 	} else
 #ifdef __FreeBSD__
-		rn = rn_delete(&ke->pfrke_sa, NULL, head);
+		rn = ptree_deladdr(&ke->pfrke_sa, NULL, head);
 #else
-		rn = rn_delete(&ke->pfrke_sa, NULL, head, NULL);
+		rn = ptree_deladdr(&ke->pfrke_sa, NULL, head, NULL);
 #endif
 	splx(s);
 
@@ -1150,7 +1156,7 @@ pfr_copyout_addr(struct pfr_addr *ad, struct pfr_kentry *ke)
 }
 
 int
-pfr_walktree(struct radix_node *rn, void *arg)
+pfr_walktree(struct ptree_node *rn, void *arg)
 {
 	struct pfr_kentry	*ke = (struct pfr_kentry *)rn;
 	struct pfr_walktree	*w = arg;
@@ -1812,9 +1818,9 @@ pfr_commit_ktable(struct pfr_ktable *kt, long tzero)
 		pfr_destroy_kentries(&garbageq);
 	} else {
 		/* kt cannot contain addresses */
-		SWAP(struct radix_node_head *, kt->pfrkt_ip4,
+		SWAP(struct ptree_node_head *, kt->pfrkt_ip4,
 		    shadow->pfrkt_ip4);
-		SWAP(struct radix_node_head *, kt->pfrkt_ip6,
+		SWAP(struct ptree_node_head *, kt->pfrkt_ip6,
 		    shadow->pfrkt_ip6);
 		SWAP(int, kt->pfrkt_cnt, shadow->pfrkt_cnt);
 		pfr_clstats_ktable(kt, tzero, 1);
@@ -2013,9 +2019,9 @@ pfr_create_ktable(struct pfr_table *tbl, long tzero, int attachruleset)
 		rs->tables++;
 	}
 
-	if (!rn_inithead((void **)&kt->pfrkt_ip4,
+	if (!ptree_inithead((void **)&kt->pfrkt_ip4,
 	    offsetof(struct sockaddr_in, sin_addr) * 8) ||
-	    !rn_inithead((void **)&kt->pfrkt_ip6,
+	    !ptree_inithead((void **)&kt->pfrkt_ip6,
 	    offsetof(struct sockaddr_in6, sin6_addr) * 8)) {
 		pfr_destroy_ktable(kt, 0);
 		return (NULL);
@@ -2103,16 +2109,16 @@ pfr_match_addr(struct pfr_ktable *kt, struct pf_addr *a, sa_family_t af)
 #ifdef INET
 	case AF_INET:
 		pfr_sin.sin_addr.s_addr = a->addr32[0];
-		ke = (struct pfr_kentry *)rn_match(&pfr_sin, kt->pfrkt_ip4);
-		if (ke && KENTRY_RNF_ROOT(ke))
+		ke = (struct pfr_kentry *)ptree_matchaddr(&pfr_sin, kt->pfrkt_ip4);
+		if (ke)
 			ke = NULL;
 		break;
 #endif /* INET */
 #ifdef INET6
 	case AF_INET6:
 		bcopy(a, &pfr_sin6.sin6_addr, sizeof(pfr_sin6.sin6_addr));
-		ke = (struct pfr_kentry *)rn_match(&pfr_sin6, kt->pfrkt_ip6);
-		if (ke && KENTRY_RNF_ROOT(ke))
+		ke = (struct pfr_kentry *)ptree_matchaddr(&pfr_sin6, kt->pfrkt_ip6);
+		if (ke)
 			ke = NULL;
 		break;
 #endif /* INET6 */
@@ -2140,16 +2146,16 @@ pfr_update_stats(struct pfr_ktable *kt, struct pf_addr *a, sa_family_t af,
 #ifdef INET
 	case AF_INET:
 		pfr_sin.sin_addr.s_addr = a->addr32[0];
-		ke = (struct pfr_kentry *)rn_match(&pfr_sin, kt->pfrkt_ip4);
-		if (ke && KENTRY_RNF_ROOT(ke))
+		ke = (struct pfr_kentry *)ptree_matchaddr(&pfr_sin, kt->pfrkt_ip4);
+		if (ke)
 			ke = NULL;
 		break;
 #endif /* INET */
 #ifdef INET6
 	case AF_INET6:
 		bcopy(a, &pfr_sin6.sin6_addr, sizeof(pfr_sin6.sin6_addr));
-		ke = (struct pfr_kentry *)rn_match(&pfr_sin6, kt->pfrkt_ip6);
-		if (ke && KENTRY_RNF_ROOT(ke))
+		ke = (struct pfr_kentry *)ptree_matchaddr(&pfr_sin6, kt->pfrkt_ip6);
+		if (ke)
 			ke = NULL;
 		break;
 #endif /* INET6 */
@@ -2272,10 +2278,10 @@ _next_block:
 	for (;;) {
 		/* we don't want to use a nested block */
 		if (af == AF_INET)
-			ke2 = (struct pfr_kentry *)rn_match(&pfr_sin,
+			ke2 = (struct pfr_kentry *)ptree_matchaddr(&pfr_sin,
 			    kt->pfrkt_ip4);
 		else if (af == AF_INET6)
-			ke2 = (struct pfr_kentry *)rn_match(&pfr_sin6,
+			ke2 = (struct pfr_kentry *)ptree_matchaddr(&pfr_sin6,
 			    kt->pfrkt_ip6);
 		/* no need to check KENTRY_RNF_ROOT() here */
 		if (ke2 == ke) {
@@ -2314,7 +2320,7 @@ pfr_kentry_byidx(struct pfr_ktable *kt, int idx, int af)
 #ifdef __FreeBSD__
 		kt->pfrkt_ip4->rnh_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #else
-		rn_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
+		ptree_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #endif
 		return (w.pfrw_kentry);
 #endif /* INET */
@@ -2323,7 +2329,7 @@ pfr_kentry_byidx(struct pfr_ktable *kt, int idx, int af)
 #ifdef __FreeBSD__
 		kt->pfrkt_ip6->rnh_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
 #else
-		rn_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
+		ptree_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
 #endif
 		return (w.pfrw_kentry);
 #endif /* INET6 */
@@ -2349,13 +2355,13 @@ pfr_dynaddr_update(struct pfr_ktable *kt, struct pfi_dynaddr *dyn)
 #ifdef __FreeBSD__
 		kt->pfrkt_ip4->rnh_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #else
-		rn_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
+		ptree_walktree(kt->pfrkt_ip4, pfr_walktree, &w);
 #endif
 	if (!dyn->pfid_af || dyn->pfid_af == AF_INET6)
 #ifdef __FreeBSD__
 		kt->pfrkt_ip6->rnh_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
 #else
-		rn_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
+		ptree_walktree(kt->pfrkt_ip6, pfr_walktree, &w);
 #endif
 	splx(s);
 }

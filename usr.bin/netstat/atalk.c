@@ -47,7 +47,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/atalk.c,v 1.27.2.1.2.1 2009/10/25 01:10:
 #include <sys/protosw.h>
 
 #include <arpa/inet.h>
-#include <net/route.h>
+#include <net/mpath_route.h>
 
 #include <netatalk/at.h>
 #include <netatalk/ddp_var.h>

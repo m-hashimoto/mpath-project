@@ -42,7 +42,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/netgraph.c,v 1.14.2.1.2.1 2009/10/25 01:
 #include <sys/protosw.h>
 #include <sys/linker.h>
 
-#include <net/route.h>
+#include <net/mpath_route.h>
 
 #include <netgraph.h>
 #include <netgraph/ng_message.h>

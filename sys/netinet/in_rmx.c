@@ -70,13 +70,13 @@ extern int	in_detachhead(void **head, int off);
 /*
  * Do what we need to do when inserting a route.
  */
-static struct radix_node *
-in_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
-    struct radix_node *treenodes)
+static struct ptree_node *
+in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
+				struct ptree_node *rt_node)
 {
-	struct rtentry *rt = (struct rtentry *)treenodes;
-	struct sockaddr_in *sin = (struct sockaddr_in *)rt_key(rt);
-
+	struct rtentry *rt = (struct rtentry *)(rt_node);
+	struct sockaddr_in *sin = (struct sockaddr_in *)v_arg;
+	
 	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
 	/*
 	 * A little bit of help for both IP output and input:
@@ -103,11 +103,10 @@ in_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
 	}
 	if (IN_MULTICAST(ntohl(sin->sin_addr.s_addr)))
 		rt->rt_flags |= RTF_MULTICAST;
-
 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
 		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
-
-	return (rn_addroute(v_arg, n_arg, head, treenodes));
+	
+	return (ptree_addroute(v_arg, n_arg, head, rt_node));
 }
 
 /*
@@ -115,11 +114,16 @@ in_addroute(void *v_arg, void *n_arg, struct radix_node_head *head,
  * were managing the route, stop doing so and set the expiration timer
  * back off again.
  */
-static struct radix_node *
-in_matroute(void *v_arg, struct radix_node_head *head)
+static struct ptree_node *
+in_matroute(void *v_arg, struct ptree_node_head *head)
 {
-	struct radix_node *rn = rn_match(v_arg, head);
-	struct rtentry *rt = (struct rtentry *)rn;
+	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
+	struct rtentry *rt;
+	
+	if (rn)
+		rt = rn->data;
+	else
+		return 0;
 
 	/*XXX locking? */
 	if (rt && rt->rt_refcnt == 0) {		/* this is first reference */
@@ -156,7 +160,7 @@ SYSCTL_VNET_INT(_net_inet_ip, IPCTL_RTMAXCACHE, rtmaxcache, CTLFLAG_RW,
  * timed out.
  */
 static void
-in_clsroute(struct radix_node *rn, struct radix_node_head *head)
+in_clsroute(struct ptree_node *rn, struct ptree_node_head *head)
 {
 	struct rtentry *rt = (struct rtentry *)rn;
 
@@ -184,7 +188,7 @@ in_clsroute(struct radix_node *rn, struct radix_node_head *head)
 }
 
 struct rtqk_arg {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	int draining;
 	int killed;
 	int found;
@@ -198,7 +202,7 @@ struct rtqk_arg {
  * nothing has a timeout longer than the current value of rtq_reallyold.
  */
 static int
-in_rtqkill(struct radix_node *rn, void *rock)
+in_rtqkill(struct ptree_node *rn, void *rock)
 {
 	struct rtqk_arg *ap = rock;
 	struct rtentry *rt = (struct rtentry *)rn;
@@ -269,7 +273,7 @@ in_rtqtimo(void *rock)
 static void
 in_rtqtimo_one(void *rock)
 {
-	struct radix_node_head *rnh = rock;
+	struct ptree_node_head *rnh = rock;
 	struct rtqk_arg arg;
 	static time_t last_adjusted_timeout = 0;
 
@@ -315,7 +319,7 @@ void
 in_rtqdrain(void)
 {
 	VNET_ITERATOR_DECL(vnet_iter);
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct rtqk_arg arg;
 	int 	fibnum;
 
@@ -346,7 +350,7 @@ static int _in_rt_was_here;
 int
 in_inithead(void **head, int off)
 {
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 
 	/* XXX MRT
 	 * This can be called from vfs_export.c too in which case 'off'
@@ -356,7 +360,7 @@ in_inithead(void **head, int off)
 	 * on a bad design. After RELENG_7 this should be fixed but that
 	 * will change the ABI, so for now do it this way.
 	 */
-	if (!rn_inithead(head, 32))
+	if (!ptree_inithead(head, 32))
 		return 0;
 
 	if (off == 0)		/* XXX MRT  see above */
@@ -404,7 +408,7 @@ struct in_ifadown_arg {
 };
 
 static int
-in_ifadownkill(struct radix_node *rn, void *xap)
+in_ifadownkill(struct ptree_node *rn, void *xap)
 {
 	struct in_ifadown_arg *ap = xap;
 	struct rtentry *rt = (struct rtentry *)rn;
@@ -430,7 +434,7 @@ int
 in_ifadown(struct ifaddr *ifa, int delete)
 {
 	struct in_ifadown_arg arg;
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	int	fibnum;
 
 	if (ifa->ifa_addr->sa_family != AF_INET)
@@ -500,5 +504,3 @@ int	 in_rt_getifa(struct rt_addrinfo *, u_int fibnum);
 int	 in_rtioctl(u_long, caddr_t, u_int);
 int	 in_rtrequest1(int, struct rt_addrinfo *, struct rtentry **, u_int);
 #endif
-
-

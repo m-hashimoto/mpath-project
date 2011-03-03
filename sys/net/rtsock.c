@@ -105,7 +105,7 @@ static int	rt_msg2(int type, struct rt_addrinfo *rtinfo,
 			caddr_t cp, struct walkarg *w);
 static int	rt_xaddrs(caddr_t cp, caddr_t cplim,
 			struct rt_addrinfo *rtinfo);
-static int	sysctl_dumpentry(struct radix_node *rn, void *vw);
+static int	sysctl_dumpentry(struct ptree_node *rn, void *vw);
 static int	sysctl_iflist(int af, struct walkarg *w);
 static int	sysctl_ifmalist(int af, struct walkarg *w);
 static int	route_output(struct mbuf *m, struct socket *so);
@@ -462,7 +462,8 @@ route_output(struct mbuf *m, struct socket *so)
 #define	sa_equal(a1, a2) (bcmp((a1), (a2), (a1)->sa_len) == 0)
 	struct rt_msghdr *rtm = NULL;
 	struct rtentry *rt = NULL;
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
+	struct ptree_node *pn;
 	struct rt_addrinfo info;
 	int len, error = 0;
 	struct ifnet *ifp = NULL;
@@ -598,8 +599,22 @@ route_output(struct mbuf *m, struct socket *so)
 		if (rnh == NULL)
 			senderr(EAFNOSUPPORT);
 		RADIX_NODE_HEAD_RLOCK(rnh);
-		rt = (struct rtentry *) rnh->rnh_lookup(info.rti_info[RTAX_DST],
-			info.rti_info[RTAX_NETMASK], rnh);
+		
+		int keylen;
+		
+		if(info.rti_info[RTAX_NETMASK] != NULL)
+			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK],rnh);
+		else{
+			if (info.rti_info[RTAX_DST]->sa_family == AF_INET)
+		 		keylen 	= 8 * (info.rti_info[RTAX_DST]->sa_len - SIN_ZERO);
+			else
+				keylen 	= 8 * (info.rti_info[RTAX_DST]->sa_len - SIN6_ZERO);
+		}
+
+		dprint(("route_output: call rnh_lookup\n"));
+		pn = rnh->rnh_lookup((char *)info.rti_info[RTAX_DST], keylen, rnh->pnh_treetop);
+		if(pn != NULL)
+		  rt = pn->data;
 		if (rt == NULL) {	/* XXX looks bogus */
 			RADIX_NODE_HEAD_RUNLOCK(rnh);
 			senderr(ESRCH);
@@ -1096,6 +1111,7 @@ rt_ifmsg(struct ifnet *ifp)
 void
 rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 {
+	dprint(("rt_newaddrmsg Start: cmd[%d] rt[%p]\n",cmd,rt));
 	struct rt_addrinfo info;
 	struct sockaddr *sa = NULL;
 	int pass;
@@ -1114,12 +1130,15 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 	sctp_addr_change(ifa, cmd);
 #endif /* SCTP */
 #endif
-	if (route_cb.any_count == 0)
+	if (route_cb.any_count == 0){
+		dprint(("rt_newaddrmsg End: route_cb.any_count == 0\n"));
 		return;
+	}
 	for (pass = 1; pass < 3; pass++) {
 		bzero((caddr_t)&info, sizeof(info));
 		if ((cmd == RTM_ADD && pass == 1) ||
 		    (cmd == RTM_DELETE && pass == 2)) {
+			dprint(("rt_newaddrmsg: if RTM_ADD(pass=1) or RTM_DELETE(pass=2)\n"));
 			struct ifa_msghdr *ifam;
 			int ncmd = cmd == RTM_ADD ? RTM_NEWADDR : RTM_DELADDR;
 
@@ -1137,6 +1156,7 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 		}
 		if ((cmd == RTM_ADD && pass == 2) ||
 		    (cmd == RTM_DELETE && pass == 1)) {
+			dprint(("rt_newaddrmsg: if RTM_ADD(pass=2) or RTM_DELETE(pass=1)\n"));
 			struct rt_msghdr *rtm;
 
 			if (rt == NULL)
@@ -1144,6 +1164,7 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 			info.rti_info[RTAX_NETMASK] = rt_mask(rt);
 			info.rti_info[RTAX_DST] = sa = rt_key(rt);
 			info.rti_info[RTAX_GATEWAY] = rt->rt_gateway;
+			dprint(("rt_newaddrmsg: put in struct rt_addrinfo\n"));
 			if ((m = rt_msg1(cmd, &info)) == NULL)
 				continue;
 			rtm = mtod(m, struct rt_msghdr *);
@@ -1152,8 +1173,10 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 			rtm->rtm_errno = error;
 			rtm->rtm_addrs = info.rti_addrs;
 		}
+		dprint(("rt_newaddrmsg: rt_dispatch\n"));
 		rt_dispatch(m, sa);
 	}
+	dprint(("rt_newaddrmsg End\n"));
 }
 
 /*
@@ -1302,7 +1325,7 @@ rt_dispatch(struct mbuf *m, const struct sockaddr *sa)
  * This is used in dumping the kernel table via sysctl().
  */
 static int
-sysctl_dumpentry(struct radix_node *rn, void *vw)
+sysctl_dumpentry(struct ptree_node *rn, void *vw)
 {
 	struct walkarg *w = vw;
 	struct rtentry *rt = (struct rtentry *)rn;
@@ -1459,7 +1482,7 @@ sysctl_rtsock(SYSCTL_HANDLER_ARGS)
 {
 	int	*name = (int *)arg1;
 	u_int	namelen = arg2;
-	struct radix_node_head *rnh = NULL; /* silence compiler. */
+	struct ptree_node_head *rnh = NULL; /* silence compiler. */
 	int	i, lim, error = EINVAL;
 	u_char	af;
 	struct	walkarg w;

@@ -781,7 +781,7 @@ in6_ifdetach(struct ifnet *ifp)
 {
 	struct in6_ifaddr *ia;
 	struct ifaddr *ifa, *next;
-	struct radix_node_head *rnh;
+	struct ptree_node_head *rnh;
 	struct rtentry *rt;
 	short rtflags;
 	struct sockaddr_in6 sin6;

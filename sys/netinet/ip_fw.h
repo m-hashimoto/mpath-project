@@ -667,7 +667,7 @@ struct ip_fw_chain {
 	struct ip_fw	*rules;		/* list of rules */
 	struct ip_fw	*reap;		/* list of rules to reap */
 	LIST_HEAD(, cfg_nat) nat;       /* list of nat entries */
-	struct radix_node_head *tables[IPFW_TABLES_MAX];
+	struct ptree_node_head *tables[IPFW_TABLES_MAX];
 	struct rwlock	rwmtx;
 	uint32_t	id;		/* ruleset id */
 };

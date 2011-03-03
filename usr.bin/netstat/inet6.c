@@ -50,7 +50,7 @@ __FBSDID("$FreeBSD: src/usr.bin/netstat/inet6.c,v 1.35.2.1.2.1 2009/10/25 01:10:
 #include <sys/protosw.h>
 #include <sys/sysctl.h>
 
-#include <net/route.h>
+#include <net/mpath_route.h>
 #include <net/if.h>
 #include <net/if_var.h>
 #include <netinet/in.h>

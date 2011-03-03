@@ -89,7 +89,7 @@ __FBSDID("$FreeBSD: src/sys/netinet/ip_input.c,v 1.375.2.2.2.1 2009/10/25 01:10:
 CTASSERT(sizeof(struct ip) == 20);
 #endif
 
-static VNET_DEFINE(int, ipsendredirects) = 1;	/* XXX */
+static VNET_DEFINE(int, ipsendredirects) = 0;	/* XXX */
 static VNET_DEFINE(int, ip_checkinterface);
 static VNET_DEFINE(int, ip_keepfaith);
 static VNET_DEFINE(int, ip_sendsourcequench);
