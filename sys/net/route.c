@@ -505,7 +505,6 @@ rtredirect_fib(struct sockaddr *dst,
 	struct sockaddr *src,
 	u_int fibnum)
 {
-	dprint(("rtredirect Start\n"));
 	struct rtentry *rt, *rt0 = NULL;
 	int error = 0;
 	short *stat = NULL;
@@ -621,7 +620,6 @@ out:
 	rt_missmsg(RTM_REDIRECT, &info, flags, error);
 	if (ifa != NULL)
 		ifa_free(ifa);
-	dprint(("rtredirect End\n"));
 }
 
 int
