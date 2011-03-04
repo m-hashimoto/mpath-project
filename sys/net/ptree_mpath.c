@@ -284,7 +284,7 @@ ptree_matchaddr(v_arg, head)
 	void *v_arg;
 	struct ptree_node_head *head;
 {
-	char *v = v_arg;
+	struct sockaddr *v = v_arg;
 	register struct ptree_node *t = head->pnh_top;
 	
 	if(!t){
@@ -301,18 +301,23 @@ ptree_matchaddr(v_arg, head)
 	bytes = sizeof(struct sockaddr);
 	bits = 8 * bytes;
 #if DEBUG
-	struct sockaddr *sa = (struct sockaddr *)v;
 	dprint(("ptree_matchaddr: v["));
 	sprint_inet_ntoa(sa->sa_family, sa);
 	dprint(("/%d(bytes)] ",LEN(v)));
 #endif
-	t = saved_t = ptree_search(v, bits, head->pnh_treetop);
+	/* if ipv6, sin6_port must be zero */
+	if(v->sa_family == AF_INET6){
+		struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v;
+		sin6->sin6_port = 0;
+	}
+		
+	t = saved_t = ptree_search((char *)v, bits, head->pnh_treetop);
 	if( !saved_t ){
 		dprint(("not match(no entry)\n"));
 		return 0;
 	}
 
-	cp = t->key; cplim = v;
+	cp = t->key; cplim = (char *)v;
 	bytes = t->keylen / 8;
 	if ( memcmp(cp,cplim,bytes) != 0 ){
 		dprint(("not match(key diff)\n"));
@@ -858,7 +863,7 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 	
 	hash = seed % (n+1);
 	rt = rt_array[hash];
-	dprint(("multipath_nexthop: basert[%p] flow[%u] rt_select[%d/%d]\n",nexthops,seed,hash,n));
+	dprint(("multipath_nexthop: base_rt[%p] flow[%u] rt_select[%d/%d]\n",nexthops,seed,hash,n));
 #if DEBUG
 	printf(" rt_num[%d] ",hash);
 	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;
