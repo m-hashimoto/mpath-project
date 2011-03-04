@@ -117,5 +117,6 @@ BPF_JITTER		opt_bpf.h
 NATIVE			opt_global.h
 XEN			opt_global.h
 
-#Patricia mpath option
+# PATRICIA-based multipath routing option
 PTREE_MPATH		opt_ptree.h
+
