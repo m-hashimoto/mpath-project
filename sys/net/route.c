@@ -141,12 +141,13 @@ sysctl_my_fibnum(SYSCTL_HANDLER_ARGS)
 SYSCTL_PROC(_net, OID_AUTO, my_fibnum, CTLTYPE_INT|CTLFLAG_RD,
             NULL, 0, &sysctl_my_fibnum, "I", "default FIB of caller");
 
-		static __inline struct ptree_node_head **
+static __inline struct ptree_node_head **
 rt_tables_get_rnh_ptr(int table, int fam)
 {
 	struct ptree_node_head **rnh;
 
-	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.", __func__));
+	KASSERT(table >= 0 && table < rt_numfibs, ("%s: table out of bounds.",
+	    __func__));
 	KASSERT(fam >= 0 && fam < (AF_MAX+1), ("%s: fam out of bounds.",
 	    __func__));
 
@@ -158,9 +159,10 @@ rt_tables_get_rnh_ptr(int table, int fam)
 	return (rnh);
 }
 
-		struct ptree_node_head *
+struct ptree_node_head *
 rt_tables_get_rnh(int table, int fam)
 {
+
 	return (*rt_tables_get_rnh_ptr(table, fam));
 }
 
@@ -171,6 +173,7 @@ rt_tables_get_rnh(int table, int fam)
 static void
 route_init(void)
 {
+
 	/* whack the tunable ints into  line. */
 	if (rt_numfibs > RT_MAXFIBS)
 		rt_numfibs = RT_MAXFIBS;
@@ -189,15 +192,15 @@ vnet_route_init(const void *unused __unused)
 	int fam;
 
 	V_rt_tables = malloc(rt_numfibs * (AF_MAX+1) *
-			sizeof(struct ptree_node_head *), M_RTABLE, M_WAITOK|M_ZERO);
+	    sizeof(struct ptree_node_head *), M_RTABLE, M_WAITOK|M_ZERO);
 
 	V_rtzone = uma_zcreate("rtentry", sizeof(struct rtentry), NULL, NULL,
 	    NULL, NULL, UMA_ALIGN_PTR, 0);
 	for (dom = domains; dom; dom = dom->dom_next) {
 		if (dom->dom_rtattach)  {
 			for  (table = 0; table < rt_numfibs; table++) {
-							if ( (fam = dom->dom_family) == AF_INET 
-											|| table == 0) {
+				if ( (fam = dom->dom_family) == AF_INET ||
+				    table == 0) {
  			        	/* for now only AF_INET has > 1 table */
 					/* XXX MRT 
 					 * rtattach will be also called
@@ -356,13 +359,7 @@ rtalloc1_fib(struct sockaddr *dst, int report, u_long ignflags,
 	else
 		RADIX_NODE_HEAD_LOCK_ASSERT(rnh);
 #endif
-	//long long int c0,c1,c2,us;
-	//RDTSC(c0);
-	//RDTSC(c1);
 	rn = rnh->rnh_matchaddr(dst, rnh);
-	//RDTSC(c2);
-	//us = (c2-c1-(c1-c0))/2000;
-	//dprint(("-rtalloc1_fib: pnh_matchaddr %lld[clk] %lld[usec]\n",c2-c1-(c1-c0),us ));
 	if (rn) {
 		newrt = rt = RNTORT(rn);
 #if 0
@@ -375,6 +372,7 @@ rtalloc1_fib(struct sockaddr *dst, int report, u_long ignflags,
 		if (needlock)
 			RADIX_NODE_HEAD_RUNLOCK(rnh);
 		goto done;
+
 	} else if (needlock)
 		RADIX_NODE_HEAD_RUNLOCK(rnh);
 	
@@ -436,7 +434,7 @@ rtfree(struct rtentry *rt)
 	 * on the entry so that the code below reclaims the storage.
 	 */
 	if (rt->rt_refcnt == 0 && rnh->rnh_close)
-			rnh->rnh_close((struct ptree_node *)rt, rnh);
+		rnh->rnh_close((struct ptree_node *)rt, rnh);
 
 	/*
 	 * If we are no longer "up" (and ref == 0)
@@ -444,15 +442,18 @@ rtfree(struct rtentry *rt)
 	 * with the route.
 	 */
 	if ((rt->rt_flags & RTF_UP) == 0) {
-			if (rt->rt_nodes->data == NULL)
+		if (rt->rt_nodes->data == NULL)
+			panic("rtfree 2");
 		/*
 		 * the rtentry must have been removed from the routing table
 		 * so it is represented in rttrash.. remove that now.
 		 */
 		V_rttrash--;
 #ifdef	DIAGNOSTIC
-			if (rt->rt_refcnt < 0) 
+		if (rt->rt_refcnt < 0) {
+			printf("rtfree: %p not freed (neg refs)\n", rt);
 			goto done;
+		}
 #endif
 		/*
 		 * release references on items we hold them on..
