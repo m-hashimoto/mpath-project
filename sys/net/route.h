@@ -33,7 +33,6 @@
 #ifndef _NET_ROUTE_H_
 #define _NET_ROUTE_H_
 
-
 /*
  * Kernel resident routing tables.
  *
@@ -134,7 +133,6 @@ struct mbuf;
 #include <net/radix_mpath.h>
 #endif
 #endif
-
 struct rtentry {
 	struct	ptree_node *rt_nodes;	/* tree glue, and other values */
 	/*
@@ -142,8 +140,8 @@ struct rtentry {
 	 * because the code does some casts of a 'struct radix_node *'
 	 * to a 'struct rtentry *'
 	 */
-#define	rt_key(r)		(*((struct sockaddr **)(&(r)->rt_nodes->key)))
-#define	rt_mask(r)		(*((struct sockaddr **)(&(r)->rt_mask)))
+#define	rt_key(r)	(*((struct sockaddr **)(&(r)->rt_nodes->key)))
+#define	rt_mask(r)	(*((struct sockaddr **)(&(r)->rt_mask)))
 	struct	sockaddr *rt_gateway;	/* value */
 	struct	sockaddr *rt_mask;
 	int	rt_flags;		/* up/down?, host/net */
@@ -153,18 +151,12 @@ struct rtentry {
 	struct	rt_metrics_lite rt_rmx;	/* metrics used by rx'ing protocols */
 	u_int	rt_fibnum;		/* which FIB */
 #ifdef _KERNEL
-#ifdef PTREE_MPATH
-	unsigned int mpath_counter;
-	struct rtentry **mpath_array;
-#endif /* PTREE_MPATH */
 	/* XXX ugly, user apps use this definition but don't have a mtx def */
 	struct	mtx rt_mtx;		/* mutex for routing entry */
-#else
+#endif
 	unsigned int mpath_counter;
 	struct rtentry **mpath_array;
-#endif /* _KERNEL */
 };
-
 
 /*
  * Following structure necessary for 4.3 compatibility;
@@ -189,8 +181,7 @@ struct ortentry {
 #define	RTF_DYNAMIC	0x10		/* created dynamically (by redirect) */
 #define	RTF_MODIFIED	0x20		/* modified dynamically (by redirect) */
 #define RTF_DONE	0x40		/* message confirmed */
-#define RTF_MULTIPATH 0x80		/* ptree multipath */
-/*			0x80		   unused, was RTF_DELCLONE */
+#define RTF_MULTIPATH	0x80		/* ptree multipath (was RTF_DELCLONE) */
 /*			0x100		   unused, was RTF_CLONING */
 #define RTF_XRESOLVE	0x200		/* external daemon resolves name */
 #define RTF_LLINFO	0x400		/* DEPRECATED - exists ONLY for backward 
