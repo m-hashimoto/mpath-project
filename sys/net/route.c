@@ -1100,10 +1100,10 @@ rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
 	case RTM_ADD:
 		if ((flags & RTF_GATEWAY) && !gateway)
 			senderr(EINVAL);
-
 		if (dst && gateway && (dst->sa_family != gateway->sa_family) && 
 		    (gateway->sa_family != AF_UNSPEC) && (gateway->sa_family != AF_LINK))
 			senderr(EINVAL);
+
 		if (info->rti_ifa == NULL) {
 			error = rt_getifa_fib(info, fibnum);
 			if (error)
@@ -1219,7 +1219,7 @@ rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
 				struct sockaddr *mask;
 				u_char *m, *n;
 				int len;
-
+				
 				/*
 				 * compare mask to see if the new route is
 				 * more specific than the existing one
@@ -1257,7 +1257,7 @@ rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
 #endif
 
 		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
-		rn = rnh->rnh_addaddr(ndst, netmask, rnh, (struct ptree_node *)rt);
+		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
 		/*
 		 * If it still failed to go into the tree,
 		 * then un-make it (this should be a function)
