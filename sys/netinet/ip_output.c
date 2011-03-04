@@ -276,15 +276,8 @@ again:
 #endif
 #ifdef PTREE_MPATH
 			/* forwarding for MARA */
-			if (ro->ro_rt != NULL && mara_tag != 0){
-				//dprint(("ip_output: tag[%d]",mara_tag));
+			if (ro->ro_rt != NULL && ptree_mpath_count(ro->ro_rt) != 0)
 				ro->ro_rt = multipath_nexthop(mara_tag,ro->ro_rt);
-#if DEBUG
-				//printf(" dst[");
-				//sprint_inet_ntoa(dst->sin_family,dst);
-				//printf("]\n");
-#endif
-			}
 #endif
 		if (ro->ro_rt == NULL) {
 #ifdef IPSEC

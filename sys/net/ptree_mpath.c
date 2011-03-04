@@ -849,16 +849,16 @@ multipath_nexthop (unsigned int seed, struct rtentry *nexthops)
 {
 	struct rtentry *rt, **rt_array;
 	unsigned int hash;
-	int n;
+	int n = ptree_mpath_count(nexthops);
 	
 	rt = nexthops;
 
-	if((rt_array = rt->mpath_array) == NULL || (n = ptree_mpath_count(rt)) == 0)
+	if((rt_array = rt->mpath_array) == NULL)
 		return rt;
 	
 	hash = seed % (n+1);
 	rt = rt_array[hash];
-	printf("multipath_nexthop: basert[%p] flow[%u] rt_select[%d/%d]\n",nexthops,seed,hash,n);
+	dprint(("multipath_nexthop: basert[%p] flow[%u] rt_select[%d/%d]\n",nexthops,seed,hash,n));
 #if DEBUG
 	printf(" rt_num[%d] ",hash);
 	struct sockaddr *sa = (struct sockaddr *)rt->rt_gateway;
