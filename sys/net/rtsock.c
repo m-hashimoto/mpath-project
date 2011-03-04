@@ -463,7 +463,7 @@ route_output(struct mbuf *m, struct socket *so)
 	struct rt_msghdr *rtm = NULL;
 	struct rtentry *rt = NULL;
 	struct ptree_node_head *rnh;
-	struct ptree_node *pn;
+	struct ptree_node *pn = NULL;
 	struct rt_addrinfo info;
 	int len, error = 0;
 	struct ifnet *ifp = NULL;
