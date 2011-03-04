@@ -135,7 +135,9 @@ ip_output(struct mbuf *m, struct mbuf *opt, struct route *ro, int flags,
 #ifdef IPSEC
 	int no_route_but_check_spd = 0;
 #endif
+#ifdef PTREE_MPATH
 	int mara_tag;
+#endif
 	M_ASSERTPKTHDR(m);
 
 	if (inp != NULL) {
@@ -191,7 +193,9 @@ ip_output(struct mbuf *m, struct mbuf *opt, struct route *ro, int flags,
 	}
 
 	dst = (struct sockaddr_in *)&ro->ro_dst;
-	mara_tag = ip->ip_tos;
+#ifdef PTREE_MPATH
+	mara_tag = ip->ip_tos + ip->ip_src.s_addr;
+#endif
 again:
 	/*
 	 * If there is a cached route,
