@@ -809,7 +809,7 @@ static void
 if_detach_internal(struct ifnet *ifp, int vmove)
 {
 	struct ifaddr *ifa;
-		struct ptree_node_head	*rnh;
+	struct ptree_node_head	*rnh;
 	int i, j;
 	struct domain *dp;
  	struct ifnet *iter;
@@ -1697,7 +1697,7 @@ next:				continue;
 				 * for an even better one.
 				 */
 				if (ifa_maybe == NULL ||
-												ptree_refines((caddr_t)ifa->ifa_netmask,
+				    ptree_refines((caddr_t)ifa->ifa_netmask,
 				    (caddr_t)ifa_maybe->ifa_netmask)) {
 					if (ifa_maybe != NULL)
 						ifa_free(ifa_maybe);
