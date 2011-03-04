@@ -72,11 +72,11 @@ extern int	in_detachhead(void **head, int off);
  */
 static struct ptree_node *
 in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
-				struct ptree_node *rt_node)
+    struct ptree_node *rn)
 {
-	struct rtentry *rt = (struct rtentry *)(rt_node);
+	struct rtentry *rt = (struct rtentry *)rn->data;
 	struct sockaddr_in *sin = (struct sockaddr_in *)v_arg;
-	
+
 	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
 	/*
 	 * A little bit of help for both IP output and input:
@@ -103,10 +103,11 @@ in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 	}
 	if (IN_MULTICAST(ntohl(sin->sin_addr.s_addr)))
 		rt->rt_flags |= RTF_MULTICAST;
+
 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
 		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
-	
-	return (ptree_addroute(v_arg, n_arg, head, rt_node));
+
+	return (ptree_addroute(v_arg, n_arg, head, rn));
 }
 
 /*
@@ -118,12 +119,10 @@ static struct ptree_node *
 in_matroute(void *v_arg, struct ptree_node_head *head)
 {
 	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
-	struct rtentry *rt;
-	
+	struct rtentry *rt = NULL;
+
 	if (rn)
 		rt = rn->data;
-	else
-		return 0;
 
 	/*XXX locking? */
 	if (rt && rt->rt_refcnt == 0) {		/* this is first reference */
@@ -162,7 +161,7 @@ SYSCTL_VNET_INT(_net_inet_ip, IPCTL_RTMAXCACHE, rtmaxcache, CTLFLAG_RW,
 static void
 in_clsroute(struct ptree_node *rn, struct ptree_node_head *head)
 {
-	struct rtentry *rt = (struct rtentry *)rn;
+	struct rtentry *rt = (struct rtentry *)rn->data;
 
 	RT_LOCK_ASSERT(rt);
 
@@ -205,7 +204,7 @@ static int
 in_rtqkill(struct ptree_node *rn, void *rock)
 {
 	struct rtqk_arg *ap = rock;
-	struct rtentry *rt = (struct rtentry *)rn;
+	struct rtentry *rt = (struct rtentry *)rn->data;
 	int err;
 
 	RADIX_NODE_HEAD_WLOCK_ASSERT(ap->rnh);
@@ -411,7 +410,7 @@ static int
 in_ifadownkill(struct ptree_node *rn, void *xap)
 {
 	struct in_ifadown_arg *ap = xap;
-	struct rtentry *rt = (struct rtentry *)rn;
+	struct rtentry *rt = (struct rtentry *)rn->data;
 
 	RT_LOCK(rt);
 	if (rt->rt_ifa == ap->ifa &&
@@ -504,3 +503,5 @@ int	 in_rt_getifa(struct rt_addrinfo *, u_int fibnum);
 int	 in_rtioctl(u_long, caddr_t, u_int);
 int	 in_rtrequest1(int, struct rt_addrinfo *, struct rtentry **, u_int);
 #endif
+
+
