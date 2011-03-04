@@ -599,22 +599,25 @@ route_output(struct mbuf *m, struct socket *so)
 		if (rnh == NULL)
 			senderr(EAFNOSUPPORT);
 		RADIX_NODE_HEAD_RLOCK(rnh);
-		
-		int keylen;
-		
-		if(info.rti_info[RTAX_NETMASK] != NULL)
-			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK],rnh);
-		else{
-			if (info.rti_info[RTAX_DST]->sa_family == AF_INET)
-		 		keylen 	= 8 * info.rti_info[RTAX_DST]->sa_len - SIN_ZERO;
+		int keylen = -1;
+		if (info.rti_info[RTAX_NETMASK] != NULL)
+			keylen = create_masklen((char *)info.rti_info[RTAX_NETMASK], rnh);
+		else {
+			int sa_family = info.rti_info[RTAX_DST]->sa_family;
+			int sa_len = info.rti_info[RTAX_DST]->sa_len;
+			if (sa_family == AF_INET)
+		 		keylen 	= 8 * sa_len - SIN_ZERO;
+			else if (sa_family == AF_INET6)
+				keylen 	= 8 * sa_len - SIN6_ZERO;
 			else
-				keylen 	= 8 * info.rti_info[RTAX_DST]->sa_len - SIN6_ZERO;
+				dprint(("unknown sa_family: %d\n",
+					sa_family));
 		}
-
-		dprint(("route_output: call rnh_lookup\n"));
-		pn = rnh->rnh_lookup((char *)info.rti_info[RTAX_DST], keylen, rnh->pnh_treetop);
-		if(pn != NULL)
-		  rt = pn->data;
+		if (keylen >= 0)
+			pn = rnh->rnh_lookup((char *)info.rti_info[RTAX_DST],
+				keylen, rnh->pnh_treetop);
+		if (pn != NULL)
+			rt = (struct rtentry *) pn->data;
 		if (rt == NULL) {	/* XXX looks bogus */
 			RADIX_NODE_HEAD_RUNLOCK(rnh);
 			senderr(ESRCH);
@@ -1111,7 +1114,6 @@ rt_ifmsg(struct ifnet *ifp)
 void
 rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 {
-	dprint(("rt_newaddrmsg Start: cmd[%d] rt[%p]\n",cmd,rt));
 	struct rt_addrinfo info;
 	struct sockaddr *sa = NULL;
 	int pass;
@@ -1130,15 +1132,12 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 	sctp_addr_change(ifa, cmd);
 #endif /* SCTP */
 #endif
-	if (route_cb.any_count == 0){
-		dprint(("rt_newaddrmsg End: route_cb.any_count == 0\n"));
+	if (route_cb.any_count == 0)
 		return;
-	}
 	for (pass = 1; pass < 3; pass++) {
 		bzero((caddr_t)&info, sizeof(info));
 		if ((cmd == RTM_ADD && pass == 1) ||
 		    (cmd == RTM_DELETE && pass == 2)) {
-			dprint(("rt_newaddrmsg: if RTM_ADD(pass=1) or RTM_DELETE(pass=2)\n"));
 			struct ifa_msghdr *ifam;
 			int ncmd = cmd == RTM_ADD ? RTM_NEWADDR : RTM_DELADDR;
 
@@ -1156,7 +1155,6 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 		}
 		if ((cmd == RTM_ADD && pass == 2) ||
 		    (cmd == RTM_DELETE && pass == 1)) {
-			dprint(("rt_newaddrmsg: if RTM_ADD(pass=2) or RTM_DELETE(pass=1)\n"));
 			struct rt_msghdr *rtm;
 
 			if (rt == NULL)
@@ -1173,10 +1171,8 @@ rt_newaddrmsg(int cmd, struct ifaddr *ifa, int error, struct rtentry *rt)
 			rtm->rtm_errno = error;
 			rtm->rtm_addrs = info.rti_addrs;
 		}
-		dprint(("rt_newaddrmsg: rt_dispatch\n"));
 		rt_dispatch(m, sa);
 	}
-	dprint(("rt_newaddrmsg End\n"));
 }
 
 /*
