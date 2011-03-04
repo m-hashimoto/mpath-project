@@ -467,7 +467,7 @@ ptree_deladdr(v_arg, gate_arg, head)
 		}
 #endif
 		/* compare gateway */
-		if( memcmp(gate, rt->rt_gateway, LEN(gate)) != 0 )
+		if( gate && memcmp(gate, rt->rt_gateway, LEN(gate)) != 0 )
 			return 0;
 		dprint(("ptree_deladdr: call ptree_remove\n"));
 		ptree_remove(tt);
