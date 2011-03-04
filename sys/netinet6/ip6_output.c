@@ -595,13 +595,9 @@ again:
 	 * select nexthops by ip6_flow
 	 */
 	dprint(("ip6_output: mara forwarding!\n"));
-	uint32_t mara_tag = ip6->ip6_flow;
-	if(mara_tag == 96){
-		mara_tag = arc4random();
-		ip6->ip6_flow = mara_tag;
-	}
+	int mara_tag = ip6->ip6_flow;
 	dprint((" mara_tag[%u]\n",mara_tag));
-	if(rt != NULL)
+	if(rt != NULL && ptree_mpath_count(rt) != 0)
 		rt = multipath_nexthop((unsigned int)mara_tag,rt);
 
 #if DEBUG
