@@ -688,6 +688,7 @@ in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
 	struct rtentry *rt;
 	int delay;
 	char ip6buf[INET6_ADDRSTRLEN];
+
 	/* Validate parameters */
 	if (ifp == NULL || ifra == NULL) /* this maybe redundant */
 		return (EINVAL);
@@ -895,7 +896,6 @@ in6_update_ifa(struct ifnet *ifp, struct in6_aliasreq *ifra,
 	/* reset the interface and routing table appropriately. */
 	if ((error = in6_ifinit(ifp, ia, &ifra->ifra_addr, hostIsNew)) != 0)
 		goto unlink;
-
 
 	/*
 	 * configure address flags.

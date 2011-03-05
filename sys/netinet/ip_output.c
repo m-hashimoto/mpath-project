@@ -172,6 +172,7 @@ ip_output(struct mbuf *m, struct mbuf *opt, struct route *ro, int flags,
 			hlen = len;
 	}
 	ip = mtod(m, struct ip *);
+
 	/*
 	 * Fill in IP header.  If we are not allowing fragmentation,
 	 * then the ip_id field is meaningless, but we don't set it
@@ -671,7 +672,6 @@ passout:
 		IPSTAT_INC(ips_fragmented);
 
 done:
-	//dprint(("ip_output: done\n"));
 	if (ro == &iproute && ro->ro_rt && !nortfree) {
 		RTFREE(ro->ro_rt);
 	}
@@ -679,7 +679,6 @@ done:
 		ifa_free(&ia->ia_ifa);
 	return (error);
 bad:
-	//dprint(("ip_output: bad\n"));
 	m_freem(m);
 	goto done;
 }
