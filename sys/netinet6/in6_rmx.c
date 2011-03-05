@@ -113,21 +113,21 @@ extern int	in6_detachhead(void **head, int off);
 
 #define RTPRF_OURS		RTF_PROTO3	/* set on routes we manage */
 
-
 /*
  * Do what we need to do when inserting a route.
  */
 static struct ptree_node *
 in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
-				struct ptree_node *rt_node)
+    struct ptree_node *rn)
 {
-	struct rtentry *rt = (struct rtentry *)(rt_node);
+	struct rtentry *rt = (struct rtentry *)rn->data;
 	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
 	struct ptree_node *ret;
-	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
 
+	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
 	if (IN6_IS_ADDR_MULTICAST(&sin6->sin6_addr))
 		rt->rt_flags |= RTF_MULTICAST;
+
 	/*
 	 * A little bit of help for both IPv6 output and input:
 	 *   For local addresses, we make sure that RTF_LOCAL is set,
@@ -153,7 +153,7 @@ in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
 		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
 
-	ret = ptree_addroute(v_arg, n_arg, head, rt_node);
+	ret = ptree_addroute(v_arg, n_arg, head, rn);
 	if (ret == NULL) {
 		struct rtentry *rt2;
 		/*
@@ -191,12 +191,10 @@ static struct ptree_node *
 in6_matroute(void *v_arg, struct ptree_node_head *head)
 {
 	struct ptree_node *rn = ptree_matchaddr(v_arg, head);
-	struct rtentry *rt;
-	
+	struct rtentry *rt = NULL;
+
 	if (rn)
 		rt = rn->data;
-	else
-		return 0;
 
 	if (rt && rt->rt_refcnt == 0) { /* this is first reference */
 		if (rt->rt_flags & RTPRF_OURS) {
@@ -277,6 +275,7 @@ in6_rtqkill(struct ptree_node *rn, void *rock)
 					    rt->rt_rmx.rmx_expire);
 		}
 	}
+
 	return 0;
 }
 
