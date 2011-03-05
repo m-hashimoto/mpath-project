@@ -310,17 +310,21 @@ size_cols_tree(struct ptree_node *rn)
 {
 	if (kget(rn, rnode) != 0)
 		return;
-	if(!rn->data)
+	if(!rnode.child[0] && !rnode.child[1] && !rn->data)
 		return;
-	else{
-		if (kget(rn->data,rtentry) != 0)
+	{
+		{
+			if (kget(rn->data,rtentry) != 0)
 				return;
 			size_cols_rtentry(&rtentry);
 		}
-	rn = rnode.child[1];
-	size_cols_tree(rnode.child[0]);
+	}
+	{
+		rn = rnode.child[1];
+		size_cols_tree(rnode.child[0]);
 		size_cols_tree(rn);
 	}
+}
 
 static void
 size_cols_rtentry(struct rtentry *rt)
@@ -332,7 +336,6 @@ size_cols_rtentry(struct rtentry *rt)
 	sa_u addr, mask;
 	int len;
 	struct ptree_node rn;
-
 
 	bzero(&addr, sizeof(addr));
 	if (kget(rt->rt_nodes,rn) != 0)
@@ -387,12 +390,14 @@ size_cols_rtentry(struct rtentry *rt)
 	}
 }
 
+
 /*
  * Print header for routing table columns.
  */
 void
 pr_rthdr(int af1)
 {
+
 	if (Aflag)
 		printf("%-8.8s ","Address");
 	if (af1 == AF_INET || Wflag) {
@@ -429,6 +434,7 @@ pr_rthdr(int af1)
 static struct sockaddr *
 kgetsa(struct sockaddr *dst)
 {
+
 	if (kget(dst, pt_u.u_sa) != 0)
 		return (NULL);
 	if (pt_u.u_sa.sa_len > sizeof (pt_u.u_sa))
@@ -446,31 +452,33 @@ p_tree(struct ptree_node *rn)
 		return;
 	if (kget(rn, rnode) != 0)
 		return;
+	if (rnode.data) {
 		if (Aflag)
 			printf("%-8.8lx ", (u_long)rn);
-	if (do_rtent) {
-		if (rnode.data && kget(rnode.data, rtentry) == 0) {
+		if (do_rtent) {
+			if (kget(rnode.data, rtentry) == 0) {
 				p_rtentry(&rtentry);
 				if (Aflag)
 					p_rtnode();
-			/* multipath print*/
-			p_multipath = 1;
-			if(rtentry.mpath_array){
-				n = rtentry.mpath_counter;
-				struct rtentry *rt0[n+1];
+
+				/* multipath print*/
+				p_multipath = 1;
+				if(rtentry.mpath_array){
+					n = rtentry.mpath_counter;
+					struct rtentry *rt0[n+1];
 				
-				if (kget(rtentry.mpath_array, rt0) == 0){
-					while( i <= n && rt0+i ){
-						if (kget(rt0[i], rt) == 0)
-							p_rtentry(&rt);
-						i++;
+					if (kget(rtentry.mpath_array, rt0) == 0){
+						while( i <= n && rt0+i ){
+							if (kget(rt0[i], rt) == 0)
+								p_rtentry(&rt);
+							i++;
+						}
 					}
-				}
-			}	/* multipath End */
-			p_multipath = 0;
+				}	/* multipath End */
+				p_multipath = 0;
 			}
 		} else {
-		p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
+			p_sockaddr(kgetsa((struct sockaddr *)rnode.key),
 				   NULL, 0, 44);
 			putchar('\n');
 		}
@@ -478,8 +486,8 @@ p_tree(struct ptree_node *rn)
 			printf("%-8.8lx ", (u_long)rn);
 			p_rtnode();
 		}
-	rn = rnode.child[1];
-	p_tree(rnode.child[0]);
+		rn = rnode.child[1];
+		p_tree(rnode.child[0]);
 		p_tree(rn);
 	}
 
@@ -488,8 +496,11 @@ char	nbuf[20];
 static void
 p_rtnode(void)
 {
+	{
 		sprintf(nbuf, "(%d)", rnode.keylen);
 		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.child[0], (u_long)rnode.child[1]);
+	}
+	putchar('\n');
 }
 
 static void
@@ -757,6 +768,7 @@ p_rtentry(struct rtentry *rt)
 	}
 	else
 	p_sockaddr(&addr.u_sa, &mask.u_sa, rt->rt_flags, wid_dst);
+
 	p_sockaddr(kgetsa(rt->rt_gateway), NULL, RTF_HOST, wid_gw);
 	snprintf(buffer, sizeof(buffer), "%%-%d.%ds ", wid_flags, wid_flags);
 	p_flags(rt->rt_flags, buffer);
