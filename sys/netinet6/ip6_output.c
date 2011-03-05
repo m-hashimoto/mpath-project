@@ -215,7 +215,6 @@ ip6_output(struct mbuf *m0, struct ip6_pktopts *opt,
 	int segleft_org = 0;
 	struct secpolicy *sp = NULL;
 #endif /* IPSEC */
-	dprint(("ip6_output Start\n"));
 
 	ip6 = mtod(m, struct ip6_hdr *);
 	if (ip6 == NULL) {
@@ -584,19 +583,17 @@ again:
 		goto bad;
 	}
 	if (rt == NULL) {
-		dprint(("ip6_output: rt == NULL\n"));
 		/*
 		 * If in6_selectroute() does not return a route entry,
 		 * dst may not have been updated.
 		 */
 		*dst = dst_sa;	/* XXX */
 	}
+
 	/*
 	 * select nexthops by ip6_flow
 	 */
-	dprint(("ip6_output: mara forwarding!\n"));
 	int mara_tag = ip6->ip6_flow;
-	dprint((" mara_tag[%u]\n",mara_tag));
 	if(rt != NULL && ptree_mpath_count(rt) != 0)
 		rt = multipath_nexthop((unsigned int)mara_tag,rt);
 
@@ -608,6 +605,7 @@ again:
 	dprint(("]\n"));
 	}
 #endif
+
 	/*
 	 * then rt (for unicast) and ifp must be non-NULL valid values.
 	 */
@@ -666,7 +664,6 @@ again:
 	goto bad;
 
   routefound:
-	dprint(("ip6_output: routefound!\n"));
 	if (rt && !IN6_IS_ADDR_MULTICAST(&ip6->ip6_dst)) {
 		if (opt && opt->ip6po_nextroute.ro_rt) {
 			/*
@@ -857,7 +854,6 @@ again:
 	/* XXX: IPFIREWALL_FORWARD */
 
 passout:
-	dprint(("ip6_output: passout!\n"));
 	/*
 	 * Send the packet to the outgoing interface.
 	 * If necessary, do IPv6 fragmentation before sending.
@@ -1051,7 +1047,6 @@ passout:
 	 * Remove leading garbages.
 	 */
 sendorfree:
-	dprint(("ip6_output: send or free\n"));
 	m = m0->m_nextpkt;
 	m0->m_nextpkt = 0;
 	m_freem(m0);
@@ -1073,7 +1068,6 @@ sendorfree:
 		V_ip6stat.ip6s_fragmented++;
 
 done:
-	dprint(("ip6_output: done\n"));
 	if (ro == &ip6route && ro->ro_rt) { /* brace necessary for RTFREE */
 		RTFREE(ro->ro_rt);
 	} else if (ro_pmtu == &ip6route && ro_pmtu->ro_rt) {
@@ -1093,7 +1087,6 @@ freehdrs:
 	m_freem(exthdrs.ip6e_dest2);
 	/* FALLTHROUGH */
 bad:
-	dprint(("ip6_output: bad\n"));
 	if (m)
 		m_freem(m);
 	goto done;

@@ -106,7 +106,6 @@ VNET_DEFINE(int, ip6_temp_regen_advance);
 #define RTPREF_RESERVED	(-2)
 #define RTPREF_INVALID	(-3)	/* internal */
 
-
 /*
  * Receive Router Solicitation Message - just for routers.
  * Router solicitation/advertisement is mostly managed by userland program
