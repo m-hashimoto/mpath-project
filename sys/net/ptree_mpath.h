@@ -10,6 +10,10 @@
 #include <sys/_mutex.h>
 #include <sys/_rwlock.h>
 #include <net/ptree.h>
+
+struct route;
+struct rtentry;
+struct sockaddr;
 #endif /* _KERNEL */
 
 
@@ -36,7 +40,8 @@ struct ptree_node_head {
 #endif /* PTREE_MPATH */
 		struct  ptree_node *(*rnh_addaddr)
 				(void *v, void *mask, struct ptree_node_head *head,
-				 struct ptree_node *rt_nodes);
+				 struct rtentry *rt);
+//				 struct ptree_node *rt_nodes);
 		struct  ptree_node *(*rnh_addpkt)       /* add based on packet hdr */
 				(void *v, void *mask, struct ptree_node_head *head,
 				 struct ptree_node *rt_nodes);
@@ -97,7 +102,7 @@ int      ptree_inithead(void **, int),
 				 create_masklen(char *, struct ptree_node_head *);
 struct ptree_node
 		*ptree_addroute(void *, void *, struct ptree_node_head *,
-					   	struct ptree_node *),
+					   	struct rtentry *),
 		*ptree_deladdr(void *, void *, struct ptree_node_head *),
 		*ptree_matchaddr(void *, struct ptree_node_head *);
 #ifdef DEBUG
@@ -109,9 +114,6 @@ int debug_tree_print(struct ptree_node_head *);
 
 #ifdef PTREE_MPATH
 #ifdef _KERNEL
-struct route;
-struct rtentry;
-struct sockaddr;
 
 #define MAX_MULTIPATH 3
 

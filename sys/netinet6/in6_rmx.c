@@ -118,9 +118,9 @@ extern int	in6_detachhead(void **head, int off);
  */
 static struct ptree_node *
 in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
-    struct ptree_node *rn)
+    struct rtentry *rt)
 {
-	struct rtentry *rt = (struct rtentry *)rn->data;
+	//struct rtentry *rt = (struct rtentry *)rn->data;
 	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)v_arg;
 	struct ptree_node *ret;
 
@@ -153,7 +153,7 @@ in6_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
 		rt->rt_rmx.rmx_mtu = IN6_LINKMTU(rt->rt_ifp);
 
-	ret = ptree_addroute(v_arg, n_arg, head, rn);
+	ret = ptree_addroute(v_arg, n_arg, head, rt);
 	if (ret == NULL) {
 		struct rtentry *rt2;
 		/*

@@ -346,17 +346,17 @@ ptree_matchaddr(v_arg, head)
 
 
 		struct ptree_node *
-ptree_addroute(v_arg, n_arg, head, rt_node)
+ptree_addroute(v_arg, n_arg, head, rt)
 		void *v_arg, *n_arg;
 		struct ptree_node_head *head;
-		struct ptree_node *rt_node;
+		struct rtentry *rt;
 {
 		register struct ptree_node *tt;
 		struct ptree_node *saved_tt;
 		int keyduplicated;
-		struct rtentry *rt;
+	//	struct rtentry *rt;
 		
-		rt = (struct rtentry *)rt_node;
+	//	rt = (struct rtentry *)rt_node;
 		/*
 		 * Deal with duplicated keys: attach node to previous instance
 		 */

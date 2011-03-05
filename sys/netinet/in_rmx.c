@@ -72,9 +72,9 @@ extern int	in_detachhead(void **head, int off);
  */
 static struct ptree_node *
 in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
-    struct ptree_node *rn)
+    struct rtentry *rt)
 {
-	struct rtentry *rt = (struct rtentry *)rn->data;
+	//struct rtentry *rt = (struct rtentry *)rn->data;
 	struct sockaddr_in *sin = (struct sockaddr_in *)v_arg;
 
 	RADIX_NODE_HEAD_WLOCK_ASSERT(head);
@@ -107,7 +107,7 @@ in_addroute(void *v_arg, void *n_arg, struct ptree_node_head *head,
 	if (!rt->rt_rmx.rmx_mtu && rt->rt_ifp)
 		rt->rt_rmx.rmx_mtu = rt->rt_ifp->if_mtu;
 
-	return (ptree_addroute(v_arg, n_arg, head, rn));
+	return (ptree_addroute(v_arg, n_arg, head, rt));
 }
 
 /*

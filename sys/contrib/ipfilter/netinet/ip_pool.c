@@ -482,7 +482,7 @@ int info;
 
 	RADIX_NODE_HEAD_LOCK(ipo->ipo_head);
 	rn = ipo->ipo_head->rnh_addaddr(&x->ipn_addr, &x->ipn_mask,
-					ipo->ipo_head, x->ipn_nodes);
+					ipo->ipo_head, x->ipn_nodes->data);
 	RADIX_NODE_HEAD_UNLOCK(ipo->ipo_head);
 #ifdef	DEBUG_POOL
 	printf("Added %p at %p\n", x, rn);

@@ -1093,9 +1093,9 @@ pfr_route_kentry(struct pfr_ktable *kt, struct pfr_kentry *ke)
 #endif
 	if (KENTRY_NETWORK(ke)) {
 		pfr_prepare_network(&mask, ke->pfrke_af, ke->pfrke_net);
-		rn = ptree_addroute(&ke->pfrke_sa, &mask, head, ke->pfrke_node);
+		rn = ptree_addroute(&ke->pfrke_sa, &mask, head, ke->pfrke_node->data);
 	} else
-		rn = ptree_addroute(&ke->pfrke_sa, NULL, head, ke->pfrke_node);
+		rn = ptree_addroute(&ke->pfrke_sa, NULL, head, ke->pfrke_node->data);
 	splx(s);
 
 	return (rn == NULL ? -1 : 0);

@@ -1255,7 +1255,7 @@ rtrequest1_fib(int req, struct rt_addrinfo *info, struct rtentry **ret_nrt,
 #endif
 
 		/* XXX mtu manipulation will be done in rnh_addaddr -- itojun */
-		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt->rt_nodes);
+		rn = rnh->rnh_addaddr(ndst, netmask, rnh, rt);
 		/*
 		 * If it still failed to go into the tree,
 		 * then un-make it (this should be a function)
